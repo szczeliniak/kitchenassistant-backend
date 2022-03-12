@@ -1,11 +1,11 @@
-package pl.szczeliniak.kitchensassistant
+package pl.szczeliniak.kitchenassistant.infra
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class KitchensassistantApplication
+class KitchenAssistantApplication
 
 fun main(args: Array<String>) {
-	runApplication<KitchensassistantApplication>(*args)
+    runApplication<KitchenAssistantApplication>(*args)
 }
