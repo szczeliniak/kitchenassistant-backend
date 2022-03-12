@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.infra
+package pl.szczeliniak.kitchenassistant
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

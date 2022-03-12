@@ -1,0 +1,12 @@
+package pl.szczeliniak.kitchenassistant.user.queries
+
+import pl.szczeliniak.kitchenassistant.user.UserDao
+import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
+
+class GetUsers(private val userDao: UserDao) {
+
+    fun execute(): List<UserDto> {
+        return userDao.findAll().map { UserDto.fromDomain(it) }
+    }
+
+}
