@@ -38,7 +38,7 @@ public class SwaggerConfiguration {
                 .securityContexts(Collections.singletonList(securityContext()))
                 .securitySchemes(Collections.singletonList(apiKey()))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("pl.szczeliniak.todoapp"))
+                .apis(RequestHandlerSelectors.basePackage("pl.szczeliniak.kitchenassistant"))
                 .paths(PathSelectors.any())
                 .build();
     }
