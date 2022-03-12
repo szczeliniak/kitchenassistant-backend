@@ -21,6 +21,8 @@
         <dependency.spring.boot>2.6.4</dependency.spring.boot>
         <dependency.h2>2.1.210</dependency.h2>
         <dependency.jaxb>2.3.1</dependency.jaxb>
+        <dependency.swaggerui>2.9.2</dependency.swaggerui>
+        <dependency.jackson>2.13.1</dependency.jackson>
 
         <plugin.compiler>3.8.0</plugin.compiler>
     </properties>
@@ -76,6 +78,31 @@
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
                 <version>${dependency.jaxb}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${dependency.swaggerui}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${dependency.swaggerui}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${dependency.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${dependency.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${dependency.jackson}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
