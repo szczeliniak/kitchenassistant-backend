@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt.queries.dto
 
+import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
 import pl.szczeliniak.kitchenassistant.receipt.Ingredient
-import pl.szczeliniak.kitchenassistant.receipt.IngredientUnit
 import java.time.LocalDateTime
 
 data class IngredientDto(

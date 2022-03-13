@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
 import pl.szczeliniak.kitchenassistant.exceptions.NotAllowedOperationException
+import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import java.time.LocalDateTime
 
 class Receipt(
@@ -10,8 +11,8 @@ class Receipt(
     private var description_: String?,
     private var author_: String?,
     private var source_: String?,
-    private var ingredients_: List<Ingredient>,
-    private var steps_: List<Step>,
+    private var ingredients_: List<Ingredient> = ArrayList(),
+    private var steps_: List<Step> = ArrayList(),
     private var deleted_: Boolean = false,
     private val createdAt_: LocalDateTime = LocalDateTime.now(),
     private var modifiedAt_: LocalDateTime = LocalDateTime.now()
@@ -42,6 +43,19 @@ class Receipt(
 
     fun addStep(step: Step) {
         steps_ + step
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
+    fun deleteIngredientById(ingredientId: Int) {
+        val ingredient =
+            ingredients.firstOrNull { it.id == ingredientId } ?: throw NotFoundException("Ingredient not found")
+        ingredient.markAsDeleted()
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
+    fun deleteStepById(stepId: Int) {
+        val step = steps.firstOrNull { it.id == stepId } ?: throw NotFoundException("Step not found")
+        step.markAsDeleted()
         this.modifiedAt_ = LocalDateTime.now()
     }
 

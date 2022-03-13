@@ -8,7 +8,6 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptCriteriaDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptsResponse
 
@@ -32,7 +31,7 @@ class ReceiptController(
 
     @GetMapping
     fun getReceipts(@RequestParam(required = false) userId: Int): ReceiptsResponse {
-        return getReceiptsQuery.execute(ReceiptCriteriaDto(userId))
+        return getReceiptsQuery.execute(ReceiptCriteria(userId))
     }
 
     @PostMapping

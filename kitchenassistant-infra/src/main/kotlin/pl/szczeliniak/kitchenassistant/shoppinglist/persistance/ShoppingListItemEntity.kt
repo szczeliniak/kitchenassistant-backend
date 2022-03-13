@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.receipt.persistance
+package pl.szczeliniak.kitchenassistant.shoppinglist.persistance
 
 import org.hibernate.annotations.Where
 import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
@@ -10,11 +10,12 @@ import javax.persistence.Id
 
 @Entity
 @Where(clause = "deleted = false")
-data class IngredientEntity(
+data class ShoppingListItemEntity(
     @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: Int,
     var name: String,
     var quantity: String,
     var unit: IngredientUnit?,
+    var sequence: Int?,
     var deleted: Boolean,
     var createdAt: LocalDateTime,
     var modifiedAt: LocalDateTime

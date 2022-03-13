@@ -2,7 +2,6 @@ package pl.szczeliniak.kitchenassistant.receipt
 
 import org.springframework.stereotype.Component
 import pl.szczeliniak.kitchenassistant.receipt.persistance.ReceiptRepository
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptCriteriaDto
 
 @Component
 class ReceiptDaoImpl(
@@ -20,7 +19,7 @@ class ReceiptDaoImpl(
             .orElse(null)
     }
 
-    override fun findAll(criteria: ReceiptCriteriaDto): List<Receipt> {
+    override fun findAll(criteria: ReceiptCriteria): List<Receipt> {
         return receiptRepository.findAll() //TODO search by criteria
             .map { receiptMapper.toDomain(it) }
     }
