@@ -4,10 +4,10 @@ import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.user.commands.AddNewUser
 import pl.szczeliniak.kitchenassistant.user.commands.dto.AddNewUserDto
-import pl.szczeliniak.kitchenassistant.user.dto.UserResponse
-import pl.szczeliniak.kitchenassistant.user.dto.UsersResponse
 import pl.szczeliniak.kitchenassistant.user.queries.GetUser
 import pl.szczeliniak.kitchenassistant.user.queries.GetUsers
+import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
+import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
 
 @RestController
 @RequestMapping("/users")
@@ -19,18 +19,17 @@ class UserController(
 
     @GetMapping("/{id}")
     fun getUser(@PathVariable id: Int): UserResponse {
-        return UserResponse(getUser.execute(id))
+        return getUser.execute(id)
     }
 
     @GetMapping
     fun getUsers(): UsersResponse {
-        return UsersResponse(getUsers.execute())
+        return getUsers.execute()
     }
 
     @PostMapping
     fun addUser(@RequestBody dto: AddNewUserDto): SuccessResponse {
-        addNewUser.execute(dto)
-        return SuccessResponse()
+        return addNewUser.execute(dto)
     }
 
 }

@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.user
 
 import org.springframework.stereotype.Component
+import pl.szczeliniak.kitchenassistant.user.persistance.UserEntity
 
 @Component
 class UserMapper {
@@ -17,14 +18,7 @@ class UserMapper {
     }
 
     fun toEntity(user: User): UserEntity {
-        val userEntity = UserEntity()
-        userEntity.id = user.id
-        userEntity.email = user.email
-        userEntity.password = user.password
-        userEntity.name = user.name
-        userEntity.createdAt = user.createdAt
-        userEntity.modifiedAt = user.modifiedAt
-        return userEntity
+        return UserEntity(user.id, user.email, user.password, user.name, user.createdAt, user.modifiedAt)
     }
 
 }
