@@ -19,6 +19,7 @@ class ReceiptMapper(
             receiptEntity.source,
             receiptEntity.ingredients.map { ingredientMapper.toDomain(it) },
             receiptEntity.steps.map { stepMapper.toDomain(it) },
+            receiptEntity.deleted,
             receiptEntity.createdAt,
             receiptEntity.modifiedAt
         )
@@ -34,6 +35,7 @@ class ReceiptMapper(
             receipt.source,
             receipt.ingredients.map { ingredientMapper.toEntity(it) },
             receipt.steps.map { stepMapper.toEntity(it) },
+            receipt.deleted,
             receipt.createdAt,
             receipt.modifiedAt
         )

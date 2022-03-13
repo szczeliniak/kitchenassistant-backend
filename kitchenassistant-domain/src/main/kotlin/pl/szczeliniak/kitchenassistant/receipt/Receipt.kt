@@ -1,5 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
+import pl.szczeliniak.kitchenassistant.exceptions.NotAllowedOperationException
 import java.time.LocalDateTime
 
 class Receipt(
@@ -11,7 +12,8 @@ class Receipt(
     private var source_: String?,
     private var ingredients_: List<Ingredient>,
     private var steps_: List<Step>,
-    private var createdAt_: LocalDateTime = LocalDateTime.now(),
+    private var deleted_: Boolean = false,
+    private val createdAt_: LocalDateTime = LocalDateTime.now(),
     private var modifiedAt_: LocalDateTime = LocalDateTime.now()
 ) {
     val id: Int get() = id_
@@ -24,4 +26,23 @@ class Receipt(
     val steps: List<Step> get() = steps_
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
+    val deleted: Boolean get() = deleted_
+
+    fun markAsDeleted() {
+        if (deleted_) {
+            throw NotAllowedOperationException("Receipt is already marked as deleted!")
+        }
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
+    fun addIngredient(ingredient: Ingredient) {
+        ingredients_ + ingredient
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
+    fun addStep(step: Step) {
+        steps_ + step
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
 }

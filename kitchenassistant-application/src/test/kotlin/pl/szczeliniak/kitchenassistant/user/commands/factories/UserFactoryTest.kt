@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.user.User
-import pl.szczeliniak.kitchenassistant.user.commands.dto.AddNewUserDto
+import pl.szczeliniak.kitchenassistant.user.commands.dto.AddUserDto
 
 internal class UserFactoryTest : JunitBaseClass() {
 
@@ -24,8 +24,8 @@ internal class UserFactoryTest : JunitBaseClass() {
         return User(email_ = "EMAIL", password_ = "PASS", name_ = "NAME")
     }
 
-    private fun dto(): AddNewUserDto {
-        return AddNewUserDto("EMAIL", "PASS", "NAME")
+    private fun dto(): AddUserDto {
+        return AddUserDto("EMAIL", "PASS", "NAME")
     }
 
 }

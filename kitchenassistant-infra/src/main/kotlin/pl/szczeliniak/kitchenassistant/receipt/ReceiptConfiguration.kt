@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.receipt
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import pl.szczeliniak.kitchenassistant.receipt.commands.AddNewReceiptCommand
+import pl.szczeliniak.kitchenassistant.receipt.commands.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.IngredientFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.ReceiptFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.StepFactory
@@ -20,8 +20,25 @@ class ReceiptConfiguration {
     fun getReceiptsQuery(receiptDao: ReceiptDao): GetReceiptsQuery = GetReceiptsQuery(receiptDao)
 
     @Bean
-    fun addNewReceiptCommand(receiptDao: ReceiptDao, receiptFactory: ReceiptFactory): AddNewReceiptCommand =
-        AddNewReceiptCommand(receiptDao, receiptFactory)
+    fun addReceiptCommand(receiptDao: ReceiptDao, receiptFactory: ReceiptFactory): AddReceiptCommand =
+        AddReceiptCommand(receiptDao, receiptFactory)
+
+    @Bean
+    fun addIngredientCommand(receiptDao: ReceiptDao, ingredientFactory: IngredientFactory): AddIngredientCommand =
+        AddIngredientCommand(receiptDao, ingredientFactory)
+
+    @Bean
+    fun addStepCommand(receiptDao: ReceiptDao, stepFactory: StepFactory): AddStepCommand =
+        AddStepCommand(receiptDao, stepFactory)
+    
+    @Bean
+    fun deleteReceiptCommand(receiptDao: ReceiptDao): DeleteReceiptCommand = DeleteReceiptCommand(receiptDao)
+
+    @Bean
+    fun deleteStepCommand(receiptDao: ReceiptDao): DeleteStepCommand = DeleteStepCommand(receiptDao)
+
+    @Bean
+    fun deleteIngredientCommand(receiptDao: ReceiptDao): DeleteIngredientCommand = DeleteIngredientCommand(receiptDao)
 
     @Bean
     fun stepFactory(): StepFactory = StepFactory()

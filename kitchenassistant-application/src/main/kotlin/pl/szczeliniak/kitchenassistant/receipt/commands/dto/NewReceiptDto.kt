@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands.dto
 
-data class AddNewReceiptDto(
+data class NewReceiptDto(
     var userId: Int = 0,
     var name: String = "",
     var description: String = "",

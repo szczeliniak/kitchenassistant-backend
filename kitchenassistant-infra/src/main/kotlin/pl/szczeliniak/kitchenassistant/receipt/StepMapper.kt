@@ -12,13 +12,22 @@ class StepMapper {
             stepEntity.title,
             stepEntity.description,
             stepEntity.sequence,
+            stepEntity.deleted,
             stepEntity.createdAt,
             stepEntity.modifiedAt
         )
     }
 
     fun toEntity(step: Step): StepEntity {
-        return StepEntity(step.id, step.title, step.description, step.sequence, step.createdAt, step.modifiedAt)
+        return StepEntity(
+            step.id,
+            step.title,
+            step.description,
+            step.sequence,
+            step.deleted,
+            step.createdAt,
+            step.modifiedAt
+        )
     }
 
 }

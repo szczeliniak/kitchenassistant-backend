@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.user
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import pl.szczeliniak.kitchenassistant.user.commands.AddNewUserCommand
+import pl.szczeliniak.kitchenassistant.user.commands.AddUserCommand
 import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserQuery
 import pl.szczeliniak.kitchenassistant.user.queries.GetUsersQuery
@@ -17,8 +17,8 @@ class UserConfiguration {
     fun getUsersQuery(userDao: UserDao): GetUsersQuery = GetUsersQuery(userDao)
 
     @Bean
-    fun addNewUserCommand(userDao: UserDao, userFactory: UserFactory): AddNewUserCommand =
-        AddNewUserCommand(userDao, userFactory)
+    fun addUserCommand(userDao: UserDao, userFactory: UserFactory): AddUserCommand =
+        AddUserCommand(userDao, userFactory)
 
     @Bean
     fun userFactory(): UserFactory = UserFactory()
