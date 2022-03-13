@@ -16,12 +16,12 @@ internal class UserFactoryTest : JunitBaseClass() {
         val user = userFactory.create(dto())
 
         assertThat(user).usingRecursiveComparison()
-            .ignoringFields("createdAt", "modifiedAt")
+            .ignoringFields("createdAt_", "modifiedAt_")
             .isEqualTo(user())
     }
 
     private fun user(): User {
-        return User(email = "EMAIL", password = "PASS", name = "NAME")
+        return User(email_ = "EMAIL", password_ = "PASS", name_ = "NAME")
     }
 
     private fun dto(): AddNewUserDto {

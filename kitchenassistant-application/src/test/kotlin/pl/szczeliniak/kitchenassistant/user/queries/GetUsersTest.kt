@@ -31,6 +31,6 @@ internal class GetUsersTest : JunitBaseClass() {
     }
 
     private fun user(): User {
-        return User(email = "EMAIL", name = "NAME", password = "")
+        return User(email_ = "EMAIL", name_ = "NAME", password_ = "")
     }
 }

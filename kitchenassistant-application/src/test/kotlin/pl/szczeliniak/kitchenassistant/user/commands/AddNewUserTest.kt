@@ -34,7 +34,7 @@ internal class AddNewUserTest : JunitBaseClass() {
     }
 
     private fun user(): User {
-        return User(email = "", password = "", name = "")
+        return User(email_ = "", password_ = "", name_ = "")
     }
 
     private fun dto(): AddNewUserDto {

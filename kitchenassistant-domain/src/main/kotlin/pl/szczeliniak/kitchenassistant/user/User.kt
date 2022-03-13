@@ -2,35 +2,18 @@ package pl.szczeliniak.kitchenassistant.user
 
 import java.time.LocalDateTime
 
-class User(
-    id: Int = 0,
-    email: String,
-    password: String,
-    name: String,
-    createdAt: LocalDateTime = LocalDateTime.now(),
-    modifiedAt: LocalDateTime = LocalDateTime.now()
+data class User(
+    private val id_: Int = 0,
+    private val email_: String,
+    private val password_: String,
+    private val name_: String,
+    private val createdAt_: LocalDateTime = LocalDateTime.now(),
+    private val modifiedAt_: LocalDateTime = LocalDateTime.now()
 ) {
-
-    var id: Int
-        private set
-    var email: String
-        private set
-    var password: String
-        private set
-    var name: String
-        private set
-    var createdAt: LocalDateTime
-        private set
-    var modifiedAt: LocalDateTime
-        private set
-
-    init {
-        this.id = id
-        this.email = email
-        this.password = password
-        this.name = name
-        this.createdAt = createdAt
-        this.modifiedAt = modifiedAt
-    }
-
+    val id: Int get() = id_
+    val email: String get() = email_
+    val password: String get() = password_
+    val name: String get() = name_
+    val createdAt: LocalDateTime get() = createdAt_
+    val modifiedAt: LocalDateTime get() = modifiedAt_
 }
