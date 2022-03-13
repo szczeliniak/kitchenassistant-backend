@@ -1,6 +1,5 @@
 package pl.szczeliniak.kitchenassistant.receipt.persistance
 
-import pl.szczeliniak.kitchenassistant.user.persistance.UserEntity
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -8,7 +7,7 @@ import javax.persistence.*
 data class ReceiptEntity(
     @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: Int,
     var name: String,
-    @ManyToOne var user: UserEntity,
+    var userId: Int,
     var description: String?,
     var author: String?,
     var source: String?,

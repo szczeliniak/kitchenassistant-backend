@@ -1,11 +1,10 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
-import pl.szczeliniak.kitchenassistant.user.User
 import java.time.LocalDateTime
 
 class Receipt(
     private var id_: Int = 0,
-    private var user_: User,
+    private var userId_: Int,
     private var name_: String,
     private var description_: String?,
     private var author_: String?,
@@ -16,7 +15,7 @@ class Receipt(
     private var modifiedAt_: LocalDateTime = LocalDateTime.now()
 ) {
     val id: Int get() = id_
-    val user: User get() = user_
+    val userId: Int get() = userId_
     val name: String get() = name_
     val description: String? get() = description_
     val author: String? get() = author_

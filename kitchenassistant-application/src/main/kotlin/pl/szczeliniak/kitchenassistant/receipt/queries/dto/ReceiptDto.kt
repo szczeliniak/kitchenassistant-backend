@@ -1,11 +1,10 @@
 package pl.szczeliniak.kitchenassistant.receipt.queries.dto
 
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 
 data class ReceiptDto(
     val id: Int,
-    val user: UserDto,
+    val userId: Int,
     val name: String,
     val description: String?,
     val author: String?,
@@ -17,7 +16,7 @@ data class ReceiptDto(
         fun fromDomain(receipt: Receipt): ReceiptDto {
             return ReceiptDto(
                 receipt.id,
-                UserDto.fromDomain(receipt.user),
+                receipt.userId,
                 receipt.name,
                 receipt.description,
                 receipt.author,

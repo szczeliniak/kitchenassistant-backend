@@ -2,11 +2,9 @@ package pl.szczeliniak.kitchenassistant.receipt
 
 import org.springframework.stereotype.Component
 import pl.szczeliniak.kitchenassistant.receipt.persistance.ReceiptEntity
-import pl.szczeliniak.kitchenassistant.user.UserMapper
 
 @Component
 class ReceiptMapper(
-    private val userMapper: UserMapper,
     private val stepMapper: StepMapper,
     private val ingredientMapper: IngredientMapper
 ) {
@@ -14,7 +12,7 @@ class ReceiptMapper(
     fun toDomain(receiptEntity: ReceiptEntity): Receipt {
         return Receipt(
             receiptEntity.id,
-            userMapper.toDomain(receiptEntity.user),
+            receiptEntity.userId,
             receiptEntity.name,
             receiptEntity.description,
             receiptEntity.author,
@@ -30,7 +28,7 @@ class ReceiptMapper(
         return ReceiptEntity(
             receipt.id,
             receipt.name,
-            userMapper.toEntity(receipt.user),
+            receipt.userId,
             receipt.description,
             receipt.author,
             receipt.source,
