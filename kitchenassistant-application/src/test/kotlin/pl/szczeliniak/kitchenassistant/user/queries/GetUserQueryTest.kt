@@ -7,23 +7,24 @@ import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.user.User
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
+import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 
-internal class GetUserTest : JunitBaseClass() {
+internal class GetUserQueryTest : JunitBaseClass() {
 
     @Mock
     private lateinit var userDao: UserDao
 
     @InjectMocks
-    private lateinit var getUser: GetUser
+    private lateinit var getUserQuery: GetUserQuery
 
     @Test
     fun shouldReturnUser() {
         val user = user()
         whenever(userDao.findById(1)).thenReturn(user)
 
-        val result = getUser.execute(1)
+        val result = getUserQuery.execute(1)
 
-        assertThat(result).isEqualTo(userDto())
+        assertThat(result).isEqualTo(UserResponse(userDto()))
     }
 
     private fun userDto(): UserDto {

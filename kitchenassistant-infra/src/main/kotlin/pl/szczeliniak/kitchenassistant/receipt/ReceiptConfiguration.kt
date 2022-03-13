@@ -2,26 +2,26 @@ package pl.szczeliniak.kitchenassistant.receipt
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import pl.szczeliniak.kitchenassistant.receipt.commands.AddNewReceipt
+import pl.szczeliniak.kitchenassistant.receipt.commands.AddNewReceiptCommand
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.IngredientFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.ReceiptFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.StepFactory
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceipt
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceipts
+import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
+import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
 import pl.szczeliniak.kitchenassistant.user.UserDao
 
 @Configuration
 class ReceiptConfiguration {
 
     @Bean
-    fun getReceipt(receiptDao: ReceiptDao): GetReceipt = GetReceipt(receiptDao)
+    fun getReceiptQuery(receiptDao: ReceiptDao): GetReceiptQuery = GetReceiptQuery(receiptDao)
 
     @Bean
-    fun getReceipts(receiptDao: ReceiptDao): GetReceipts = GetReceipts(receiptDao)
+    fun getReceiptsQuery(receiptDao: ReceiptDao): GetReceiptsQuery = GetReceiptsQuery(receiptDao)
 
     @Bean
-    fun addNewReceipt(receiptDao: ReceiptDao, receiptFactory: ReceiptFactory): AddNewReceipt =
-        AddNewReceipt(receiptDao, receiptFactory)
+    fun addNewReceiptCommand(receiptDao: ReceiptDao, receiptFactory: ReceiptFactory): AddNewReceiptCommand =
+        AddNewReceiptCommand(receiptDao, receiptFactory)
 
     @Bean
     fun stepFactory(): StepFactory = StepFactory()

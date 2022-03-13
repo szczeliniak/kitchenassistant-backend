@@ -5,7 +5,7 @@ import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
 
-class GetReceipt(private val receiptDao: ReceiptDao) {
+class GetReceiptQuery(private val receiptDao: ReceiptDao) {
 
     fun execute(id: Int): ReceiptResponse {
         return ReceiptResponse(

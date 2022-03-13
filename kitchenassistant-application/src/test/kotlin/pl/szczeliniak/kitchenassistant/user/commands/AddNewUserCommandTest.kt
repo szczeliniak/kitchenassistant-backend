@@ -4,12 +4,13 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
+import pl.szczeliniak.kitchenassistant.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.user.User
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.commands.dto.AddNewUserDto
 import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory
 
-internal class AddNewUserTest : JunitBaseClass() {
+internal class AddNewUserCommandTest : JunitBaseClass() {
 
     @Mock
     private lateinit var userDao: UserDao
@@ -18,7 +19,7 @@ internal class AddNewUserTest : JunitBaseClass() {
     private lateinit var userFactory: UserFactory
 
     @InjectMocks
-    private lateinit var addNewUser: AddNewUser
+    private lateinit var addNewUserCommand: AddNewUserCommand
 
     @Test
     fun shouldAddNewUser() {
@@ -28,9 +29,9 @@ internal class AddNewUserTest : JunitBaseClass() {
         whenever(userFactory.create(dto)).thenReturn(user)
         whenever(userDao.save(user)).thenReturn(user)
 
-        val userId = addNewUser.execute(dto)
+        val result = addNewUserCommand.execute(dto)
 
-        assertThat(userId).isEqualTo(0)
+        assertThat(result).isEqualTo(SuccessResponse())
     }
 
     private fun user(): User {
