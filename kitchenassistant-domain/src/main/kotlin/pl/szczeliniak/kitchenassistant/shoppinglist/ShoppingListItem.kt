@@ -27,6 +27,7 @@ data class ShoppingListItem(
         if (deleted_) {
             throw NotAllowedOperationException("Shopping list item is already marked as deleted!")
         }
+        deleted_ = true
         this.modifiedAt_ = LocalDateTime.now()
     }
 

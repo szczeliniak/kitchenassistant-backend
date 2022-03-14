@@ -18,8 +18,8 @@ open class ReceiptFactory(
             author_ = dto.author,
             source_ = dto.source,
             description_ = dto.description,
-            ingredients_ = dto.ingredients.map { ingredientFactory.create(it) },
-            steps_ = dto.steps.map { stepFactory.create(it) }
+            ingredients_ = dto.ingredients.map { ingredientFactory.create(it) }.toMutableList(),
+            steps_ = dto.steps.map { stepFactory.create(it) }.toMutableList()
         )
     }
 

@@ -25,6 +25,7 @@ data class Ingredient(
         if (deleted) {
             throw NotAllowedOperationException("Step is already marked as deleted!")
         }
+        deleted_ = true
         this.modifiedAt_ = LocalDateTime.now()
     }
 }

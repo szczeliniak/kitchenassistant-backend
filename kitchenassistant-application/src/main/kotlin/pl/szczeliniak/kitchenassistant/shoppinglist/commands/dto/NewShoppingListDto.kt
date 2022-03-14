@@ -4,5 +4,5 @@ data class NewShoppingListDto(
     var userId: Int = 0,
     var title: String = "",
     var description: String? = null,
-    var items: List<NewShoppingListItemDto> = ArrayList(),
+    var items: List<NewShoppingListItemDto> = mutableListOf(),
 )

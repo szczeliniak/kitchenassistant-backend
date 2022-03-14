@@ -10,7 +10,7 @@ import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
 import java.util.*
 
-internal class GetUsersQueryTestQuery : JunitBaseClass() {
+internal class GetUsersQueryTest : JunitBaseClass() {
 
     @Mock
     private lateinit var userDao: UserDao

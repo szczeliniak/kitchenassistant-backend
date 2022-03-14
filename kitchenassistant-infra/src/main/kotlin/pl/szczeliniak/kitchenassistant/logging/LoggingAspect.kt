@@ -48,7 +48,7 @@ class LoggingAspect(
     }
 
     private fun getRequestHeaders(): Map<String, String> {
-        val headers: MutableList<String> = ArrayList()
+        val headers: MutableList<String> = mutableListOf()
         httpServletRequest.headerNames.asIterator().forEachRemaining { e: String -> headers.add(e) }
         return headers.distinct()
             .associateBy({ key: String -> key }, { s: String -> httpServletRequest.getHeader(s) })

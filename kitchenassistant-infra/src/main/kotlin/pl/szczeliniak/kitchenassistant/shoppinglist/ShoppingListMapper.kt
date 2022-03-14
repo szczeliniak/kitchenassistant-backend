@@ -12,7 +12,7 @@ class ShoppingListMapper(private val shoppingListItemMapper: ShoppingListItemMap
             shoppingListEntity.userId,
             shoppingListEntity.title,
             shoppingListEntity.description,
-            shoppingListEntity.items.map { shoppingListItemMapper.toDomain(it) },
+            shoppingListEntity.items.map { shoppingListItemMapper.toDomain(it) }.toMutableList(),
             shoppingListEntity.deleted,
             shoppingListEntity.createdAt,
             shoppingListEntity.modifiedAt
@@ -25,7 +25,7 @@ class ShoppingListMapper(private val shoppingListItemMapper: ShoppingListItemMap
             shoppingList.userId,
             shoppingList.title,
             shoppingList.description,
-            shoppingList.items.map { shoppingListItemMapper.toEntity(it) },
+            shoppingList.items.map { shoppingListItemMapper.toEntity(it) }.toMutableList(),
             shoppingList.deleted,
             shoppingList.createdAt,
             shoppingList.modifiedAt

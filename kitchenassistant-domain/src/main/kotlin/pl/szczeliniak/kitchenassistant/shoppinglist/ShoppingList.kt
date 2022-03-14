@@ -9,7 +9,7 @@ data class ShoppingList(
     private var userId_: Int,
     private var title_: String,
     private var description_: String?,
-    private var items_: List<ShoppingListItem> = ArrayList(),
+    private var items_: MutableList<ShoppingListItem> = mutableListOf(),
     private var deleted_: Boolean = false,
     private val createdAt_: LocalDateTime = LocalDateTime.now(),
     private var modifiedAt_: LocalDateTime = LocalDateTime.now()
@@ -19,7 +19,7 @@ data class ShoppingList(
     val userId: Int get() = userId_
     val title: String get() = title_
     val description: String? get() = description_
-    val items: List<ShoppingListItem> get() = items_
+    val items: MutableList<ShoppingListItem> get() = items_
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_
@@ -28,11 +28,12 @@ data class ShoppingList(
         if (deleted_) {
             throw NotAllowedOperationException("Shopping list is already marked as deleted!")
         }
+        deleted_ = true
         this.modifiedAt_ = LocalDateTime.now()
     }
 
     fun addItem(shoppingListItem: ShoppingListItem) {
-        items_ + shoppingListItem
+        items_ += shoppingListItem
         this.modifiedAt_ = LocalDateTime.now()
     }
 

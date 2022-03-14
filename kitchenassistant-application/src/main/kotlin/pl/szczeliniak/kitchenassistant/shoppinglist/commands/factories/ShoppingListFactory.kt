@@ -10,7 +10,7 @@ open class ShoppingListFactory(private val shoppingListItemFactory: ShoppingList
             userId_ = dto.userId,
             title_ = dto.title,
             description_ = dto.description,
-            items_ = dto.items.map { shoppingListItemFactory.create(it) })
+            items_ = dto.items.map { shoppingListItemFactory.create(it) }.toMutableList())
     }
 
 }

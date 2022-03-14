@@ -15,7 +15,7 @@ data class ShoppingListEntity(
         cascade = [CascadeType.ALL],
         fetch = FetchType.LAZY
     )
-    var items: List<ShoppingListItemEntity>,
+    var items: MutableList<ShoppingListItemEntity>,
     var deleted: Boolean,
     var createdAt: LocalDateTime,
     var modifiedAt: LocalDateTime

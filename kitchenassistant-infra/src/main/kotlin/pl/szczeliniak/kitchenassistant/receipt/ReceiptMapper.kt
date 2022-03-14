@@ -17,8 +17,8 @@ class ReceiptMapper(
             receiptEntity.description,
             receiptEntity.author,
             receiptEntity.source,
-            receiptEntity.ingredients.map { ingredientMapper.toDomain(it) },
-            receiptEntity.steps.map { stepMapper.toDomain(it) },
+            receiptEntity.ingredients.map { ingredientMapper.toDomain(it) }.toMutableList(),
+            receiptEntity.steps.map { stepMapper.toDomain(it) }.toMutableList(),
             receiptEntity.deleted,
             receiptEntity.createdAt,
             receiptEntity.modifiedAt
@@ -33,8 +33,8 @@ class ReceiptMapper(
             receipt.description,
             receipt.author,
             receipt.source,
-            receipt.ingredients.map { ingredientMapper.toEntity(it) },
-            receipt.steps.map { stepMapper.toEntity(it) },
+            receipt.ingredients.map { ingredientMapper.toEntity(it) }.toMutableList(),
+            receipt.steps.map { stepMapper.toEntity(it) }.toMutableList(),
             receipt.deleted,
             receipt.createdAt,
             receipt.modifiedAt

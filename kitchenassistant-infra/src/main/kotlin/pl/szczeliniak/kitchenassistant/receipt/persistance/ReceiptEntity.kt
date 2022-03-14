@@ -17,11 +17,11 @@ data class ReceiptEntity(
         cascade = [CascadeType.ALL],
         fetch = FetchType.LAZY
     )
-    var ingredients: List<IngredientEntity>,
+    var ingredients: MutableList<IngredientEntity>,
     @OneToMany(
         cascade = [CascadeType.ALL], fetch = FetchType.LAZY
     )
-    var steps: List<StepEntity>,
+    var steps: MutableList<StepEntity>,
     var deleted: Boolean,
     var createdAt: LocalDateTime,
     var modifiedAt: LocalDateTime

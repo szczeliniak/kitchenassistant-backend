@@ -6,6 +6,6 @@ data class NewReceiptDto(
     var description: String = "",
     var author: String = "",
     var source: String = "",
-    var ingredients: List<NewIngredientDto> = ArrayList(),
-    var steps: List<NewStepDto> = ArrayList()
+    var ingredients: List<NewIngredientDto> = listOf(),
+    var steps: List<NewStepDto> = listOf()
 )

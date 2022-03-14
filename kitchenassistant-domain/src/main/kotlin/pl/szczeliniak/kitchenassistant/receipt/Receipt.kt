@@ -11,8 +11,8 @@ class Receipt(
     private var description_: String?,
     private var author_: String?,
     private var source_: String?,
-    private var ingredients_: List<Ingredient> = ArrayList(),
-    private var steps_: List<Step> = ArrayList(),
+    private var ingredients_: MutableList<Ingredient> = mutableListOf(),
+    private var steps_: MutableList<Step> = mutableListOf(),
     private var deleted_: Boolean = false,
     private val createdAt_: LocalDateTime = LocalDateTime.now(),
     private var modifiedAt_: LocalDateTime = LocalDateTime.now()
@@ -23,8 +23,8 @@ class Receipt(
     val description: String? get() = description_
     val author: String? get() = author_
     val source: String? get() = source_
-    val ingredients: List<Ingredient> get() = ingredients_
-    val steps: List<Step> get() = steps_
+    val ingredients: MutableList<Ingredient> get() = ingredients_
+    val steps: MutableList<Step> get() = steps_
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_
@@ -33,16 +33,17 @@ class Receipt(
         if (deleted_) {
             throw NotAllowedOperationException("Receipt is already marked as deleted!")
         }
+        deleted_ = true
         this.modifiedAt_ = LocalDateTime.now()
     }
 
     fun addIngredient(ingredient: Ingredient) {
-        ingredients_ + ingredient
+        ingredients_ += ingredient
         this.modifiedAt_ = LocalDateTime.now()
     }
 
     fun addStep(step: Step) {
-        steps_ + step
+        steps_ += step
         this.modifiedAt_ = LocalDateTime.now()
     }
 
