@@ -4,10 +4,13 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
+import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListCriteria
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
+import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListItemDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListsResponse
 import java.time.LocalDateTime
 import java.util.*
@@ -22,15 +25,18 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
 
     @Test
     fun shouldReturnShoppingLists() {
-        val createdAt = LocalDateTime.now()
-        val modifiedAt = LocalDateTime.now()
+        val shoppingListCreatedAt = LocalDateTime.now()
+        val shoppingListModifiedAt = LocalDateTime.now()
+        val shoppingListItemCreatedAt = LocalDateTime.now()
+        val shoppingListItemModifiedAt = LocalDateTime.now()
         val criteria = ShoppingListCriteria(1)
 
         whenever(shoppingListDao.findAll(criteria)).thenReturn(
             Collections.singletonList(
                 shoppingList(
-                    createdAt,
-                    modifiedAt
+                    shoppingListItem(shoppingListItemCreatedAt, shoppingListItemModifiedAt),
+                    shoppingListCreatedAt,
+                    shoppingListModifiedAt
                 )
             )
         )
@@ -41,25 +47,51 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
             ShoppingListsResponse(
                 Collections.singletonList(
                     shoppingListDto(
-                        createdAt,
-                        modifiedAt
+                        shoppingListItemDto(shoppingListItemCreatedAt, shoppingListItemModifiedAt),
+                        shoppingListCreatedAt,
+                        shoppingListModifiedAt
                     )
                 )
             )
         )
     }
 
-    private fun shoppingListDto(createdAt: LocalDateTime, modifiedAt: LocalDateTime): ShoppingListDto {
-        return ShoppingListDto(0, 0, "", "", mutableListOf(), createdAt, modifiedAt)
+    private fun shoppingListItemDto(createdAt: LocalDateTime, modifiedAt: LocalDateTime): ShoppingListItemDto {
+        return ShoppingListItemDto(2, "NAME", "QUANTITY", IngredientUnit.PINCH_OF, 0, createdAt, modifiedAt)
     }
 
-    private fun shoppingList(createdAt: LocalDateTime, modifiedAt: LocalDateTime): ShoppingList {
-        return ShoppingList(
-            userId_ = 0,
-            title_ = "",
-            description_ = "",
+    private fun shoppingListItem(createdAt: LocalDateTime, modifiedAt: LocalDateTime): ShoppingListItem {
+        return ShoppingListItem(
+            2,
+            "NAME",
+            "QUANTITY",
+            IngredientUnit.PINCH_OF,
+            0,
             createdAt_ = createdAt,
             modifiedAt_ = modifiedAt
+        )
+    }
+
+    private fun shoppingListDto(
+        shoppingListItemDto: ShoppingListItemDto,
+        createdAt: LocalDateTime,
+        modifiedAt: LocalDateTime
+    ): ShoppingListDto {
+        return ShoppingListDto(0, 1, "TITLE", "DESCRIPTION", mutableListOf(shoppingListItemDto), createdAt, modifiedAt)
+    }
+
+    private fun shoppingList(
+        shoppingListItem: ShoppingListItem,
+        createdAt: LocalDateTime,
+        modifiedAt: LocalDateTime
+    ): ShoppingList {
+        return ShoppingList(
+            userId_ = 1,
+            title_ = "TITLE",
+            description_ = "DESCRIPTION",
+            createdAt_ = createdAt,
+            modifiedAt_ = modifiedAt,
+            items_ = mutableListOf(shoppingListItem)
         )
     }
 

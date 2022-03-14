@@ -26,9 +26,11 @@
         <dependency.junit>5.8.2</dependency.junit>
         <dependency.mockito>4.4.0</dependency.mockito>
         <dependency.assertj>3.22.0</dependency.assertj>
+        <dependency.spock>2.2-M1-groovy-3.0</dependency.spock>
+        <dependency.groovy>3.0.10</dependency.groovy>
 
         <plugin.compiler>3.8.0</plugin.compiler>
-        <plugin.surefire>2.22.1</plugin.surefire>
+        <plugin.surefire>3.0.0-M5</plugin.surefire>
     </properties>
 
     <dependencies>
@@ -59,6 +61,18 @@
             <artifactId>assertj-core</artifactId>
             <version>${dependency.assertj}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>${dependency.spock}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${dependency.groovy}</version>
+            <type>pom</type>
         </dependency>
     </dependencies>
 
@@ -177,9 +191,28 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>1.13.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>compileTests</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${plugin.surefire}</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Spec.java</include>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.jupiter</groupId>
