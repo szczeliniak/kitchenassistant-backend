@@ -4,14 +4,19 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import pl.szczeliniak.kitchenassistant.user.commands.AddUserCommand
 import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory
-import pl.szczeliniak.kitchenassistant.user.queries.GetUserQuery
+import pl.szczeliniak.kitchenassistant.user.queries.GetUserByEmailAndPasswordQuery
+import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import pl.szczeliniak.kitchenassistant.user.queries.GetUsersQuery
 
 @Configuration
 class UserConfiguration {
 
     @Bean
-    fun getUserQuery(userDao: UserDao): GetUserQuery = GetUserQuery(userDao)
+    fun getUserByIdQuery(userDao: UserDao): GetUserByIdQuery = GetUserByIdQuery(userDao)
+
+    @Bean
+    fun getUserByEmailAndPasswordQuery(userDao: UserDao): GetUserByEmailAndPasswordQuery =
+        GetUserByEmailAndPasswordQuery(userDao)
 
     @Bean
     fun getUsersQuery(userDao: UserDao): GetUsersQuery = GetUsersQuery(userDao)

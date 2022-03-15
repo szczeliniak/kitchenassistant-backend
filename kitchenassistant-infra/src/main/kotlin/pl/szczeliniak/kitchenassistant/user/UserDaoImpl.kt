@@ -13,6 +13,12 @@ class UserDaoImpl(
         return userMapper.toDomain(userRepository.save(userMapper.toEntity(user)))
     }
 
+    override fun findByEmail(email: String): User? {
+        return userRepository.findByEmail(email)
+            .map { userMapper.toDomain(it) }
+            .orElse(null)
+    }
+
     override fun findById(userId: Int): User? {
         return userRepository.findById(userId)
             .map { userMapper.toDomain(it) }

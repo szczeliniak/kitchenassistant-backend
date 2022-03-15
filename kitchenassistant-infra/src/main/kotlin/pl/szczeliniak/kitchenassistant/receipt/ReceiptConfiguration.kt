@@ -8,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.factories.ReceiptFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.StepFactory
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
-import pl.szczeliniak.kitchenassistant.user.queries.GetUserQuery
+import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 
 @Configuration
 class ReceiptConfiguration {
@@ -48,9 +48,9 @@ class ReceiptConfiguration {
 
     @Bean
     fun receiptFactory(
-        getUserQuery: GetUserQuery,
+        getUserByIdQuery: GetUserByIdQuery,
         stepFactory: StepFactory,
         ingredientFactory: IngredientFactory
-    ): ReceiptFactory = ReceiptFactory(getUserQuery, ingredientFactory, stepFactory)
+    ): ReceiptFactory = ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory)
 
 }

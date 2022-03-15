@@ -8,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.receipt.Step
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
-import pl.szczeliniak.kitchenassistant.user.queries.GetUserQuery
+import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 import spock.lang.Specification
@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 
 class ReceiptFactorySpec extends Specification {
 
-    def getUserQuery = Mock(GetUserQuery)
+    def getUserQuery = Mock(GetUserByIdQuery)
     def ingredientFactory = Mock(IngredientFactory)
     def stepFactory = Mock(StepFactory)
 

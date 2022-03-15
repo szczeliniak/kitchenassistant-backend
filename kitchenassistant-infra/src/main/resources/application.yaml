@@ -4,6 +4,8 @@ spring:
     username: sa
     password: password
     driverClassName: org.h2.Driver
+  profiles:
+    active: dev
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
   mvc:
@@ -17,3 +19,6 @@ application:
     name: Marcin S
     url: www.szczeliniak.pl
     email: test@szczeliniak.pl
+security:
+  jwt:
+    secret: dupa

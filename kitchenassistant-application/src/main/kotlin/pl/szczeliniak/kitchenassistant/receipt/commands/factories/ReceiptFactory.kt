@@ -2,16 +2,16 @@ package pl.szczeliniak.kitchenassistant.receipt.commands.factories
 
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
-import pl.szczeliniak.kitchenassistant.user.queries.GetUserQuery
+import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 
 open class ReceiptFactory(
-    private val getUserQuery: GetUserQuery,
+    private val getUserByIdQuery: GetUserByIdQuery,
     private val ingredientFactory: IngredientFactory,
     private val stepFactory: StepFactory
 ) {
 
     open fun create(dto: NewReceiptDto): Receipt {
-        getUserQuery.execute(dto.userId)
+        getUserByIdQuery.execute(dto.userId)
         return Receipt(
             userId_ = dto.userId,
             name_ = dto.name,

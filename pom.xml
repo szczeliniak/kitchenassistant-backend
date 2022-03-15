@@ -28,7 +28,7 @@
         <dependency.assertj>3.22.0</dependency.assertj>
         <dependency.spock>2.2-M1-groovy-3.0</dependency.spock>
         <dependency.groovy>3.0.10</dependency.groovy>
-
+        <dependency.jjwt>0.9.1</dependency.jjwt>
         <plugin.compiler>3.8.0</plugin.compiler>
         <plugin.surefire>3.0.0-M5</plugin.surefire>
         <plugin.gmavenplus>1.13.1</plugin.gmavenplus>
@@ -92,6 +92,16 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
                 <version>${dependency.spring.boot}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${dependency.spring.boot}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${dependency.jjwt}</version>
             </dependency>
             <dependency>
                 <groupId>com.h2database</groupId>

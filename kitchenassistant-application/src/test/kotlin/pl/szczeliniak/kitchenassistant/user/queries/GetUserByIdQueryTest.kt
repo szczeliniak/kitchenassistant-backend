@@ -10,20 +10,20 @@ import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 
-internal class GetUserQueryTest : JunitBaseClass() {
+internal class GetUserByIdQueryTest : JunitBaseClass() {
 
     @Mock
     private lateinit var userDao: UserDao
 
     @InjectMocks
-    private lateinit var getUserQuery: GetUserQuery
+    private lateinit var getUserByIdQuery: GetUserByIdQuery
 
     @Test
     fun shouldReturnUser() {
         val user = user()
         whenever(userDao.findById(1)).thenReturn(user)
 
-        val result = getUserQuery.execute(1)
+        val result = getUserByIdQuery.execute(1)
 
         assertThat(result).isEqualTo(UserResponse(userDto()))
     }
@@ -32,7 +32,7 @@ internal class GetUserQueryTest : JunitBaseClass() {
     fun shouldThrowExceptionWhenUserNotFound() {
         whenever(userDao.findById(1)).thenReturn(null)
 
-        assertThatThrownBy { getUserQuery.execute(1) }
+        assertThatThrownBy { getUserByIdQuery.execute(1) }
             .isInstanceOf(NotFoundException::class.java)
             .hasMessage("User not found")
     }
