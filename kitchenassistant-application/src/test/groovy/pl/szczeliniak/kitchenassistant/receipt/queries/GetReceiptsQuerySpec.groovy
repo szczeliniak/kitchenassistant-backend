@@ -1,26 +1,22 @@
 package pl.szczeliniak.kitchenassistant.receipt.queries
 
 import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
-import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
-import pl.szczeliniak.kitchenassistant.receipt.Ingredient
-import pl.szczeliniak.kitchenassistant.receipt.Receipt
-import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
-import pl.szczeliniak.kitchenassistant.receipt.Step
+import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.IngredientDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDto
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptsResponse
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.StepDto
 import spock.lang.Specification
 import spock.lang.Subject
 
 import java.time.LocalDateTime
 
-class GetReceiptQuerySpec extends Specification {
+class GetReceiptsQuerySpec extends Specification {
 
     private ReceiptDao receiptDao = Mock(ReceiptDao)
 
     @Subject
-    private GetReceiptQuery getReceiptQuery = new GetReceiptQuery(receiptDao)
+    private GetReceiptsQuery getReceiptsQuery = new GetReceiptsQuery(receiptDao)
 
     def "should return receipt"() {
         given:
@@ -34,26 +30,15 @@ class GetReceiptQuerySpec extends Specification {
         def step = step(stepCreatedAt, stepModifiedAt)
         def ingredientDto = ingredientDto(ingredientCreatedAt, ingredientModifiedAt)
         def stepDto = stepDto(stepCreatedAt, stepModifiedAt)
+        def criteria = new ReceiptCriteria(1)
 
-        receiptDao.findById(1) >> receipt(ingredient, step, receiptCreatedAt, receiptModifiedAt)
-
-        when:
-        def result = getReceiptQuery.execute(1)
-
-        then:
-        result == new ReceiptResponse(receiptDto(ingredientDto, stepDto, receiptCreatedAt, receiptModifiedAt))
-    }
-
-    def "should throw exception receipt not found"() {
-        given:
-        receiptDao.findById(1) >> null
+        receiptDao.findAll(criteria) >> Collections.singletonList(receipt(ingredient, step, receiptCreatedAt, receiptModifiedAt))
 
         when:
-        getReceiptQuery.execute(1)
+        def result = getReceiptsQuery.execute(criteria)
 
         then:
-        def e = thrown(NotFoundException)
-        e.message == "Receipt not found"
+        result == new ReceiptsResponse(Collections.singletonList(receiptDto(ingredientDto, stepDto, receiptCreatedAt, receiptModifiedAt)))
     }
 
     private static Receipt receipt(Ingredient ingredient, Step step, LocalDateTime createdAt, LocalDateTime modifiedAt) {

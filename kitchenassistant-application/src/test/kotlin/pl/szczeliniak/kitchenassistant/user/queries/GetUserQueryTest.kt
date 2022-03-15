@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
+import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.user.User
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
@@ -25,6 +26,15 @@ internal class GetUserQueryTest : JunitBaseClass() {
         val result = getUserQuery.execute(1)
 
         assertThat(result).isEqualTo(UserResponse(userDto()))
+    }
+
+    @Test
+    fun shouldThrowExceptionWhenUserNotFound() {
+        whenever(userDao.findById(1)).thenReturn(null)
+
+        assertThatThrownBy { getUserQuery.execute(1) }
+            .isInstanceOf(NotFoundException::class.java)
+            .hasMessage("User not found")
     }
 
     private fun userDto(): UserDto {

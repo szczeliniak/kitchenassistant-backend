@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
+import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
@@ -28,6 +29,15 @@ internal class GetShoppingListQueryTest : JunitBaseClass() {
         val result = getShoppingListQuery.execute(1)
 
         assertThat(result).isEqualTo(ShoppingListResponse(shoppingListDto(createdAt, modifiedAt)))
+    }
+
+    @Test
+    fun shouldThrowExceptionWhenShoppingListNotFound() {
+        whenever(shoppingListDao.findById(1)).thenReturn(null)
+
+        assertThatThrownBy { getShoppingListQuery.execute(1) }
+            .isInstanceOf(NotFoundException::class.java)
+            .hasMessage("Shopping list not found")
     }
 
     private fun shoppingListDto(createdAt: LocalDateTime, modifiedAt: LocalDateTime): ShoppingListDto {

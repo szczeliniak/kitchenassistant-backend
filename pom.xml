@@ -31,6 +31,7 @@
 
         <plugin.compiler>3.8.0</plugin.compiler>
         <plugin.surefire>3.0.0-M5</plugin.surefire>
+        <plugin.gmavenplus>1.13.1</plugin.gmavenplus>
     </properties>
 
     <dependencies>
@@ -67,12 +68,6 @@
             <artifactId>spock-core</artifactId>
             <version>${dependency.spock}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>${dependency.groovy}</version>
-            <type>pom</type>
         </dependency>
     </dependencies>
 
@@ -193,7 +188,7 @@
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>1.13.1</version>
+                <version>${plugin.gmavenplus}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -202,6 +197,15 @@
                         </goals>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-all</artifactId>
+                        <version>${dependency.groovy}</version>
+                        <scope>runtime</scope>
+                        <type>pom</type>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
