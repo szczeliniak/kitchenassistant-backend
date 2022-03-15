@@ -57,7 +57,7 @@ class ReceiptFactorySpec extends Specification {
     }
 
     private static UserResponse userResponse() {
-        return new UserResponse(new UserDto(1, "", ""))
+        return new UserResponse(new UserDto(1, "", "", LocalDateTime.now(), LocalDateTime.now()))
     }
 
     private static Receipt receipt() {

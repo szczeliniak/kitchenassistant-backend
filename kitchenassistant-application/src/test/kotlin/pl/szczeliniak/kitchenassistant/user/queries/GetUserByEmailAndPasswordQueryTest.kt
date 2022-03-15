@@ -22,11 +22,13 @@ internal class GetUserByEmailAndPasswordQueryTest : JunitBaseClass() {
 
     @Test
     fun shouldReturnUserByEmailAndPassword() {
-        whenever(userDao.findByEmail("MAIL")).thenReturn(user())
+        val createdAt = LocalDateTime.now()
+        val modifiedAt = LocalDateTime.now()
+        whenever(userDao.findByEmail("MAIL")).thenReturn(user(createdAt, modifiedAt))
 
         val result = getUserByEmailAndPasswordQuery.execute("MAIL", "PASS")
 
-        assertThat(result).isEqualTo(UserResponse(userDto()))
+        assertThat(result).isEqualTo(UserResponse(userDto(createdAt, modifiedAt)))
     }
 
     @Test
@@ -40,19 +42,19 @@ internal class GetUserByEmailAndPasswordQueryTest : JunitBaseClass() {
 
     @Test
     fun shouldThrowExceptionWhenPasswordsDoNotMatch() {
-        whenever(userDao.findByEmail("MAIL")).thenReturn(user())
+        whenever(userDao.findByEmail("MAIL")).thenReturn(user(LocalDateTime.now(), LocalDateTime.now()))
 
         assertThatThrownBy { getUserByEmailAndPasswordQuery.execute("MAIL", "OTHER_PASS") }
             .isInstanceOf(LoginException::class.java)
             .hasMessage("Passwords do not match")
     }
 
-    private fun userDto(): UserDto {
-        return UserDto(0, "EMAIL", "NAME")
+    private fun userDto(createdAt: LocalDateTime, modifiedAt: LocalDateTime): UserDto {
+        return UserDto(0, "EMAIL", "NAME", createdAt, modifiedAt)
     }
 
-    private fun user(): User {
-        return User(0, "EMAIL", "PASS", "NAME", LocalDateTime.now(), LocalDateTime.now())
+    private fun user(createdAt: LocalDateTime, modifiedAt: LocalDateTime): User {
+        return User(0, "EMAIL", "PASS", "NAME", createdAt, modifiedAt)
     }
 
 }

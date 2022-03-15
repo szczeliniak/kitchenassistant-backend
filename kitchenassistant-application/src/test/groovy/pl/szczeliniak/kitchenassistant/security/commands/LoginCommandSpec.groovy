@@ -9,6 +9,8 @@ import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 import spock.lang.Specification
 import spock.lang.Subject
 
+import java.time.LocalDateTime
+
 class LoginCommandSpec extends Specification {
 
     def getUserByEmailAndPasswordQuery = Mock(GetUserByEmailAndPasswordQuery)
@@ -33,7 +35,7 @@ class LoginCommandSpec extends Specification {
     }
 
     private static UserResponse userResponse() {
-        return new UserResponse(new UserDto(1, "", ""))
+        return new UserResponse(new UserDto(1, "", "", LocalDateTime.now(), LocalDateTime.now()))
     }
 
 }
