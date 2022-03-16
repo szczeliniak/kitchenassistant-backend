@@ -1,0 +1,21 @@
+name: Run tests
+
+on:
+  push:
+    branches-ignore:
+      - 'master'
+      - 'release/**'
+
+jobs:
+  run_tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Run tests
+        run: mvn clean test
