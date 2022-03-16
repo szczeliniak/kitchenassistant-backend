@@ -7,7 +7,10 @@ import javax.persistence.*
 @Entity
 @Where(clause = "deleted = false")
 data class ReceiptEntity(
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: Int,
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "receipt_id_seq")
+    @SequenceGenerator(name = "receipt_id_seq", sequenceName = "receipt_id_seq", allocationSize = 1)
+    var id: Int,
     var name: String,
     var userId: Int,
     var description: String?,

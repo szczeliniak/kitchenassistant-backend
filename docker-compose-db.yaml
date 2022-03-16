@@ -1,0 +1,32 @@
+version: '3.5'
+
+services:
+  kitchenassistant-db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: kitchenassistant
+      POSTGRES_PASSWORD: localdb
+      POSTGRES_DB: kitchenassistant
+    volumes:
+      - kitchenassistant-db-volume:/var/lib/postgresql/data
+    networks:
+      - kitchenassistant-network
+
+  kitchenassistant-adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8888:8080
+    networks:
+      - kitchenassistant-network
+
+volumes:
+  kitchenassistant-db-volume:
+    name: kitchenassistant-db-volume
+
+networks:
+  kitchenassistant-network:
+    name: kitchenassistant-network

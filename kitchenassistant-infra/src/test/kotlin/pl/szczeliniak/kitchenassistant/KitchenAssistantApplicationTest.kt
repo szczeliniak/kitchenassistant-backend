@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class KitchenAssistantApplicationTest
 
 fun main(args: Array<String>) {
-    runApplication<KitchenAssistantApplicationTest>(*args)
+    runApplication<KitchenAssistantApplication>(*args)
 }

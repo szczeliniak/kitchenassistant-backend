@@ -7,7 +7,10 @@ import javax.persistence.*
 @Entity
 @Where(clause = "deleted = false")
 data class ShoppingListEntity(
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: Int,
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shopping_list_id_seq")
+    @SequenceGenerator(name = "shopping_list_id_seq", sequenceName = "shopping_list_id_seq", allocationSize = 1)
+    var id: Int,
     var userId: Int,
     var title: String,
     var description: String?,
