@@ -14,9 +14,8 @@ class ReceiptDaoImpl(
     }
 
     override fun findById(id: Int): Receipt? {
-        return receiptRepository.findById(id)
-            .map { receiptMapper.toDomain(it) }
-            .orElse(null)
+        val byId = receiptRepository.findById(id) ?: return null
+        return receiptMapper.toDomain(byId)
     }
 
     override fun findAll(criteria: ReceiptCriteria): List<Receipt> {

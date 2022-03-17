@@ -11,8 +11,8 @@ class DeleteShoppingListCommand(
     fun execute(id: Int): SuccessResponse {
         val shoppingList = shoppingListDao.findById(id) ?: throw NotFoundException("Shopping list not found")
         shoppingList.markAsDeleted()
-        shoppingListDao.save(shoppingList)
-        return SuccessResponse()
+
+        return SuccessResponse(shoppingListDao.save(shoppingList).id)
     }
 
 }

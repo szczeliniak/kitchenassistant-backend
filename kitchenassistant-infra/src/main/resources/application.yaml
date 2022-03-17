@@ -7,7 +7,9 @@ spring:
   profiles:
     active: ${PROFILES}
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
   mvc:

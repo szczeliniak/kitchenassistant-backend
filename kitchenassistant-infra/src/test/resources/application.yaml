@@ -1,18 +1,22 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/kitchenassistant
-    username: kitchenassistant
-    password: localdb
-    driverClassName: org.postgresql.Driver
   profiles:
     active: dev
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  datasource:
+    url: jdbc:h2:mem:mydb # jdbc:postgresql://localhost:5432/kitchenassistant
+    username: sa # kitchenassistant
+    password: password # localdb
+    driverClassName: org.h2.Driver # org.postgresql.Driver
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect # org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+    hibernate:
+      ddl-auto: update
 application:
   name: Kitchen Assistant
   description: Receipts and shopping list management API

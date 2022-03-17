@@ -16,14 +16,9 @@ data class ReceiptEntity(
     var description: String?,
     var author: String?,
     var source: String?,
-    @OneToMany(
-        cascade = [CascadeType.ALL],
-        fetch = FetchType.LAZY
-    )
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var ingredients: MutableList<IngredientEntity>,
-    @OneToMany(
-        cascade = [CascadeType.ALL], fetch = FetchType.LAZY
-    )
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var steps: MutableList<StepEntity>,
     var deleted: Boolean,
     var createdAt: LocalDateTime,

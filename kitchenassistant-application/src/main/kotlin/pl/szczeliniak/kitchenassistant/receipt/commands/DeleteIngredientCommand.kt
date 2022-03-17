@@ -8,10 +8,10 @@ class DeleteIngredientCommand(private val receiptDao: ReceiptDao) {
 
     fun execute(receiptId: Int, ingredientId: Int): SuccessResponse {
         val receipt = receiptDao.findById(receiptId) ?: throw NotFoundException("Receipt not found")
-        receipt.deleteIngredientById(ingredientId)
-
+        val ingredient = receipt.deleteIngredientById(ingredientId)
         receiptDao.save(receipt)
-        return SuccessResponse()
+
+        return SuccessResponse(ingredient.id)
     }
 
 }

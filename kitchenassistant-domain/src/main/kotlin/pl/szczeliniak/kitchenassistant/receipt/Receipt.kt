@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.receipt
 import pl.szczeliniak.kitchenassistant.exceptions.NotAllowedOperationException
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import java.time.LocalDateTime
+import java.util.*
 
 class Receipt(
     private var id_: Int = 0,
@@ -23,8 +24,8 @@ class Receipt(
     val description: String? get() = description_
     val author: String? get() = author_
     val source: String? get() = source_
-    val ingredients: MutableList<Ingredient> get() = ingredients_
-    val steps: MutableList<Step> get() = steps_
+    val ingredients: List<Ingredient> get() = Collections.unmodifiableList(ingredients_)
+    val steps: List<Step> get() = Collections.unmodifiableList(steps_)
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_
@@ -47,17 +48,19 @@ class Receipt(
         this.modifiedAt_ = LocalDateTime.now()
     }
 
-    fun deleteIngredientById(ingredientId: Int) {
+    fun deleteIngredientById(ingredientId: Int): Ingredient {
         val ingredient =
             ingredients.firstOrNull { it.id == ingredientId } ?: throw NotFoundException("Ingredient not found")
         ingredient.markAsDeleted()
         this.modifiedAt_ = LocalDateTime.now()
+        return ingredient
     }
 
-    fun deleteStepById(stepId: Int) {
+    fun deleteStepById(stepId: Int): Step {
         val step = steps.firstOrNull { it.id == stepId } ?: throw NotFoundException("Step not found")
         step.markAsDeleted()
         this.modifiedAt_ = LocalDateTime.now()
+        return step
     }
 
 }

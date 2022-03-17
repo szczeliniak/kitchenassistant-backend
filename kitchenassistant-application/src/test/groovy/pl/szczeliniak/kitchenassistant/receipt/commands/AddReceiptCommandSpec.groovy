@@ -27,7 +27,7 @@ class AddReceiptCommandSpec extends Specification {
         def result = addReceiptCommand.execute(dto)
 
         then:
-        result == new SuccessResponse()
+        result == new SuccessResponse(1)
     }
 
     private static NewReceiptDto newReceiptDto() {
@@ -35,7 +35,7 @@ class AddReceiptCommandSpec extends Specification {
     }
 
     private static Receipt receipt() {
-        return new Receipt(0, 2, "", "", "", "", Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 2, "", "", "", "", Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

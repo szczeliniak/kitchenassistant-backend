@@ -26,6 +26,11 @@ class ExceptionAdvice {
         return error(HttpStatus.BAD_REQUEST, exception)
     }
 
+    @ExceptionHandler(UserExistsException::class)
+    fun userExistsException(exception: UserExistsException): ResponseEntity<ExceptionResponse> {
+        return error(HttpStatus.CONFLICT, exception)
+    }
+
     private fun error(
         httpStatus: HttpStatus,
         exception: Exception

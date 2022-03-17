@@ -29,11 +29,12 @@ internal class DeleteShoppingListItemCommandTest : JunitBaseClass() {
         val result = deleteShoppingListItemCommand.execute(1, 2)
 
         assertThat(shoppingListItem.deleted).isTrue
-        assertThat(result).isEqualTo(SuccessResponse())
+        assertThat(result).isEqualTo(SuccessResponse(2))
     }
 
     private fun shoppingList(shoppingListItem: ShoppingListItem): ShoppingList {
         return ShoppingList(
+            id_ = 1,
             userId_ = 0,
             title_ = "",
             description_ = "",

@@ -21,7 +21,7 @@ class ReceiptController(
     private val addStepCommand: AddStepCommand,
     private val deleteReceiptCommand: DeleteReceiptCommand,
     private val deleteIngredientCommand: DeleteIngredientCommand,
-    private val deleteStepCommand: DeleteIngredientCommand
+    private val deleteStepCommand: DeleteStepCommand
 ) {
 
     @GetMapping("/{id}")
@@ -30,8 +30,8 @@ class ReceiptController(
     }
 
     @GetMapping
-    fun getReceipts(@RequestParam(required = false) userId: Int): ReceiptsResponse {
-        return getReceiptsQuery.execute(ReceiptCriteria(userId))
+    fun getReceipts(): ReceiptsResponse {
+        return getReceiptsQuery.execute(ReceiptCriteria(null))
     }
 
     @PostMapping

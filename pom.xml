@@ -8,6 +8,7 @@
         <module>kitchenassistant-domain</module>
         <module>kitchenassistant-application</module>
         <module>kitchenassistant-infra</module>
+        <module>kitchenassistant-api-tests</module>
     </modules>
 
     <groupId>pl.szczeliniak</groupId>
@@ -27,7 +28,10 @@
         <dependency.spock>2.2-M1-groovy-3.0</dependency.spock>
         <dependency.groovy>3.0.10</dependency.groovy>
         <dependency.jjwt>0.9.1</dependency.jjwt>
+        <dependency.h2>2.1.210</dependency.h2>
         <dependency.postgresql>42.3.3</dependency.postgresql>
+        <dependency.restassured>4.5.1</dependency.restassured>
+        <dependency.lombok>1.18.20</dependency.lombok>
         <plugin.compiler>3.8.0</plugin.compiler>
         <plugin.surefire>3.0.0-M5</plugin.surefire>
         <plugin.gmavenplus>1.13.1</plugin.gmavenplus>
@@ -99,6 +103,12 @@
                 <version>${dependency.spring.boot}</version>
             </dependency>
             <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${dependency.spring.boot}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${dependency.jjwt}</version>
@@ -134,9 +144,31 @@
                 <version>${dependency.jackson}</version>
             </dependency>
             <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${dependency.jackson}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${dependency.postgresql}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <scope>runtime</scope>
+                <version>${dependency.h2}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.rest-assured</groupId>
+                <artifactId>rest-assured</artifactId>
+                <version>${dependency.restassured}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${dependency.lombok}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

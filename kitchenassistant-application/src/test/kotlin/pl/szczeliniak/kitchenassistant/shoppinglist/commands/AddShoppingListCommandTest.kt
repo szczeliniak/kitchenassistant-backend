@@ -31,11 +31,12 @@ internal class AddShoppingListCommandTest : JunitBaseClass() {
 
         val result = addShoppingListCommand.execute(newShoppingListDto)
 
-        assertThat(result).isEqualTo(SuccessResponse())
+        assertThat(result).isEqualTo(SuccessResponse(1))
     }
 
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
+            id_ = 1,
             userId_ = 0,
             title_ = "",
             description_ = ""

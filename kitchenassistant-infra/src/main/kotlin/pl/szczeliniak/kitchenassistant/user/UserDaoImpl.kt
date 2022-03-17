@@ -14,15 +14,13 @@ class UserDaoImpl(
     }
 
     override fun findByEmail(email: String): User? {
-        return userRepository.findByEmail(email)
-            .map { userMapper.toDomain(it) }
-            .orElse(null)
+        val byEmail = userRepository.findByEmail(email) ?: return null
+        return userMapper.toDomain(byEmail)
     }
 
     override fun findById(userId: Int): User? {
-        return userRepository.findById(userId)
-            .map { userMapper.toDomain(it) }
-            .orElse(null)
+        val byId = userRepository.findById(userId) ?: return null
+        return userMapper.toDomain(byId)
     }
 
     override fun findAll(): List<User> {

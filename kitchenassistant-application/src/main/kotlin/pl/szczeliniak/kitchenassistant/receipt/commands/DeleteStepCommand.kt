@@ -8,10 +8,10 @@ class DeleteStepCommand(private val receiptDao: ReceiptDao) {
 
     fun execute(receiptId: Int, stepId: Int): SuccessResponse {
         val receipt = receiptDao.findById(receiptId) ?: throw NotFoundException("Receipt not found")
-        receipt.deleteStepById(stepId)
-
+        val step = receipt.deleteStepById(stepId)
         receiptDao.save(receipt)
-        return SuccessResponse()
+
+        return SuccessResponse(step.id)
     }
 
 }

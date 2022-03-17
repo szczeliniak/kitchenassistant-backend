@@ -9,8 +9,8 @@ class DeleteReceiptCommand(private val receiptDao: ReceiptDao) {
     fun execute(id: Int): SuccessResponse {
         val receipt = receiptDao.findById(id) ?: throw NotFoundException("Receipt not found")
         receipt.markAsDeleted()
-        receiptDao.save(receipt)
-        return SuccessResponse()
+
+        return SuccessResponse(receiptDao.save(receipt).id)
     }
 
 }

@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.receipt.commands
 import pl.szczeliniak.kitchenassistant.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
 import pl.szczeliniak.kitchenassistant.receipt.Ingredient
+import pl.szczeliniak.kitchenassistant.receipt.IngredientDao
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientDto
@@ -14,9 +15,10 @@ import java.time.LocalDateTime
 
 class AddIngredientCommandSpec extends Specification {
     def receiptDao = Mock(ReceiptDao)
+    def ingredientDao = Mock(IngredientDao)
     def ingredientFactory = Mock(IngredientFactory)
     @Subject
-    def addIngredientCommand = new AddIngredientCommand(receiptDao, ingredientFactory)
+    def addIngredientCommand = new AddIngredientCommand(receiptDao, ingredientDao, ingredientFactory)
 
     def 'should save ingredient'() {
         given:
@@ -25,13 +27,14 @@ class AddIngredientCommandSpec extends Specification {
         def ingredient = ingredient()
         receiptDao.findById(1) >> receipt
         ingredientFactory.create(dto) >> ingredient
+        ingredientDao.save(ingredient) >> ingredient
         receiptDao.save(receipt) >> receipt
 
         when:
         def result = addIngredientCommand.execute(1, dto)
 
         then:
-        result == new SuccessResponse()
+        result == new SuccessResponse(2)
         receipt.ingredients == Collections.singletonList(ingredient)
     }
 
@@ -40,11 +43,11 @@ class AddIngredientCommandSpec extends Specification {
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(0, "", "", IngredientUnit.CUPS, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Ingredient(2, "", "", IngredientUnit.CUPS, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Receipt receipt() {
-        return new Receipt(0, 0, "", "", "", "", new ArrayList<Ingredient>(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 0, "", "", "", "", new ArrayList<Ingredient>(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

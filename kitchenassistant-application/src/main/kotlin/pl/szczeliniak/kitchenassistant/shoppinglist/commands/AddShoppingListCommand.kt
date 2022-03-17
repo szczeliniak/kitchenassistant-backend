@@ -11,8 +11,7 @@ class AddShoppingListCommand(
 ) {
 
     fun execute(dto: NewShoppingListDto): SuccessResponse {
-        shoppingListDao.save(shoppingListFactory.create(dto))
-        return SuccessResponse()
+        return SuccessResponse(shoppingListDao.save(shoppingListFactory.create(dto)).id)
     }
 
 }

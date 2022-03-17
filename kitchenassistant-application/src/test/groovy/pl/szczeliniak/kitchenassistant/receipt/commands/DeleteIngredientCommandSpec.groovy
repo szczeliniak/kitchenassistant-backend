@@ -30,7 +30,7 @@ class DeleteIngredientCommandSpec extends Specification {
 
         then:
         ingredient.deleted
-        result == new SuccessResponse()
+        result == new SuccessResponse(3)
     }
 
     def 'should throw exception when ingredient not found'() {

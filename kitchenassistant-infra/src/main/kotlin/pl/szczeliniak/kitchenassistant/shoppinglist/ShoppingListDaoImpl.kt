@@ -14,9 +14,8 @@ class ShoppingListDaoImpl(
     }
 
     override fun findById(id: Int): ShoppingList? {
-        return shoppingListRepository.findById(id)
-            .map { shoppingListMapper.toDomain(it) }
-            .orElse(null)
+        val byId = shoppingListRepository.findById(id) ?: return null
+        return shoppingListMapper.toDomain(byId)
     }
 
     override fun findAll(criteria: ShoppingListCriteria): List<ShoppingList> {

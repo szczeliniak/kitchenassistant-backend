@@ -27,7 +27,7 @@ class DeleteReceiptCommandSpec extends Specification {
 
         then:
         receipt.deleted
-        result == new SuccessResponse()
+        result == new SuccessResponse(1)
     }
 
     def 'should throw exception when receipt not found'() {

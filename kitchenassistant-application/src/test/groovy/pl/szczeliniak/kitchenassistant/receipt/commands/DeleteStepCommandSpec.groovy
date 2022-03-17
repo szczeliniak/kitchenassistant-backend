@@ -29,7 +29,7 @@ class DeleteStepCommandSpec extends Specification {
 
         then:
         step.deleted
-        result == new SuccessResponse()
+        result == new SuccessResponse(3)
     }
 
     def 'should throw exception when step not found'() {

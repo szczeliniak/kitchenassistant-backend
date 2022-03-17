@@ -9,10 +9,12 @@ class DeleteShoppingListItemCommand(
 ) {
 
     fun execute(shoppingListId: Int, shoppingListItemId: Int): SuccessResponse {
-        val shoppingList = shoppingListDao.findById(shoppingListId) ?: throw NotFoundException("Shopping list not found")
-        shoppingList.deleteItemById(shoppingListItemId)
+        val shoppingList =
+            shoppingListDao.findById(shoppingListId) ?: throw NotFoundException("Shopping list not found")
+        val item = shoppingList.deleteItemById(shoppingListItemId)
         shoppingListDao.save(shoppingList)
-        return SuccessResponse()
+
+        return SuccessResponse(item.id)
     }
 
 }

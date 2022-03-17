@@ -14,9 +14,12 @@ class AddShoppingListItemCommand(
     fun execute(shoppingListId: Int, dto: NewShoppingListItemDto): SuccessResponse {
         val shoppingList =
             shoppingListDao.findById(shoppingListId) ?: throw NotFoundException("Shopping list not found")
-        shoppingList.addItem(shoppingListItemFactory.create(dto))
+
+        val item = shoppingListItemFactory.create(dto)
+        shoppingList.addItem(item)
         shoppingListDao.save(shoppingList)
-        return SuccessResponse()
+
+        return SuccessResponse(item.id)
     }
 
 }

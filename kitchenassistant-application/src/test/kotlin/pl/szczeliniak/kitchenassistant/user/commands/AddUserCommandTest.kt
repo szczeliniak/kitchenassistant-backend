@@ -31,11 +31,11 @@ internal class AddUserCommandTest : JunitBaseClass() {
 
         val result = addUserCommand.execute(dto)
 
-        assertThat(result).isEqualTo(SuccessResponse())
+        assertThat(result).isEqualTo(SuccessResponse(1))
     }
 
     private fun user(): User {
-        return User(email_ = "", password_ = "", name_ = "")
+        return User(id_ = 1, email_ = "", password_ = "", name_ = "")
     }
 
     private fun dto(): AddUserDto {

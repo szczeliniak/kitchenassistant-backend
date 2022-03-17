@@ -37,11 +37,12 @@ internal class AddShoppingListItemCommandTest : JunitBaseClass() {
         val result = addShoppingListItemCommand.execute(1, newShoppingListItemDto)
 
         assertThat(shoppingList.items).isEqualTo(Collections.singletonList(shoppingListItem))
-        assertThat(result).isEqualTo(SuccessResponse())
+        assertThat(result).isEqualTo(SuccessResponse(2))
     }
 
     private fun shoppingListItem(): ShoppingListItem {
         return ShoppingListItem(
+            id_ = 2,
             name_ = "",
             quantity_ = "",
             unit_ = IngredientUnit.PINCH_OF,
@@ -51,6 +52,7 @@ internal class AddShoppingListItemCommandTest : JunitBaseClass() {
 
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
+            id_ = 1,
             userId_ = 0,
             title_ = "",
             description_ = ""
