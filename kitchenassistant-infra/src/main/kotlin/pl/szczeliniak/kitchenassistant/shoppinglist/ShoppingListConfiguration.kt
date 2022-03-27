@@ -26,8 +26,12 @@ class ShoppingListConfiguration {
         AddShoppingListCommand(shoppingListDao, shoppingListFactory)
 
     @Bean
-    fun addShoppingListItemCommand(shoppingListDao: ShoppingListDao, shoppingListItemFactory: ShoppingListItemFactory) =
-        AddShoppingListItemCommand(shoppingListDao, shoppingListItemFactory)
+    fun addShoppingListItemCommand(
+        shoppingListDao: ShoppingListDao,
+        shoppingListItemDao: ShoppingListItemDao,
+        shoppingListItemFactory: ShoppingListItemFactory
+    ) =
+        AddShoppingListItemCommand(shoppingListDao, shoppingListItemDao, shoppingListItemFactory)
 
     @Bean
     fun deleteShoppingListCommand(shoppingListDao: ShoppingListDao) = DeleteShoppingListCommand(shoppingListDao)

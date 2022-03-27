@@ -191,4 +191,64 @@ public abstract class BaseTest implements WithAssertions {
         private LocalDateTime modifiedAt;
     }
 
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
+    protected static class AddShoppingListDto {
+        private Integer userId;
+        private String title;
+        private String description;
+        private List<AddShoppingListItemDto> items;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
+    protected static class AddShoppingListItemDto {
+        private String name;
+        private String quantity;
+        private String unit;
+        private Integer sequence;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
+    protected static class ShoppingListsResponse {
+        private List<ShoppingList> shoppingLists;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
+    protected static class ShoppingListResponse {
+        private ShoppingList shoppingList;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
+    protected static class ShoppingList {
+        private Integer id;
+        private Integer userId;
+        private String title;
+        private String description;
+        private List<ShoppingListItem> items;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
+    protected static class ShoppingListItem {
+        private Integer id;
+        private String name;
+        private String quantity;
+        private String unit;
+        private Integer sequence;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+    }
+
 }

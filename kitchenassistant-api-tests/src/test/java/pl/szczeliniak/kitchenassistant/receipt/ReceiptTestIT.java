@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.user;
+package pl.szczeliniak.kitchenassistant.receipt;
 
 import org.junit.jupiter.api.Test;
 import pl.szczeliniak.kitchenassistant.BaseTest;
@@ -158,18 +158,6 @@ public class ReceiptTestIT extends BaseTest {
                 .build();
     }
 
-    private AddReceiptDto addReceiptDto(Integer userId) {
-        return AddReceiptDto.builder()
-                .name("Name")
-                .author("Author")
-                .description("Description")
-                .source("Source")
-                .userId(userId)
-                .steps(Collections.singletonList(addStepDto()))
-                .ingredients(Collections.singletonList(addIngredientDto()))
-                .build();
-    }
-
     private AddReceiptDto addReceiptDto2(Integer userId) {
         return AddReceiptDto.builder()
                 .name("Name2")
@@ -179,22 +167,6 @@ public class ReceiptTestIT extends BaseTest {
                 .userId(userId)
                 .steps(Collections.singletonList(addStepDto2()))
                 .ingredients(Collections.singletonList(addIngredientDto2()))
-                .build();
-    }
-
-    private AddIngredientDto addIngredientDto() {
-        return AddIngredientDto.builder()
-                .name("Name")
-                .quantity("Quantity")
-                .unit("CUPS")
-                .build();
-    }
-
-    private AddIngredientDto addIngredientDto2() {
-        return AddIngredientDto.builder()
-                .name("Name2")
-                .quantity("Quantity2")
-                .unit("PINCH_OF")
                 .build();
     }
 
@@ -214,15 +186,6 @@ public class ReceiptTestIT extends BaseTest {
                 .statusCode(200)
                 .extract()
                 .as(ReceiptsResponse.class);
-    }
-
-    private SuccessResponse addReceipt(AddReceiptDto addReceiptDto) {
-        return spec().body(addReceiptDto)
-                .post("/receipts")
-                .then()
-                .statusCode(200)
-                .extract()
-                .as(SuccessResponse.class);
     }
 
     private SuccessResponse deleteReceipt(Integer receiptId) {
@@ -267,8 +230,29 @@ public class ReceiptTestIT extends BaseTest {
                 .as(SuccessResponse.class);
     }
 
+    private SuccessResponse addReceipt(AddReceiptDto addReceiptDto) {
+        return spec().body(addReceiptDto)
+                .post("/receipts")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(SuccessResponse.class);
+    }
+
+    private AddReceiptDto addReceiptDto(Integer userId) {
+        return AddReceiptDto.builder()
+                .name("Name")
+                .author("Author")
+                .description("Description")
+                .source("Source")
+                .userId(userId)
+                .steps(Collections.singletonList(addStepDto()))
+                .ingredients(Collections.singletonList(addIngredientDto()))
+                .build();
+    }
+
     private AddStepDto addStepDto() {
-        return ReceiptTestIT.AddStepDto.builder()
+        return AddStepDto.builder()
                 .title("Title")
                 .description("Description")
                 .sequence(1)
@@ -276,10 +260,26 @@ public class ReceiptTestIT extends BaseTest {
     }
 
     private AddStepDto addStepDto2() {
-        return ReceiptTestIT.AddStepDto.builder()
+        return AddStepDto.builder()
                 .title("Title2")
                 .description("Description2")
                 .sequence(1)
+                .build();
+    }
+
+    private AddIngredientDto addIngredientDto() {
+        return AddIngredientDto.builder()
+                .name("Name")
+                .quantity("Quantity")
+                .unit("CUPS")
+                .build();
+    }
+
+    private AddIngredientDto addIngredientDto2() {
+        return AddIngredientDto.builder()
+                .name("Name2")
+                .quantity("Quantity2")
+                .unit("PINCH_OF")
                 .build();
     }
 

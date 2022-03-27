@@ -50,7 +50,7 @@ class ShoppingListController(
     }
 
     @DeleteMapping("/{id}/items/{itemId}")
-    fun deleteShoppingList(@PathVariable id: Int, @PathVariable itemId: Int): SuccessResponse {
+    fun deleteShoppingListItem(@PathVariable id: Int, @PathVariable itemId: Int): SuccessResponse {
         return deleteShoppingListItemCommand.execute(id, itemId)
     }
 

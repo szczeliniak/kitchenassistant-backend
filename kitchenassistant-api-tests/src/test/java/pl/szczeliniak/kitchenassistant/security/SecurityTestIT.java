@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.user;
+package pl.szczeliniak.kitchenassistant.security;
 
 import org.junit.jupiter.api.Test;
 import pl.szczeliniak.kitchenassistant.BaseTest;
@@ -9,12 +9,16 @@ public class SecurityTestIT extends BaseTest {
     public void shouldLogin() {
         addUser(addUserDto());
 
-        LoginResponse loginResponse = login(LoginDto.builder()
-                .email("user@gmail.com")
-                .password("Password")
-                .build());
+        LoginResponse loginResponse = login(loginDto());
 
         assertThat(loginResponse.getToken()).isNotNull();
+    }
+
+    private LoginDto loginDto() {
+        return LoginDto.builder()
+                .email("user@gmail.com")
+                .password("Password")
+                .build();
     }
 
     private LoginResponse login(LoginDto loginDto) {
