@@ -19,8 +19,8 @@ data class User(
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
 
-    fun validatePassword(password: String) {
-        if (password != this.password) {
+    fun validatePassword(password: String, passwordMatcher: PasswordMatcher) {
+        if (!passwordMatcher.matches(this.password, password)) {
             throw LoginException("Passwords do not match")
         }
     }

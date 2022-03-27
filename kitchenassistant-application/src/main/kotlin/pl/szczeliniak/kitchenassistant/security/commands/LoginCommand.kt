@@ -7,7 +7,7 @@ import pl.szczeliniak.kitchenassistant.user.queries.GetUserByEmailAndPasswordQue
 
 class LoginCommand(
     private val getUserByEmailAndPasswordQuery: GetUserByEmailAndPasswordQuery,
-    private val tokenFactory: TokenFactory
+    private val tokenFactory: TokenFactory,
 ) {
 
     fun execute(dto: LoginDto): LoginResponse {

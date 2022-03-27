@@ -18,6 +18,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.AuthenticationException
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import pl.szczeliniak.kitchenassistant.exceptions.ExceptionResponse
@@ -94,5 +96,10 @@ class SecurityConfiguration(
         getUserByEmailAndPasswordQuery: GetUserByEmailAndPasswordQuery,
         tokenFactory: TokenFactory
     ): LoginCommand = LoginCommand(getUserByEmailAndPasswordQuery, tokenFactory)
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
+    }
 
 }

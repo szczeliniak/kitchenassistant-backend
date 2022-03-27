@@ -15,8 +15,11 @@ class UserConfiguration {
     fun getUserByIdQuery(userDao: UserDao): GetUserByIdQuery = GetUserByIdQuery(userDao)
 
     @Bean
-    fun getUserByEmailAndPasswordQuery(userDao: UserDao): GetUserByEmailAndPasswordQuery =
-        GetUserByEmailAndPasswordQuery(userDao)
+    fun getUserByEmailAndPasswordQuery(
+        userDao: UserDao,
+        passwordMatcher: PasswordMatcher
+    ): GetUserByEmailAndPasswordQuery =
+        GetUserByEmailAndPasswordQuery(userDao, passwordMatcher)
 
     @Bean
     fun getUsersQuery(userDao: UserDao): GetUsersQuery = GetUsersQuery(userDao)
@@ -26,6 +29,6 @@ class UserConfiguration {
         AddUserCommand(userDao, userFactory)
 
     @Bean
-    fun userFactory(): UserFactory = UserFactory()
+    fun userFactory(passwordEncoder: PasswordEncoder): UserFactory = UserFactory(passwordEncoder)
 
 }

@@ -6,6 +6,7 @@ import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.exceptions.LoginException
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.user.PasswordMatcher
 import pl.szczeliniak.kitchenassistant.user.User
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
@@ -17,6 +18,9 @@ internal class GetUserByEmailAndPasswordQueryTest : JunitBaseClass() {
     @Mock
     private lateinit var userDao: UserDao
 
+    @Mock
+    private lateinit var passwordMatcher: PasswordMatcher
+
     @InjectMocks
     private lateinit var getUserByEmailAndPasswordQuery: GetUserByEmailAndPasswordQuery
 
@@ -25,7 +29,7 @@ internal class GetUserByEmailAndPasswordQueryTest : JunitBaseClass() {
         val createdAt = LocalDateTime.now()
         val modifiedAt = LocalDateTime.now()
         whenever(userDao.findByEmail("MAIL")).thenReturn(user(createdAt, modifiedAt))
-
+        whenever(passwordMatcher.matches("ENC_PASS", "PASS")).thenReturn(true)
         val result = getUserByEmailAndPasswordQuery.execute("MAIL", "PASS")
 
         assertThat(result).isEqualTo(UserResponse(userDto(createdAt, modifiedAt)))
@@ -43,8 +47,9 @@ internal class GetUserByEmailAndPasswordQueryTest : JunitBaseClass() {
     @Test
     fun shouldThrowExceptionWhenPasswordsDoNotMatch() {
         whenever(userDao.findByEmail("MAIL")).thenReturn(user(LocalDateTime.now(), LocalDateTime.now()))
+        whenever(passwordMatcher.matches("ENC_PASS", "PASS")).thenReturn(false)
 
-        assertThatThrownBy { getUserByEmailAndPasswordQuery.execute("MAIL", "OTHER_PASS") }
+        assertThatThrownBy { getUserByEmailAndPasswordQuery.execute("MAIL", "PASS") }
             .isInstanceOf(LoginException::class.java)
             .hasMessage("Passwords do not match")
     }
@@ -54,7 +59,7 @@ internal class GetUserByEmailAndPasswordQueryTest : JunitBaseClass() {
     }
 
     private fun user(createdAt: LocalDateTime, modifiedAt: LocalDateTime): User {
-        return User(0, "EMAIL", "PASS", "NAME", createdAt, modifiedAt)
+        return User(0, "EMAIL", "ENC_PASS", "NAME", createdAt, modifiedAt)
     }
 
 }
