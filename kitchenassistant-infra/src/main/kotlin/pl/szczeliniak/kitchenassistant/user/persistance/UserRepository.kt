@@ -8,24 +8,24 @@ import javax.transaction.Transactional
 @Repository
 class UserRepository(@PersistenceContext private val entityManager: EntityManager) {
 
-    fun findAll(): MutableList<UserEntity> {
-        return entityManager.createQuery("SELECT u FROM UserEntity u", UserEntity::class.java)
-            .resultList
+    fun findAll(criteria: SearchCriteria): MutableList<UserEntity> {
+        var query = "SELECT u FROM UserEntity u"
+        if (criteria.email != null) {
+            query += " WHERE u.email = :email"
+        }
+
+        var typedQuery = entityManager.createQuery(query, UserEntity::class.java)
+        if (criteria.email != null) {
+            typedQuery = typedQuery.setParameter("email", criteria.email)
+        }
+
+        return typedQuery.resultList
     }
 
     fun findById(id: Int): UserEntity? {
         return entityManager
             .createQuery("SELECT u FROM UserEntity u WHERE u.id = :id", UserEntity::class.java)
             .setParameter("id", id)
-            .resultList
-            .stream()
-            .findFirst()
-            .orElse(null)
-    }
-
-    fun findByEmail(email: String): UserEntity? {
-        return entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.email = :email", UserEntity::class.java)
-            .setParameter("email", email)
             .resultList
             .stream()
             .findFirst()
@@ -46,5 +46,7 @@ class UserRepository(@PersistenceContext private val entityManager: EntityManage
     fun clear() {
         entityManager.createQuery("DELETE FROM UserEntity").executeUpdate()
     }
+
+    data class SearchCriteria(val email: String? = null)
 
 }

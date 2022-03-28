@@ -8,13 +8,18 @@ import javax.transaction.Transactional
 @Repository
 class ShoppingListRepository(@PersistenceContext private val entityManager: EntityManager) {
 
-    fun findAll(): MutableList<ShoppingListEntity> {
-        return entityManager
-            .createQuery(
-                "SELECT sl FROM ShoppingListEntity sl WHERE sl.deleted = false",
-                ShoppingListEntity::class.java
-            )
-            .resultList
+    fun findAll(criteria: SearchCriteria): MutableList<ShoppingListEntity> {
+        var query = "SELECT sl FROM ShoppingListEntity sl WHERE sl.deleted = false"
+        if (criteria.userId != null) {
+            query += " AND sl.userId = :userId"
+        }
+
+        var typedQuery = entityManager.createQuery(query, ShoppingListEntity::class.java)
+        if (criteria.userId != null) {
+            typedQuery = typedQuery.setParameter("userId", criteria.userId)
+        }
+
+        return typedQuery.resultList
     }
 
     fun findById(id: Int): ShoppingListEntity? {
@@ -44,5 +49,7 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
     fun clear() {
         entityManager.createQuery("DELETE FROM ShoppingListEntity").executeUpdate()
     }
+
+    data class SearchCriteria(val userId: Int?)
 
 }

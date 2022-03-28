@@ -19,7 +19,7 @@ class ReceiptDaoImpl(
     }
 
     override fun findAll(criteria: ReceiptCriteria): List<Receipt> {
-        return receiptRepository.findAll() //TODO search by criteria
+        return receiptRepository.findAll(ReceiptRepository.SearchCriteria(criteria.userId))
             .map { receiptMapper.toDomain(it) }
     }
 

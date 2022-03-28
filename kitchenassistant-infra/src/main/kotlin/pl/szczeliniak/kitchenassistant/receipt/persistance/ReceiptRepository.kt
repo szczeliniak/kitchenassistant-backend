@@ -8,10 +8,18 @@ import javax.transaction.Transactional
 @Repository
 class ReceiptRepository(@PersistenceContext private val entityManager: EntityManager) {
 
-    fun findAll(): MutableList<ReceiptEntity> {
-        return entityManager
-            .createQuery("SELECT r FROM ReceiptEntity r WHERE r.deleted = false", ReceiptEntity::class.java)
-            .resultList
+    fun findAll(criteria: SearchCriteria): MutableList<ReceiptEntity> {
+        var query = "SELECT r FROM ReceiptEntity r WHERE r.deleted = false"
+        if (criteria.userId != null) {
+            query += " AND r.userId = :userId"
+        }
+
+        var typedQuery = entityManager.createQuery(query, ReceiptEntity::class.java)
+        if (criteria.userId != null) {
+            typedQuery = typedQuery.setParameter("userId", criteria.userId)
+        }
+
+        return typedQuery.resultList
     }
 
     fun findById(id: Int): ReceiptEntity? {
@@ -41,5 +49,7 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
     fun clear() {
         entityManager.createQuery("DELETE FROM ReceiptEntity").executeUpdate()
     }
+
+    data class SearchCriteria(val userId: Int?)
 
 }

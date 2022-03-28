@@ -30,8 +30,8 @@ class ShoppingListController(
     }
 
     @GetMapping
-    fun getShoppingLists(): ShoppingListsResponse {
-        return getShoppingListsQuery.execute(ShoppingListCriteria(null))
+    fun getShoppingLists(@RequestParam(required = false) userId: Int?): ShoppingListsResponse {
+        return getShoppingListsQuery.execute(ShoppingListCriteria(userId))
     }
 
     @PostMapping

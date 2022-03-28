@@ -14,8 +14,9 @@ class UserDaoImpl(
     }
 
     override fun findByEmail(email: String): User? {
-        val byEmail = userRepository.findByEmail(email) ?: return null
-        return userMapper.toDomain(byEmail)
+        return userRepository.findAll(UserRepository.SearchCriteria(email)).stream().findFirst()
+            .map { userMapper.toDomain(it) }
+            .orElse(null)
     }
 
     override fun findById(userId: Int): User? {
@@ -24,7 +25,7 @@ class UserDaoImpl(
     }
 
     override fun findAll(): List<User> {
-        return userRepository.findAll()
+        return userRepository.findAll(UserRepository.SearchCriteria())
             .map { userMapper.toDomain(it) }
     }
 
