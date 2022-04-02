@@ -27,7 +27,7 @@ class LoginCommandSpec extends Specification {
         def result = loginCommand.execute(dto())
 
         then:
-        result == new LoginResponse("TOKEN")
+        result == new LoginResponse("TOKEN", 1)
     }
 
     private static LoginDto dto() {

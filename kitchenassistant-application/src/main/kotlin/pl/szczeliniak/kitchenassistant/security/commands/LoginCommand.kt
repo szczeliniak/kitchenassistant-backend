@@ -12,7 +12,7 @@ class LoginCommand(
 
     fun execute(dto: LoginDto): LoginResponse {
         val user = getUserByEmailAndPasswordQuery.execute(dto.email, dto.password).user
-        return LoginResponse(tokenFactory.create(user.id))
+        return LoginResponse(tokenFactory.create(user.id), user.id)
     }
 
 }

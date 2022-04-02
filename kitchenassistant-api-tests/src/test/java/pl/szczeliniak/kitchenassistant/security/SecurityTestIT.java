@@ -12,6 +12,7 @@ public class SecurityTestIT extends BaseTest {
         LoginResponse loginResponse = login(loginDto());
 
         assertThat(loginResponse.getToken()).isNotNull();
+        assertThat(loginResponse.getId()).isNotNull();
     }
 
     private LoginDto loginDto() {

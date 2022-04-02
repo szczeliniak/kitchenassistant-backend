@@ -75,6 +75,7 @@ public abstract class BaseTest implements WithAssertions {
     @SuperBuilder
     protected static class LoginResponse {
         private String token;
+        private Integer id;
     }
 
     @Data
