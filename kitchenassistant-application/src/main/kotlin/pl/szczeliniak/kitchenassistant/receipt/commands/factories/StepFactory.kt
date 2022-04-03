@@ -6,7 +6,7 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
 open class StepFactory {
 
     open fun create(dto: NewStepDto): Step {
-        return Step(title_ = dto.title, description_ = dto.description, sequence_ = dto.sequence)
+        return Step(name_ = dto.name, description_ = dto.description, sequence_ = dto.sequence)
     }
 
 }

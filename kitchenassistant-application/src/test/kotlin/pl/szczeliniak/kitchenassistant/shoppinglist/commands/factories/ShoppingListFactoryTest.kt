@@ -22,7 +22,7 @@ internal class ShoppingListFactoryTest : JunitBaseClass() {
     fun shouldCreateShoppingList() {
         val newShoppingListItemDto = NewShoppingListItemDto()
         val newShoppingListDto =
-            NewShoppingListDto(1, "TITLE", "DESCRIPTION", Collections.singletonList(newShoppingListItemDto))
+            NewShoppingListDto(1, "NAME", "DESCRIPTION", Collections.singletonList(newShoppingListItemDto))
         val shoppingListItem = shoppingListItem()
 
         whenever(shoppingListItemFactory.create(newShoppingListItemDto)).thenReturn(shoppingListItem)
@@ -39,7 +39,7 @@ internal class ShoppingListFactoryTest : JunitBaseClass() {
     }
 
     private fun shoppingList(items: MutableList<ShoppingListItem>): ShoppingList {
-        return ShoppingList(userId_ = 1, title_ = "TITLE", description_ = "DESCRIPTION", items_ = items)
+        return ShoppingList(userId_ = 1, name_ = "NAME", description_ = "DESCRIPTION", items_ = items)
     }
 
 }

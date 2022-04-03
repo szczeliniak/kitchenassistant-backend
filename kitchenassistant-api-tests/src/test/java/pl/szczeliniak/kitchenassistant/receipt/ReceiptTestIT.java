@@ -115,7 +115,7 @@ public class ReceiptTestIT extends BaseTest {
 
     private Step step() {
         return Step.builder()
-                .title("Title")
+                .name("Title")
                 .description("Description")
                 .sequence(1)
                 .build();
@@ -144,7 +144,7 @@ public class ReceiptTestIT extends BaseTest {
 
     private Step step2() {
         return Step.builder()
-                .title("Title2")
+                .name("Title2")
                 .description("Description2")
                 .sequence(1)
                 .build();
@@ -253,7 +253,7 @@ public class ReceiptTestIT extends BaseTest {
 
     private AddStepDto addStepDto() {
         return AddStepDto.builder()
-                .title("Title")
+                .name("Title")
                 .description("Description")
                 .sequence(1)
                 .build();
@@ -261,7 +261,7 @@ public class ReceiptTestIT extends BaseTest {
 
     private AddStepDto addStepDto2() {
         return AddStepDto.builder()
-                .title("Title2")
+                .name("Title2")
                 .description("Description2")
                 .sequence(1)
                 .build();

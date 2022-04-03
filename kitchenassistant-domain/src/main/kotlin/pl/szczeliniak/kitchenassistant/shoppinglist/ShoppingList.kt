@@ -8,7 +8,7 @@ import java.util.*
 data class ShoppingList(
     private var id_: Int = 0,
     private var userId_: Int,
-    private var title_: String,
+    private var name_: String,
     private var description_: String?,
     private var items_: MutableList<ShoppingListItem> = mutableListOf(),
     private var deleted_: Boolean = false,
@@ -18,7 +18,7 @@ data class ShoppingList(
 
     val id: Int get() = id_
     val userId: Int get() = userId_
-    val title: String get() = title_
+    val name: String get() = name_
     val description: String? get() = description_
     val items: List<ShoppingListItem> get() = Collections.unmodifiableList(items_)
     val createdAt: LocalDateTime get() = createdAt_

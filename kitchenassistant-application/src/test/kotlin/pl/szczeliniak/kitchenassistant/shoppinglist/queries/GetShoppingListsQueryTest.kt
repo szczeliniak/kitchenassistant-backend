@@ -77,7 +77,7 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
         createdAt: LocalDateTime,
         modifiedAt: LocalDateTime
     ): ShoppingListDto {
-        return ShoppingListDto(0, 1, "TITLE", "DESCRIPTION", mutableListOf(shoppingListItemDto), createdAt, modifiedAt)
+        return ShoppingListDto(0, 1, "NAME", "DESCRIPTION", mutableListOf(shoppingListItemDto), createdAt, modifiedAt)
     }
 
     private fun shoppingList(
@@ -87,7 +87,7 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
     ): ShoppingList {
         return ShoppingList(
             userId_ = 1,
-            title_ = "TITLE",
+            name_ = "NAME",
             description_ = "DESCRIPTION",
             createdAt_ = createdAt,
             modifiedAt_ = modifiedAt,

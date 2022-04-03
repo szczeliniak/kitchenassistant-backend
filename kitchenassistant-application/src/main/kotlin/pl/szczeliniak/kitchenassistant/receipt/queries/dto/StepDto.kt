@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class StepDto(
     val id: Int,
-    val title: String,
+    val name: String,
     val description: String?,
     val sequence: Int?,
     val createdAt: LocalDateTime,
@@ -16,7 +16,7 @@ data class StepDto(
         fun fromDomain(step: Step): StepDto {
             return StepDto(
                 step.id,
-                step.title,
+                step.name,
                 step.description,
                 step.sequence,
                 step.createdAt,

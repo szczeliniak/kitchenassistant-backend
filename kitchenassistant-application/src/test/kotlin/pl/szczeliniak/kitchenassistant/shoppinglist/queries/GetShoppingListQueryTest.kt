@@ -47,7 +47,7 @@ internal class GetShoppingListQueryTest : JunitBaseClass() {
     private fun shoppingList(createdAt: LocalDateTime, modifiedAt: LocalDateTime): ShoppingList {
         return ShoppingList(
             userId_ = 0,
-            title_ = "",
+            name_ = "",
             description_ = "",
             createdAt_ = createdAt,
             modifiedAt_ = modifiedAt

@@ -12,7 +12,7 @@ data class ShoppingListEntity(
     @SequenceGenerator(name = "shopping_list_id_seq", sequenceName = "shopping_list_id_seq", allocationSize = 1)
     var id: Int,
     var userId: Int,
-    var title: String,
+    var name: String,
     var description: String?,
     @OneToMany(
         cascade = [CascadeType.ALL],

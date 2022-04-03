@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 data class ShoppingListDto(
     val id: Int,
     val userId: Int,
-    val title: String,
+    val name: String,
     val description: String?,
     val items: List<ShoppingListItemDto>,
     val createdAt: LocalDateTime,
@@ -18,7 +18,7 @@ data class ShoppingListDto(
             return ShoppingListDto(
                 shoppingList.id,
                 shoppingList.userId,
-                shoppingList.title,
+                shoppingList.name,
                 shoppingList.description,
                 shoppingList.items.map { ShoppingListItemDto.fromDomain(it) },
                 shoppingList.createdAt,

@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class Step(
     private var id_: Int = 0,
-    private var title_: String,
+    private var name_: String,
     private var description_: String?,
     private var sequence_: Int?,
     private var deleted_: Boolean = false,
@@ -13,7 +13,7 @@ data class Step(
     private var modifiedAt_: LocalDateTime = LocalDateTime.now()
 ) {
     val id: Int get() = id_
-    val title: String get() = title_
+    val name: String get() = name_
     val description: String? get() = description_
     val sequence: Int? get() = sequence_
     val createdAt: LocalDateTime get() = createdAt_

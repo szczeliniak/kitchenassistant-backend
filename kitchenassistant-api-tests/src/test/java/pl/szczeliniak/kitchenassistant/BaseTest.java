@@ -131,7 +131,7 @@ public abstract class BaseTest implements WithAssertions {
     @SuperBuilder
     protected static class Step {
         private Integer id;
-        private String title;
+        private String name;
         private String description;
         private Integer sequence;
         private LocalDateTime createdAt;
@@ -151,7 +151,7 @@ public abstract class BaseTest implements WithAssertions {
     @NoArgsConstructor
     @SuperBuilder
     protected static class AddStepDto {
-        private String title;
+        private String name;
         private String description;
         private Integer sequence;
     }
@@ -197,7 +197,7 @@ public abstract class BaseTest implements WithAssertions {
     @SuperBuilder
     protected static class AddShoppingListDto {
         private Integer userId;
-        private String title;
+        private String name;
         private String description;
         private List<AddShoppingListItemDto> items;
     }
@@ -232,7 +232,7 @@ public abstract class BaseTest implements WithAssertions {
     protected static class ShoppingList {
         private Integer id;
         private Integer userId;
-        private String title;
+        private String name;
         private String description;
         private List<ShoppingListItem> items;
         private LocalDateTime createdAt;

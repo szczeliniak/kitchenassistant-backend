@@ -9,7 +9,7 @@ class StepMapper {
     fun toDomain(stepEntity: StepEntity): Step {
         return Step(
             stepEntity.id,
-            stepEntity.title,
+            stepEntity.name,
             stepEntity.description,
             stepEntity.sequence,
             stepEntity.deleted,
@@ -21,7 +21,7 @@ class StepMapper {
     fun toEntity(step: Step): StepEntity {
         return StepEntity(
             step.id,
-            step.title,
+            step.name,
             step.description,
             step.sequence,
             step.deleted,

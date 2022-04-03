@@ -11,7 +11,7 @@ data class StepEntity(
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "step_id_seq")
     @SequenceGenerator(name = "step_id_seq", sequenceName = "step_id_seq", allocationSize = 1)
     var id: Int,
-    var title: String,
+    var name: String,
     var description: String?,
     var sequence: Int?,
     var deleted: Boolean,

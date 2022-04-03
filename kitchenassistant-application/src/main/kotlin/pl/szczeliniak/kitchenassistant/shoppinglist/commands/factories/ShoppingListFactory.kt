@@ -8,7 +8,7 @@ open class ShoppingListFactory(private val shoppingListItemFactory: ShoppingList
     open fun create(dto: NewShoppingListDto): ShoppingList {
         return ShoppingList(
             userId_ = dto.userId,
-            title_ = dto.title,
+            name_ = dto.name,
             description_ = dto.description,
             items_ = dto.items.map { shoppingListItemFactory.create(it) }.toMutableList())
     }
