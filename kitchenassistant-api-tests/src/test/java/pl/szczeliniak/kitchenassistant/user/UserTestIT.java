@@ -33,10 +33,7 @@ public class UserTestIT extends BaseTest {
 
         UserResponse response = getUser(userId);
 
-        assertThat(response.getUser())
-                .usingRecursiveComparison()
-                .ignoringFields("createdAt", "modifiedAt")
-                .isEqualTo(user(userId));
+        assertThat(response.getUser()).isEqualTo(user(userId));
     }
 
     protected AddUserDto addUserDto2() {

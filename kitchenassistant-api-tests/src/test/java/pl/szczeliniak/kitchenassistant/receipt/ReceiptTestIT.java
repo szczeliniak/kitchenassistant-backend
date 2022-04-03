@@ -37,9 +37,7 @@ public class ReceiptTestIT extends BaseTest {
 
         assertThat(response.getReceipts())
                 .usingRecursiveComparison()
-                .ignoringFields("createdAt", "modifiedAt",
-                        "ingredients.id", "ingredients.createdAt", "ingredients.modifiedAt",
-                        "steps.id", "steps.createdAt", "steps.modifiedAt")
+                .ignoringFields("ingredients.id", "steps.id")
                 .isEqualTo(List.of(receipt(receiptId, userId), receipt2(receiptId2, userId)));
     }
 
@@ -52,9 +50,7 @@ public class ReceiptTestIT extends BaseTest {
 
         assertThat(response.getReceipt())
                 .usingRecursiveComparison()
-                .ignoringFields("createdAt", "modifiedAt",
-                        "ingredients.id", "ingredients.createdAt", "ingredients.modifiedAt",
-                        "steps.id", "steps.createdAt", "steps.modifiedAt")
+                .ignoringFields("ingredients.id", "steps.id")
                 .isEqualTo(receipt(receiptId, userId));
     }
 
@@ -115,7 +111,7 @@ public class ReceiptTestIT extends BaseTest {
 
     private Step step() {
         return Step.builder()
-                .name("Title")
+                .name("Name")
                 .description("Description")
                 .sequence(1)
                 .build();
@@ -125,7 +121,6 @@ public class ReceiptTestIT extends BaseTest {
         return Ingredient.builder()
                 .name("Name")
                 .quantity("Quantity")
-                .unit("CUPS")
                 .build();
     }
 
@@ -144,7 +139,7 @@ public class ReceiptTestIT extends BaseTest {
 
     private Step step2() {
         return Step.builder()
-                .name("Title2")
+                .name("Name2")
                 .description("Description2")
                 .sequence(1)
                 .build();
@@ -154,7 +149,6 @@ public class ReceiptTestIT extends BaseTest {
         return Ingredient.builder()
                 .name("Name2")
                 .quantity("Quantity2")
-                .unit("PINCH_OF")
                 .build();
     }
 
@@ -253,7 +247,7 @@ public class ReceiptTestIT extends BaseTest {
 
     private AddStepDto addStepDto() {
         return AddStepDto.builder()
-                .name("Title")
+                .name("Name")
                 .description("Description")
                 .sequence(1)
                 .build();
@@ -261,7 +255,7 @@ public class ReceiptTestIT extends BaseTest {
 
     private AddStepDto addStepDto2() {
         return AddStepDto.builder()
-                .name("Title2")
+                .name("Name2")
                 .description("Description2")
                 .sequence(1)
                 .build();
@@ -271,7 +265,6 @@ public class ReceiptTestIT extends BaseTest {
         return AddIngredientDto.builder()
                 .name("Name")
                 .quantity("Quantity")
-                .unit("CUPS")
                 .build();
     }
 
@@ -279,7 +272,6 @@ public class ReceiptTestIT extends BaseTest {
         return AddIngredientDto.builder()
                 .name("Name2")
                 .quantity("Quantity2")
-                .unit("PINCH_OF")
                 .build();
     }
 

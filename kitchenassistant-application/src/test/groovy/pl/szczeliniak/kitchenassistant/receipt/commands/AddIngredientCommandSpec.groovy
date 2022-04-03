@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
 import pl.szczeliniak.kitchenassistant.dto.SuccessResponse
-import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
 import pl.szczeliniak.kitchenassistant.receipt.Ingredient
 import pl.szczeliniak.kitchenassistant.receipt.IngredientDao
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
@@ -39,11 +38,11 @@ class AddIngredientCommandSpec extends Specification {
     }
 
     private static NewIngredientDto newIngredientDto() {
-        return new NewIngredientDto("", "", IngredientUnit.CUPS)
+        return new NewIngredientDto("", "")
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(2, "", "", IngredientUnit.CUPS, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Ingredient(2, "", "", false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Receipt receipt() {

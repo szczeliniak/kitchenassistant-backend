@@ -11,7 +11,6 @@ class IngredientMapper {
             ingredientEntity.id,
             ingredientEntity.name,
             ingredientEntity.quantity,
-            ingredientEntity.unit,
             ingredientEntity.deleted,
             ingredientEntity.createdAt,
             ingredientEntity.modifiedAt
@@ -23,7 +22,6 @@ class IngredientMapper {
             ingredient.id,
             ingredient.name,
             ingredient.quantity,
-            ingredient.unit,
             ingredient.deleted,
             ingredient.createdAt,
             ingredient.modifiedAt

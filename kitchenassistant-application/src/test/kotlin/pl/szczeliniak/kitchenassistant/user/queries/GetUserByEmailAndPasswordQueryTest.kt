@@ -11,7 +11,6 @@ import pl.szczeliniak.kitchenassistant.user.User
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
-import java.time.LocalDateTime
 
 internal class GetUserByEmailAndPasswordQueryTest : JunitBaseClass() {
 
@@ -26,13 +25,11 @@ internal class GetUserByEmailAndPasswordQueryTest : JunitBaseClass() {
 
     @Test
     fun shouldReturnUserByEmailAndPassword() {
-        val createdAt = LocalDateTime.now()
-        val modifiedAt = LocalDateTime.now()
-        whenever(userDao.findByEmail("MAIL")).thenReturn(user(createdAt, modifiedAt))
+        whenever(userDao.findByEmail("MAIL")).thenReturn(user())
         whenever(passwordMatcher.matches("ENC_PASS", "PASS")).thenReturn(true)
         val result = getUserByEmailAndPasswordQuery.execute("MAIL", "PASS")
 
-        assertThat(result).isEqualTo(UserResponse(userDto(createdAt, modifiedAt)))
+        assertThat(result).isEqualTo(UserResponse(userDto()))
     }
 
     @Test
@@ -46,7 +43,7 @@ internal class GetUserByEmailAndPasswordQueryTest : JunitBaseClass() {
 
     @Test
     fun shouldThrowExceptionWhenPasswordsDoNotMatch() {
-        whenever(userDao.findByEmail("MAIL")).thenReturn(user(LocalDateTime.now(), LocalDateTime.now()))
+        whenever(userDao.findByEmail("MAIL")).thenReturn(user())
         whenever(passwordMatcher.matches("ENC_PASS", "PASS")).thenReturn(false)
 
         assertThatThrownBy { getUserByEmailAndPasswordQuery.execute("MAIL", "PASS") }
@@ -54,12 +51,12 @@ internal class GetUserByEmailAndPasswordQueryTest : JunitBaseClass() {
             .hasMessage("Passwords do not match")
     }
 
-    private fun userDto(createdAt: LocalDateTime, modifiedAt: LocalDateTime): UserDto {
-        return UserDto(0, "EMAIL", "NAME", createdAt, modifiedAt)
+    private fun userDto(): UserDto {
+        return UserDto(0, "EMAIL", "NAME")
     }
 
-    private fun user(createdAt: LocalDateTime, modifiedAt: LocalDateTime): User {
-        return User(0, "EMAIL", "ENC_PASS", "NAME", createdAt, modifiedAt)
+    private fun user(): User {
+        return User(0, "EMAIL", "ENC_PASS", "NAME")
     }
 
 }

@@ -9,7 +9,6 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListResponse
-import java.time.LocalDateTime
 
 internal class GetShoppingListQueryTest : JunitBaseClass() {
 
@@ -21,14 +20,11 @@ internal class GetShoppingListQueryTest : JunitBaseClass() {
 
     @Test
     fun shouldReturnShoppingList() {
-        val createdAt = LocalDateTime.now()
-        val modifiedAt = LocalDateTime.now()
-
-        whenever(shoppingListDao.findById(1)).thenReturn(shoppingList(createdAt, modifiedAt))
+        whenever(shoppingListDao.findById(1)).thenReturn(shoppingList())
 
         val result = getShoppingListQuery.execute(1)
 
-        assertThat(result).isEqualTo(ShoppingListResponse(shoppingListDto(createdAt, modifiedAt)))
+        assertThat(result).isEqualTo(ShoppingListResponse(shoppingListDto()))
     }
 
     @Test
@@ -40,17 +36,15 @@ internal class GetShoppingListQueryTest : JunitBaseClass() {
             .hasMessage("Shopping list not found")
     }
 
-    private fun shoppingListDto(createdAt: LocalDateTime, modifiedAt: LocalDateTime): ShoppingListDto {
-        return ShoppingListDto(0, 0, "", "", mutableListOf(), createdAt, modifiedAt)
+    private fun shoppingListDto(): ShoppingListDto {
+        return ShoppingListDto(0, 0, "", "", mutableListOf())
     }
 
-    private fun shoppingList(createdAt: LocalDateTime, modifiedAt: LocalDateTime): ShoppingList {
+    private fun shoppingList(): ShoppingList {
         return ShoppingList(
             userId_ = 0,
             name_ = "",
-            description_ = "",
-            createdAt_ = createdAt,
-            modifiedAt_ = modifiedAt
+            description_ = ""
         )
     }
 

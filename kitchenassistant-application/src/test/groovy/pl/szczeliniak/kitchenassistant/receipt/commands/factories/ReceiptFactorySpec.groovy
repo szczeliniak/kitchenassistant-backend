@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands.factories
 
 import org.assertj.core.api.Assertions
-import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
 import pl.szczeliniak.kitchenassistant.receipt.Ingredient
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.Step
@@ -49,7 +48,7 @@ class ReceiptFactorySpec extends Specification {
     }
 
     private static NewIngredientDto newIngredientDto() {
-        return new NewIngredientDto("", "", IngredientUnit.CUPS)
+        return new NewIngredientDto("", "")
     }
 
     private static NewStepDto newStepDto() {
@@ -57,7 +56,7 @@ class ReceiptFactorySpec extends Specification {
     }
 
     private static UserResponse userResponse() {
-        return new UserResponse(new UserDto(1, "", "", LocalDateTime.now(), LocalDateTime.now()))
+        return new UserResponse(new UserDto(1, "", ""))
     }
 
     private static Receipt receipt() {
@@ -67,13 +66,11 @@ class ReceiptFactorySpec extends Specification {
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(3, "INGREDIENT_NAME", "INGREDIENT_QUANTITY", IngredientUnit.CUPS,
-                false, LocalDateTime.now(), LocalDateTime.now())
+        return new Ingredient(3, "INGREDIENT_NAME", "INGREDIENT_QUANTITY", false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Step step() {
-        return new Step(4, "STEP_TITLE", "STEP_DESCRIPTION", 1, false,
-                LocalDateTime.now(), LocalDateTime.now())
+        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

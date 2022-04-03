@@ -23,7 +23,7 @@ internal class ShoppingListItemFactoryTest : JunitBaseClass() {
     }
 
     private fun shoppingListItem(): ShoppingListItem {
-        return ShoppingListItem(name_ = "", quantity_ = "", unit_ = null, sequence_ = null)
+        return ShoppingListItem(name_ = "", quantity_ = "", sequence_ = null)
     }
 
 }

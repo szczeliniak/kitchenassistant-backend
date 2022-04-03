@@ -24,11 +24,11 @@ class StepFactorySpec extends Specification {
     }
 
     private static NewStepDto newStepDto() {
-        return new NewStepDto("TITLE", "DESCRIPTION", 1)
+        return new NewStepDto("NAME", "DESCRIPTION", 1)
     }
 
     private static Step step() {
-        return new Step(0, "TITLE", "DESCRIPTION", 1, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(0, "NAME", "DESCRIPTION", 1, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

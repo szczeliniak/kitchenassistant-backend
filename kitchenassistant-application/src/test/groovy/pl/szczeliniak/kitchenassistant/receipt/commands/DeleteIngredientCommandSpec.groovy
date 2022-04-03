@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
 import pl.szczeliniak.kitchenassistant.dto.SuccessResponse
-import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
 import pl.szczeliniak.kitchenassistant.exceptions.NotAllowedOperationException
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.receipt.Ingredient
@@ -65,7 +64,7 @@ class DeleteIngredientCommandSpec extends Specification {
     }
 
     private static Ingredient ingredient(boolean deleted) {
-        return new Ingredient(3, '', '', IngredientUnit.CUPS, deleted, LocalDateTime.now(), LocalDateTime.now())
+        return new Ingredient(3, '', '', deleted, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

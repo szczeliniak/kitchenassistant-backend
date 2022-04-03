@@ -1,26 +1,18 @@
 package pl.szczeliniak.kitchenassistant.receipt.queries.dto
 
-import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
 import pl.szczeliniak.kitchenassistant.receipt.Ingredient
-import java.time.LocalDateTime
 
 data class IngredientDto(
     val id: Int,
     val name: String,
-    val quantity: String,
-    val unit: IngredientUnit?,
-    val createdAt: LocalDateTime,
-    val modifiedAt: LocalDateTime
+    val quantity: String
 ) {
     companion object {
         fun fromDomain(ingredient: Ingredient): IngredientDto {
             return IngredientDto(
                 ingredient.id,
                 ingredient.name,
-                ingredient.quantity,
-                ingredient.unit,
-                ingredient.createdAt,
-                ingredient.modifiedAt
+                ingredient.quantity
             )
         }
     }

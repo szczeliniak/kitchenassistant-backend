@@ -9,7 +9,6 @@ import pl.szczeliniak.kitchenassistant.user.User
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
-import java.time.LocalDateTime
 
 internal class GetUserByIdQueryTest : JunitBaseClass() {
 
@@ -21,14 +20,12 @@ internal class GetUserByIdQueryTest : JunitBaseClass() {
 
     @Test
     fun shouldReturnUser() {
-        val createdAt = LocalDateTime.now()
-        val modifiedAt = LocalDateTime.now()
-        val user = user(createdAt, modifiedAt)
+        val user = user()
         whenever(userDao.findById(1)).thenReturn(user)
 
         val result = getUserByIdQuery.execute(1)
 
-        assertThat(result).isEqualTo(UserResponse(userDto(createdAt, modifiedAt)))
+        assertThat(result).isEqualTo(UserResponse(userDto()))
     }
 
     @Test
@@ -40,12 +37,12 @@ internal class GetUserByIdQueryTest : JunitBaseClass() {
             .hasMessage("User not found")
     }
 
-    private fun userDto(createdAt: LocalDateTime, modifiedAt: LocalDateTime): UserDto {
-        return UserDto(0, "EMAIL", "NAME", createdAt, modifiedAt)
+    private fun userDto(): UserDto {
+        return UserDto(0, "EMAIL", "NAME")
     }
 
-    private fun user(createdAt: LocalDateTime, modifiedAt: LocalDateTime): User {
-        return User(email_ = "EMAIL", password_ = "", name_ = "NAME", createdAt_ = createdAt, modifiedAt_ = modifiedAt)
+    private fun user(): User {
+        return User(email_ = "EMAIL", password_ = "", name_ = "NAME")
     }
 
 }

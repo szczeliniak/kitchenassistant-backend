@@ -5,7 +5,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.dto.SuccessResponse
-import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
@@ -47,7 +46,6 @@ internal class DeleteShoppingListItemCommandTest : JunitBaseClass() {
             id_ = 2,
             name_ = "",
             quantity_ = "",
-            unit_ = IngredientUnit.PINCH_OF,
             0
         )
     }

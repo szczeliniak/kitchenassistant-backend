@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt.queries.dto
 
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
-import java.time.LocalDateTime
 
 data class ReceiptDto(
     val id: Int,
@@ -11,9 +10,7 @@ data class ReceiptDto(
     val author: String?,
     val source: String?,
     val ingredients: List<IngredientDto>,
-    val steps: List<StepDto>,
-    val createdAt: LocalDateTime,
-    val modifiedAt: LocalDateTime
+    val steps: List<StepDto>
 ) {
     companion object {
         fun fromDomain(receipt: Receipt): ReceiptDto {
@@ -25,9 +22,7 @@ data class ReceiptDto(
                 receipt.author,
                 receipt.source,
                 receipt.ingredients.map { IngredientDto.fromDomain(it) },
-                receipt.steps.map { StepDto.fromDomain(it) },
-                receipt.createdAt,
-                receipt.modifiedAt
+                receipt.steps.map { StepDto.fromDomain(it) }
             )
         }
     }

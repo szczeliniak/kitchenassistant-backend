@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands.factories
 
 import org.assertj.core.api.Assertions
-import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
 import pl.szczeliniak.kitchenassistant.receipt.Ingredient
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientDto
 import spock.lang.Specification
@@ -25,11 +24,11 @@ class IngredientFactorySpec extends Specification {
     }
 
     private static NewIngredientDto newIngredientDto() {
-        return new NewIngredientDto("NAME", "QUANTITY", IngredientUnit.CUPS)
+        return new NewIngredientDto("NAME", "QUANTITY")
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(0, "NAME", "QUANTITY", IngredientUnit.CUPS, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Ingredient(0, "NAME", "QUANTITY", false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

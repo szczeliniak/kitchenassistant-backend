@@ -1,17 +1,12 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto
 
-import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
-import java.time.LocalDateTime
 
 data class ShoppingListItemDto(
     val id: Int,
     val name: String,
     val quantity: String,
-    val unit: IngredientUnit?,
-    val sequence: Int?,
-    val createdAt: LocalDateTime,
-    val modifiedAt: LocalDateTime
+    val sequence: Int?
 ) {
 
     companion object {
@@ -20,10 +15,7 @@ data class ShoppingListItemDto(
                 shoppingListItem.id,
                 shoppingListItem.name,
                 shoppingListItem.quantity,
-                shoppingListItem.unit,
-                shoppingListItem.sequence,
-                shoppingListItem.createdAt,
-                shoppingListItem.modifiedAt
+                shoppingListItem.sequence
             )
         }
     }

@@ -121,7 +121,6 @@ public abstract class BaseTest implements WithAssertions {
         private Integer id;
         private String name;
         private String quantity;
-        private String unit;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
@@ -144,7 +143,6 @@ public abstract class BaseTest implements WithAssertions {
     protected static class AddIngredientDto {
         private String name;
         private String quantity;
-        private String unit;
     }
 
     @Data
@@ -208,7 +206,6 @@ public abstract class BaseTest implements WithAssertions {
     protected static class AddShoppingListItemDto {
         private String name;
         private String quantity;
-        private String unit;
         private Integer sequence;
     }
 
@@ -246,7 +243,6 @@ public abstract class BaseTest implements WithAssertions {
         private Integer id;
         private String name;
         private String quantity;
-        private String unit;
         private Integer sequence;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;

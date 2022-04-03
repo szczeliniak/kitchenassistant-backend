@@ -1,6 +1,5 @@
 package pl.szczeliniak.kitchenassistant.receipt.queries
 
-import pl.szczeliniak.kitchenassistant.enums.IngredientUnit
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.receipt.Ingredient
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
@@ -24,24 +23,18 @@ class GetReceiptQuerySpec extends Specification {
 
     def "should return receipt"() {
         given:
-        def stepCreatedAt = LocalDateTime.now()
-        def stepModifiedAt = LocalDateTime.now()
-        def ingredientCreatedAt = LocalDateTime.now()
-        def ingredientModifiedAt = LocalDateTime.now()
-        def receiptCreatedAt = LocalDateTime.now()
-        def receiptModifiedAt = LocalDateTime.now()
-        def ingredient = ingredient(ingredientCreatedAt, ingredientModifiedAt)
-        def step = step(stepCreatedAt, stepModifiedAt)
-        def ingredientDto = ingredientDto(ingredientCreatedAt, ingredientModifiedAt)
-        def stepDto = stepDto(stepCreatedAt, stepModifiedAt)
+        def ingredient = ingredient()
+        def step = step()
+        def ingredientDto = ingredientDto()
+        def stepDto = stepDto()
 
-        receiptDao.findById(1) >> receipt(ingredient, step, receiptCreatedAt, receiptModifiedAt)
+        receiptDao.findById(1) >> receipt(ingredient, step)
 
         when:
         def result = getReceiptQuery.execute(1)
 
         then:
-        result == new ReceiptResponse(receiptDto(ingredientDto, stepDto, receiptCreatedAt, receiptModifiedAt))
+        result == new ReceiptResponse(receiptDto(ingredientDto, stepDto))
     }
 
     def "should throw exception receipt not found"() {
@@ -56,7 +49,7 @@ class GetReceiptQuerySpec extends Specification {
         e.message == "Receipt not found"
     }
 
-    private static Receipt receipt(Ingredient ingredient, Step step, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    private static Receipt receipt(Ingredient ingredient, Step step) {
         return new Receipt(1,
                 2,
                 'RECEIPT_NAME',
@@ -66,28 +59,28 @@ class GetReceiptQuerySpec extends Specification {
                 Collections.singletonList(ingredient),
                 Collections.singletonList(step),
                 false,
-                createdAt,
-                modifiedAt)
+                LocalDateTime.now(),
+                LocalDateTime.now())
     }
 
-    private static Step step(LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        return new Step(4, "STEP_TITLE", "STEP_DESCRIPTION", 1, false, createdAt, modifiedAt)
+    private static Step step() {
+        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static Ingredient ingredient(LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        return new Ingredient(3, "INGREDIENT_NAME", "INGREDIENT_QUANTITY", IngredientUnit.CUPS, false, createdAt, modifiedAt)
+    private static Ingredient ingredient() {
+        return new Ingredient(3, "INGREDIENT_NAME", "INGREDIENT_QUANTITY", false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static ReceiptDto receiptDto(IngredientDto ingredient, StepDto step, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        return new ReceiptDto(1, 2, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE", Collections.singletonList(ingredient), Collections.singletonList(step), createdAt, modifiedAt)
+    private static ReceiptDto receiptDto(IngredientDto ingredient, StepDto step) {
+        return new ReceiptDto(1, 2, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE", Collections.singletonList(ingredient), Collections.singletonList(step))
     }
 
-    private static IngredientDto ingredientDto(LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        return new IngredientDto(3, "INGREDIENT_NAME", "INGREDIENT_QUANTITY", IngredientUnit.CUPS, createdAt, modifiedAt)
+    private static IngredientDto ingredientDto() {
+        return new IngredientDto(3, "INGREDIENT_NAME", "INGREDIENT_QUANTITY")
     }
 
-    private static StepDto stepDto(LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        return new StepDto(4, "STEP_TITLE", "STEP_DESCRIPTION", 1, createdAt, modifiedAt)
+    private static StepDto stepDto() {
+        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1)
     }
 
 }

@@ -8,7 +8,6 @@ import pl.szczeliniak.kitchenassistant.user.User
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
-import java.time.LocalDateTime
 import java.util.*
 
 internal class GetUsersQueryTest : JunitBaseClass() {
@@ -21,20 +20,18 @@ internal class GetUsersQueryTest : JunitBaseClass() {
 
     @Test
     fun shouldReturnUsers() {
-        val createdAt = LocalDateTime.now()
-        val modifiedAt = LocalDateTime.now()
-        whenever(userDao.findAll()).thenReturn(Collections.singletonList(user(createdAt, modifiedAt)))
+        whenever(userDao.findAll()).thenReturn(Collections.singletonList(user()))
 
         val result = getUsersQuery.execute()
 
-        assertThat(result).isEqualTo(UsersResponse(Collections.singletonList(userDto(createdAt, modifiedAt))))
+        assertThat(result).isEqualTo(UsersResponse(Collections.singletonList(userDto())))
     }
 
-    private fun userDto(createdAt: LocalDateTime, modifiedAt: LocalDateTime): UserDto {
-        return UserDto(id = 0, email = "EMAIL", name = "NAME", createdAt, modifiedAt)
+    private fun userDto(): UserDto {
+        return UserDto(id = 0, email = "EMAIL", name = "NAME")
     }
 
-    private fun user(createdAt: LocalDateTime, modifiedAt: LocalDateTime): User {
-        return User(email_ = "EMAIL", name_ = "NAME", password_ = "", createdAt_ = createdAt, modifiedAt_ = modifiedAt)
+    private fun user(): User {
+        return User(email_ = "EMAIL", name_ = "NAME", password_ = "")
     }
 }

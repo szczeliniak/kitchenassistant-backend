@@ -37,8 +37,7 @@ public class ShoppingListTestIT extends BaseTest {
 
         assertThat(response.getShoppingLists())
                 .usingRecursiveComparison()
-                .ignoringFields("createdAt", "modifiedAt",
-                        "items.id", "items.createdAt", "items.modifiedAt")
+                .ignoringFields("items.id")
                 .isEqualTo(List.of(shoppingList(shoppingListId, userId), shoppingList2(shoppingListId2, userId)));
     }
 
@@ -51,8 +50,7 @@ public class ShoppingListTestIT extends BaseTest {
 
         assertThat(response.getShoppingList())
                 .usingRecursiveComparison()
-                .ignoringFields("createdAt", "modifiedAt",
-                        "items.id", "items.createdAt", "items.modifiedAt")
+                .ignoringFields("items.id")
                 .isEqualTo(shoppingList(shoppingListId, userId));
     }
 
@@ -81,7 +79,7 @@ public class ShoppingListTestIT extends BaseTest {
         return ShoppingList.builder()
                 .id(shoppingListId)
                 .userId(userId)
-                .name("Title")
+                .name("Name")
                 .description("Description")
                 .items(Collections.singletonList(shoppingListItem()))
                 .build();
@@ -92,7 +90,6 @@ public class ShoppingListTestIT extends BaseTest {
                 .name("Shopping list item name")
                 .quantity("Quantity")
                 .sequence(1)
-                .unit("CUPS")
                 .build();
     }
 
@@ -100,7 +97,7 @@ public class ShoppingListTestIT extends BaseTest {
         return ShoppingList.builder()
                 .id(shoppingListId)
                 .userId(userId)
-                .name("Title 2")
+                .name("Name 2")
                 .description("Description 2")
                 .items(Collections.singletonList(shoppingListItem2()))
                 .build();
@@ -111,7 +108,6 @@ public class ShoppingListTestIT extends BaseTest {
                 .name("Shopping list item name 2")
                 .quantity("Quantity 2")
                 .sequence(2)
-                .unit("CUPS")
                 .build();
     }
 
@@ -127,7 +123,7 @@ public class ShoppingListTestIT extends BaseTest {
 
     private AddShoppingListDto addShoppingListDto(Integer userId) {
         return AddShoppingListDto.builder()
-                .name("Title")
+                .name("Name")
                 .description("Description")
                 .userId(userId)
                 .items(Collections.singletonList(addShoppingListItemDto()))
@@ -136,7 +132,7 @@ public class ShoppingListTestIT extends BaseTest {
 
     private AddShoppingListDto addShoppingListDto2(Integer userId) {
         return AddShoppingListDto.builder()
-                .name("Title 2")
+                .name("Name 2")
                 .description("Description 2")
                 .userId(userId)
                 .items(Collections.singletonList(addShoppingListItemDto2()))
@@ -147,7 +143,6 @@ public class ShoppingListTestIT extends BaseTest {
         return AddShoppingListItemDto.builder()
                 .name("Shopping list item name")
                 .quantity("Quantity")
-                .unit("CUPS")
                 .sequence(1)
                 .build();
     }
@@ -156,7 +151,6 @@ public class ShoppingListTestIT extends BaseTest {
         return AddShoppingListItemDto.builder()
                 .name("Shopping list item name 2")
                 .quantity("Quantity 2")
-                .unit("CUPS")
                 .sequence(2)
                 .build();
     }
