@@ -2,10 +2,7 @@ package pl.szczeliniak.kitchenassistant.shoppinglist
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.AddShoppingListCommand
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.AddShoppingListItemCommand
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.DeleteShoppingListCommand
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.DeleteShoppingListItemCommand
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.*
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListFactory
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListItemFactory
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.GetShoppingListQuery
@@ -44,5 +41,9 @@ class ShoppingListConfiguration {
 
     @Bean
     fun getShoppingListsQuery(shoppingListDao: ShoppingListDao) = GetShoppingListsQuery(shoppingListDao)
+
+    @Bean
+    fun markShoppingListItemAsDoneCommand(shoppingListDao: ShoppingListDao, shoppingListItemDao: ShoppingListItemDao) =
+        MarkShoppingListItemAsDoneCommand(shoppingListDao, shoppingListItemDao)
 
 }

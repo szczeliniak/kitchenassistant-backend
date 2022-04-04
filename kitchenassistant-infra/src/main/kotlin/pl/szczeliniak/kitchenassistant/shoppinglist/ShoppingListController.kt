@@ -2,10 +2,7 @@ package pl.szczeliniak.kitchenassistant.shoppinglist
 
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.dto.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.AddShoppingListCommand
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.AddShoppingListItemCommand
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.DeleteShoppingListCommand
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.DeleteShoppingListItemCommand
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.*
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.GetShoppingListQuery
@@ -20,6 +17,7 @@ class ShoppingListController(
     private val getShoppingListsQuery: GetShoppingListsQuery,
     private val addShoppingListCommand: AddShoppingListCommand,
     private val addShoppingListItemCommand: AddShoppingListItemCommand,
+    private val markShoppingListItemAsDoneCommand: MarkShoppingListItemAsDoneCommand,
     private val deleteShoppingListCommand: DeleteShoppingListCommand,
     private val deleteShoppingListItemCommand: DeleteShoppingListItemCommand,
 ) {
@@ -47,6 +45,13 @@ class ShoppingListController(
     @PostMapping("/{id}/items")
     fun addShoppingListItem(@PathVariable id: Int, @RequestBody dto: NewShoppingListItemDto): SuccessResponse {
         return addShoppingListItemCommand.execute(id, dto)
+    }
+
+    @PostMapping("/{id}/items/{itemId}")
+    fun markShoppingListAsDone(
+        @PathVariable id: Int, @PathVariable itemId: Int, @RequestParam done: Boolean
+    ): SuccessResponse {
+        return markShoppingListItemAsDoneCommand.execute(id, itemId, done)
     }
 
     @DeleteMapping("/{id}/items/{itemId}")

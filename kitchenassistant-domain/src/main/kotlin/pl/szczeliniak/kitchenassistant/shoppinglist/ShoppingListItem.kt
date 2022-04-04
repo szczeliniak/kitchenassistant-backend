@@ -9,6 +9,7 @@ data class ShoppingListItem(
     private var quantity_: String,
     private var sequence_: Int?,
     private var deleted_: Boolean = false,
+    private var done_: Boolean = false,
     private val createdAt_: LocalDateTime = LocalDateTime.now(),
     private var modifiedAt_: LocalDateTime = LocalDateTime.now()
 ) {
@@ -18,6 +19,7 @@ data class ShoppingListItem(
     val sequence: Int? get() = sequence_
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
+    val done: Boolean get() = done_
     val deleted: Boolean get() = deleted_
 
     fun markAsDeleted() {
@@ -25,6 +27,11 @@ data class ShoppingListItem(
             throw NotAllowedOperationException("Shopping list item is already marked as deleted!")
         }
         deleted_ = true
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
+    fun markAsDone(done: Boolean) {
+        done_ = done
         this.modifiedAt_ = LocalDateTime.now()
     }
 

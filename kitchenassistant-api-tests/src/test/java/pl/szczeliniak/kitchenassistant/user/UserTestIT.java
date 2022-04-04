@@ -22,8 +22,6 @@ public class UserTestIT extends BaseTest {
         UsersResponse response = getUsers();
 
         assertThat(response.getUsers())
-                .usingRecursiveComparison()
-                .ignoringFields("createdAt", "modifiedAt")
                 .isEqualTo(List.of(user(userId), user2(userId2)));
     }
 

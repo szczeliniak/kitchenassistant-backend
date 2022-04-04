@@ -75,6 +75,17 @@ public class ShoppingListTestIT extends BaseTest {
         assertThat(response.getId()).isEqualTo(shoppingListItemId);
     }
 
+    @Test
+    public void shouldMarkItemAsDone() {
+        Integer userId = addUser(addUserDto()).getId();
+        Integer shoppingListId = addShoppingList(addShoppingListDto(userId)).getId();
+        Integer shoppingListItemId = addShoppingListItem(shoppingListId, addShoppingListItemDto2()).getId();
+
+        SuccessResponse response = markShoppingListItemAsDone(shoppingListId, shoppingListItemId);
+
+        assertThat(response.getId()).isEqualTo(shoppingListItemId);
+    }
+
     private ShoppingList shoppingList(Integer shoppingListId, Integer userId) {
         return ShoppingList.builder()
                 .id(shoppingListId)
@@ -90,6 +101,7 @@ public class ShoppingListTestIT extends BaseTest {
                 .name("Shopping list item name")
                 .quantity("Quantity")
                 .sequence(1)
+                .done(false)
                 .build();
     }
 
@@ -108,6 +120,7 @@ public class ShoppingListTestIT extends BaseTest {
                 .name("Shopping list item name 2")
                 .quantity("Quantity 2")
                 .sequence(2)
+                .done(false)
                 .build();
     }
 
@@ -186,6 +199,15 @@ public class ShoppingListTestIT extends BaseTest {
         return spec()
                 .body(addShoppingListItemDto)
                 .post("/shoppinglists/" + shoppingListId + "/items")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(SuccessResponse.class);
+    }
+
+    private SuccessResponse markShoppingListItemAsDone(Integer shoppingListId, Integer shoppingListItemId) {
+        return spec()
+                .post("/shoppinglists/" + shoppingListId + "/items/" + shoppingListItemId + "?done=true")
                 .then()
                 .statusCode(200)
                 .extract()
