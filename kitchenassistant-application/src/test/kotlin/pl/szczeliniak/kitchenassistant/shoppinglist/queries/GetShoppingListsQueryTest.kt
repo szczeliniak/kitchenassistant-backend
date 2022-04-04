@@ -23,7 +23,7 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
 
     @Test
     fun shouldReturnShoppingLists() {
-        val criteria = ShoppingListCriteria(1)
+        val criteria = ShoppingListCriteria(1, false)
 
         whenever(shoppingListDao.findAll(criteria)).thenReturn(
             Collections.singletonList(

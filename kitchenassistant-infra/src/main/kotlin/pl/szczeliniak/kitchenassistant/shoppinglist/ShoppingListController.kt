@@ -29,8 +29,11 @@ class ShoppingListController(
     }
 
     @GetMapping
-    fun getShoppingLists(@RequestParam(required = false) userId: Int?): ShoppingListsResponse {
-        return getShoppingListsQuery.execute(ShoppingListCriteria(userId))
+    fun getShoppingLists(
+        @RequestParam(required = false) userId: Int?,
+        @RequestParam(required = false) archived: Boolean?
+    ): ShoppingListsResponse {
+        return getShoppingListsQuery.execute(ShoppingListCriteria(userId, archived))
     }
 
     @PostMapping

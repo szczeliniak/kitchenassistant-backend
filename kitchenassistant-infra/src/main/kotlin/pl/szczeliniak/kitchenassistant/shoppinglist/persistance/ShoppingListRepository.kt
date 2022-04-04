@@ -13,10 +13,16 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
         if (criteria.userId != null) {
             query += " AND sl.userId = :userId"
         }
+        if (criteria.archived != null) {
+            query += " AND sl.archived = :archived"
+        }
 
         var typedQuery = entityManager.createQuery(query, ShoppingListEntity::class.java)
         if (criteria.userId != null) {
             typedQuery = typedQuery.setParameter("userId", criteria.userId)
+        }
+        if (criteria.archived != null) {
+            typedQuery = typedQuery.setParameter("archived", criteria.archived)
         }
 
         return typedQuery.resultList
@@ -50,6 +56,6 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
         entityManager.createQuery("DELETE FROM ShoppingListEntity").executeUpdate()
     }
 
-    data class SearchCriteria(val userId: Int?)
+    data class SearchCriteria(val userId: Int?, val archived: Boolean?)
 
 }
