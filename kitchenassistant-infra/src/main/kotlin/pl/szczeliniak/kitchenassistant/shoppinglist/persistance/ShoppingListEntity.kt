@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.persistance
 
 import org.hibernate.annotations.Where
+import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -14,6 +15,7 @@ data class ShoppingListEntity(
     var userId: Int,
     var name: String,
     var description: String?,
+    var date: LocalDate?,
     @OneToMany(
         cascade = [CascadeType.ALL],
         fetch = FetchType.LAZY

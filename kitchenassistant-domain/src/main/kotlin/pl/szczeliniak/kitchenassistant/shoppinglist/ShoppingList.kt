@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.shoppinglist
 
 import pl.szczeliniak.kitchenassistant.exceptions.NotAllowedOperationException
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -9,7 +10,8 @@ data class ShoppingList(
     private var id_: Int = 0,
     private var userId_: Int,
     private var name_: String,
-    private var description_: String?,
+    private var description_: String? = null,
+    private var date_: LocalDate? = null,
     private var items_: MutableList<ShoppingListItem> = mutableListOf(),
     private var deleted_: Boolean = false,
     private var archived_: Boolean = false,
@@ -20,6 +22,7 @@ data class ShoppingList(
     val id: Int get() = id_
     val userId: Int get() = userId_
     val name: String get() = name_
+    val date: LocalDate? get() = date_
     val description: String? get() = description_
     val items: List<ShoppingListItem> get() = Collections.unmodifiableList(items_)
     val createdAt: LocalDateTime get() = createdAt_

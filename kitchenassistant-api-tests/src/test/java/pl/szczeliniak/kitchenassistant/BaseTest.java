@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -188,6 +189,7 @@ public abstract class BaseTest implements WithAssertions {
         private Integer userId;
         private String name;
         private String description;
+        private LocalDate date;
         private List<AddShoppingListItemDto> items;
     }
 
@@ -222,6 +224,7 @@ public abstract class BaseTest implements WithAssertions {
         private Integer userId;
         private String name;
         private String description;
+        private LocalDate date;
         private Boolean archived;
         private List<ShoppingListItem> items;
     }

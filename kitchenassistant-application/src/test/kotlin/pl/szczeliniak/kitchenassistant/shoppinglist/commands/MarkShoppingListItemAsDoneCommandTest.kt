@@ -43,7 +43,6 @@ internal class MarkShoppingListItemAsDoneCommandTest : JunitBaseClass() {
         return ShoppingList(
             userId_ = 4,
             name_ = "",
-            description_ = "",
             items_ = Collections.singletonList(shoppingListItem)
         )
     }

@@ -38,8 +38,7 @@ internal class AddShoppingListCommandTest : JunitBaseClass() {
         return ShoppingList(
             id_ = 1,
             userId_ = 0,
-            name_ = "",
-            description_ = ""
+            name_ = ""
         )
     }
 

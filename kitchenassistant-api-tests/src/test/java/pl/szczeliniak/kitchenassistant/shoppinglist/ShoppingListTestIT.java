@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.shoppinglist;
 import org.junit.jupiter.api.Test;
 import pl.szczeliniak.kitchenassistant.BaseTest;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -102,6 +103,7 @@ public class ShoppingListTestIT extends BaseTest {
                 .userId(userId)
                 .name("Name")
                 .description("Description")
+                .date(LocalDate.now())
                 .archived(false)
                 .items(Collections.singletonList(shoppingListItem()))
                 .build();
@@ -122,6 +124,7 @@ public class ShoppingListTestIT extends BaseTest {
                 .userId(userId)
                 .name("Name 2")
                 .description("Description 2")
+                .date(LocalDate.now())
                 .items(Collections.singletonList(shoppingListItem2()))
                 .archived(false)
                 .build();
@@ -151,6 +154,7 @@ public class ShoppingListTestIT extends BaseTest {
                 .name("Name")
                 .description("Description")
                 .userId(userId)
+                .date(LocalDate.now())
                 .items(Collections.singletonList(addShoppingListItemDto()))
                 .build();
     }
@@ -159,6 +163,7 @@ public class ShoppingListTestIT extends BaseTest {
         return AddShoppingListDto.builder()
                 .name("Name 2")
                 .description("Description 2")
+                .date(LocalDate.now())
                 .userId(userId)
                 .items(Collections.singletonList(addShoppingListItemDto2()))
                 .build();
