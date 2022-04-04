@@ -18,6 +18,7 @@ class ShoppingListController(
     private val addShoppingListCommand: AddShoppingListCommand,
     private val addShoppingListItemCommand: AddShoppingListItemCommand,
     private val markShoppingListItemAsDoneCommand: MarkShoppingListItemAsDoneCommand,
+    private val markShoppingListAsArchivedCommand: MarkShoppingListAsArchivedCommand,
     private val deleteShoppingListCommand: DeleteShoppingListCommand,
     private val deleteShoppingListItemCommand: DeleteShoppingListItemCommand,
 ) {
@@ -37,6 +38,11 @@ class ShoppingListController(
         return addShoppingListCommand.execute(dto)
     }
 
+    @PostMapping("/{id}/archived/{isArchived}")
+    fun markShoppingListAsArchived(@PathVariable id: Int, @PathVariable isArchived: Boolean): SuccessResponse {
+        return markShoppingListAsArchivedCommand.execute(id, isArchived)
+    }
+
     @DeleteMapping("/{id}")
     fun deleteShoppingList(@PathVariable id: Int): SuccessResponse {
         return deleteShoppingListCommand.execute(id)
@@ -47,11 +53,11 @@ class ShoppingListController(
         return addShoppingListItemCommand.execute(id, dto)
     }
 
-    @PostMapping("/{id}/items/{itemId}")
-    fun markShoppingListAsDone(
-        @PathVariable id: Int, @PathVariable itemId: Int, @RequestParam done: Boolean
+    @PostMapping("/{id}/items/{itemId}/done/{isDone}")
+    fun markShoppingListItemAsDone(
+        @PathVariable id: Int, @PathVariable itemId: Int, @PathVariable isDone: Boolean
     ): SuccessResponse {
-        return markShoppingListItemAsDoneCommand.execute(id, itemId, done)
+        return markShoppingListItemAsDoneCommand.execute(id, itemId, isDone)
     }
 
     @DeleteMapping("/{id}/items/{itemId}")

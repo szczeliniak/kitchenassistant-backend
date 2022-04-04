@@ -37,13 +37,17 @@ class ShoppingListConfiguration {
     fun deleteShoppingListItemCommand(shoppingListDao: ShoppingListDao) = DeleteShoppingListItemCommand(shoppingListDao)
 
     @Bean
+    fun markShoppingListItemAsDoneCommand(shoppingListDao: ShoppingListDao, shoppingListItemDao: ShoppingListItemDao) =
+        MarkShoppingListItemAsDoneCommand(shoppingListDao, shoppingListItemDao)
+
+    @Bean
+    fun markShoppingListAsArchivedCommand(shoppingListDao: ShoppingListDao) =
+        MarkShoppingListAsArchivedCommand(shoppingListDao)
+
+    @Bean
     fun getShoppingListQuery(shoppingListDao: ShoppingListDao) = GetShoppingListQuery(shoppingListDao)
 
     @Bean
     fun getShoppingListsQuery(shoppingListDao: ShoppingListDao) = GetShoppingListsQuery(shoppingListDao)
-
-    @Bean
-    fun markShoppingListItemAsDoneCommand(shoppingListDao: ShoppingListDao, shoppingListItemDao: ShoppingListItemDao) =
-        MarkShoppingListItemAsDoneCommand(shoppingListDao, shoppingListItemDao)
 
 }

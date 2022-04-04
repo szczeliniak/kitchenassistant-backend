@@ -37,7 +37,7 @@ internal class GetShoppingListQueryTest : JunitBaseClass() {
     }
 
     private fun shoppingListDto(): ShoppingListDto {
-        return ShoppingListDto(0, 0, "", "", mutableListOf())
+        return ShoppingListDto(0, 0, "", "", false, mutableListOf())
     }
 
     private fun shoppingList(): ShoppingList {

@@ -222,6 +222,7 @@ public abstract class BaseTest implements WithAssertions {
         private Integer userId;
         private String name;
         private String description;
+        private Boolean archived;
         private List<ShoppingListItem> items;
     }
 

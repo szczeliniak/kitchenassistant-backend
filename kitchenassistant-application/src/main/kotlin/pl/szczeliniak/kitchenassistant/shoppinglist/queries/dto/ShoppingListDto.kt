@@ -7,6 +7,7 @@ data class ShoppingListDto(
     val userId: Int,
     val name: String,
     val description: String?,
+    val archived: Boolean,
     val items: List<ShoppingListItemDto>
 ) {
 
@@ -17,6 +18,7 @@ data class ShoppingListDto(
                 shoppingList.userId,
                 shoppingList.name,
                 shoppingList.description,
+                shoppingList.archived,
                 shoppingList.items.map { ShoppingListItemDto.fromDomain(it) }
             )
         }

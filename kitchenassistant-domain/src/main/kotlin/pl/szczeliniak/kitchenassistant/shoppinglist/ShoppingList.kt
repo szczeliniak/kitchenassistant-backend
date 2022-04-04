@@ -12,6 +12,7 @@ data class ShoppingList(
     private var description_: String?,
     private var items_: MutableList<ShoppingListItem> = mutableListOf(),
     private var deleted_: Boolean = false,
+    private var archived_: Boolean = false,
     private val createdAt_: LocalDateTime = LocalDateTime.now(),
     private var modifiedAt_: LocalDateTime = LocalDateTime.now()
 ) {
@@ -24,12 +25,18 @@ data class ShoppingList(
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_
+    val archived: Boolean get() = archived_
 
     fun markAsDeleted() {
         if (deleted_) {
             throw NotAllowedOperationException("Shopping list is already marked as deleted!")
         }
         deleted_ = true
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
+    fun markAsArchived(isArchived: Boolean) {
+        archived_ = isArchived
         this.modifiedAt_ = LocalDateTime.now()
     }
 

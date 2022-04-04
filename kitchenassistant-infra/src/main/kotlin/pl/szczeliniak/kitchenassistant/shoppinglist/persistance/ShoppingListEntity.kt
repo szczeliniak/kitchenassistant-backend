@@ -20,6 +20,7 @@ data class ShoppingListEntity(
     )
     var items: MutableList<ShoppingListItemEntity>,
     var deleted: Boolean,
+    var archived: Boolean,
     var createdAt: LocalDateTime,
     var modifiedAt: LocalDateTime
 )

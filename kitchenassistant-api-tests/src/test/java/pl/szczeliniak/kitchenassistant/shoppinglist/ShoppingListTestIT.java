@@ -18,6 +18,16 @@ public class ShoppingListTestIT extends BaseTest {
     }
 
     @Test
+    public void shouldMarkShoppingListAsArchived() {
+        Integer userId = addUser(addUserDto()).getId();
+        Integer shoppingListId = addShoppingList(addShoppingListDto(userId)).getId();
+
+        SuccessResponse response = markShoppingListAsArchived(shoppingListId);
+
+        assertThat(response.getId()).isEqualTo(shoppingListId);
+    }
+
+    @Test
     public void shouldDeleteShoppingList() {
         Integer userId = addUser(addUserDto()).getId();
         Integer shoppingListId = addShoppingList(addShoppingListDto(userId)).getId();
@@ -76,7 +86,7 @@ public class ShoppingListTestIT extends BaseTest {
     }
 
     @Test
-    public void shouldMarkItemAsDone() {
+    public void shouldMarkShoppingListItemAsDone() {
         Integer userId = addUser(addUserDto()).getId();
         Integer shoppingListId = addShoppingList(addShoppingListDto(userId)).getId();
         Integer shoppingListItemId = addShoppingListItem(shoppingListId, addShoppingListItemDto2()).getId();
@@ -92,6 +102,7 @@ public class ShoppingListTestIT extends BaseTest {
                 .userId(userId)
                 .name("Name")
                 .description("Description")
+                .archived(false)
                 .items(Collections.singletonList(shoppingListItem()))
                 .build();
     }
@@ -112,6 +123,7 @@ public class ShoppingListTestIT extends BaseTest {
                 .name("Name 2")
                 .description("Description 2")
                 .items(Collections.singletonList(shoppingListItem2()))
+                .archived(false)
                 .build();
     }
 
@@ -207,7 +219,16 @@ public class ShoppingListTestIT extends BaseTest {
 
     private SuccessResponse markShoppingListItemAsDone(Integer shoppingListId, Integer shoppingListItemId) {
         return spec()
-                .post("/shoppinglists/" + shoppingListId + "/items/" + shoppingListItemId + "?done=true")
+                .post("/shoppinglists/" + shoppingListId + "/items/" + shoppingListItemId + "/done/true")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(SuccessResponse.class);
+    }
+
+    private SuccessResponse markShoppingListAsArchived(Integer shoppingListId) {
+        return spec()
+                .post("/shoppinglists/" + shoppingListId + "/archived/true")
                 .then()
                 .statusCode(200)
                 .extract()
