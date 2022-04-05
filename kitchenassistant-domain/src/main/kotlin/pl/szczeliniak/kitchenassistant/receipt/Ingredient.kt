@@ -25,4 +25,11 @@ data class Ingredient(
         deleted_ = true
         this.modifiedAt_ = LocalDateTime.now()
     }
+
+    fun update(name: String, quantity: String) {
+        this.name_ = name
+        this.quantity_ = quantity
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
 }

@@ -142,7 +142,24 @@ public abstract class BaseTest implements WithAssertions {
     @Data
     @NoArgsConstructor
     @SuperBuilder
+    protected static class UpdateIngredientDto {
+        private String name;
+        private String quantity;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
     protected static class AddStepDto {
+        private String name;
+        private String description;
+        private Integer sequence;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
+    protected static class UpdateStepDto {
         private String name;
         private String description;
         private Integer sequence;

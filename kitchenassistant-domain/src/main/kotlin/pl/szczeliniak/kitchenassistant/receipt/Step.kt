@@ -28,4 +28,11 @@ data class Step(
         this.modifiedAt_ = LocalDateTime.now()
     }
 
+    fun update(name: String, description: String?, sequence: Int?) {
+        this.name_ = name
+        this.description_ = description
+        this.sequence_ = sequence
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
 }

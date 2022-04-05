@@ -3,10 +3,7 @@ package pl.szczeliniak.kitchenassistant.receipt
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
-import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientDto
-import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
-import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
-import pl.szczeliniak.kitchenassistant.receipt.commands.dto.UpdateReceiptDto
+import pl.szczeliniak.kitchenassistant.receipt.commands.dto.*
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
@@ -18,12 +15,14 @@ class ReceiptController(
     private val getReceiptQuery: GetReceiptQuery,
     private val getReceiptsQuery: GetReceiptsQuery,
     private val addReceiptCommand: AddReceiptCommand,
+    private val deleteReceiptCommand: DeleteReceiptCommand,
     private val updateReceiptCommand: UpdateReceiptCommand,
     private val addIngredientCommand: AddIngredientCommand,
-    private val addStepCommand: AddStepCommand,
-    private val deleteReceiptCommand: DeleteReceiptCommand,
     private val deleteIngredientCommand: DeleteIngredientCommand,
-    private val deleteStepCommand: DeleteStepCommand
+    private val updateIngredientCommand: UpdateIngredientCommand,
+    private val addStepCommand: AddStepCommand,
+    private val deleteStepCommand: DeleteStepCommand,
+    private val updateStepCommand: UpdateStepCommand
 ) {
 
     @GetMapping("/{id}")
@@ -56,6 +55,11 @@ class ReceiptController(
         return addStepCommand.execute(id, dto)
     }
 
+    @PutMapping("/{id}/steps/{stepId}")
+    fun updateStep(@PathVariable id: Int, @PathVariable stepId: Int, @RequestBody dto: UpdateStepDto): SuccessResponse {
+        return updateStepCommand.execute(id, stepId, dto)
+    }
+
     @DeleteMapping("/{id}/steps/{stepId}")
     fun deleteStep(@PathVariable id: Int, @PathVariable stepId: Int): SuccessResponse {
         return deleteStepCommand.execute(id, stepId)
@@ -64,6 +68,15 @@ class ReceiptController(
     @PostMapping("{id}/ingredients")
     fun addIngredient(@PathVariable id: Int, @RequestBody dto: NewIngredientDto): SuccessResponse {
         return addIngredientCommand.execute(id, dto)
+    }
+
+    @PutMapping("/{id}/ingredients/{ingredientId}")
+    fun updateIngredient(
+        @PathVariable id: Int,
+        @PathVariable ingredientId: Int,
+        @RequestBody dto: UpdateIngredientDto
+    ): SuccessResponse {
+        return updateIngredientCommand.execute(id, ingredientId, dto)
     }
 
     @DeleteMapping("/{id}/ingredients/{ingredientId}")

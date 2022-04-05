@@ -86,6 +86,17 @@ public class ReceiptTestIT extends BaseTest {
     }
 
     @Test
+    public void shouldUpdateStep() {
+        Integer userId = addUser(addUserDto()).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+        Integer stepId = addStep(receiptId, addStepDto2()).getId();
+
+        SuccessResponse response = updateStep(receiptId, stepId, updateStepDto());
+
+        assertThat(response.getId()).isEqualTo(stepId);
+    }
+
+    @Test
     public void shouldAddIngredientToReceipt() {
         Integer userId = addUser(addUserDto()).getId();
         Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
@@ -93,6 +104,17 @@ public class ReceiptTestIT extends BaseTest {
         SuccessResponse response = addIngredient(receiptId, addIngredientDto2());
 
         assertThat(response.getId()).isNotNull();
+    }
+
+    @Test
+    public void shouldUpdateIngredient() {
+        Integer userId = addUser(addUserDto()).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+        Integer ingredientId = addIngredient(receiptId, addIngredientDto2()).getId();
+
+        SuccessResponse response = updateIngredient(receiptId, ingredientId, updateIngredientDto());
+
+        assertThat(response.getId()).isEqualTo(ingredientId);
     }
 
     @Test
@@ -209,6 +231,15 @@ public class ReceiptTestIT extends BaseTest {
                 .as(SuccessResponse.class);
     }
 
+    private SuccessResponse updateStep(Integer receiptId, Integer stepId, UpdateStepDto updateStepDto) {
+        return spec().body(updateStepDto)
+                .put("/receipts/" + receiptId + "/steps/" + stepId)
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(SuccessResponse.class);
+    }
+
     private SuccessResponse deleteStep(Integer receiptId, Integer stepId) {
         return spec().delete("/receipts/" + receiptId + "/steps/" + stepId)
                 .then()
@@ -220,6 +251,15 @@ public class ReceiptTestIT extends BaseTest {
     private SuccessResponse addIngredient(Integer receiptId, AddIngredientDto addIngredientDto) {
         return spec().body(addIngredientDto)
                 .post("/receipts/" + receiptId + "/ingredients")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(SuccessResponse.class);
+    }
+
+    private SuccessResponse updateIngredient(Integer receiptId, Integer ingredientId, UpdateIngredientDto updateIngredientDto) {
+        return spec().body(updateIngredientDto)
+                .put("/receipts/" + receiptId + "/ingredients/" + ingredientId)
                 .then()
                 .statusCode(200)
                 .extract()
@@ -290,6 +330,14 @@ public class ReceiptTestIT extends BaseTest {
                 .build();
     }
 
+    private UpdateStepDto updateStepDto() {
+        return UpdateStepDto.builder()
+                .name("Name")
+                .description("Description")
+                .sequence(1)
+                .build();
+    }
+
     private AddIngredientDto addIngredientDto() {
         return AddIngredientDto.builder()
                 .name("Name")
@@ -301,6 +349,13 @@ public class ReceiptTestIT extends BaseTest {
         return AddIngredientDto.builder()
                 .name("Name2")
                 .quantity("Quantity2")
+                .build();
+    }
+
+    private UpdateIngredientDto updateIngredientDto() {
+        return UpdateIngredientDto.builder()
+                .name("Name")
+                .quantity("Quantity")
                 .build();
     }
 

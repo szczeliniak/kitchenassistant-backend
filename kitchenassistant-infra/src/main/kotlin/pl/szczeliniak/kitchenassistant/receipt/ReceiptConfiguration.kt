@@ -35,8 +35,16 @@ class ReceiptConfiguration {
         AddIngredientCommand(receiptDao, ingredientDao, ingredientFactory)
 
     @Bean
+    fun updateIngredientCommand(receiptDao: ReceiptDao, ingredientDao: IngredientDao): UpdateIngredientCommand =
+        UpdateIngredientCommand(receiptDao, ingredientDao)
+
+    @Bean
     fun addStepCommand(receiptDao: ReceiptDao, stepDao: StepDao, stepFactory: StepFactory): AddStepCommand =
         AddStepCommand(receiptDao, stepDao, stepFactory)
+
+    @Bean
+    fun updateStepCommand(receiptDao: ReceiptDao, stepDao: StepDao): UpdateStepCommand =
+        UpdateStepCommand(receiptDao, stepDao)
 
     @Bean
     fun deleteReceiptCommand(receiptDao: ReceiptDao): DeleteReceiptCommand = DeleteReceiptCommand(receiptDao)
