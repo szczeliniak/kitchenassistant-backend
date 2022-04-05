@@ -18,6 +18,16 @@ public class ReceiptTestIT extends BaseTest {
     }
 
     @Test
+    public void shouldUpdateReceipt() {
+        Integer userId = addUser(addUserDto()).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+
+        SuccessResponse response = updateReceipt(receiptId, updateReceiptDto(userId));
+
+        assertThat(response.getId()).isEqualTo(receiptId);
+    }
+
+    @Test
     public void shouldDeleteReceipt() {
         Integer userId = addUser(addUserDto()).getId();
         Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
@@ -233,6 +243,15 @@ public class ReceiptTestIT extends BaseTest {
                 .as(SuccessResponse.class);
     }
 
+    private SuccessResponse updateReceipt(Integer id, UpdateReceiptDto dto) {
+        return spec().body(dto)
+                .put("/receipts/" + id)
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(SuccessResponse.class);
+    }
+
     private AddReceiptDto addReceiptDto(Integer userId) {
         return AddReceiptDto.builder()
                 .name("Name")
@@ -242,6 +261,16 @@ public class ReceiptTestIT extends BaseTest {
                 .userId(userId)
                 .steps(Collections.singletonList(addStepDto()))
                 .ingredients(Collections.singletonList(addIngredientDto()))
+                .build();
+    }
+
+    private UpdateReceiptDto updateReceiptDto(Integer userId) {
+        return UpdateReceiptDto.builder()
+                .name("Name")
+                .author("Author")
+                .description("Description")
+                .source("Source")
+                .userId(userId)
                 .build();
     }
 

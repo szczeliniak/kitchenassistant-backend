@@ -163,6 +163,17 @@ public abstract class BaseTest implements WithAssertions {
 
     @Data
     @NoArgsConstructor
+    @SuperBuilder
+    protected static class UpdateReceiptDto {
+        private Integer userId;
+        private String name;
+        private String description;
+        private String author;
+        private String source;
+    }
+
+    @Data
+    @NoArgsConstructor
     protected static class UsersResponse {
         private List<User> users;
     }

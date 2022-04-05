@@ -24,6 +24,9 @@ class ReceiptConfiguration {
         AddReceiptCommand(receiptDao, receiptFactory)
 
     @Bean
+    fun updateReceiptCommand(receiptDao: ReceiptDao): UpdateReceiptCommand = UpdateReceiptCommand(receiptDao)
+
+    @Bean
     fun addIngredientCommand(
         receiptDao: ReceiptDao,
         ingredientDao: IngredientDao,

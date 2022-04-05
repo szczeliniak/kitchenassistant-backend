@@ -6,6 +6,7 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
+import pl.szczeliniak.kitchenassistant.receipt.commands.dto.UpdateReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
@@ -17,6 +18,7 @@ class ReceiptController(
     private val getReceiptQuery: GetReceiptQuery,
     private val getReceiptsQuery: GetReceiptsQuery,
     private val addReceiptCommand: AddReceiptCommand,
+    private val updateReceiptCommand: UpdateReceiptCommand,
     private val addIngredientCommand: AddIngredientCommand,
     private val addStepCommand: AddStepCommand,
     private val deleteReceiptCommand: DeleteReceiptCommand,
@@ -37,6 +39,11 @@ class ReceiptController(
     @PostMapping
     fun addReceipt(@RequestBody dto: NewReceiptDto): SuccessResponse {
         return addReceiptCommand.execute(dto)
+    }
+
+    @PutMapping("/{id}")
+    fun updateReceipt(@PathVariable id: Int, @RequestBody dto: UpdateReceiptDto): SuccessResponse {
+        return updateReceiptCommand.execute(id, dto)
     }
 
     @DeleteMapping("/{id}")

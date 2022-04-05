@@ -30,6 +30,21 @@ class Receipt(
     val modifiedAt: LocalDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_
 
+    fun update(
+        name: String,
+        description: String?,
+        userId: Int,
+        author: String? = null,
+        source: String? = null
+    ) {
+        this.name_ = name
+        this.description_ = description
+        this.userId_ = userId
+        this.author_ = author
+        this.source_ = source
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
     fun markAsDeleted() {
         if (deleted_) {
             throw NotAllowedOperationException("Receipt is already marked as deleted!")
