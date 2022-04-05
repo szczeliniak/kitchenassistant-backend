@@ -5,7 +5,6 @@ import java.time.LocalDate
 
 data class ShoppingListDto(
     val id: Int,
-    val userId: Int,
     val name: String,
     val description: String?,
     val date: LocalDate?,
@@ -17,7 +16,6 @@ data class ShoppingListDto(
         fun fromDomain(shoppingList: ShoppingList): ShoppingListDto {
             return ShoppingListDto(
                 shoppingList.id,
-                shoppingList.userId,
                 shoppingList.name,
                 shoppingList.description,
                 shoppingList.date,

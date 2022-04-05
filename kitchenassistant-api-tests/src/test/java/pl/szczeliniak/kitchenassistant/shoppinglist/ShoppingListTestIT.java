@@ -59,7 +59,7 @@ public class ShoppingListTestIT extends BaseTest {
         assertThat(response.getShoppingLists())
                 .usingRecursiveComparison()
                 .ignoringFields("items.id")
-                .isEqualTo(List.of(shoppingList(shoppingListId, userId), shoppingList2(shoppingListId2, userId)));
+                .isEqualTo(List.of(shoppingList(shoppingListId), shoppingList2(shoppingListId2)));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class ShoppingListTestIT extends BaseTest {
         assertThat(response.getShoppingList())
                 .usingRecursiveComparison()
                 .ignoringFields("items.id")
-                .isEqualTo(shoppingList(shoppingListId, userId));
+                .isEqualTo(shoppingList(shoppingListId));
     }
 
     @Test
@@ -118,10 +118,9 @@ public class ShoppingListTestIT extends BaseTest {
         assertThat(response.getId()).isEqualTo(shoppingListItemId);
     }
 
-    private ShoppingList shoppingList(Integer shoppingListId, Integer userId) {
+    private ShoppingList shoppingList(Integer shoppingListId) {
         return ShoppingList.builder()
                 .id(shoppingListId)
-                .userId(userId)
                 .name("Name")
                 .description("Description")
                 .date(LocalDate.now())
@@ -139,10 +138,9 @@ public class ShoppingListTestIT extends BaseTest {
                 .build();
     }
 
-    private ShoppingList shoppingList2(Integer shoppingListId, Integer userId) {
+    private ShoppingList shoppingList2(Integer shoppingListId) {
         return ShoppingList.builder()
                 .id(shoppingListId)
-                .userId(userId)
                 .name("Name 2")
                 .description("Description 2")
                 .date(LocalDate.now())

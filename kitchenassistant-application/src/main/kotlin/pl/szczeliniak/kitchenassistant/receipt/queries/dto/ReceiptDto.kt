@@ -4,7 +4,6 @@ import pl.szczeliniak.kitchenassistant.receipt.Receipt
 
 data class ReceiptDto(
     val id: Int,
-    val userId: Int,
     val name: String,
     val description: String?,
     val author: String?,
@@ -17,7 +16,6 @@ data class ReceiptDto(
         fun fromDomain(receipt: Receipt): ReceiptDto {
             return ReceiptDto(
                 receipt.id,
-                receipt.userId,
                 receipt.name,
                 receipt.description,
                 receipt.author,

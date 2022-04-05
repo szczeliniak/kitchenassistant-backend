@@ -113,7 +113,6 @@ public abstract class BaseTest implements WithAssertions {
     @SuperBuilder
     protected static class Receipt {
         private Integer id;
-        private Integer userId;
         private String name;
         private Category category;
         private String description;
@@ -281,7 +280,6 @@ public abstract class BaseTest implements WithAssertions {
     @SuperBuilder
     protected static class ShoppingList {
         private Integer id;
-        private Integer userId;
         private String name;
         private String description;
         private LocalDate date;

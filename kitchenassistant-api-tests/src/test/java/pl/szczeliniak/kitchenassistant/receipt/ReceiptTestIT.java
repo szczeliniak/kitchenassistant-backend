@@ -52,7 +52,7 @@ public class ReceiptTestIT extends BaseTest {
         assertThat(response.getReceipts())
                 .usingRecursiveComparison()
                 .ignoringFields("ingredients.id", "steps.id", "category.id")
-                .isEqualTo(List.of(receipt(receiptId, userId, category()), receipt2(receiptId2, userId)));
+                .isEqualTo(List.of(receipt(receiptId, category()), receipt2(receiptId2)));
     }
 
     @Test
@@ -66,7 +66,7 @@ public class ReceiptTestIT extends BaseTest {
         assertThat(response.getReceipt())
                 .usingRecursiveComparison()
                 .ignoringFields("ingredients.id", "steps.id", "category.id")
-                .isEqualTo(receipt(receiptId, userId, category()));
+                .isEqualTo(receipt(receiptId, category()));
     }
 
     @Test
@@ -166,7 +166,7 @@ public class ReceiptTestIT extends BaseTest {
                 .build();
     }
 
-    private Receipt receipt(Integer id, Integer userId, Category category) {
+    private Receipt receipt(Integer id, Category category) {
         return Receipt.builder()
                 .id(id)
                 .name("Name")
@@ -174,7 +174,6 @@ public class ReceiptTestIT extends BaseTest {
                 .description("Description")
                 .source("Source")
                 .category(category)
-                .userId(userId)
                 .steps(Collections.singletonList(step()))
                 .ingredients(Collections.singletonList(ingredient()))
                 .build();
@@ -195,14 +194,13 @@ public class ReceiptTestIT extends BaseTest {
                 .build();
     }
 
-    private Receipt receipt2(Integer id, Integer userId) {
+    private Receipt receipt2(Integer id) {
         return Receipt.builder()
                 .id(id)
                 .name("Name2")
                 .author("Author2")
                 .description("Description2")
                 .source("Source2")
-                .userId(userId)
                 .steps(Collections.singletonList(step2()))
                 .ingredients(Collections.singletonList(ingredient2()))
                 .build();
