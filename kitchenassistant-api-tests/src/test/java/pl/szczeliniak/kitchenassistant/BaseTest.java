@@ -73,6 +73,16 @@ public abstract class BaseTest implements WithAssertions {
     @Data
     @NoArgsConstructor
     @SuperBuilder
+    protected static class RegisterDto {
+        private String email;
+        private String password;
+        private String name;
+        private String passwordRepeated;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
     protected static class LoginResponse {
         private String token;
         private Integer id;

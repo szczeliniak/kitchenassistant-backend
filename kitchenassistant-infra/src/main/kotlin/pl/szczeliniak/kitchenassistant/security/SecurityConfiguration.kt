@@ -24,7 +24,9 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import pl.szczeliniak.kitchenassistant.exceptions.ExceptionResponse
 import pl.szczeliniak.kitchenassistant.security.commands.LoginCommand
+import pl.szczeliniak.kitchenassistant.security.commands.RegisterCommand
 import pl.szczeliniak.kitchenassistant.security.commands.factories.TokenFactory
+import pl.szczeliniak.kitchenassistant.user.commands.AddUserCommand
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByEmailAndPasswordQuery
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -45,7 +47,10 @@ class SecurityConfiguration(
             if (isDevProfileEnabled()) {
                 http.authorizeRequests().anyRequest().permitAll()
             } else {
-                http.authorizeRequests().antMatchers("/login/**").permitAll().anyRequest().authenticated()
+                http.authorizeRequests().antMatchers("/login/**", "/register/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
                 http.addFilterBefore(jwtAuthorizationFilter, BasicAuthenticationFilter::class.java)
             }
 
@@ -96,6 +101,10 @@ class SecurityConfiguration(
         getUserByEmailAndPasswordQuery: GetUserByEmailAndPasswordQuery,
         tokenFactory: TokenFactory
     ): LoginCommand = LoginCommand(getUserByEmailAndPasswordQuery, tokenFactory)
+
+    @Bean
+    fun registerCommand(addUserCommand: AddUserCommand, tokenFactory: TokenFactory): RegisterCommand =
+        RegisterCommand(addUserCommand, tokenFactory)
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {

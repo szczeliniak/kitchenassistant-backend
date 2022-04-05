@@ -15,6 +15,14 @@ public class SecurityTestIT extends BaseTest {
         assertThat(loginResponse.getId()).isNotNull();
     }
 
+    @Test
+    public void shouldRegister() {
+        LoginResponse loginResponse = register(registerDto());
+
+        assertThat(loginResponse.getToken()).isNotNull();
+        assertThat(loginResponse.getId()).isNotNull();
+    }
+
     private LoginDto loginDto() {
         return LoginDto.builder()
                 .email("user@gmail.com")
@@ -29,6 +37,24 @@ public class SecurityTestIT extends BaseTest {
                 .statusCode(200)
                 .extract()
                 .as(LoginResponse.class);
+    }
+
+    private LoginResponse register(RegisterDto registerDto) {
+        return spec().body(registerDto)
+                .post("/register")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(LoginResponse.class);
+    }
+
+    private RegisterDto registerDto() {
+        return RegisterDto.builder()
+                .email("user@gmail.com")
+                .name("name")
+                .password("Password")
+                .passwordRepeated("Password")
+                .build();
     }
 
 }
