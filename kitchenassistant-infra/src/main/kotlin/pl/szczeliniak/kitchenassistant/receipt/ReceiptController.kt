@@ -4,8 +4,10 @@ import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.*
+import pl.szczeliniak.kitchenassistant.receipt.queries.GetCategoriesQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.CategoriesResponse
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptsResponse
 
@@ -22,7 +24,8 @@ class ReceiptController(
     private val updateIngredientCommand: UpdateIngredientCommand,
     private val addStepCommand: AddStepCommand,
     private val deleteStepCommand: DeleteStepCommand,
-    private val updateStepCommand: UpdateStepCommand
+    private val updateStepCommand: UpdateStepCommand,
+    private val getCategoriesQuery: GetCategoriesQuery
 ) {
 
     @GetMapping("/{id}")
@@ -84,5 +87,9 @@ class ReceiptController(
         return deleteIngredientCommand.execute(id, ingredientId)
     }
 
+    @GetMapping("/categories")
+    fun getCategories(@RequestParam(required = false) userId: Int?): CategoriesResponse {
+        return getCategoriesQuery.execute(CategoryCriteria(userId))
+    }
 
 }

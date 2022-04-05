@@ -6,6 +6,7 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.IngredientFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.ReceiptFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.StepFactory
+import pl.szczeliniak.kitchenassistant.receipt.queries.GetCategoriesQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
@@ -60,6 +61,9 @@ class ReceiptConfiguration {
 
     @Bean
     fun ingredientFactory(): IngredientFactory = IngredientFactory()
+
+    @Bean
+    fun getCategoriesQuery(categoryDao: CategoryDao): GetCategoriesQuery = GetCategoriesQuery(categoryDao)
 
     @Bean
     fun receiptFactory(
