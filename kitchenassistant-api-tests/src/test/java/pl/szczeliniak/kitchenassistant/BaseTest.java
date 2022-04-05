@@ -224,7 +224,26 @@ public abstract class BaseTest implements WithAssertions {
     @Data
     @NoArgsConstructor
     @SuperBuilder
+    protected static class UpdateShoppingListDto {
+        private Integer userId;
+        private String name;
+        private String description;
+        private LocalDate date;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
     protected static class AddShoppingListItemDto {
+        private String name;
+        private String quantity;
+        private Integer sequence;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
+    protected static class UpdateShoppingListItemDto {
         private String name;
         private String quantity;
         private Integer sequence;

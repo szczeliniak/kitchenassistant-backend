@@ -19,6 +19,16 @@ public class ShoppingListTestIT extends BaseTest {
     }
 
     @Test
+    public void shouldUpdateShoppingList() {
+        Integer userId = addUser(addUserDto()).getId();
+        Integer shoppingListId = addShoppingList(addShoppingListDto(userId)).getId();
+
+        SuccessResponse response = updateShoppingList(shoppingListId, updateShoppingListDto(userId));
+
+        assertThat(response.getId()).isEqualTo(shoppingListId);
+    }
+
+    @Test
     public void shouldMarkShoppingListAsArchived() {
         Integer userId = addUser(addUserDto()).getId();
         Integer shoppingListId = addShoppingList(addShoppingListDto(userId)).getId();
@@ -73,6 +83,17 @@ public class ShoppingListTestIT extends BaseTest {
         SuccessResponse response = addShoppingListItem(shoppingListId, addShoppingListItemDto2());
 
         assertThat(response.getId()).isNotNull();
+    }
+
+    @Test
+    public void shouldUpdateShoppingListItem() {
+        Integer userId = addUser(addUserDto()).getId();
+        Integer shoppingListId = addShoppingList(addShoppingListDto(userId)).getId();
+        Integer shoppingListItemId = addShoppingListItem(shoppingListId, addShoppingListItemDto2()).getId();
+
+        SuccessResponse response = updateShoppingListItem(shoppingListId, shoppingListItemId, updateShoppingListItemDto());
+
+        assertThat(response.getId()).isEqualTo(shoppingListItemId);
     }
 
     @Test
@@ -149,6 +170,16 @@ public class ShoppingListTestIT extends BaseTest {
                 .as(SuccessResponse.class);
     }
 
+    private SuccessResponse updateShoppingList(Integer id, UpdateShoppingListDto updateShoppingListDto) {
+        return spec()
+                .body(updateShoppingListDto)
+                .put("/shoppinglists/" + id)
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(SuccessResponse.class);
+    }
+
     private AddShoppingListDto addShoppingListDto(Integer userId) {
         return AddShoppingListDto.builder()
                 .name("Name")
@@ -169,6 +200,15 @@ public class ShoppingListTestIT extends BaseTest {
                 .build();
     }
 
+    private UpdateShoppingListDto updateShoppingListDto(Integer userId) {
+        return UpdateShoppingListDto.builder()
+                .name("Name")
+                .description("Description")
+                .userId(userId)
+                .date(LocalDate.now())
+                .build();
+    }
+
     private AddShoppingListItemDto addShoppingListItemDto() {
         return AddShoppingListItemDto.builder()
                 .name("Shopping list item name")
@@ -183,6 +223,24 @@ public class ShoppingListTestIT extends BaseTest {
                 .quantity("Quantity 2")
                 .sequence(2)
                 .build();
+    }
+
+    private UpdateShoppingListItemDto updateShoppingListItemDto() {
+        return UpdateShoppingListItemDto.builder()
+                .name("Shopping list item name")
+                .quantity("Quantity")
+                .sequence(1)
+                .build();
+    }
+
+    private SuccessResponse updateShoppingListItem(Integer shoppingListId, Integer itemId, UpdateShoppingListItemDto dto) {
+        return spec()
+                .body(dto)
+                .put("/shoppinglists/" + shoppingListId + "/items/" + itemId)
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(SuccessResponse.class);
     }
 
     private SuccessResponse deleteShoppingList(Integer shoppingListId) {

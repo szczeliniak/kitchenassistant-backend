@@ -7,7 +7,7 @@ data class ShoppingListItem(
     private var id_: Int = 0,
     private var name_: String,
     private var quantity_: String,
-    private var sequence_: Int?,
+    private var sequence_: Int? = null,
     private var deleted_: Boolean = false,
     private var done_: Boolean = false,
     private val createdAt_: LocalDateTime = LocalDateTime.now(),
@@ -32,6 +32,13 @@ data class ShoppingListItem(
 
     fun markAsDone(done: Boolean) {
         done_ = done
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
+    fun update(name: String, quantity: String, sequence: Int?) {
+        this.name_ = name
+        this.quantity_ = quantity
+        this.sequence_ = sequence
         this.modifiedAt_ = LocalDateTime.now()
     }
 
