@@ -14,6 +14,10 @@ class CategoryDaoImpl(
             .map { categoryMapper.toDomain(it) }
     }
 
+    override fun findById(id: Int): Category? {
+        return categoryRepository.findById(id)?.let { categoryMapper.toDomain(it) }
+    }
+
     override fun save(category: Category): Category {
         return categoryMapper.toDomain(categoryRepository.save(categoryMapper.toEntity(category)))
     }

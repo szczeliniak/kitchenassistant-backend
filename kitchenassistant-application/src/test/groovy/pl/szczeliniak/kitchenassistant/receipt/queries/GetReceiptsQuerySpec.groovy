@@ -41,6 +41,7 @@ class GetReceiptsQuerySpec extends Specification {
                 'RECEIPT_DESCRIPTION',
                 'RECEIPT_AUTHOR',
                 'RECEIPT_SOURCE',
+                null,
                 Collections.singletonList(ingredient),
                 Collections.singletonList(step),
                 false,
@@ -57,7 +58,7 @@ class GetReceiptsQuerySpec extends Specification {
     }
 
     private static ReceiptDto receiptDto(IngredientDto ingredient, StepDto step) {
-        return new ReceiptDto(1, 2, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE", Collections.singletonList(ingredient), Collections.singletonList(step))
+        return new ReceiptDto(1, 2, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE", null, Collections.singletonList(ingredient), Collections.singletonList(step))
     }
 
     private static IngredientDto ingredientDto() {

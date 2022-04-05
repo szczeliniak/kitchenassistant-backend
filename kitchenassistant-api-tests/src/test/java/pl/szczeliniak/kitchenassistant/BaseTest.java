@@ -115,6 +115,7 @@ public abstract class BaseTest implements WithAssertions {
         private Integer id;
         private Integer userId;
         private String name;
+        private Category category;
         private String description;
         private String author;
         private String source;
@@ -183,6 +184,7 @@ public abstract class BaseTest implements WithAssertions {
         private String name;
         private String description;
         private String author;
+        private Integer categoryId;
         private String source;
         private List<AddIngredientDto> ingredients;
         private List<AddStepDto> steps;
@@ -194,6 +196,7 @@ public abstract class BaseTest implements WithAssertions {
     protected static class UpdateReceiptDto {
         private Integer userId;
         private String name;
+        private Integer categoryId;
         private String description;
         private String author;
         private String source;

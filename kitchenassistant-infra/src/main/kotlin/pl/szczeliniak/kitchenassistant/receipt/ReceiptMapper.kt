@@ -6,7 +6,8 @@ import pl.szczeliniak.kitchenassistant.receipt.persistance.ReceiptEntity
 @Component
 class ReceiptMapper(
     private val stepMapper: StepMapper,
-    private val ingredientMapper: IngredientMapper
+    private val ingredientMapper: IngredientMapper,
+    private val categoryMapper: CategoryMapper,
 ) {
 
     fun toDomain(receiptEntity: ReceiptEntity): Receipt {
@@ -17,6 +18,7 @@ class ReceiptMapper(
             receiptEntity.description,
             receiptEntity.author,
             receiptEntity.source,
+            receiptEntity.category?.let { categoryMapper.toDomain(it) },
             receiptEntity.ingredients.map { ingredientMapper.toDomain(it) }.toMutableList(),
             receiptEntity.steps.map { stepMapper.toDomain(it) }.toMutableList(),
             receiptEntity.deleted,
@@ -33,6 +35,7 @@ class ReceiptMapper(
             receipt.description,
             receipt.author,
             receipt.source,
+            receipt.category?.let { categoryMapper.toEntity(it) },
             receipt.ingredients.map { ingredientMapper.toEntity(it) }.toMutableList(),
             receipt.steps.map { stepMapper.toEntity(it) }.toMutableList(),
             receipt.deleted,

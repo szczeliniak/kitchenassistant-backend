@@ -40,7 +40,7 @@ class UpdateStepCommandSpec extends Specification {
     }
 
     private static Receipt receipt(List<Step> steps) {
-        return new Receipt(1, 1, "", "", "", "", Collections.emptyList(),
+        return new Receipt(1, 1, "", "", "", "", null, Collections.emptyList(),
                 steps, false, LocalDateTime.now(), LocalDateTime.now())
     }
 

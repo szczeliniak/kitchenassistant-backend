@@ -60,7 +60,7 @@ class DeleteStepCommandSpec extends Specification {
     }
 
     private static Receipt receipt(List<Step> steps) {
-        return new Receipt(1, 2, '', '', '', '', Collections.emptyList(), steps, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 2, '', '', '', '', null, Collections.emptyList(), steps, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Step step(boolean deleted) {

@@ -9,6 +9,7 @@ data class ReceiptDto(
     val description: String?,
     val author: String?,
     val source: String?,
+    val category: CategoryDto?,
     val ingredients: List<IngredientDto>,
     val steps: List<StepDto>
 ) {
@@ -21,6 +22,7 @@ data class ReceiptDto(
                 receipt.description,
                 receipt.author,
                 receipt.source,
+                receipt.category?.let { CategoryDto.fromDomain(it) },
                 receipt.ingredients.map { IngredientDto.fromDomain(it) },
                 receipt.steps.map { StepDto.fromDomain(it) }
             )

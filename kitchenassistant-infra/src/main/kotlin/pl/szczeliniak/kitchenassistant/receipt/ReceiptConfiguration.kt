@@ -26,7 +26,8 @@ class ReceiptConfiguration {
         AddReceiptCommand(receiptDao, receiptFactory)
 
     @Bean
-    fun updateReceiptCommand(receiptDao: ReceiptDao): UpdateReceiptCommand = UpdateReceiptCommand(receiptDao)
+    fun updateReceiptCommand(receiptDao: ReceiptDao, categoryDao: CategoryDao): UpdateReceiptCommand =
+        UpdateReceiptCommand(receiptDao, categoryDao)
 
     @Bean
     fun addIngredientCommand(
@@ -77,7 +78,8 @@ class ReceiptConfiguration {
     fun receiptFactory(
         getUserByIdQuery: GetUserByIdQuery,
         stepFactory: StepFactory,
-        ingredientFactory: IngredientFactory
-    ): ReceiptFactory = ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory)
+        ingredientFactory: IngredientFactory,
+        categoryDao: CategoryDao
+    ): ReceiptFactory = ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, categoryDao)
 
 }

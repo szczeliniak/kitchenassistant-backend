@@ -1,9 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands.factories
 
 import org.assertj.core.api.Assertions
-import pl.szczeliniak.kitchenassistant.receipt.Ingredient
-import pl.szczeliniak.kitchenassistant.receipt.Receipt
-import pl.szczeliniak.kitchenassistant.receipt.Step
+import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
@@ -20,17 +18,20 @@ class ReceiptFactorySpec extends Specification {
     def getUserQuery = Mock(GetUserByIdQuery)
     def ingredientFactory = Mock(IngredientFactory)
     def stepFactory = Mock(StepFactory)
+    def categoryDao = Mock(CategoryDao)
 
     @Subject
-    def receiptFactory = new ReceiptFactory(getUserQuery, ingredientFactory, stepFactory)
+    def receiptFactory = new ReceiptFactory(getUserQuery, ingredientFactory, stepFactory, categoryDao)
 
     def 'should create receipt'() {
         given:
         def newIngredientDto = newIngredientDto()
         def newStepDto = newStepDto()
+        def category = category()
         getUserQuery.execute(1) >> userResponse()
         ingredientFactory.create(newIngredientDto) >> ingredient()
         stepFactory.create(newStepDto) >> step()
+        categoryDao.findById(2) >> category
 
         when:
         def result = receiptFactory.create(newReceiptDto(newIngredientDto, newStepDto))
@@ -39,11 +40,11 @@ class ReceiptFactorySpec extends Specification {
         Assertions.assertThat(result).usingRecursiveComparison()
                 .ignoringFields("createdAt_", "modifiedAt_", "ingredients_.createdAt_",
                         "ingredients_.modifiedAt_", "steps_.createdAt_", "steps_.modifiedAt_")
-                .isEqualTo(receipt())
+                .isEqualTo(receipt(category))
     }
 
     private static NewReceiptDto newReceiptDto(NewIngredientDto newIngredientDto, NewStepDto newStepDto) {
-        return new NewReceiptDto(2, "RECEIPT_NAME", "RECEIPT_DESCRIPTION", "RECEIPT_AUTHOR",
+        return new NewReceiptDto(2, "RECEIPT_NAME", 2, "RECEIPT_DESCRIPTION", "RECEIPT_AUTHOR",
                 "RECEIPT_SOURCE", Collections.singletonList(newIngredientDto), Collections.singletonList(newStepDto))
     }
 
@@ -59,9 +60,9 @@ class ReceiptFactorySpec extends Specification {
         return new UserResponse(new UserDto(1, "", ""))
     }
 
-    private static Receipt receipt() {
+    private static Receipt receipt(Category category) {
         return new Receipt(0, 2, "RECEIPT_NAME", "RECEIPT_DESCRIPTION", "RECEIPT_AUTHOR",
-                "RECEIPT_SOURCE", Collections.singletonList(ingredient()), Collections.singletonList(step()),
+                "RECEIPT_SOURCE", category, Collections.singletonList(ingredient()), Collections.singletonList(step()),
                 false, LocalDateTime.now(), LocalDateTime.now())
     }
 
@@ -73,4 +74,7 @@ class ReceiptFactorySpec extends Specification {
         return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
+    private static Category category() {
+        return new Category(0, "", 0, false, LocalDateTime.now(), LocalDateTime.now())
+    }
 }

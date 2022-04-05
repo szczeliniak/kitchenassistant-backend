@@ -12,6 +12,7 @@ class Receipt(
     private var description_: String?,
     private var author_: String?,
     private var source_: String?,
+    private var category_: Category?,
     private var ingredients_: MutableList<Ingredient> = mutableListOf(),
     private var steps_: MutableList<Step> = mutableListOf(),
     private var deleted_: Boolean = false,
@@ -24,6 +25,7 @@ class Receipt(
     val description: String? get() = description_
     val author: String? get() = author_
     val source: String? get() = source_
+    val category: Category? get() = category_
     val ingredients: List<Ingredient> get() = Collections.unmodifiableList(ingredients_)
     val steps: List<Step> get() = Collections.unmodifiableList(steps_)
     val createdAt: LocalDateTime get() = createdAt_
@@ -32,8 +34,9 @@ class Receipt(
 
     fun update(
         name: String,
-        description: String?,
         userId: Int,
+        description: String? = null,
+        category: Category? = null,
         author: String? = null,
         source: String? = null
     ) {
@@ -42,6 +45,7 @@ class Receipt(
         this.userId_ = userId
         this.author_ = author
         this.source_ = source
+        this.category_ = category
         this.modifiedAt_ = LocalDateTime.now()
     }
 

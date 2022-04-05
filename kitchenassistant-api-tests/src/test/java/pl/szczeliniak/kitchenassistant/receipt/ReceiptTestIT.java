@@ -11,8 +11,9 @@ public class ReceiptTestIT extends BaseTest {
     @Test
     public void shouldAddReceipt() {
         Integer userId = addUser(addUserDto()).getId();
+        Integer categoryId = addCategory(addCategoryDto(userId)).getId();
 
-        SuccessResponse response = addReceipt(addReceiptDto(userId));
+        SuccessResponse response = addReceipt(addReceiptDto(userId, categoryId));
 
         assertThat(response.getId()).isNotNull();
     }
@@ -20,9 +21,10 @@ public class ReceiptTestIT extends BaseTest {
     @Test
     public void shouldUpdateReceipt() {
         Integer userId = addUser(addUserDto()).getId();
-        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+        Integer categoryId = addCategory(addCategoryDto(userId)).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId, categoryId)).getId();
 
-        SuccessResponse response = updateReceipt(receiptId, updateReceiptDto(userId));
+        SuccessResponse response = updateReceipt(receiptId, updateReceiptDto(userId, categoryId));
 
         assertThat(response.getId()).isEqualTo(receiptId);
     }
@@ -30,7 +32,8 @@ public class ReceiptTestIT extends BaseTest {
     @Test
     public void shouldDeleteReceipt() {
         Integer userId = addUser(addUserDto()).getId();
-        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+        Integer categoryId = addCategory(addCategoryDto(userId)).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId, categoryId)).getId();
 
         SuccessResponse response = deleteReceipt(receiptId);
 
@@ -40,34 +43,37 @@ public class ReceiptTestIT extends BaseTest {
     @Test
     public void shouldReturnReceipts() {
         Integer userId = addUser(addUserDto()).getId();
-        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+        Integer categoryId = addCategory(addCategoryDto(userId)).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId, categoryId)).getId();
         Integer receiptId2 = addReceipt(addReceiptDto2(userId)).getId();
 
         ReceiptsResponse response = getReceipts();
 
         assertThat(response.getReceipts())
                 .usingRecursiveComparison()
-                .ignoringFields("ingredients.id", "steps.id")
-                .isEqualTo(List.of(receipt(receiptId, userId), receipt2(receiptId2, userId)));
+                .ignoringFields("ingredients.id", "steps.id", "category.id")
+                .isEqualTo(List.of(receipt(receiptId, userId, category()), receipt2(receiptId2, userId)));
     }
 
     @Test
     public void shouldReturnReceiptById() {
         Integer userId = addUser(addUserDto()).getId();
-        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+        Integer categoryId = addCategory(addCategoryDto(userId)).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId, categoryId)).getId();
 
         ReceiptResponse response = getReceiptWithSuccess(receiptId);
 
         assertThat(response.getReceipt())
                 .usingRecursiveComparison()
-                .ignoringFields("ingredients.id", "steps.id")
-                .isEqualTo(receipt(receiptId, userId));
+                .ignoringFields("ingredients.id", "steps.id", "category.id")
+                .isEqualTo(receipt(receiptId, userId, category()));
     }
 
     @Test
     public void shouldAddStepToReceipt() {
         Integer userId = addUser(addUserDto()).getId();
-        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+        Integer categoryId = addCategory(addCategoryDto(userId)).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId, categoryId)).getId();
 
         SuccessResponse response = addStep(receiptId, addStepDto2());
 
@@ -77,7 +83,8 @@ public class ReceiptTestIT extends BaseTest {
     @Test
     public void shouldDeleteStep() {
         Integer userId = addUser(addUserDto()).getId();
-        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+        Integer categoryId = addCategory(addCategoryDto(userId)).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId, categoryId)).getId();
         Integer stepId = addStep(receiptId, addStepDto2()).getId();
 
         SuccessResponse response = deleteStep(receiptId, stepId);
@@ -88,7 +95,8 @@ public class ReceiptTestIT extends BaseTest {
     @Test
     public void shouldUpdateStep() {
         Integer userId = addUser(addUserDto()).getId();
-        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+        Integer categoryId = addCategory(addCategoryDto(userId)).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId, categoryId)).getId();
         Integer stepId = addStep(receiptId, addStepDto2()).getId();
 
         SuccessResponse response = updateStep(receiptId, stepId, updateStepDto());
@@ -99,7 +107,8 @@ public class ReceiptTestIT extends BaseTest {
     @Test
     public void shouldAddIngredientToReceipt() {
         Integer userId = addUser(addUserDto()).getId();
-        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+        Integer categoryId = addCategory(addCategoryDto(userId)).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId, categoryId)).getId();
 
         SuccessResponse response = addIngredient(receiptId, addIngredientDto2());
 
@@ -109,7 +118,8 @@ public class ReceiptTestIT extends BaseTest {
     @Test
     public void shouldUpdateIngredient() {
         Integer userId = addUser(addUserDto()).getId();
-        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+        Integer categoryId = addCategory(addCategoryDto(userId)).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId, categoryId)).getId();
         Integer ingredientId = addIngredient(receiptId, addIngredientDto2()).getId();
 
         SuccessResponse response = updateIngredient(receiptId, ingredientId, updateIngredientDto());
@@ -120,7 +130,8 @@ public class ReceiptTestIT extends BaseTest {
     @Test
     public void shouldDeleteIngredient() {
         Integer userId = addUser(addUserDto()).getId();
-        Integer receiptId = addReceipt(addReceiptDto(userId)).getId();
+        Integer categoryId = addCategory(addCategoryDto(userId)).getId();
+        Integer receiptId = addReceipt(addReceiptDto(userId, categoryId)).getId();
         Integer ingredientId = addIngredient(receiptId, addIngredientDto2()).getId();
 
         SuccessResponse response = deleteIngredient(receiptId, ingredientId);
@@ -155,13 +166,14 @@ public class ReceiptTestIT extends BaseTest {
                 .build();
     }
 
-    private Receipt receipt(Integer id, Integer userId) {
+    private Receipt receipt(Integer id, Integer userId, Category category) {
         return Receipt.builder()
                 .id(id)
                 .name("Name")
                 .author("Author")
                 .description("Description")
                 .source("Source")
+                .category(category)
                 .userId(userId)
                 .steps(Collections.singletonList(step()))
                 .ingredients(Collections.singletonList(ingredient()))
@@ -328,24 +340,26 @@ public class ReceiptTestIT extends BaseTest {
                 .as(SuccessResponse.class);
     }
 
-    private AddReceiptDto addReceiptDto(Integer userId) {
+    private AddReceiptDto addReceiptDto(Integer userId, Integer categoryId) {
         return AddReceiptDto.builder()
                 .name("Name")
                 .author("Author")
                 .description("Description")
                 .source("Source")
                 .userId(userId)
+                .categoryId(categoryId)
                 .steps(Collections.singletonList(addStepDto()))
                 .ingredients(Collections.singletonList(addIngredientDto()))
                 .build();
     }
 
-    private UpdateReceiptDto updateReceiptDto(Integer userId) {
+    private UpdateReceiptDto updateReceiptDto(Integer userId, Integer categoryId) {
         return UpdateReceiptDto.builder()
                 .name("Name")
                 .author("Author")
                 .description("Description")
                 .source("Source")
+                .categoryId(categoryId)
                 .userId(userId)
                 .build();
     }

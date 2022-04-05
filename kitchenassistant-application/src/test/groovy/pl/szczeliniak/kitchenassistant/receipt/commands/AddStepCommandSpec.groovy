@@ -46,7 +46,7 @@ class AddStepCommandSpec extends Specification {
     }
 
     private static Receipt receipt() {
-        return new Receipt(1, 0, "", "", "", "", Collections.emptyList(), new ArrayList<Step>(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 0, "", "", "", "", null, Collections.emptyList(), new ArrayList<Step>(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

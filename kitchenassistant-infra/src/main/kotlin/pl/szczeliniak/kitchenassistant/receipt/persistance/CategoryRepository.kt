@@ -32,6 +32,19 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
         return typedQuery.resultList
     }
 
+    fun findById(id: Int): CategoryEntity? {
+        return entityManager
+            .createQuery(
+                "SELECT r FROM CategoryEntity r WHERE r.id = :id AND r.deleted = false",
+                CategoryEntity::class.java
+            )
+            .setParameter("id", id)
+            .resultList
+            .stream()
+            .findFirst()
+            .orElse(null)
+    }
+
     @Transactional
     fun clear() {
         entityManager.createQuery("DELETE FROM CategoryEntity").executeUpdate()
