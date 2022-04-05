@@ -20,6 +20,7 @@ data class ShoppingListEntity(
         cascade = [CascadeType.ALL],
         fetch = FetchType.LAZY
     )
+    @OrderBy("sequence")
     var items: MutableList<ShoppingListItemEntity>,
     var deleted: Boolean,
     var archived: Boolean,

@@ -21,6 +21,7 @@ data class ReceiptEntity(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var ingredients: MutableList<IngredientEntity>,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OrderBy("sequence")
     var steps: MutableList<StepEntity>,
     var deleted: Boolean,
     var createdAt: LocalDateTime,
