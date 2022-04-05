@@ -32,6 +32,11 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
         return typedQuery.resultList
     }
 
+    @Transactional
+    fun clear() {
+        entityManager.createQuery("DELETE FROM CategoryEntity").executeUpdate()
+    }
+
     data class SearchCriteria(val userId: Int?)
 
 }

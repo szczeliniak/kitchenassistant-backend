@@ -128,6 +128,33 @@ public class ReceiptTestIT extends BaseTest {
         assertThat(response.getId()).isEqualTo(ingredientId);
     }
 
+    @Test
+    public void shouldAddCategory() {
+        Integer userId = addUser(addUserDto()).getId();
+
+        SuccessResponse response = addCategory(addCategoryDto(userId));
+
+        assertThat(response.getId()).isNotNull();
+    }
+
+    @Test
+    public void shouldReturnCategories() {
+        Integer userId = addUser(addUserDto()).getId();
+        addCategory(addCategoryDto(userId));
+
+        CategoriesResponse response = getCategories();
+
+        assertThat(response.getCategories()).usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(Collections.singletonList(category()));
+    }
+
+    private Category category() {
+        return Category.builder()
+                .name("Name")
+                .build();
+    }
+
     private Receipt receipt(Integer id, Integer userId) {
         return Receipt.builder()
                 .id(id)
@@ -292,6 +319,15 @@ public class ReceiptTestIT extends BaseTest {
                 .as(SuccessResponse.class);
     }
 
+    private SuccessResponse addCategory(AddCategoryDto addCategoryDto) {
+        return spec().body(addCategoryDto)
+                .post("/receipts/categories")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(SuccessResponse.class);
+    }
+
     private AddReceiptDto addReceiptDto(Integer userId) {
         return AddReceiptDto.builder()
                 .name("Name")
@@ -357,6 +393,22 @@ public class ReceiptTestIT extends BaseTest {
                 .name("Name")
                 .quantity("Quantity")
                 .build();
+    }
+
+    private AddCategoryDto addCategoryDto(Integer userId) {
+        return AddCategoryDto.builder()
+                .name("Name")
+                .userId(userId)
+                .build();
+    }
+
+    private CategoriesResponse getCategories() {
+        return spec()
+                .get("/receipts/categories")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(CategoriesResponse.class);
     }
 
 }

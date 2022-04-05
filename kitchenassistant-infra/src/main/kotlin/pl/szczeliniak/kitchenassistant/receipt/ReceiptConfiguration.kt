@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.receipt
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
+import pl.szczeliniak.kitchenassistant.receipt.commands.factories.CategoryFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.IngredientFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.ReceiptFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.StepFactory
@@ -61,6 +62,13 @@ class ReceiptConfiguration {
 
     @Bean
     fun ingredientFactory(): IngredientFactory = IngredientFactory()
+
+    @Bean
+    fun categoryFactory(): CategoryFactory = CategoryFactory()
+
+    @Bean
+    fun addCategoryCommand(categoryDao: CategoryDao, categoryFactory: CategoryFactory): AddCategoryCommand =
+        AddCategoryCommand(categoryDao, categoryFactory)
 
     @Bean
     fun getCategoriesQuery(categoryDao: CategoryDao): GetCategoriesQuery = GetCategoriesQuery(categoryDao)

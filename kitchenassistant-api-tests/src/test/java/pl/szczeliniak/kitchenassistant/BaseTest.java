@@ -297,4 +297,27 @@ public abstract class BaseTest implements WithAssertions {
         private Boolean done;
     }
 
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
+    protected static class AddCategoryDto {
+        private Integer userId;
+        private String name;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
+    protected static class Category {
+        private Integer id;
+        private String name;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
+    protected static class CategoriesResponse {
+        private List<Category> categories;
+    }
+
 }

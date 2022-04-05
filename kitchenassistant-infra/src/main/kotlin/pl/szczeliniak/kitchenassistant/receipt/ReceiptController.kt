@@ -17,6 +17,7 @@ class ReceiptController(
     private val getReceiptQuery: GetReceiptQuery,
     private val getReceiptsQuery: GetReceiptsQuery,
     private val addReceiptCommand: AddReceiptCommand,
+    private val addCategoryCommand: AddCategoryCommand,
     private val deleteReceiptCommand: DeleteReceiptCommand,
     private val updateReceiptCommand: UpdateReceiptCommand,
     private val addIngredientCommand: AddIngredientCommand,
@@ -87,6 +88,11 @@ class ReceiptController(
         return deleteIngredientCommand.execute(id, ingredientId)
     }
 
+    @PostMapping("/categories")
+    fun addCategory(@RequestBody dto: NewCategoryDto): SuccessResponse {
+        return addCategoryCommand.execute(dto)
+    }
+    
     @GetMapping("/categories")
     fun getCategories(@RequestParam(required = false) userId: Int?): CategoriesResponse {
         return getCategoriesQuery.execute(CategoryCriteria(userId))
