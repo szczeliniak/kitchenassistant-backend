@@ -10,7 +10,7 @@ class UpdateShoppingListCommand(private val shoppingListDao: ShoppingListDao) {
     fun execute(id: Int, dto: UpdateShoppingListDto): SuccessResponse {
         val shoppingList = shoppingListDao.findById(id) ?: throw NotFoundException("Shopping list not found")
 
-        shoppingList.update(dto.name, dto.description, dto.userId, dto.date)
+        shoppingList.update(dto.name, dto.description, dto.date)
 
         return SuccessResponse(shoppingListDao.save(shoppingList).id)
     }

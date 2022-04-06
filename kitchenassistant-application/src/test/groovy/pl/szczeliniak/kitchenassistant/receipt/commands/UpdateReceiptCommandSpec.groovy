@@ -35,13 +35,12 @@ class UpdateReceiptCommandSpec extends Specification {
         receipt.description == "DESC"
         receipt.author == "AUTHOR"
         receipt.source == "SOURCE"
-        receipt.userId == 2
         receipt.category == newCategory
         result == new SuccessResponse(1)
     }
 
     private static UpdateReceiptDto updateReceiptDto() {
-        return new UpdateReceiptDto(2, "NAME", 3, "DESC", "AUTHOR", "SOURCE")
+        return new UpdateReceiptDto("NAME", 3, "DESC", "AUTHOR", "SOURCE")
     }
 
     private static Receipt receipt() {

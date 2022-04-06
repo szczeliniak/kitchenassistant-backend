@@ -14,7 +14,6 @@ class UpdateReceiptCommand(private val receiptDao: ReceiptDao, private val categ
 
         receipt.update(
             dto.name,
-            dto.userId,
             dto.description,
             getCategory(receipt.category, dto.categoryId),
             dto.author,

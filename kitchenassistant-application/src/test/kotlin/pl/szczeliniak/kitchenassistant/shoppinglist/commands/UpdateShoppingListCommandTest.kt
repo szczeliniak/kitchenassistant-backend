@@ -28,14 +28,13 @@ internal class UpdateShoppingListCommandTest : JunitBaseClass() {
         val result = updateShoppingListCommand.execute(1, updateShoppingListDto())
 
         assertThat(result).isEqualTo(SuccessResponse(1))
-        assertThat(shoppingList.userId).isEqualTo(2)
         assertThat(shoppingList.name).isEqualTo("NAME")
         assertThat(shoppingList.description).isEqualTo("DESCRIPTION")
         assertThat(shoppingList.date).isEqualTo(LocalDate.of(2000, 1, 1))
     }
 
     private fun updateShoppingListDto(): UpdateShoppingListDto {
-        return UpdateShoppingListDto(2, "NAME", "DESCRIPTION", LocalDate.of(2000, 1, 1))
+        return UpdateShoppingListDto("NAME", "DESCRIPTION", LocalDate.of(2000, 1, 1))
     }
 
     private fun shoppingList(): ShoppingList {

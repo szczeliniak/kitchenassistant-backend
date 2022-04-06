@@ -34,7 +34,6 @@ class Receipt(
 
     fun update(
         name: String,
-        userId: Int,
         description: String? = null,
         category: Category? = null,
         author: String? = null,
@@ -42,7 +41,6 @@ class Receipt(
     ) {
         this.name_ = name
         this.description_ = description
-        this.userId_ = userId
         this.author_ = author
         this.source_ = source
         this.category_ = category

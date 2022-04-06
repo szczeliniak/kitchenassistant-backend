@@ -24,7 +24,7 @@ public class ReceiptTestIT extends BaseTest {
         Integer categoryId = addCategory(addCategoryDto(userId)).getId();
         Integer receiptId = addReceipt(addReceiptDto(userId, categoryId)).getId();
 
-        SuccessResponse response = updateReceipt(receiptId, updateReceiptDto(userId, categoryId));
+        SuccessResponse response = updateReceipt(receiptId, updateReceiptDto(categoryId));
 
         assertThat(response.getId()).isEqualTo(receiptId);
     }
@@ -351,14 +351,13 @@ public class ReceiptTestIT extends BaseTest {
                 .build();
     }
 
-    private UpdateReceiptDto updateReceiptDto(Integer userId, Integer categoryId) {
+    private UpdateReceiptDto updateReceiptDto(Integer categoryId) {
         return UpdateReceiptDto.builder()
                 .name("Name")
                 .author("Author")
                 .description("Description")
                 .source("Source")
                 .categoryId(categoryId)
-                .userId(userId)
                 .build();
     }
 

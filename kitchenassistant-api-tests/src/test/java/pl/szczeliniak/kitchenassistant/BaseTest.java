@@ -193,7 +193,6 @@ public abstract class BaseTest implements WithAssertions {
     @NoArgsConstructor
     @SuperBuilder
     protected static class UpdateReceiptDto {
-        private Integer userId;
         private String name;
         private Integer categoryId;
         private String description;
@@ -237,7 +236,6 @@ public abstract class BaseTest implements WithAssertions {
     @NoArgsConstructor
     @SuperBuilder
     protected static class UpdateShoppingListDto {
-        private Integer userId;
         private String name;
         private String description;
         private LocalDate date;

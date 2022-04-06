@@ -56,10 +56,9 @@ data class ShoppingList(
         return item
     }
 
-    fun update(name: String, description: String?, userId: Int, date: LocalDate?) {
+    fun update(name: String, description: String?, date: LocalDate?) {
         this.name_ = name
         this.description_ = description
-        this.userId_ = userId
         this.date_ = date
         this.modifiedAt_ = LocalDateTime.now()
     }

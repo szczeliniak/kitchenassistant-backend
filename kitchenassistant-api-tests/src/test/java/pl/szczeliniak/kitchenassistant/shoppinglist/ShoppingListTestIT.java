@@ -23,7 +23,7 @@ public class ShoppingListTestIT extends BaseTest {
         Integer userId = addUser(addUserDto()).getId();
         Integer shoppingListId = addShoppingList(addShoppingListDto(userId)).getId();
 
-        SuccessResponse response = updateShoppingList(shoppingListId, updateShoppingListDto(userId));
+        SuccessResponse response = updateShoppingList(shoppingListId, updateShoppingListDto());
 
         assertThat(response.getId()).isEqualTo(shoppingListId);
     }
@@ -198,11 +198,10 @@ public class ShoppingListTestIT extends BaseTest {
                 .build();
     }
 
-    private UpdateShoppingListDto updateShoppingListDto(Integer userId) {
+    private UpdateShoppingListDto updateShoppingListDto() {
         return UpdateShoppingListDto.builder()
                 .name("Name")
                 .description("Description")
-                .userId(userId)
                 .date(LocalDate.now())
                 .build();
     }
