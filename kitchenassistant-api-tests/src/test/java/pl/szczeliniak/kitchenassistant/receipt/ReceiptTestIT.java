@@ -149,6 +149,16 @@ public class ReceiptTestIT extends BaseTest {
     }
 
     @Test
+    public void shouldDeleteCategory() {
+        Integer userId = addUser(addUserDto()).getId();
+        Integer categoryId = addCategory(addCategoryDto(userId)).getId();
+
+        SuccessResponse response = deleteCategory(categoryId);
+
+        assertThat(response.getId()).isEqualTo(categoryId);
+    }
+
+    @Test
     public void shouldReturnCategories() {
         Integer userId = addUser(addUserDto()).getId();
         addCategory(addCategoryDto(userId));
@@ -332,6 +342,15 @@ public class ReceiptTestIT extends BaseTest {
     private SuccessResponse addCategory(AddCategoryDto addCategoryDto) {
         return spec().body(addCategoryDto)
                 .post("/receipts/categories")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(SuccessResponse.class);
+    }
+
+    private SuccessResponse deleteCategory(Integer id) {
+        return spec()
+                .delete("/receipts/categories/" + id)
                 .then()
                 .statusCode(200)
                 .extract()

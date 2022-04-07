@@ -20,7 +20,7 @@ data class Category(
 
     fun markAsDeleted() {
         if (deleted) {
-            throw NotAllowedOperationException("Ingredient is already marked as deleted!")
+            throw NotAllowedOperationException("Category is already marked as deleted!")
         }
         deleted_ = true
         this.modifiedAt_ = LocalDateTime.now()
