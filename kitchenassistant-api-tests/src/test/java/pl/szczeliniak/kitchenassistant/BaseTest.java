@@ -307,6 +307,13 @@ public abstract class BaseTest implements WithAssertions {
     @Data
     @NoArgsConstructor
     @SuperBuilder
+    protected static class UpdateCategoryDto {
+        private String name;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
     protected static class Category {
         private Integer id;
         private String name;

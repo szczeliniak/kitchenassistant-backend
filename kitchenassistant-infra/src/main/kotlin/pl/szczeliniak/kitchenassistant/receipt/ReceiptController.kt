@@ -26,6 +26,7 @@ class ReceiptController(
     private val addStepCommand: AddStepCommand,
     private val deleteStepCommand: DeleteStepCommand,
     private val deleteCategoryCommand: DeleteCategoryCommand,
+    private val updateCategoryCommand: UpdateCategoryCommand,
     private val updateStepCommand: UpdateStepCommand,
     private val getCategoriesQuery: GetCategoriesQuery
 ) {
@@ -102,6 +103,11 @@ class ReceiptController(
     @DeleteMapping("/categories/{id}")
     fun deleteCategory(@PathVariable id: Int): SuccessResponse {
         return deleteCategoryCommand.execute(id)
+    }
+
+    @PutMapping("/categories/{id}")
+    fun updateCategory(@PathVariable id: Int, @RequestBody request: UpdateCategoryDto): SuccessResponse {
+        return updateCategoryCommand.execute(id, request)
     }
 
 }
