@@ -24,10 +24,10 @@ class UpdateReceiptCommand(private val receiptDao: ReceiptDao, private val categ
     }
 
     private fun getCategory(category: Category?, categoryId: Int?): Category? {
-        if (category != null && categoryId != null && category.id != categoryId) {
-            return categoryDao.findById(categoryId) ?: throw NotFoundException("Category not found")
+        if (category != null && categoryId != null && category.id == categoryId) {
+            return category
         }
-        return category
+        return categoryId?.let { categoryDao.findById(it) ?: throw NotFoundException("Category not found") }
     }
 
 }
