@@ -13,10 +13,22 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
         if (criteria.userId != null) {
             query += " AND r.userId = :userId"
         }
+        if (criteria.categoryId != null) {
+            query += " AND r.category.id = :categoryId"
+        }
+        if (criteria.name != null) {
+            query += " AND r.name LIKE :name"
+        }
 
         var typedQuery = entityManager.createQuery(query, ReceiptEntity::class.java)
         if (criteria.userId != null) {
             typedQuery = typedQuery.setParameter("userId", criteria.userId)
+        }
+        if (criteria.categoryId != null) {
+            typedQuery = typedQuery.setParameter("categoryId", criteria.categoryId)
+        }
+        if (criteria.name != null) {
+            typedQuery = typedQuery.setParameter("name", "%" + criteria.name + "%")
         }
 
         return typedQuery.resultList
@@ -50,6 +62,6 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
         entityManager.createQuery("DELETE FROM ReceiptEntity").executeUpdate()
     }
 
-    data class SearchCriteria(val userId: Int?)
+    data class SearchCriteria(val userId: Int?, val categoryId: Int?, val name: String?)
 
 }

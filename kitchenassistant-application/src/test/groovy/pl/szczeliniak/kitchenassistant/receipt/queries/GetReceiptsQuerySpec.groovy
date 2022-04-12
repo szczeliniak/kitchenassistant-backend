@@ -23,7 +23,7 @@ class GetReceiptsQuerySpec extends Specification {
         def step = step()
         def ingredientDto = ingredientDto()
         def stepDto = stepDto()
-        def criteria = new ReceiptCriteria(1)
+        def criteria = new ReceiptCriteria(1,2,"NAME")
 
         receiptDao.findAll(criteria) >> Collections.singletonList(receipt(ingredient, step))
 

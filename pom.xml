@@ -35,7 +35,7 @@
         <plugin.compiler>3.8.0</plugin.compiler>
         <plugin.surefire>3.0.0-M5</plugin.surefire>
         <plugin.gmavenplus>1.13.1</plugin.gmavenplus>
-        <plugin.jar>2.6</plugin.jar>
+        <plugin.jar>3.2.2</plugin.jar>
     </properties>
 
     <dependencies>
