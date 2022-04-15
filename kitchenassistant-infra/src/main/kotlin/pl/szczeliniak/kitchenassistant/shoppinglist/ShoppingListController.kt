@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist
 
 import org.springframework.web.bind.annotation.*
-import pl.szczeliniak.kitchenassistant.dto.SuccessResponse
+import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.*
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
@@ -38,9 +38,11 @@ class ShoppingListController(
         @RequestParam(required = false) userId: Int?,
         @RequestParam(required = false) archived: Boolean?,
         @RequestParam(required = false) name: String?,
-        @RequestParam(required = false) date: LocalDate?
+        @RequestParam(required = false) date: LocalDate?,
+        @RequestParam(required = false) page: Long?,
+        @RequestParam(required = false) limit: Int?,
     ): ShoppingListsResponse {
-        return getShoppingListsQuery.execute(ShoppingListCriteria(userId, archived, name, date))
+        return getShoppingListsQuery.execute(page, limit, ShoppingListCriteria(userId, archived, name, date))
     }
 
     @PostMapping

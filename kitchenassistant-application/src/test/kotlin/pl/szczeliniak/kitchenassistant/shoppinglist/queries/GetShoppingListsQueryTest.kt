@@ -8,6 +8,7 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListCriteria
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
+import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.Pagination
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListItemDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListsResponse
@@ -27,19 +28,20 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
     fun shouldReturnShoppingLists() {
         val criteria = ShoppingListCriteria(1, false, "NAME", LocalDate.of(2020, Month.APRIL, 1))
 
-        whenever(shoppingListDao.findAll(criteria)).thenReturn(
+        whenever(shoppingListDao.findAll(criteria, 90, 10)).thenReturn(
             Collections.singletonList(
                 shoppingList(
                     shoppingListItem()
                 )
             )
         )
+        whenever(shoppingListDao.count(criteria)).thenReturn(2137L)
 
-        val result = getShoppingListsQuery.execute(criteria)
+        val result = getShoppingListsQuery.execute(10, 10, criteria)
 
         assertThat(result).isEqualTo(
             ShoppingListsResponse(
-                Collections.singletonList(shoppingListDto(shoppingListItemDto()))
+                Collections.singletonList(shoppingListDto(shoppingListItemDto())), Pagination(10, 10, 214)
             )
         )
     }

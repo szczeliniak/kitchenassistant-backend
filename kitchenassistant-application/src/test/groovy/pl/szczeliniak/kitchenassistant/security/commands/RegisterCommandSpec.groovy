@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.security.commands
 
-import pl.szczeliniak.kitchenassistant.dto.SuccessResponse
+import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.security.commands.dto.LoginResponse
 import pl.szczeliniak.kitchenassistant.security.commands.dto.RegisterDto
 import pl.szczeliniak.kitchenassistant.security.commands.factories.TokenFactory

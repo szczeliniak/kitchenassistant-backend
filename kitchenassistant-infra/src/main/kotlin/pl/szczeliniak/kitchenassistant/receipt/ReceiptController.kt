@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
 import org.springframework.web.bind.annotation.*
-import pl.szczeliniak.kitchenassistant.dto.SuccessResponse
+import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.*
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetCategoriesQuery
