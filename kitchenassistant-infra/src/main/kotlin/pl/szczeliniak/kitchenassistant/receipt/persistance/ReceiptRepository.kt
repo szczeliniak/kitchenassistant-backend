@@ -17,7 +17,7 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
             query += " AND r.category.id = :categoryId"
         }
         if (criteria.name != null) {
-            query += " AND r.name LIKE :name"
+            query += " AND LOWER(r.name) LIKE LOWER(:name)"
         }
 
         var typedQuery = entityManager.createQuery(query, ReceiptEntity::class.java)
