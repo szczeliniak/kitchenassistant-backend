@@ -14,9 +14,13 @@ class UserDaoImpl(
     }
 
     override fun findByEmail(email: String): User? {
-        return userRepository.findAll(UserRepository.SearchCriteria(email)).stream().findFirst()
+        return userRepository.findAll(UserRepository.SearchCriteria(email), 0, 1).stream().findFirst()
             .map { userMapper.toDomain(it) }
             .orElse(null)
+    }
+
+    override fun count(): Long {
+        return userRepository.count(UserRepository.SearchCriteria())
     }
 
     override fun findById(userId: Int): User? {
@@ -24,8 +28,8 @@ class UserDaoImpl(
         return userMapper.toDomain(byId)
     }
 
-    override fun findAll(): List<User> {
-        return userRepository.findAll(UserRepository.SearchCriteria())
+    override fun findAll(offset: Int, limit: Int): List<User> {
+        return userRepository.findAll(UserRepository.SearchCriteria(), offset, limit)
             .map { userMapper.toDomain(it) }
     }
 

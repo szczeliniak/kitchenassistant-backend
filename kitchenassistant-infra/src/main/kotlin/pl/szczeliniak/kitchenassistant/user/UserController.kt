@@ -23,8 +23,11 @@ class UserController(
     }
 
     @GetMapping
-    fun getUsers(): UsersResponse {
-        return getUsersQuery.execute()
+    fun getUsers(
+        @RequestParam(required = false) page: Long?,
+        @RequestParam(required = false) limit: Int?
+    ): UsersResponse {
+        return getUsersQuery.execute(page, limit)
     }
 
     @PostMapping
