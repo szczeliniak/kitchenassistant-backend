@@ -40,9 +40,11 @@ class ReceiptController(
     fun getReceipts(
         @RequestParam(required = false) userId: Int?,
         @RequestParam(required = false) categoryId: Int?,
-        @RequestParam(required = false) name: String?
+        @RequestParam(required = false) name: String?,
+        @RequestParam(required = false) page: Long?,
+        @RequestParam(required = false) limit: Int?,
     ): ReceiptsResponse {
-        return getReceiptsQuery.execute(ReceiptCriteria(userId, categoryId, name))
+        return getReceiptsQuery.execute(page, limit, ReceiptCriteria(userId, categoryId, name))
     }
 
     @PostMapping

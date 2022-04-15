@@ -20,7 +20,7 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
 
     fun count(criteria: SearchCriteria): Long {
         val query = "SELECT COUNT(sl) FROM ShoppingListEntity sl WHERE sl.deleted = false" + prepareCriteria(criteria)
-        return applyParameters(criteria, entityManager.createQuery(query, Long::class.java)).singleResult
+        return applyParameters(criteria, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
     }
 
     fun findById(id: Int): ShoppingListEntity? {

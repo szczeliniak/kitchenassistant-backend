@@ -5,6 +5,7 @@ import pl.szczeliniak.kitchenassistant.receipt.queries.dto.IngredientDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptsResponse
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.StepDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.Pagination
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -23,15 +24,17 @@ class GetReceiptsQuerySpec extends Specification {
         def step = step()
         def ingredientDto = ingredientDto()
         def stepDto = stepDto()
-        def criteria = new ReceiptCriteria(1,2,"NAME")
+        def criteria = new ReceiptCriteria(1, 2, "NAME")
 
-        receiptDao.findAll(criteria) >> Collections.singletonList(receipt(ingredient, step))
+        receiptDao.findAll(criteria, 40, 10) >> Collections.singletonList(receipt(ingredient, step))
+        receiptDao.count(criteria) >> 413
 
         when:
-        def result = getReceiptsQuery.execute(criteria)
+        def result = getReceiptsQuery.execute(5, 10, criteria)
 
         then:
-        result == new ReceiptsResponse(Collections.singletonList(receiptDto(ingredientDto, stepDto)))
+        result == new ReceiptsResponse(Collections.singletonList(receiptDto(ingredientDto, stepDto)),
+                new Pagination(5, 10, 42))
     }
 
     private static Receipt receipt(Ingredient ingredient, Step step) {

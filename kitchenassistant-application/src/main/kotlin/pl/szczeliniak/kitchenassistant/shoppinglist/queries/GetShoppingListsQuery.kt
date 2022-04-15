@@ -13,8 +13,7 @@ class GetShoppingListsQuery(private val shoppingListDao: ShoppingListDao) {
         val currentPage = PaginationUtils.calculatePageNumber(page)
         val currentLimit = PaginationUtils.calculateLimit(limit)
         val offset = PaginationUtils.calculateOffset(currentPage, currentLimit)
-        val totalNumber = shoppingListDao.count(criteria)
-        val totalNumberOfPages = PaginationUtils.calculateNumberOfPages(currentLimit, totalNumber)
+        val totalNumberOfPages = PaginationUtils.calculateNumberOfPages(currentLimit, shoppingListDao.count(criteria))
         return ShoppingListsResponse(
             shoppingListDao.findAll(criteria, offset, currentLimit)
                 .map { ShoppingListDto.fromDomain(it) }, Pagination(currentPage, currentLimit, totalNumberOfPages)

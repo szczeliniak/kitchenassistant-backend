@@ -3,35 +3,23 @@ package pl.szczeliniak.kitchenassistant.receipt.persistance
 import org.springframework.stereotype.Repository
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
+import javax.persistence.TypedQuery
 import javax.transaction.Transactional
 
 @Repository
 class ReceiptRepository(@PersistenceContext private val entityManager: EntityManager) {
 
-    fun findAll(criteria: SearchCriteria): MutableList<ReceiptEntity> {
-        var query = "SELECT r FROM ReceiptEntity r WHERE r.deleted = false"
-        if (criteria.userId != null) {
-            query += " AND r.userId = :userId"
-        }
-        if (criteria.categoryId != null) {
-            query += " AND r.category.id = :categoryId"
-        }
-        if (criteria.name != null) {
-            query += " AND LOWER(r.name) LIKE LOWER(:name)"
-        }
-
-        var typedQuery = entityManager.createQuery(query, ReceiptEntity::class.java)
-        if (criteria.userId != null) {
-            typedQuery = typedQuery.setParameter("userId", criteria.userId)
-        }
-        if (criteria.categoryId != null) {
-            typedQuery = typedQuery.setParameter("categoryId", criteria.categoryId)
-        }
-        if (criteria.name != null) {
-            typedQuery = typedQuery.setParameter("name", "%" + criteria.name + "%")
-        }
-
+    fun findAll(criteria: SearchCriteria, offset: Int, limit: Int): MutableList<ReceiptEntity> {
+        val query = "SELECT r FROM ReceiptEntity r WHERE r.deleted = false" + prepareCriteria(criteria)
+        val typedQuery = applyParameters(criteria, entityManager.createQuery(query, ReceiptEntity::class.java))
+        typedQuery.firstResult = offset
+        typedQuery.maxResults = limit
         return typedQuery.resultList
+    }
+
+    fun count(criteria: SearchCriteria): Long {
+        val query = "SELECT COUNT(r) FROM ReceiptEntity r WHERE r.deleted = false" + prepareCriteria(criteria)
+        return applyParameters(criteria, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
     }
 
     fun findById(id: Int): ReceiptEntity? {
@@ -60,6 +48,37 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
     @Transactional
     fun clear() {
         entityManager.createQuery("DELETE FROM ReceiptEntity").executeUpdate()
+    }
+
+    private fun prepareCriteria(criteria: SearchCriteria): String {
+        val builder = StringBuilder().append("")
+        if (criteria.userId != null) {
+            builder.append(" AND r.userId = :userId")
+        }
+        if (criteria.categoryId != null) {
+            builder.append(" AND r.category.id = :categoryId")
+        }
+        if (criteria.name != null) {
+            builder.append(" AND LOWER(r.name) LIKE LOWER(:name)")
+        }
+        return builder.toString()
+    }
+
+    private fun <T> applyParameters(
+        criteria: SearchCriteria,
+        typedQuery: TypedQuery<T>
+    ): TypedQuery<T> {
+        var query = typedQuery
+        if (criteria.userId != null) {
+            query = typedQuery.setParameter("userId", criteria.userId)
+        }
+        if (criteria.categoryId != null) {
+            query = typedQuery.setParameter("categoryId", criteria.categoryId)
+        }
+        if (criteria.name != null) {
+            query = typedQuery.setParameter("name", "%" + criteria.name + "%")
+        }
+        return query
     }
 
     data class SearchCriteria(val userId: Int?, val categoryId: Int?, val name: String?)
