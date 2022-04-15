@@ -1,5 +1,6 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist
 
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.*
@@ -38,7 +39,7 @@ class ShoppingListController(
         @RequestParam(required = false) userId: Int?,
         @RequestParam(required = false) archived: Boolean?,
         @RequestParam(required = false) name: String?,
-        @RequestParam(required = false) date: LocalDate?,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) date: LocalDate?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
     ): ShoppingListsResponse {
