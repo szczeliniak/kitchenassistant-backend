@@ -11,6 +11,7 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.queries.GetShoppingListQuery
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.GetShoppingListsQuery
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListsResponse
+import java.time.LocalDate
 
 @RestController
 @RequestMapping("/shoppinglists")
@@ -35,9 +36,11 @@ class ShoppingListController(
     @GetMapping
     fun getShoppingLists(
         @RequestParam(required = false) userId: Int?,
-        @RequestParam(required = false) archived: Boolean?
+        @RequestParam(required = false) archived: Boolean?,
+        @RequestParam(required = false) name: String?,
+        @RequestParam(required = false) date: LocalDate?
     ): ShoppingListsResponse {
-        return getShoppingListsQuery.execute(ShoppingListCriteria(userId, archived))
+        return getShoppingListsQuery.execute(ShoppingListCriteria(userId, archived, name, date))
     }
 
     @PostMapping

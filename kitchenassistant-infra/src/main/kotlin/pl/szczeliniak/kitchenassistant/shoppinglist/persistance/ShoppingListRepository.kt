@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.persistance
 
 import org.springframework.stereotype.Repository
+import java.time.LocalDate
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
@@ -16,6 +17,12 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
         if (criteria.archived != null) {
             query += " AND sl.archived = :archived"
         }
+        if (criteria.name != null) {
+            query += " AND LOWER(sl.name) LIKE LOWER(:name)"
+        }
+        if (criteria.date != null) {
+            query += " AND sl.date = :date"
+        }
 
         var typedQuery = entityManager.createQuery(query, ShoppingListEntity::class.java)
         if (criteria.userId != null) {
@@ -23,6 +30,12 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
         }
         if (criteria.archived != null) {
             typedQuery = typedQuery.setParameter("archived", criteria.archived)
+        }
+        if (criteria.date != null) {
+            typedQuery = typedQuery.setParameter("date", criteria.date)
+        }
+        if (criteria.name != null) {
+            typedQuery = typedQuery.setParameter("name", "%" + criteria.name + "%")
         }
 
         return typedQuery.resultList
@@ -56,6 +69,6 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
         entityManager.createQuery("DELETE FROM ShoppingListEntity").executeUpdate()
     }
 
-    data class SearchCriteria(val userId: Int?, val archived: Boolean?)
+    data class SearchCriteria(val userId: Int?, val archived: Boolean?, val name: String?, val date: LocalDate?)
 
 }

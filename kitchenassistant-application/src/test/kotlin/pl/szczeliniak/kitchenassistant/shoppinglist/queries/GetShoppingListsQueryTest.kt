@@ -11,6 +11,8 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListItemDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListsResponse
+import java.time.LocalDate
+import java.time.Month
 import java.util.*
 
 internal class GetShoppingListsQueryTest : JunitBaseClass() {
@@ -23,7 +25,7 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
 
     @Test
     fun shouldReturnShoppingLists() {
-        val criteria = ShoppingListCriteria(1, false)
+        val criteria = ShoppingListCriteria(1, false, "NAME", LocalDate.of(2020, Month.APRIL, 1))
 
         whenever(shoppingListDao.findAll(criteria)).thenReturn(
             Collections.singletonList(

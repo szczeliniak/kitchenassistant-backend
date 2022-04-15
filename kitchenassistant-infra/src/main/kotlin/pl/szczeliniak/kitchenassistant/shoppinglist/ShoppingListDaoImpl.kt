@@ -19,7 +19,7 @@ class ShoppingListDaoImpl(
     }
 
     override fun findAll(criteria: ShoppingListCriteria): List<ShoppingList> {
-        return shoppingListRepository.findAll(ShoppingListRepository.SearchCriteria(criteria.userId, criteria.archived))
+        return shoppingListRepository.findAll(ShoppingListRepository.SearchCriteria(criteria.userId, criteria.archived, criteria.name, criteria.date))
             .map { shoppingListMapper.toDomain(it) }
     }
 
