@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import pl.szczeliniak.kitchenassistant.exceptions.BadRequestException
 import pl.szczeliniak.kitchenassistant.exceptions.FileTooLargeException
+import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -54,6 +55,10 @@ class FtpClientImpl(
     override fun download(name: String): ByteArray {
         logger.info("Downloading file with name: $name")
 
+        if (!exists(name)) {
+            throw NotFoundException("File not found")
+        }
+
         val client = open()
         val content: ByteArray
         try {
@@ -71,6 +76,10 @@ class FtpClientImpl(
 
     override fun delete(name: String) {
         logger.info("Deleting file with name: $name")
+
+        if (!exists(name)) {
+            throw NotFoundException("File not found")
+        }
 
         val client = open()
         try {
