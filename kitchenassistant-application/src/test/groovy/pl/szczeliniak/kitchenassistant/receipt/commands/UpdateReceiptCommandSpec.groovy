@@ -45,7 +45,7 @@ class UpdateReceiptCommandSpec extends Specification {
 
     private static Receipt receipt() {
         return new Receipt(1, 1, "", "", "", "", category(0), Collections.emptyList(),
-                Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+                Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     static Category category(Integer id) {

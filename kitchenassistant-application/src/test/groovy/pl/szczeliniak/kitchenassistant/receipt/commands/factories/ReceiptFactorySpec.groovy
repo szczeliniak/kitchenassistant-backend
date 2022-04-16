@@ -19,18 +19,21 @@ class ReceiptFactorySpec extends Specification {
     def ingredientFactory = Mock(IngredientFactory)
     def stepFactory = Mock(StepFactory)
     def categoryDao = Mock(CategoryDao)
+    def photoFactory = Mock(PhotoFactory)
 
     @Subject
-    def receiptFactory = new ReceiptFactory(getUserQuery, ingredientFactory, stepFactory, categoryDao)
+    def receiptFactory = new ReceiptFactory(getUserQuery, ingredientFactory, stepFactory, photoFactory, categoryDao)
 
     def 'should create receipt'() {
         given:
         def newIngredientDto = newIngredientDto()
         def newStepDto = newStepDto()
         def category = category()
+
         getUserQuery.execute(1) >> userResponse()
         ingredientFactory.create(newIngredientDto) >> ingredient()
         stepFactory.create(newStepDto) >> step()
+        photoFactory.create("PHOTO_NAME") >> photo()
         categoryDao.findById(2) >> category
 
         when:
@@ -39,13 +42,13 @@ class ReceiptFactorySpec extends Specification {
         then:
         Assertions.assertThat(result).usingRecursiveComparison()
                 .ignoringFields("createdAt_", "modifiedAt_", "ingredients_.createdAt_",
-                        "ingredients_.modifiedAt_", "steps_.createdAt_", "steps_.modifiedAt_")
+                        "ingredients_.modifiedAt_", "steps_.createdAt_", "steps_.modifiedAt_", "photos_.createdAt_", "photos_.modifiedAt_")
                 .isEqualTo(receipt(category))
     }
 
     private static NewReceiptDto newReceiptDto(NewIngredientDto newIngredientDto, NewStepDto newStepDto) {
         return new NewReceiptDto(2, "RECEIPT_NAME", 2, "RECEIPT_DESCRIPTION", "RECEIPT_AUTHOR",
-                "RECEIPT_SOURCE", Collections.singletonList(newIngredientDto), Collections.singletonList(newStepDto))
+                "RECEIPT_SOURCE", Collections.singletonList(newIngredientDto), Collections.singletonList(newStepDto), Collections.singletonList("PHOTO_NAME"))
     }
 
     private static NewIngredientDto newIngredientDto() {
@@ -62,8 +65,12 @@ class ReceiptFactorySpec extends Specification {
 
     private static Receipt receipt(Category category) {
         return new Receipt(0, 2, "RECEIPT_NAME", "RECEIPT_DESCRIPTION", "RECEIPT_AUTHOR",
-                "RECEIPT_SOURCE", category, Collections.singletonList(ingredient()), Collections.singletonList(step()),
+                "RECEIPT_SOURCE", category, Collections.singletonList(ingredient()), Collections.singletonList(step()), Collections.singletonList(photo()),
                 false, LocalDateTime.now(), LocalDateTime.now())
+    }
+
+    private static Photo photo() {
+        return new Photo(99, "NAME", false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Ingredient ingredient() {

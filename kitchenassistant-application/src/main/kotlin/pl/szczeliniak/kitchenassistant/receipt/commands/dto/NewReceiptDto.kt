@@ -8,5 +8,6 @@ data class NewReceiptDto(
     var author: String? = null,
     var source: String? = null,
     var ingredients: List<NewIngredientDto> = listOf(),
-    var steps: List<NewStepDto> = listOf()
+    var steps: List<NewStepDto> = listOf(),
+    var photos: List<String> = listOf()
 )

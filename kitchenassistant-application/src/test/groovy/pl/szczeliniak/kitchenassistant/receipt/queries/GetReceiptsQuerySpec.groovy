@@ -24,9 +24,10 @@ class GetReceiptsQuerySpec extends Specification {
         def step = step()
         def ingredientDto = ingredientDto()
         def stepDto = stepDto()
+        def photo = photo()
         def criteria = new ReceiptCriteria(1, 2, "NAME")
 
-        receiptDao.findAll(criteria, 40, 10) >> Collections.singletonList(receipt(ingredient, step))
+        receiptDao.findAll(criteria, 40, 10) >> Collections.singletonList(receipt(ingredient, step, photo))
         receiptDao.count(criteria) >> 413
 
         when:
@@ -37,7 +38,7 @@ class GetReceiptsQuerySpec extends Specification {
                 new Pagination(5, 10, 42))
     }
 
-    private static Receipt receipt(Ingredient ingredient, Step step) {
+    private static Receipt receipt(Ingredient ingredient, Step step, Photo photo) {
         return new Receipt(1,
                 2,
                 'RECEIPT_NAME',
@@ -47,6 +48,7 @@ class GetReceiptsQuerySpec extends Specification {
                 null,
                 Collections.singletonList(ingredient),
                 Collections.singletonList(step),
+                Collections.singletonList(photo),
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now())
@@ -61,7 +63,8 @@ class GetReceiptsQuerySpec extends Specification {
     }
 
     private static ReceiptDto receiptDto(IngredientDto ingredient, StepDto step) {
-        return new ReceiptDto(1, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE", null, Collections.singletonList(ingredient), Collections.singletonList(step))
+        return new ReceiptDto(1, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE",
+                null, Collections.singletonList(ingredient), Collections.singletonList(step), Collections.singletonList("PHOTO_NAME"))
     }
 
     private static IngredientDto ingredientDto() {
@@ -70,6 +73,10 @@ class GetReceiptsQuerySpec extends Specification {
 
     private static StepDto stepDto() {
         return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1)
+    }
+
+    private static Photo photo() {
+        return new Photo(99, "PHOTO_NAME", false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

@@ -17,7 +17,7 @@ class LoggingAspect(
     private val httpServletResponse: HttpServletResponse
 ) {
 
-    private final val logger: Logger = LoggerFactory.getLogger(LoggingAspect::class.java)
+    private val logger: Logger = LoggerFactory.getLogger(LoggingAspect::class.java)
 
     @Pointcut(
         "@annotation(org.springframework.web.bind.annotation.RequestMapping) || " +

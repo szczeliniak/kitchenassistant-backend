@@ -31,6 +31,11 @@ class ExceptionAdvice {
         return error(HttpStatus.CONFLICT, exception)
     }
 
+    @ExceptionHandler(FileTooLargeException::class)
+    fun fileTooLargeException(exception: FileTooLargeException): ResponseEntity<ExceptionResponse> {
+        return error(HttpStatus.PAYLOAD_TOO_LARGE, exception)
+    }
+
     private fun error(
         httpStatus: HttpStatus,
         exception: Exception

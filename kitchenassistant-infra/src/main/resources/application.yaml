@@ -29,3 +29,9 @@ application:
 security:
   jwt:
     secret: ${JWT_SECRET}
+
+ftp:
+  host: ${FTP_HOST}
+  port: ${FTP_PORT}
+  user: ${FTP_USER}
+  password: ${FTP_PASSWORD}

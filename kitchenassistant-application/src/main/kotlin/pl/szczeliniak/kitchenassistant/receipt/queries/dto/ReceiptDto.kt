@@ -10,7 +10,8 @@ data class ReceiptDto(
     val source: String?,
     val category: CategoryDto?,
     val ingredients: List<IngredientDto>,
-    val steps: List<StepDto>
+    val steps: List<StepDto>,
+    val photos: List<String>
 ) {
     companion object {
         fun fromDomain(receipt: Receipt): ReceiptDto {
@@ -22,7 +23,8 @@ data class ReceiptDto(
                 receipt.source,
                 receipt.category?.let { CategoryDto.fromDomain(it) },
                 receipt.ingredients.map { IngredientDto.fromDomain(it) },
-                receipt.steps.map { StepDto.fromDomain(it) }
+                receipt.steps.map { StepDto.fromDomain(it) },
+                receipt.photos.map { it.name }
             )
         }
     }

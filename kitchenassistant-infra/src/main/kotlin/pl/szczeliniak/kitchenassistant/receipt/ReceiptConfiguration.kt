@@ -3,10 +3,7 @@ package pl.szczeliniak.kitchenassistant.receipt
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
-import pl.szczeliniak.kitchenassistant.receipt.commands.factories.CategoryFactory
-import pl.szczeliniak.kitchenassistant.receipt.commands.factories.IngredientFactory
-import pl.szczeliniak.kitchenassistant.receipt.commands.factories.ReceiptFactory
-import pl.szczeliniak.kitchenassistant.receipt.commands.factories.StepFactory
+import pl.szczeliniak.kitchenassistant.receipt.commands.factories.*
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetCategoriesQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
@@ -68,6 +65,9 @@ class ReceiptConfiguration {
     fun categoryFactory(): CategoryFactory = CategoryFactory()
 
     @Bean
+    fun photoFactory(): PhotoFactory = PhotoFactory()
+
+    @Bean
     fun addCategoryCommand(categoryDao: CategoryDao, categoryFactory: CategoryFactory): AddCategoryCommand =
         AddCategoryCommand(categoryDao, categoryFactory)
 
@@ -76,7 +76,15 @@ class ReceiptConfiguration {
 
     @Bean
     fun updateCategoryCommand(categoryDao: CategoryDao): UpdateCategoryCommand = UpdateCategoryCommand(categoryDao)
-    
+
+    @Bean
+    fun addReceiptPhotosCommand(receiptDao: ReceiptDao, photoDao: PhotoDao, photoFactory: PhotoFactory) =
+        AddReceiptPhotosCommand(receiptDao, photoDao, photoFactory)
+
+    @Bean
+    fun deleteReceiptPhotoCommand(receiptDao: ReceiptDao) = DeleteReceiptPhotoCommand(receiptDao)
+
+
     @Bean
     fun getCategoriesQuery(categoryDao: CategoryDao): GetCategoriesQuery = GetCategoriesQuery(categoryDao)
 
@@ -85,7 +93,8 @@ class ReceiptConfiguration {
         getUserByIdQuery: GetUserByIdQuery,
         stepFactory: StepFactory,
         ingredientFactory: IngredientFactory,
+        photoFactory: PhotoFactory,
         categoryDao: CategoryDao
-    ): ReceiptFactory = ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, categoryDao)
+    ): ReceiptFactory = ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, photoFactory, categoryDao)
 
 }

@@ -10,6 +10,7 @@ open class ReceiptFactory(
     private val getUserByIdQuery: GetUserByIdQuery,
     private val ingredientFactory: IngredientFactory,
     private val stepFactory: StepFactory,
+    private val photoFactory: PhotoFactory,
     private val categoryDao: CategoryDao
 ) {
 
@@ -25,7 +26,8 @@ open class ReceiptFactory(
             },
             description_ = dto.description,
             ingredients_ = dto.ingredients.map { ingredientFactory.create(it) }.toMutableList(),
-            steps_ = dto.steps.map { stepFactory.create(it) }.toMutableList()
+            steps_ = dto.steps.map { stepFactory.create(it) }.toMutableList(),
+            photos_ = dto.photos.map { photoFactory.create(it) }.toMutableList()
         )
     }
 

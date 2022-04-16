@@ -15,6 +15,7 @@ class Receipt(
     private var category_: Category?,
     private var ingredients_: MutableList<Ingredient> = mutableListOf(),
     private var steps_: MutableList<Step> = mutableListOf(),
+    private var photos_: MutableList<Photo> = mutableListOf(),
     private var deleted_: Boolean = false,
     private val createdAt_: LocalDateTime = LocalDateTime.now(),
     private var modifiedAt_: LocalDateTime = LocalDateTime.now()
@@ -28,6 +29,7 @@ class Receipt(
     val category: Category? get() = category_
     val ingredients: List<Ingredient> get() = Collections.unmodifiableList(ingredients_)
     val steps: List<Step> get() = Collections.unmodifiableList(steps_)
+    val photos: List<Photo> get() = Collections.unmodifiableList(photos_)
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_
@@ -78,6 +80,22 @@ class Receipt(
         step.markAsDeleted()
         this.modifiedAt_ = LocalDateTime.now()
         return step
+    }
+
+    fun deletePhotoByName(name: String): Photo {
+        val photo = photos.firstOrNull { it.name == name } ?: throw NotFoundException("Photo not found")
+        photo.markAsDeleted()
+        this.modifiedAt_ = LocalDateTime.now()
+        return photo
+    }
+
+    fun getPhotoByName(name: String): Photo? {
+        return photos.firstOrNull { photo -> photo.name == name }
+    }
+
+    fun addPhoto(photo: Photo) {
+        photos_ += (photo)
+        this.modifiedAt_ = LocalDateTime.now()
     }
 
 }

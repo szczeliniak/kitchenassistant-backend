@@ -46,7 +46,7 @@ class AddIngredientCommandSpec extends Specification {
     }
 
     private static Receipt receipt() {
-        return new Receipt(1, 0, "", "", "", "", null, new ArrayList<Ingredient>(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 0, "", "", "", "", null, new ArrayList<Ingredient>(), Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }
