@@ -196,6 +196,7 @@ public class ReceiptTestIT extends BaseTest {
                 .category(category)
                 .steps(Collections.singletonList(step()))
                 .ingredients(Collections.singletonList(ingredient()))
+                .photos(Collections.singletonList("Photo name"))
                 .build();
     }
 
@@ -223,6 +224,7 @@ public class ReceiptTestIT extends BaseTest {
                 .source("Source2")
                 .steps(Collections.singletonList(step2()))
                 .ingredients(Collections.singletonList(ingredient2()))
+                .photos(Collections.emptyList())
                 .build();
     }
 
@@ -250,6 +252,7 @@ public class ReceiptTestIT extends BaseTest {
                 .userId(userId)
                 .steps(Collections.singletonList(addStepDto2()))
                 .ingredients(Collections.singletonList(addIngredientDto2()))
+                .photos(Collections.emptyList())
                 .build();
     }
 
@@ -386,6 +389,7 @@ public class ReceiptTestIT extends BaseTest {
                 .categoryId(categoryId)
                 .steps(Collections.singletonList(addStepDto()))
                 .ingredients(Collections.singletonList(addIngredientDto()))
+                .photos(Collections.singletonList("Photo name"))
                 .build();
     }
 

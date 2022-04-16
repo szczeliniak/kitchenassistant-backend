@@ -1,5 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
+import org.hibernate.validator.constraints.Length
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
@@ -10,9 +12,11 @@ import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.CategoriesResponse
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptsResponse
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/receipts")
+@Validated
 class ReceiptController(
     private val getReceiptQuery: GetReceiptQuery,
     private val getReceiptsQuery: GetReceiptsQuery,
@@ -42,7 +46,7 @@ class ReceiptController(
     fun getReceipts(
         @RequestParam(required = false) userId: Int?,
         @RequestParam(required = false) categoryId: Int?,
-        @RequestParam(required = false) name: String?,
+        @RequestParam(required = false) @Length(max = 50) name: String?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
     ): ReceiptsResponse {
@@ -50,12 +54,12 @@ class ReceiptController(
     }
 
     @PostMapping
-    fun addReceipt(@RequestBody dto: NewReceiptDto): SuccessResponse {
+    fun addReceipt(@Valid @RequestBody dto: NewReceiptDto): SuccessResponse {
         return addReceiptCommand.execute(dto)
     }
 
     @PutMapping("/{id}")
-    fun updateReceipt(@PathVariable id: Int, @RequestBody dto: UpdateReceiptDto): SuccessResponse {
+    fun updateReceipt(@PathVariable id: Int, @Valid @RequestBody dto: UpdateReceiptDto): SuccessResponse {
         return updateReceiptCommand.execute(id, dto)
     }
 
@@ -65,12 +69,16 @@ class ReceiptController(
     }
 
     @PostMapping("{id}/steps")
-    fun addStep(@PathVariable id: Int, @RequestBody dto: NewStepDto): SuccessResponse {
+    fun addStep(@PathVariable id: Int, @Valid @RequestBody dto: NewStepDto): SuccessResponse {
         return addStepCommand.execute(id, dto)
     }
 
     @PutMapping("/{id}/steps/{stepId}")
-    fun updateStep(@PathVariable id: Int, @PathVariable stepId: Int, @RequestBody dto: UpdateStepDto): SuccessResponse {
+    fun updateStep(
+        @PathVariable id: Int,
+        @PathVariable stepId: Int,
+        @Valid @RequestBody dto: UpdateStepDto
+    ): SuccessResponse {
         return updateStepCommand.execute(id, stepId, dto)
     }
 
@@ -80,7 +88,7 @@ class ReceiptController(
     }
 
     @PostMapping("{id}/ingredients")
-    fun addIngredient(@PathVariable id: Int, @RequestBody dto: NewIngredientDto): SuccessResponse {
+    fun addIngredient(@PathVariable id: Int, @Valid @RequestBody dto: NewIngredientDto): SuccessResponse {
         return addIngredientCommand.execute(id, dto)
     }
 
@@ -88,7 +96,7 @@ class ReceiptController(
     fun updateIngredient(
         @PathVariable id: Int,
         @PathVariable ingredientId: Int,
-        @RequestBody dto: UpdateIngredientDto
+        @Valid @RequestBody dto: UpdateIngredientDto
     ): SuccessResponse {
         return updateIngredientCommand.execute(id, ingredientId, dto)
     }
@@ -99,7 +107,7 @@ class ReceiptController(
     }
 
     @PostMapping("/categories")
-    fun addCategory(@RequestBody dto: NewCategoryDto): SuccessResponse {
+    fun addCategory(@Valid @RequestBody dto: NewCategoryDto): SuccessResponse {
         return addCategoryCommand.execute(dto)
     }
 
@@ -114,17 +122,17 @@ class ReceiptController(
     }
 
     @PutMapping("/categories/{id}")
-    fun updateCategory(@PathVariable id: Int, @RequestBody request: UpdateCategoryDto): SuccessResponse {
+    fun updateCategory(@PathVariable id: Int, @Valid @RequestBody request: UpdateCategoryDto): SuccessResponse {
         return updateCategoryCommand.execute(id, request)
     }
 
     @PutMapping("/{id}/photos")
-    fun addPhotos(@PathVariable id: Int, @RequestBody request: AddReceiptPhotosDto): SuccessResponse {
+    fun addPhotos(@PathVariable id: Int, @Valid @RequestBody request: AddReceiptPhotosDto): SuccessResponse {
         return addReceiptPhotosCommand.execute(id, request)
     }
 
     @DeleteMapping("/{id}/photos/{name}")
-    fun deletePhoto(@PathVariable id: Int, @PathVariable name: String): SuccessResponse {
+    fun deletePhoto(@PathVariable id: Int, @PathVariable @Length(max = 150) name: String): SuccessResponse {
         return deleteReceiptPhotoCommand.execute(id, name)
     }
 

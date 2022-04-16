@@ -1,13 +1,18 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands.dto
 
+import org.hibernate.validator.constraints.Length
+import javax.validation.Valid
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotBlank
+
 data class NewReceiptDto(
-    var userId: Int = 0,
-    var name: String = "",
+    @field:Min(1) var userId: Int = 0,
+    @field:Length(min = 1, max = 100) var name: String = "",
     var categoryId: Int? = null,
-    var description: String? = null,
-    var author: String? = null,
-    var source: String? = null,
-    var ingredients: List<NewIngredientDto> = listOf(),
-    var steps: List<NewStepDto> = listOf(),
-    var photos: List<String> = listOf()
+    @field:Length(max = 1000) var description: String? = null,
+    @field:Length(max = 50) var author: String? = null,
+    @field:Length(max = 100) var source: String? = null,
+    var ingredients: List<@Valid NewIngredientDto> = listOf(),
+    var steps: List<@Valid NewStepDto> = listOf(),
+    var photos: List<@NotBlank String> = listOf()
 )

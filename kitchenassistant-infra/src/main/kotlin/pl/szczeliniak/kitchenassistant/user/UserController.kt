@@ -8,6 +8,7 @@ import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import pl.szczeliniak.kitchenassistant.user.queries.GetUsersQuery
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/users")
@@ -31,7 +32,7 @@ class UserController(
     }
 
     @PostMapping
-    fun addUser(@RequestBody dto: AddUserDto): SuccessResponse {
+    fun addUser(@Valid @RequestBody dto: AddUserDto): SuccessResponse {
         return addUserCommand.execute(dto)
     }
 

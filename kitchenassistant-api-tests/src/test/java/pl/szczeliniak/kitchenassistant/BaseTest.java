@@ -99,6 +99,16 @@ public abstract class BaseTest implements WithAssertions {
     @SuperBuilder
     protected static class ReceiptsResponse {
         private List<Receipt> receipts;
+        private Pagination pagination;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder
+    protected static class Pagination {
+        private Integer pageNumber;
+        private Integer limit;
+        private Integer numberOfPages;
     }
 
     @Data
@@ -120,6 +130,7 @@ public abstract class BaseTest implements WithAssertions {
         private String source;
         private List<Ingredient> ingredients;
         private List<Step> steps;
+        private List<String> photos;
     }
 
     @Data
@@ -187,6 +198,7 @@ public abstract class BaseTest implements WithAssertions {
         private String source;
         private List<AddIngredientDto> ingredients;
         private List<AddStepDto> steps;
+        private List<String> photos;
     }
 
     @Data
@@ -204,6 +216,7 @@ public abstract class BaseTest implements WithAssertions {
     @NoArgsConstructor
     protected static class UsersResponse {
         private List<User> users;
+        private Pagination pagination;
     }
 
     @Data
@@ -264,6 +277,7 @@ public abstract class BaseTest implements WithAssertions {
     @SuperBuilder
     protected static class ShoppingListsResponse {
         private List<ShoppingList> shoppingLists;
+        private Pagination pagination;
     }
 
     @Data

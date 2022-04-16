@@ -8,6 +8,7 @@ import pl.szczeliniak.kitchenassistant.security.commands.RegisterCommand
 import pl.szczeliniak.kitchenassistant.security.commands.dto.LoginDto
 import pl.szczeliniak.kitchenassistant.security.commands.dto.LoginResponse
 import pl.szczeliniak.kitchenassistant.security.commands.dto.RegisterDto
+import javax.validation.Valid
 
 @RestController
 class SecurityController(
@@ -16,12 +17,12 @@ class SecurityController(
 ) {
 
     @PostMapping("/login")
-    fun login(@RequestBody dto: LoginDto): LoginResponse {
+    fun login(@Valid @RequestBody dto: LoginDto): LoginResponse {
         return loginCommand.execute(dto)
     }
 
     @PostMapping("/register")
-    fun register(@RequestBody dto: RegisterDto): LoginResponse {
+    fun register(@Valid @RequestBody dto: RegisterDto): LoginResponse {
         return registerCommand.execute(dto)
     }
 

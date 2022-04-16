@@ -1,7 +1,9 @@
 package pl.szczeliniak.kitchenassistant.user.commands.dto
 
+import org.hibernate.validator.constraints.Length
+
 data class AddUserDto(
-    var email: String = "",
-    var password: String = "",
-    var name: String = ""
+    @field:Length(min = 1, max = 100) var email: String = "",
+    @field:Length(min = 1, max = 100) var password: String = "",
+    @field:Length(min = 1, max = 100) var name: String = ""
 )

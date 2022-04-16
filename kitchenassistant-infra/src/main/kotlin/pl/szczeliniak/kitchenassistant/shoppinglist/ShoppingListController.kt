@@ -1,6 +1,8 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist
 
+import org.hibernate.validator.constraints.Length
 import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.*
@@ -13,9 +15,11 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.queries.GetShoppingListsQuer
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListsResponse
 import java.time.LocalDate
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/shoppinglists")
+@Validated
 class ShoppingListController(
     private val getShoppingListQuery: GetShoppingListQuery,
     private val getShoppingListsQuery: GetShoppingListsQuery,
@@ -38,7 +42,7 @@ class ShoppingListController(
     fun getShoppingLists(
         @RequestParam(required = false) userId: Int?,
         @RequestParam(required = false) archived: Boolean?,
-        @RequestParam(required = false) name: String?,
+        @RequestParam(required = false) @Length(max = 50) name: String?,
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) date: LocalDate?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
@@ -47,12 +51,12 @@ class ShoppingListController(
     }
 
     @PostMapping
-    fun addShoppingList(@RequestBody dto: NewShoppingListDto): SuccessResponse {
+    fun addShoppingList(@Valid @RequestBody dto: NewShoppingListDto): SuccessResponse {
         return addShoppingListCommand.execute(dto)
     }
 
     @PutMapping("/{id}")
-    fun updateShoppingList(@PathVariable id: Int, @RequestBody dto: UpdateShoppingListDto): SuccessResponse {
+    fun updateShoppingList(@PathVariable id: Int, @Valid @RequestBody dto: UpdateShoppingListDto): SuccessResponse {
         return updateShoppingListCommand.execute(id, dto)
     }
 
@@ -67,7 +71,7 @@ class ShoppingListController(
     }
 
     @PostMapping("/{id}/items")
-    fun addShoppingListItem(@PathVariable id: Int, @RequestBody dto: NewShoppingListItemDto): SuccessResponse {
+    fun addShoppingListItem(@PathVariable id: Int, @Valid @RequestBody dto: NewShoppingListItemDto): SuccessResponse {
         return addShoppingListItemCommand.execute(id, dto)
     }
 
@@ -75,7 +79,7 @@ class ShoppingListController(
     fun updateShoppingListItem(
         @PathVariable id: Int,
         @PathVariable itemId: Int,
-        @RequestBody dto: UpdateShoppingListItemDto
+        @Valid @RequestBody dto: UpdateShoppingListItemDto
     ): SuccessResponse {
         return updateShoppingListItemCommand.execute(id, itemId, dto)
     }
