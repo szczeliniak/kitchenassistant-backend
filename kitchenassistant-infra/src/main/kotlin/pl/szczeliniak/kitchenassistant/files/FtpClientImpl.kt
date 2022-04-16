@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import pl.szczeliniak.kitchenassistant.exceptions.BadRequestException
 import pl.szczeliniak.kitchenassistant.exceptions.FileTooLargeException
+import pl.szczeliniak.kitchenassistant.exceptions.FtpException
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.util.*
 
 @Component
@@ -42,7 +44,11 @@ class FtpClientImpl(
         var inputStream: ByteArrayInputStream? = null
         try {
             inputStream = ByteArrayInputStream(content)
+            client.makeDirectory(BASE_DIRECTORY)
             client.storeFile("$BASE_DIRECTORY/$photoName", inputStream)
+        } catch (exception: IOException) {
+            logger.error(exception.message ?: "Error while file upload", exception)
+            throw FtpException(exception.message ?: "Error while file upload")
         } finally {
             close(client)
             inputStream?.close()
@@ -56,7 +62,7 @@ class FtpClientImpl(
         logger.info("Downloading file with name: $name")
 
         if (!exists(name)) {
-            throw NotFoundException("File not found")
+            throw NotFoundException("File $name not found")
         }
 
         val client = open()
@@ -66,6 +72,9 @@ class FtpClientImpl(
             client.retrieveFile("$BASE_DIRECTORY/$name", byteArrayOutputStream)
             content = byteArrayOutputStream.toByteArray()
             byteArrayOutputStream.close()
+        } catch (exception: IOException) {
+            logger.error(exception.message ?: "Error while file download", exception)
+            throw FtpException(exception.message ?: "Error while file download")
         } finally {
             close(client)
         }
@@ -78,12 +87,15 @@ class FtpClientImpl(
         logger.info("Deleting file with name: $name")
 
         if (!exists(name)) {
-            throw NotFoundException("File not found")
+            throw NotFoundException("File $name not found")
         }
 
         val client = open()
         try {
             client.deleteFile("$BASE_DIRECTORY/$name")
+        } catch (exception: IOException) {
+            logger.error(exception.message ?: "Error while file delete", exception)
+            throw FtpException(exception.message ?: "Error while file delete")
         } finally {
             close(client)
         }
@@ -95,11 +107,12 @@ class FtpClientImpl(
         val ftpClient = FTPClient()
         ftpClient.connect(host, port)
         ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE)
-        if (!FTPReply.isPositiveCompletion(ftpClient.replyCode)) {
-            close(ftpClient)
-            throw InterruptedException("Upload exception")
-        }
         ftpClient.login(user, password)
+        if (!FTPReply.isPositiveCompletion(ftpClient.replyCode)) {
+            val code = ftpClient.replyCode
+            close(ftpClient)
+            throw FtpException("FTP connection error. Code: $code")
+        }
         return ftpClient
     }
 
@@ -126,6 +139,9 @@ class FtpClientImpl(
                     return true
                 }
             }
+        } catch (exception: IOException) {
+            logger.error(exception.message ?: "Error while file exist check", exception)
+            throw FtpException(exception.message ?: "Error while file exist check")
         } finally {
             close(client)
         }

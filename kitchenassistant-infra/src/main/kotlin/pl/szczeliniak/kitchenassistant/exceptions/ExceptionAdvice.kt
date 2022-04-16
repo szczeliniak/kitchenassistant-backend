@@ -36,6 +36,11 @@ class ExceptionAdvice {
         return error(HttpStatus.PAYLOAD_TOO_LARGE, exception)
     }
 
+    @ExceptionHandler(FtpException::class)
+    fun ftpException(exception: FtpException): ResponseEntity<ExceptionResponse> {
+        return error(HttpStatus.FAILED_DEPENDENCY, exception)
+    }
+
     private fun error(
         httpStatus: HttpStatus,
         exception: Exception
