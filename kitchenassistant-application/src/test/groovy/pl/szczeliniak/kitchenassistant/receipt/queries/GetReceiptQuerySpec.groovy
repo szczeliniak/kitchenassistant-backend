@@ -24,7 +24,7 @@ class GetReceiptQuerySpec extends Specification {
         def step = step()
         def ingredientDto = ingredientDto()
         def stepDto = stepDto()
-        def photo = photo()
+        def photo = photo("PHOTO_NAME")
 
         receiptDao.findById(1) >> receipt(ingredient, step, photo)
 
@@ -64,7 +64,7 @@ class GetReceiptQuerySpec extends Specification {
     }
 
     private static Step step() {
-        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList(photo("STEP_PHOTO_NAME")), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Ingredient ingredient() {
@@ -80,11 +80,11 @@ class GetReceiptQuerySpec extends Specification {
     }
 
     private static StepDto stepDto() {
-        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1)
+        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList("STEP_PHOTO_NAME"))
     }
 
-    private static Photo photo() {
-        return new Photo(99, "PHOTO_NAME", false, LocalDateTime.now(), LocalDateTime.now())
+    private static Photo photo(String name) {
+        return new Photo(99, name, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

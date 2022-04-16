@@ -98,4 +98,8 @@ class Receipt(
         this.modifiedAt_ = LocalDateTime.now()
     }
 
+    fun getStepById(stepId: Int): Step? {
+        return steps_.firstOrNull { it.id == stepId }
+    }
+
 }

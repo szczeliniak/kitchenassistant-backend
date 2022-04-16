@@ -29,6 +29,8 @@ class ReceiptController(
     private val updateIngredientCommand: UpdateIngredientCommand,
     private val addStepCommand: AddStepCommand,
     private val deleteStepCommand: DeleteStepCommand,
+    private val assignPhotosToReceiptStepCommand: AssignPhotosToReceiptStepCommand,
+    private val divestPhotoFromReceiptStepCommand: DivestPhotoFromReceiptStepCommand,
     private val deleteCategoryCommand: DeleteCategoryCommand,
     private val updateCategoryCommand: UpdateCategoryCommand,
     private val updateStepCommand: UpdateStepCommand,
@@ -85,6 +87,24 @@ class ReceiptController(
     @DeleteMapping("/{id}/steps/{stepId}")
     fun deleteStep(@PathVariable id: Int, @PathVariable stepId: Int): SuccessResponse {
         return deleteStepCommand.execute(id, stepId)
+    }
+
+    @PutMapping("/{id}/steps/{stepId}/photos")
+    fun assignPhotosToReceiptStep(
+        @PathVariable id: Int,
+        @PathVariable stepId: Int,
+        @Valid @RequestBody request: AssignPhotosToReceiptStepDto
+    ): SuccessResponse {
+        return assignPhotosToReceiptStepCommand.execute(id, stepId, request)
+    }
+
+    @DeleteMapping("/{id}/steps/{stepId}/photos/{name}")
+    fun divestPhotoFromReceiptStep(
+        @PathVariable id: Int,
+        @PathVariable stepId: Int,
+        @PathVariable @Length(max = 150) name: String
+    ): SuccessResponse {
+        return divestPhotoFromReceiptStepCommand.execute(id, stepId, name)
     }
 
     @PostMapping("{id}/ingredients")

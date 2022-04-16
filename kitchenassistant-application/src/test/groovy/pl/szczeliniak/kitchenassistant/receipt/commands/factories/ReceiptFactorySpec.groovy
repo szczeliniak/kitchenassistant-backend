@@ -56,7 +56,7 @@ class ReceiptFactorySpec extends Specification {
     }
 
     private static NewStepDto newStepDto() {
-        return new NewStepDto("", "", 0)
+        return new NewStepDto("", "", 0, Collections.emptyList())
     }
 
     private static UserResponse userResponse() {
@@ -78,7 +78,7 @@ class ReceiptFactorySpec extends Specification {
     }
 
     private static Step step() {
-        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Category category() {

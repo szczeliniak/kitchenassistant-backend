@@ -11,7 +11,7 @@ import spock.lang.Subject
 
 import java.time.LocalDateTime
 
-class DeassignPhotoFromReceiptCommandSpec extends Specification {
+class DivestPhotoFromReceiptCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
     @Subject

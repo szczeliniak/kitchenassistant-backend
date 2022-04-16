@@ -9,7 +9,7 @@ import spock.lang.Subject
 
 import java.time.LocalDateTime
 
-class AssignPhotosToReceiptCommandTest extends Specification {
+class AssignPhotosToReceiptCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
     def photoDao = Mock(PhotoDao)

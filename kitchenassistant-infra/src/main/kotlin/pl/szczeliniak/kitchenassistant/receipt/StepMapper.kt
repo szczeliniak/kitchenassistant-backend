@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component
 import pl.szczeliniak.kitchenassistant.receipt.persistance.StepEntity
 
 @Component
-class StepMapper {
+class StepMapper(private val photoMapper: PhotoMapper) {
 
     fun toDomain(stepEntity: StepEntity): Step {
         return Step(
@@ -12,6 +12,7 @@ class StepMapper {
             stepEntity.name,
             stepEntity.description,
             stepEntity.sequence,
+            stepEntity.photos.map { photoMapper.toDomain(it) }.toMutableList(),
             stepEntity.deleted,
             stepEntity.createdAt,
             stepEntity.modifiedAt
@@ -24,6 +25,7 @@ class StepMapper {
             step.name,
             step.description,
             step.sequence,
+            step.photos.map { photoMapper.toEntity(it) }.toMutableList(),
             step.deleted,
             step.createdAt,
             step.modifiedAt

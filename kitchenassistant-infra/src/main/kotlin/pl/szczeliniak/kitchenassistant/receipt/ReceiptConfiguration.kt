@@ -56,7 +56,7 @@ class ReceiptConfiguration {
     fun deleteIngredientCommand(receiptDao: ReceiptDao): DeleteIngredientCommand = DeleteIngredientCommand(receiptDao)
 
     @Bean
-    fun stepFactory(): StepFactory = StepFactory()
+    fun stepFactory(photoFactory: PhotoFactory): StepFactory = StepFactory(photoFactory)
 
     @Bean
     fun ingredientFactory(): IngredientFactory = IngredientFactory()
@@ -95,5 +95,17 @@ class ReceiptConfiguration {
         photoFactory: PhotoFactory,
         categoryDao: CategoryDao
     ): ReceiptFactory = ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, photoFactory, categoryDao)
+
+    @Bean
+    fun assignPhotosToReceiptStepCommand(
+        receiptDao: ReceiptDao,
+        stepDao: StepDao,
+        photoDao: PhotoDao,
+        photoFactory: PhotoFactory
+    ): AssignPhotosToReceiptStepCommand = AssignPhotosToReceiptStepCommand(receiptDao, stepDao, photoDao, photoFactory)
+
+    @Bean
+    fun divestPhotoFromReceiptStepCommand(receiptDao: ReceiptDao, stepDao: StepDao) =
+        DivestPhotoFromReceiptStepCommand(receiptDao, stepDao)
 
 }

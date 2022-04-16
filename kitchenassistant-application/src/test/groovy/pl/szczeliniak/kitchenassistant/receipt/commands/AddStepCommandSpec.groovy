@@ -38,11 +38,11 @@ class AddStepCommandSpec extends Specification {
     }
 
     private static NewStepDto newStepDto() {
-        return new NewStepDto("", "", 0)
+        return new NewStepDto("", "", 0, Collections.emptyList())
     }
 
     private static Step step() {
-        return new Step(2, "", "", 0, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(2, "", "", 0, Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Receipt receipt() {
