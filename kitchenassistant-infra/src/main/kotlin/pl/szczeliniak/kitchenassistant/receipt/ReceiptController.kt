@@ -33,8 +33,8 @@ class ReceiptController(
     private val updateCategoryCommand: UpdateCategoryCommand,
     private val updateStepCommand: UpdateStepCommand,
     private val getCategoriesQuery: GetCategoriesQuery,
-    private val addReceiptPhotosCommand: AddReceiptPhotosCommand,
-    private val deleteReceiptPhotoCommand: DeleteReceiptPhotoCommand
+    private val assignPhotosToReceiptCommand: AssignPhotosToReceiptCommand,
+    private val divestPhotoFromReceiptCommand: DivestPhotoFromReceiptCommand
 ) {
 
     @GetMapping("/{id}")
@@ -127,13 +127,13 @@ class ReceiptController(
     }
 
     @PutMapping("/{id}/photos")
-    fun addPhotos(@PathVariable id: Int, @Valid @RequestBody request: AddReceiptPhotosDto): SuccessResponse {
-        return addReceiptPhotosCommand.execute(id, request)
+    fun assignPhotos(@PathVariable id: Int, @Valid @RequestBody request: AssignPhotosToReceiptDto): SuccessResponse {
+        return assignPhotosToReceiptCommand.execute(id, request)
     }
 
     @DeleteMapping("/{id}/photos/{name}")
-    fun deletePhoto(@PathVariable id: Int, @PathVariable @Length(max = 150) name: String): SuccessResponse {
-        return deleteReceiptPhotoCommand.execute(id, name)
+    fun divestPhoto(@PathVariable id: Int, @PathVariable @Length(max = 150) name: String): SuccessResponse {
+        return divestPhotoFromReceiptCommand.execute(id, name)
     }
 
 }

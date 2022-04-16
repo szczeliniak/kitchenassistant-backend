@@ -4,7 +4,7 @@ import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 
-class DeleteReceiptPhotoCommand(
+class DivestPhotoFromReceiptCommand(
     private val receiptDao: ReceiptDao
 ) {
 

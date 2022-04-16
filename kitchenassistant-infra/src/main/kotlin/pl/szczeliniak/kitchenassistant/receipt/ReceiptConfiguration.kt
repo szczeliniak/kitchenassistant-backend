@@ -78,12 +78,11 @@ class ReceiptConfiguration {
     fun updateCategoryCommand(categoryDao: CategoryDao): UpdateCategoryCommand = UpdateCategoryCommand(categoryDao)
 
     @Bean
-    fun addReceiptPhotosCommand(receiptDao: ReceiptDao, photoDao: PhotoDao, photoFactory: PhotoFactory) =
-        AddReceiptPhotosCommand(receiptDao, photoDao, photoFactory)
+    fun assignPhotosToReceiptCommand(receiptDao: ReceiptDao, photoDao: PhotoDao, photoFactory: PhotoFactory) =
+        AssignPhotosToReceiptCommand(receiptDao, photoDao, photoFactory)
 
     @Bean
-    fun deleteReceiptPhotoCommand(receiptDao: ReceiptDao) = DeleteReceiptPhotoCommand(receiptDao)
-
+    fun divestPhotoFromReceiptCommand(receiptDao: ReceiptDao) = DivestPhotoFromReceiptCommand(receiptDao)
 
     @Bean
     fun getCategoriesQuery(categoryDao: CategoryDao): GetCategoriesQuery = GetCategoriesQuery(categoryDao)
