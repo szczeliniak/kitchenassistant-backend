@@ -30,8 +30,6 @@ class FtpClientImpl(
     }
 
     override fun upload(name: String, content: ByteArray): String {
-        logger.info("Uploading file with name: $name")
-
         if (content.size > MAX_BYTES_SIZE) {
             throw FileTooLargeException("File too large")
         }
@@ -39,8 +37,10 @@ class FtpClientImpl(
             throw BadRequestException("Unsupported file media type")
         }
 
-        val photoName: String = preparePhotoName(name)
+        logger.info("Uploading file with name: $name")
         val client = open()
+
+        val photoName: String = preparePhotoName(client, name)
         var inputStream: ByteArrayInputStream? = null
         try {
             inputStream = ByteArrayInputStream(content)
@@ -60,12 +60,12 @@ class FtpClientImpl(
 
     override fun download(name: String): ByteArray {
         logger.info("Downloading file with name: $name")
+        val client = open()
 
-        if (!exists(name)) {
+        if (!exists(client, name)) {
             throw NotFoundException("File $name not found")
         }
 
-        val client = open()
         val content: ByteArray
         try {
             val byteArrayOutputStream = ByteArrayOutputStream()
@@ -85,12 +85,12 @@ class FtpClientImpl(
 
     override fun delete(name: String) {
         logger.info("Deleting file with name: $name")
+        val client = open()
 
-        if (!exists(name)) {
+        if (!exists(client, name)) {
             throw NotFoundException("File $name not found")
         }
 
-        val client = open()
         try {
             client.deleteFile("$BASE_DIRECTORY/$name")
         } catch (exception: IOException) {
@@ -123,16 +123,15 @@ class FtpClientImpl(
         }
     }
 
-    private fun preparePhotoName(originalFileName: String): String {
+    private fun preparePhotoName(client: FTPClient, originalFileName: String): String {
         var name = UUID.randomUUID().toString() + "_" + originalFileName
         name = name.replace("\\s".toRegex(), "")
-        return if (exists(name)) {
-            preparePhotoName(originalFileName)
+        return if (exists(client, name)) {
+            preparePhotoName(client, originalFileName)
         } else name
     }
 
-    private fun exists(fileName: String): Boolean {
-        val client = open()
+    private fun exists(client: FTPClient, fileName: String): Boolean {
         try {
             for (ftpFile in client.listFiles(BASE_DIRECTORY)) {
                 if (ftpFile.name == fileName) {
@@ -142,8 +141,6 @@ class FtpClientImpl(
         } catch (exception: IOException) {
             logger.error(exception.message ?: "Error while file exist check", exception)
             throw FtpException(exception.message ?: "Error while file exist check")
-        } finally {
-            close(client)
         }
         return false
     }
