@@ -56,7 +56,7 @@ class ReceiptConfiguration {
     fun deleteIngredientCommand(receiptDao: ReceiptDao): DeleteIngredientCommand = DeleteIngredientCommand(receiptDao)
 
     @Bean
-    fun stepFactory(photoFactory: PhotoFactory): StepFactory = StepFactory(photoFactory)
+    fun stepFactory(fileDao: FileDao): StepFactory = StepFactory(fileDao)
 
     @Bean
     fun ingredientFactory(): IngredientFactory = IngredientFactory()
@@ -65,7 +65,7 @@ class ReceiptConfiguration {
     fun categoryFactory(): CategoryFactory = CategoryFactory()
 
     @Bean
-    fun photoFactory(): PhotoFactory = PhotoFactory()
+    fun photoFactory(): FileFactory = FileFactory()
 
     @Bean
     fun addCategoryCommand(categoryDao: CategoryDao, categoryFactory: CategoryFactory): AddCategoryCommand =
@@ -78,8 +78,8 @@ class ReceiptConfiguration {
     fun updateCategoryCommand(categoryDao: CategoryDao): UpdateCategoryCommand = UpdateCategoryCommand(categoryDao)
 
     @Bean
-    fun assignPhotosToReceiptCommand(receiptDao: ReceiptDao, photoDao: PhotoDao, photoFactory: PhotoFactory) =
-        AssignPhotosToReceiptCommand(receiptDao, photoDao, photoFactory)
+    fun assignPhotosToReceiptCommand(receiptDao: ReceiptDao, fileDao: FileDao) =
+        AssignPhotosToReceiptCommand(receiptDao, fileDao)
 
     @Bean
     fun divestPhotoFromReceiptCommand(receiptDao: ReceiptDao) = DivestPhotoFromReceiptCommand(receiptDao)
@@ -92,17 +92,18 @@ class ReceiptConfiguration {
         getUserByIdQuery: GetUserByIdQuery,
         stepFactory: StepFactory,
         ingredientFactory: IngredientFactory,
-        photoFactory: PhotoFactory,
-        categoryDao: CategoryDao
-    ): ReceiptFactory = ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, photoFactory, categoryDao)
+        fileFactory: FileFactory,
+        categoryDao: CategoryDao,
+        fileDao: FileDao
+    ): ReceiptFactory = ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, categoryDao, fileDao)
 
     @Bean
     fun assignPhotosToReceiptStepCommand(
         receiptDao: ReceiptDao,
         stepDao: StepDao,
-        photoDao: PhotoDao,
-        photoFactory: PhotoFactory
-    ): AssignPhotosToReceiptStepCommand = AssignPhotosToReceiptStepCommand(receiptDao, stepDao, photoDao, photoFactory)
+        fileDao: FileDao,
+        fileFactory: FileFactory
+    ): AssignPhotosToReceiptStepCommand = AssignPhotosToReceiptStepCommand(receiptDao, stepDao, fileDao)
 
     @Bean
     fun divestPhotoFromReceiptStepCommand(receiptDao: ReceiptDao, stepDao: StepDao) =

@@ -8,7 +8,7 @@ class ReceiptMapper(
     private val stepMapper: StepMapper,
     private val ingredientMapper: IngredientMapper,
     private val categoryMapper: CategoryMapper,
-    private val photoMapper: PhotoMapper
+    private val fileMapper: FileMapper
 ) {
 
     fun toDomain(receiptEntity: ReceiptEntity): Receipt {
@@ -22,7 +22,7 @@ class ReceiptMapper(
             receiptEntity.category?.let { categoryMapper.toDomain(it) },
             receiptEntity.ingredients.map { ingredientMapper.toDomain(it) }.toMutableList(),
             receiptEntity.steps.map { stepMapper.toDomain(it) }.toMutableList(),
-            receiptEntity.photos.map { photoMapper.toDomain(it) }.toMutableList(),
+            receiptEntity.photos.map { fileMapper.toDomain(it) }.toMutableList(),
             receiptEntity.deleted,
             receiptEntity.createdAt,
             receiptEntity.modifiedAt
@@ -40,7 +40,7 @@ class ReceiptMapper(
             receipt.category?.let { categoryMapper.toEntity(it) },
             receipt.ingredients.map { ingredientMapper.toEntity(it) }.toMutableList(),
             receipt.steps.map { stepMapper.toEntity(it) }.toMutableList(),
-            receipt.photos.map { photoMapper.toEntity(it) }.toMutableList(),
+            receipt.photos.map { fileMapper.toEntity(it) }.toMutableList(),
             receipt.deleted,
             receipt.createdAt,
             receipt.modifiedAt

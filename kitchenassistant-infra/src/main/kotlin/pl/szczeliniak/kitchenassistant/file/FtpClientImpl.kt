@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.files
+package pl.szczeliniak.kitchenassistant.file
 
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPReply
@@ -24,7 +24,7 @@ class FtpClientImpl(
 ) : FtpClient {
 
     companion object {
-        private const val BASE_DIRECTORY = "/photos"
+        private const val BASE_DIRECTORY = "/files"
         private const val MAX_BYTES_SIZE = 1000000
         private val logger: Logger = LoggerFactory.getLogger(FtpClient::class.java)
     }

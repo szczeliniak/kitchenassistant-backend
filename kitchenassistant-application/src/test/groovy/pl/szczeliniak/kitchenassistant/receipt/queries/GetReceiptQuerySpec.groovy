@@ -2,10 +2,7 @@ package pl.szczeliniak.kitchenassistant.receipt.queries
 
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.receipt.*
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.IngredientDto
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDto
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.StepDto
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.*
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -20,19 +17,13 @@ class GetReceiptQuerySpec extends Specification {
 
     def "should return receipt"() {
         given:
-        def ingredient = ingredient()
-        def step = step()
-        def ingredientDto = ingredientDto()
-        def stepDto = stepDto()
-        def photo = photo("PHOTO_NAME")
-
-        receiptDao.findById(1) >> receipt(ingredient, step, photo)
+        receiptDao.findById(1) >> receipt()
 
         when:
         def result = getReceiptQuery.execute(1)
 
         then:
-        result == new ReceiptResponse(receiptDto(ingredientDto, stepDto))
+        result == new ReceiptResponse(receiptDto())
     }
 
     def "should throw exception receipt not found"() {
@@ -47,7 +38,7 @@ class GetReceiptQuerySpec extends Specification {
         e.message == "Receipt not found"
     }
 
-    private static Receipt receipt(Ingredient ingredient, Step step, Photo photo) {
+    private static Receipt receipt() {
         return new Receipt(1,
                 2,
                 'RECEIPT_NAME',
@@ -55,9 +46,9 @@ class GetReceiptQuerySpec extends Specification {
                 'RECEIPT_AUTHOR',
                 'RECEIPT_SOURCE',
                 null,
-                Collections.singletonList(ingredient),
-                Collections.singletonList(step),
-                Collections.singletonList(photo),
+                Collections.singletonList(ingredient()),
+                Collections.singletonList(step()),
+                Collections.singletonList(photo("PHOTO_NAME")),
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now())
@@ -71,8 +62,8 @@ class GetReceiptQuerySpec extends Specification {
         return new Ingredient(3, "INGREDIENT_NAME", "INGREDIENT_QUANTITY", false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static ReceiptDto receiptDto(IngredientDto ingredient, StepDto step) {
-        return new ReceiptDto(1, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE", null, Collections.singletonList(ingredient), Collections.singletonList(step), Collections.singletonList("PHOTO_NAME"))
+    private static ReceiptDto receiptDto() {
+        return new ReceiptDto(1, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE", null, Collections.singletonList(ingredientDto()), Collections.singletonList(stepDto()), Collections.singletonList(fileDto("PHOTO_NAME")))
     }
 
     private static IngredientDto ingredientDto() {
@@ -80,11 +71,15 @@ class GetReceiptQuerySpec extends Specification {
     }
 
     private static StepDto stepDto() {
-        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList("STEP_PHOTO_NAME"))
+        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList(fileDto("STEP_PHOTO_NAME")))
     }
 
-    private static Photo photo(String name) {
-        return new Photo(99, name, false, LocalDateTime.now(), LocalDateTime.now())
+    private static File photo(String name) {
+        return new File(99, name, false, LocalDateTime.now(), LocalDateTime.now())
+    }
+
+    private static FileDto fileDto(String name) {
+        return new FileDto(99, name)
     }
 
 }

@@ -9,7 +9,7 @@ import spock.lang.Subject
 
 import java.time.LocalDateTime
 
-class DivestPhotoFromReceiptStepCommandSpec extends Specification {
+class DivestFileFromReceiptStepCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
     def stepDao = Mock(StepDao)
@@ -72,19 +72,19 @@ class DivestPhotoFromReceiptStepCommandSpec extends Specification {
 
         then:
         def e = thrown(NotAllowedOperationException)
-        e.message == "Photo is already marked as deleted!"
+        e.message == "File is already marked as deleted!"
     }
 
     private static Receipt receipt(List<Step> steps) {
         return new Receipt(1, 2, '', '', '', '', null, Collections.emptyList(), steps, Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static Step step(List<Photo> photos) {
+    private static Step step(List<File> photos) {
         return new Step(2, "", "", 0, photos, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static Photo photo(boolean deleted) {
-        return new Photo(0, "NAME", deleted, LocalDateTime.now(), LocalDateTime.now())
+    private static File photo(boolean deleted) {
+        return new File(0, "NAME", deleted, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

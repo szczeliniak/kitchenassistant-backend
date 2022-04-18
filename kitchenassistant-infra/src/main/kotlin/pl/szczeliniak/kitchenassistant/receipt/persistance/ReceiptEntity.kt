@@ -23,8 +23,8 @@ data class ReceiptEntity(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @OrderBy("sequence")
     var steps: MutableList<StepEntity>,
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var photos: MutableList<PhotoEntity>,
+    @ManyToMany(fetch = FetchType.LAZY)
+    var photos: MutableList<FileEntity>,
     var deleted: Boolean,
     var createdAt: LocalDateTime,
     var modifiedAt: LocalDateTime

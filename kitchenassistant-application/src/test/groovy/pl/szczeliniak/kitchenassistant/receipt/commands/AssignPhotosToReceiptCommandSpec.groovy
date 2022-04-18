@@ -3,7 +3,6 @@ package pl.szczeliniak.kitchenassistant.receipt.commands
 import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.AssignPhotosToReceiptDto
-import pl.szczeliniak.kitchenassistant.receipt.commands.factories.PhotoFactory
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -12,19 +11,17 @@ import java.time.LocalDateTime
 class AssignPhotosToReceiptCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
-    def photoDao = Mock(PhotoDao)
-    def photoFactory = Mock(PhotoFactory)
+    def fileDao = Mock(FileDao)
 
     @Subject
-    def addReceiptPhotosCommand = new AssignPhotosToReceiptCommand(receiptDao, photoDao, photoFactory)
+    def addReceiptPhotosCommand = new AssignPhotosToReceiptCommand(receiptDao, fileDao)
 
     def 'should add photo to receipt'() {
         given:
         def photo = photo()
         def receipt = receipt(new ArrayList())
         receiptDao.findById(1) >> receipt
-        photoFactory.create("NAME") >> photo
-        photoDao.save(photo) >> photo
+        fileDao.findById(99) >> photo
         receiptDao.save(receipt) >> receipt
 
         when:
@@ -53,16 +50,16 @@ class AssignPhotosToReceiptCommandSpec extends Specification {
     }
 
     private static AssignPhotosToReceiptDto addReceiptPhotosDto() {
-        return new AssignPhotosToReceiptDto(Collections.singletonList("NAME"))
+        return new AssignPhotosToReceiptDto(Collections.singletonList(99))
     }
 
-    private static Receipt receipt(List<Photo> photos) {
+    private static Receipt receipt(List<File> photos) {
         return new Receipt(1, 0, "", "", "", "",
                 new Category(0, "", 0, false, LocalDateTime.now(), LocalDateTime.now()),
                 Collections.emptyList(), Collections.emptyList(), photos, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static Photo photo() {
-        return new Photo(2, "NAME", false, LocalDateTime.now(), LocalDateTime.now())
+    private static File photo() {
+        return new File(99, "NAME", false, LocalDateTime.now(), LocalDateTime.now())
     }
 }

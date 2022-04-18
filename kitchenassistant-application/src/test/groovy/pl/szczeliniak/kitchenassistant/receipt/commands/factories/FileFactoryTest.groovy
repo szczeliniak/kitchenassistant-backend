@@ -1,16 +1,16 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands.factories
 
 import org.assertj.core.api.Assertions
-import pl.szczeliniak.kitchenassistant.receipt.Photo
+import pl.szczeliniak.kitchenassistant.receipt.File
 import spock.lang.Specification
 import spock.lang.Subject
 
 import java.time.LocalDateTime
 
-class PhotoFactoryTest extends Specification {
+class FileFactoryTest extends Specification {
 
     @Subject
-    def photoFactory = new PhotoFactory()
+    def photoFactory = new FileFactory()
 
     def 'should create photo'() {
 
@@ -23,8 +23,8 @@ class PhotoFactoryTest extends Specification {
                 .isEqualTo(photo())
     }
 
-    private static Photo photo() {
-        return new Photo(0, "PHOTO_NAME", false, LocalDateTime.now(), LocalDateTime.now())
+    private static File photo() {
+        return new File(0, "PHOTO_NAME", false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

@@ -15,14 +15,14 @@ import java.time.LocalDateTime
 
 class ReceiptFactorySpec extends Specification {
 
-    def getUserQuery = Mock(GetUserByIdQuery)
+    def getUserByIdQuery = Mock(GetUserByIdQuery)
     def ingredientFactory = Mock(IngredientFactory)
     def stepFactory = Mock(StepFactory)
     def categoryDao = Mock(CategoryDao)
-    def photoFactory = Mock(PhotoFactory)
+    def fileDao = Mock(FileDao)
 
     @Subject
-    def receiptFactory = new ReceiptFactory(getUserQuery, ingredientFactory, stepFactory, photoFactory, categoryDao)
+    def receiptFactory = new ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, categoryDao, fileDao)
 
     def 'should create receipt'() {
         given:
@@ -30,10 +30,10 @@ class ReceiptFactorySpec extends Specification {
         def newStepDto = newStepDto()
         def category = category()
 
-        getUserQuery.execute(1) >> userResponse()
+        getUserByIdQuery.execute(1) >> userResponse()
         ingredientFactory.create(newIngredientDto) >> ingredient()
         stepFactory.create(newStepDto) >> step()
-        photoFactory.create("PHOTO_NAME") >> photo()
+        fileDao.findById(99) >> photo()
         categoryDao.findById(2) >> category
 
         when:
@@ -48,7 +48,7 @@ class ReceiptFactorySpec extends Specification {
 
     private static NewReceiptDto newReceiptDto(NewIngredientDto newIngredientDto, NewStepDto newStepDto) {
         return new NewReceiptDto(2, "RECEIPT_NAME", 2, "RECEIPT_DESCRIPTION", "RECEIPT_AUTHOR",
-                "RECEIPT_SOURCE", Collections.singletonList(newIngredientDto), Collections.singletonList(newStepDto), Collections.singletonList("PHOTO_NAME"))
+                "RECEIPT_SOURCE", Collections.singletonList(newIngredientDto), Collections.singletonList(newStepDto), Collections.singletonList(99))
     }
 
     private static NewIngredientDto newIngredientDto() {
@@ -69,8 +69,8 @@ class ReceiptFactorySpec extends Specification {
                 false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static Photo photo() {
-        return new Photo(99, "NAME", false, LocalDateTime.now(), LocalDateTime.now())
+    private static File photo() {
+        return new File(99, "NAME", false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Ingredient ingredient() {

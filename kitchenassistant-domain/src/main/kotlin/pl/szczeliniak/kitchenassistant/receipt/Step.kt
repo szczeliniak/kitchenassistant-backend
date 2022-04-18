@@ -10,7 +10,7 @@ data class Step(
     private var name_: String,
     private var description_: String?,
     private var sequence_: Int?,
-    private var photos_: MutableList<Photo> = mutableListOf(),
+    private var photos_: MutableList<File> = mutableListOf(),
     private var deleted_: Boolean = false,
     private val createdAt_: LocalDateTime = LocalDateTime.now(),
     private var modifiedAt_: LocalDateTime = LocalDateTime.now()
@@ -19,7 +19,7 @@ data class Step(
     val name: String get() = name_
     val description: String? get() = description_
     val sequence: Int? get() = sequence_
-    val photos: List<Photo> get() = Collections.unmodifiableList(photos_)
+    val photos: List<File> get() = Collections.unmodifiableList(photos_)
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_
@@ -39,16 +39,16 @@ data class Step(
         this.modifiedAt_ = LocalDateTime.now()
     }
 
-    fun getPhotoByName(name: String): Photo? {
-        return photos_.firstOrNull { it.name == name }
+    fun getPhotoById(id: Int): File? {
+        return photos_.firstOrNull { it.id == id }
     }
 
-    fun addPhoto(photo: Photo) {
-        photos_ += photo
+    fun addPhoto(file: File) {
+        photos_ += file
         modifiedAt_ = LocalDateTime.now()
     }
 
-    fun deletePhotoByName(name: String): Photo {
+    fun deletePhotoByName(name: String): File {
         val photo = photos.firstOrNull { it.name == name } ?: throw NotFoundException("Photo not found")
         photo.markAsDeleted()
         this.modifiedAt_ = LocalDateTime.now()

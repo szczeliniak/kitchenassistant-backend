@@ -7,7 +7,7 @@ data class StepDto(
     val name: String,
     val description: String?,
     val sequence: Int?,
-    val photos: List<String>
+    val photos: List<FileDto>
 ) {
 
     companion object {
@@ -17,7 +17,7 @@ data class StepDto(
                 step.name,
                 step.description,
                 step.sequence,
-                step.photos.map { it.name }
+                step.photos.map { FileDto.fromDomain(it) }
             )
         }
     }

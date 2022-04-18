@@ -8,5 +8,5 @@ data class NewStepDto(
     @field:Length(min = 1, max = 100) var name: String = "",
     @field:Length(max = 1000) var description: String? = null,
     var sequence: Int? = null,
-    @field:Size(min = 0, max = 20) var photos: List<@NotNull @Length(min = 1, max = 100) String> = listOf()
+    @field:Size(min = 0, max = 20) var photos: List<@NotNull Int> = listOf()
 )

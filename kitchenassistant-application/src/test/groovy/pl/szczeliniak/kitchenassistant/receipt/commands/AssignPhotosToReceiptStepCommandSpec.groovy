@@ -3,7 +3,6 @@ package pl.szczeliniak.kitchenassistant.receipt.commands
 import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.AssignPhotosToReceiptStepDto
-import pl.szczeliniak.kitchenassistant.receipt.commands.factories.PhotoFactory
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -12,12 +11,11 @@ import java.time.LocalDateTime
 class AssignPhotosToReceiptStepCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
-    def photoDao = Mock(PhotoDao)
+    def fileDao = Mock(FileDao)
     def stepDao = Mock(StepDao)
-    def photoFactory = Mock(PhotoFactory)
 
     @Subject
-    def assignPhotosToReceiptStepCommand = new AssignPhotosToReceiptStepCommand(receiptDao, stepDao, photoDao, photoFactory)
+    def assignPhotosToReceiptStepCommand = new AssignPhotosToReceiptStepCommand(receiptDao, stepDao, fileDao)
 
     def 'should add photo to receipt'() {
         given:
@@ -25,8 +23,8 @@ class AssignPhotosToReceiptStepCommandSpec extends Specification {
         def step = step(new ArrayList())
         def receipt = receipt(Collections.singletonList(step))
         receiptDao.findById(1) >> receipt
-        photoFactory.create("NAME") >> photo
-        photoDao.save(photo) >> photo
+        fileDao.findById(99) >> photo
+        fileDao.save(photo) >> photo
         stepDao.save(step) >> step
 
         when:
@@ -56,7 +54,7 @@ class AssignPhotosToReceiptStepCommandSpec extends Specification {
     }
 
     private static AssignPhotosToReceiptStepDto assignPhotosToReceiptStepDto() {
-        return new AssignPhotosToReceiptStepDto(Collections.singletonList("NAME"))
+        return new AssignPhotosToReceiptStepDto(Collections.singletonList(99))
     }
 
     private static Receipt receipt(List<Step> steps) {
@@ -65,11 +63,11 @@ class AssignPhotosToReceiptStepCommandSpec extends Specification {
                 Collections.emptyList(), steps, Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static Step step(List<Photo> photos) {
+    private static Step step(List<File> photos) {
         return new Step(2, "", "", 0, photos, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static Photo photo() {
-        return new Photo(2, "NAME", false, LocalDateTime.now(), LocalDateTime.now())
+    private static File photo() {
+        return new File(99, "NAME", false, LocalDateTime.now(), LocalDateTime.now())
     }
 }

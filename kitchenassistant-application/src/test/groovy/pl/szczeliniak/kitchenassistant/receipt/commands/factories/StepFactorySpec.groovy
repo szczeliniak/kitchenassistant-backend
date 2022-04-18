@@ -2,7 +2,8 @@ package pl.szczeliniak.kitchenassistant.receipt.commands.factories
 
 
 import org.assertj.core.api.Assertions
-import pl.szczeliniak.kitchenassistant.receipt.Photo
+import pl.szczeliniak.kitchenassistant.receipt.File
+import pl.szczeliniak.kitchenassistant.receipt.FileDao
 import pl.szczeliniak.kitchenassistant.receipt.Step
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
 import spock.lang.Specification
@@ -12,15 +13,15 @@ import java.time.LocalDateTime
 
 class StepFactorySpec extends Specification {
 
-    def photoFactory = Mock(PhotoFactory)
+    def fileDao = Mock(FileDao)
 
     @Subject
-    def stepFactory = new StepFactory(photoFactory)
+    def stepFactory = new StepFactory(fileDao)
 
     def 'should create step'() {
         given:
         def photo = photo()
-        photoFactory.create("PHOTO_NAME") >> photo
+        fileDao.findById(99) >> photo
         when:
         def result = stepFactory.create(newStepDto())
 
@@ -31,15 +32,15 @@ class StepFactorySpec extends Specification {
     }
 
     private static NewStepDto newStepDto() {
-        return new NewStepDto("NAME", "DESCRIPTION", 1, Collections.singletonList("PHOTO_NAME"))
+        return new NewStepDto("NAME", "DESCRIPTION", 1, Collections.singletonList(99))
     }
 
-    private static Step step(List<Photo> photos) {
+    private static Step step(List<File> photos) {
         return new Step(0, "NAME", "DESCRIPTION", 1, photos, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static Photo photo() {
-        return new Photo(0, "", false, LocalDateTime.now(), LocalDateTime.now())
+    private static File photo() {
+        return new File(0, "", false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

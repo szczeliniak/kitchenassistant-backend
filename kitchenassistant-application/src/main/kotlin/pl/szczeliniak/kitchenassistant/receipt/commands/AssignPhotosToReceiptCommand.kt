@@ -2,24 +2,20 @@ package pl.szczeliniak.kitchenassistant.receipt.commands
 
 import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
-import pl.szczeliniak.kitchenassistant.receipt.PhotoDao
+import pl.szczeliniak.kitchenassistant.receipt.FileDao
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.AssignPhotosToReceiptDto
-import pl.szczeliniak.kitchenassistant.receipt.commands.factories.PhotoFactory
 
 class AssignPhotosToReceiptCommand(
     private val receiptDao: ReceiptDao,
-    private val photoDao: PhotoDao,
-    private val photoFactory: PhotoFactory
+    private val fileDao: FileDao
 ) {
 
     fun execute(id: Int, request: AssignPhotosToReceiptDto): SuccessResponse {
         val receipt = receiptDao.findById(id) ?: throw NotFoundException("Receipt not found")
-        request.names.filter { receipt.getPhotoByName(it) == null }
+        request.names.filter { receipt.getPhotoById(it) == null }
             .forEach {
-                val photo = photoFactory.create(it)
-                photoDao.save(photo)
-                receipt.addPhoto(photo)
+                receipt.addPhoto(fileDao.findById(it) ?: throw NotFoundException("File not found"))
             }
         return SuccessResponse(receiptDao.save(receipt).id)
     }

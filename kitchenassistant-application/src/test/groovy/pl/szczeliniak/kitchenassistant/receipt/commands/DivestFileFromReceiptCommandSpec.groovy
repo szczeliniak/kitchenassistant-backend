@@ -3,7 +3,7 @@ package pl.szczeliniak.kitchenassistant.receipt.commands
 import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.exceptions.NotAllowedOperationException
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
-import pl.szczeliniak.kitchenassistant.receipt.Photo
+import pl.szczeliniak.kitchenassistant.receipt.File
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 import spock.lang.Specification
@@ -11,7 +11,7 @@ import spock.lang.Subject
 
 import java.time.LocalDateTime
 
-class DivestPhotoFromReceiptCommandSpec extends Specification {
+class DivestFileFromReceiptCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
     @Subject
@@ -56,15 +56,15 @@ class DivestPhotoFromReceiptCommandSpec extends Specification {
 
         then:
         def e = thrown(NotAllowedOperationException)
-        e.message == "Photo is already marked as deleted!"
+        e.message == "File is already marked as deleted!"
     }
 
-    private static Receipt receipt(List<Photo> photos) {
+    private static Receipt receipt(List<File> photos) {
         return new Receipt(1, 2, '', '', '', '', null, Collections.emptyList(), Collections.emptyList(), photos, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static Photo photo(boolean deleted) {
-        return new Photo(0, "NAME", deleted, LocalDateTime.now(), LocalDateTime.now())
+    private static File photo(boolean deleted) {
+        return new File(0, "NAME", deleted, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

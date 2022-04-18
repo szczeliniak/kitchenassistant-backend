@@ -1,10 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt.queries
 
 import pl.szczeliniak.kitchenassistant.receipt.*
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.IngredientDto
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDto
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptsResponse
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.StepDto
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.*
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.Pagination
 import spock.lang.Specification
 import spock.lang.Subject
@@ -20,25 +17,19 @@ class GetReceiptsQuerySpec extends Specification {
 
     def "should return receipt"() {
         given:
-        def ingredient = ingredient()
-        def step = step()
-        def ingredientDto = ingredientDto()
-        def stepDto = stepDto()
-        def photo = photo("PHOTO_NAME")
         def criteria = new ReceiptCriteria(1, 2, "NAME")
-
-        receiptDao.findAll(criteria, 40, 10) >> Collections.singletonList(receipt(ingredient, step, photo))
+        receiptDao.findAll(criteria, 40, 10) >> Collections.singletonList(receipt())
         receiptDao.count(criteria) >> 413
 
         when:
         def result = getReceiptsQuery.execute(5, 10, criteria)
 
         then:
-        result == new ReceiptsResponse(Collections.singletonList(receiptDto(ingredientDto, stepDto)),
+        result == new ReceiptsResponse(Collections.singletonList(receiptDto()),
                 new Pagination(5, 10, 42))
     }
 
-    private static Receipt receipt(Ingredient ingredient, Step step, Photo photo) {
+    private static Receipt receipt() {
         return new Receipt(1,
                 2,
                 'RECEIPT_NAME',
@@ -46,9 +37,9 @@ class GetReceiptsQuerySpec extends Specification {
                 'RECEIPT_AUTHOR',
                 'RECEIPT_SOURCE',
                 null,
-                Collections.singletonList(ingredient),
-                Collections.singletonList(step),
-                Collections.singletonList(photo),
+                Collections.singletonList(ingredient()),
+                Collections.singletonList(step()),
+                Collections.singletonList(photo("PHOTO_NAME")),
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now())
@@ -62,9 +53,9 @@ class GetReceiptsQuerySpec extends Specification {
         return new Ingredient(3, "INGREDIENT_NAME", "INGREDIENT_QUANTITY", false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static ReceiptDto receiptDto(IngredientDto ingredient, StepDto step) {
+    private static ReceiptDto receiptDto() {
         return new ReceiptDto(1, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE",
-                null, Collections.singletonList(ingredient), Collections.singletonList(step), Collections.singletonList("PHOTO_NAME"))
+                null, Collections.singletonList(ingredientDto()), Collections.singletonList(stepDto()), Collections.singletonList(file("PHOTO_NAME")))
     }
 
     private static IngredientDto ingredientDto() {
@@ -72,11 +63,15 @@ class GetReceiptsQuerySpec extends Specification {
     }
 
     private static StepDto stepDto() {
-        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList("STEP_PHOTO_NAME"))
+        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList(file("STEP_PHOTO_NAME")))
     }
 
-    private static Photo photo(String name) {
-        return new Photo(99, name, false, LocalDateTime.now(), LocalDateTime.now())
+    private static File photo(String name) {
+        return new File(99, name, false, LocalDateTime.now(), LocalDateTime.now())
+    }
+
+    private static FileDto file(String name) {
+        return new FileDto(99, name)
     }
 
 }
