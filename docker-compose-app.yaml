@@ -16,6 +16,10 @@ services:
       DB_USER: kitchenassistant
       DB_NAME: kitchenassistant
       DB_PASSWORD: localdb
+      FTP_HOST: kitchenassistant-ftp
+      FTP_PORT: 21
+      FTP_USER: kitchenassistant
+      FTP_PASSWORD: kitchenassistant
 
 networks:
   kitchenassistant-network:

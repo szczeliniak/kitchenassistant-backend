@@ -1,19 +1,19 @@
 spring:
   profiles:
-    active: dev
+    active:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:h2:mem:mydb # jdbc:postgresql://localhost:5432/kitchenassistant
-    username: sa # kitchenassistant
-    password: password # localdb
-    driverClassName: org.h2.Driver # org.postgresql.Driver
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
   jpa:
     show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect # org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.H2Dialect
         format_sql: false
         order_by:
           default_null_ordering: last

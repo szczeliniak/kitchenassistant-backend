@@ -5,12 +5,8 @@ import io.jsonwebtoken.JwtBuilder
 import io.jsonwebtoken.JwtParser
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Lazy
 import org.springframework.context.annotation.Scope
-import org.springframework.core.env.Environment
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -21,7 +17,6 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import pl.szczeliniak.kitchenassistant.exceptions.ExceptionResponse
 import pl.szczeliniak.kitchenassistant.security.commands.LoginCommand
 import pl.szczeliniak.kitchenassistant.security.commands.RegisterCommand
@@ -31,38 +26,22 @@ import pl.szczeliniak.kitchenassistant.user.queries.GetUserByEmailAndPasswordQue
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-@Configuration
-class SecurityConfiguration(
-    private val environment: Environment,
-    private val objectMapper: ObjectMapper,
-    @Value("\${security.jwt.secret}") private val secret: String,
-    @Lazy private val jwtAuthorizationFilter: JwtAuthorizationFilter
-) : WebSecurityConfigurerAdapter() {
+abstract class SecurityConfiguration(private val objectMapper: ObjectMapper, private val secret: String) :
+    WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity?) {
         http?.let {
             http.csrf().disable()
             http.cors()
 
-            if (isDevProfileEnabled()) {
-                http.authorizeRequests().anyRequest().permitAll()
-            } else {
-                http.authorizeRequests().antMatchers("/login/**", "/register/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-                http.addFilterBefore(jwtAuthorizationFilter, BasicAuthenticationFilter::class.java)
-            }
+            configureHttpForEnv(http)
 
             http.httpBasic().authenticationEntryPoint(authenticationEntryPoint())
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         }
-
     }
 
-    private fun isDevProfileEnabled(): Boolean {
-        return listOf<String>(*environment.activeProfiles).contains("dev")
-    }
+    abstract fun configureHttpForEnv(http: HttpSecurity)
 
     private fun authenticationEntryPoint(): AuthenticationEntryPoint {
         return AuthenticationEntryPoint { _: HttpServletRequest?, httpServletResponse: HttpServletResponse, e: AuthenticationException ->
@@ -86,28 +65,28 @@ class SecurityConfiguration(
 
     @Bean
     @Scope("prototype")
-    fun jwtParser(): JwtParser {
+    open fun jwtParser(): JwtParser {
         return Jwts.parser().setSigningKey(secret)
     }
 
     @Bean
     @Scope("prototype")
-    fun jwtBuilder(): JwtBuilder {
+    open fun jwtBuilder(): JwtBuilder {
         return Jwts.builder().signWith(SignatureAlgorithm.HS512, secret)
     }
 
     @Bean
-    fun loginCommand(
+    open fun loginCommand(
         getUserByEmailAndPasswordQuery: GetUserByEmailAndPasswordQuery,
         tokenFactory: TokenFactory
     ): LoginCommand = LoginCommand(getUserByEmailAndPasswordQuery, tokenFactory)
 
     @Bean
-    fun registerCommand(addUserCommand: AddUserCommand, tokenFactory: TokenFactory): RegisterCommand =
+    open fun registerCommand(addUserCommand: AddUserCommand, tokenFactory: TokenFactory): RegisterCommand =
         RegisterCommand(addUserCommand, tokenFactory)
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
+    open fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
     }
 

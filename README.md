@@ -2,21 +2,42 @@
 
 ## Receipts storage and shopping list management API
 
-### Endpoints
+Application allows for
 
-Available at **/swagger-ui.html**
+* basic user registration with email and password
+* authenticate with JWT token
+* storing receipts
+* searching for receipts with criteria
+* adding receipt steps
+* adding receipt ingredients
+* adding photos for receipts and particular receipt steps
+* receipt tagging
+* splitting receipts into categories
+* adding shopping lists
+* searching for shopping lists with criteria
+* marking shopping list items as completed
+* archiving shopping lists
 
-### Run application
+## Endpoints
 
-* **build-docker-image.sh** installs application and builds docker image
+All endpoints and available at **/swagger-ui.html**
 
-* **run-app.sh** runs database and app in containers
-* **stop-app.sh** removes database and app containers
+## Run application
 
-To run just database and app seperately in container use commands respectively
+There are 2 ways of spinning application up:
 
-* **docker-compose -f docker-compose-db.yaml up -d**
-* **docker-compose -f docker-compose-app.yaml up -d**
+1. Intellij
+2. Docker
 
-To debug application run start db container and run application test context **KitchenAssistantApplicationTest.kt** via
-Intellij in debug mode 
+### Intellij
+
+1. In root directory run **docker-compose -f docker-compose-ftp.yaml up -d** to start a FTP server locally which is
+   required by application to handle storing photos.
+2. Run application context in Intellij **KitchenAssistantApplicationTest.kt**. Application properties are configured by default for local environment.
+
+### Docker
+
+Run **run-app.sh** to build application image, start up PostgreSQL database, FTP server and application itself in one command.
+By default it runs in **development mode**. To run it in **production mode** remove **dev** profile.
+
+If you want to stop application run **stop-app.sh** stops all containers mentioned above.
