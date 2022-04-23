@@ -15,5 +15,6 @@ data class NewReceiptDto(
     @field:Length(max = 100) var source: String? = null,
     @field:Size(min = 0, max = 30) var ingredients: List<@Valid NewIngredientDto> = listOf(),
     @field:Size(min = 0, max = 30) var steps: List<@Valid NewStepDto> = listOf(),
-    @field:Size(min = 0, max = 30) var photos: List<@NotNull Int> = listOf()
+    @field:Size(min = 0, max = 30) var photos: List<@NotNull Int> = listOf(),
+    @field:Size(min = 0, max = 30) var tags: List<@NotNull String> = listOf()
 )

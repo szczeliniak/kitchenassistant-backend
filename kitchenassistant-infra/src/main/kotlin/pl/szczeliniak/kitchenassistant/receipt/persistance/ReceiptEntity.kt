@@ -25,6 +25,8 @@ data class ReceiptEntity(
     var steps: MutableList<StepEntity>,
     @ManyToMany(fetch = FetchType.LAZY)
     var photos: MutableList<FileEntity>,
+    @ManyToMany(fetch = FetchType.LAZY)
+    var tags: MutableList<TagEntity>,
     var deleted: Boolean,
     var createdAt: LocalDateTime,
     var modifiedAt: LocalDateTime

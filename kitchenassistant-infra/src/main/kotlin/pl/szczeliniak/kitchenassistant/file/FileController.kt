@@ -20,8 +20,8 @@ class FileController(
 ) {
 
     @PostMapping
-    fun uploadFile(@RequestParam("file") file: MultipartFile): SuccessResponse {
-        return uploadFileCommand.execute(file.originalFilename ?: file.name, file.bytes)
+    fun uploadFile(@RequestParam userId: Int, @RequestParam("file") file: MultipartFile): SuccessResponse {
+        return uploadFileCommand.execute(file.originalFilename ?: file.name, file.bytes, userId)
     }
 
     @GetMapping("/{id}")

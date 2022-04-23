@@ -11,8 +11,8 @@ class UploadFileCommand(
     private val fileFactory: FileFactory
 ) {
 
-    fun execute(name: String, content: ByteArray): SuccessResponse {
-        val file = fileFactory.create(ftpClient.upload(name, content))
+    fun execute(name: String, content: ByteArray, userId: Int): SuccessResponse {
+        val file = fileFactory.create(ftpClient.upload(name, content), userId)
         return SuccessResponse(fileDao.save(file).id)
     }
 

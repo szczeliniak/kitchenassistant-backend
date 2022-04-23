@@ -60,7 +60,7 @@ class DeleteIngredientCommandSpec extends Specification {
     }
 
     private static Receipt receipt(List<Ingredient> ingredients) {
-        return new Receipt(1, 2, '', '', '', '', null, ingredients, Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 2, '', '', '', '', null, ingredients, Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Ingredient ingredient(boolean deleted) {

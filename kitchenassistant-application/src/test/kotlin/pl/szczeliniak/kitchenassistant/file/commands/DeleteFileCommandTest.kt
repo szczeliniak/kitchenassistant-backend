@@ -37,7 +37,7 @@ internal class DeleteFileCommandTest : JunitBaseClass() {
     }
 
     private fun file(): File {
-        return File(1, "NAME", false, LocalDateTime.now(), LocalDateTime.now())
+        return File(1, "NAME", 4, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

@@ -40,7 +40,7 @@ class StepFactorySpec extends Specification {
     }
 
     private static File photo() {
-        return new File(0, "", false, LocalDateTime.now(), LocalDateTime.now())
+        return new File(0, "", 4, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

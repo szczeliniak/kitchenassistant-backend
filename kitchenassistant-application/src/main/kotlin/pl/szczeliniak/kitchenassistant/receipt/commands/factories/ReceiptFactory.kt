@@ -4,6 +4,7 @@ import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.receipt.CategoryDao
 import pl.szczeliniak.kitchenassistant.receipt.FileDao
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
+import pl.szczeliniak.kitchenassistant.receipt.TagDao
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 
@@ -12,7 +13,9 @@ open class ReceiptFactory(
     private val ingredientFactory: IngredientFactory,
     private val stepFactory: StepFactory,
     private val categoryDao: CategoryDao,
-    private val fileDao: FileDao
+    private val fileDao: FileDao,
+    private val tagDao: TagDao,
+    private val tagFactory: TagFactory
 ) {
 
     open fun create(dto: NewReceiptDto): Receipt {
@@ -29,6 +32,8 @@ open class ReceiptFactory(
             ingredients_ = dto.ingredients.map { ingredientFactory.create(it) }.toMutableList(),
             steps_ = dto.steps.map { stepFactory.create(it) }.toMutableList(),
             photos_ = dto.photos.map { fileDao.findById(it) ?: throw NotFoundException("File not found") }
+                .toMutableList(),
+            tags_ = dto.tags.map { tagDao.findByName(it, dto.userId) ?: tagDao.save(tagFactory.create(it, dto.userId)) }
                 .toMutableList()
         )
     }

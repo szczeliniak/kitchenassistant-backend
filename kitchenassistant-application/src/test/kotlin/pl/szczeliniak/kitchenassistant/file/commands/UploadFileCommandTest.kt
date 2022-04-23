@@ -30,16 +30,16 @@ internal class UploadFileCommandTest : JunitBaseClass() {
         val file = file()
         val bytes = ByteArray(10)
         whenever(ftpClient.upload("FILE_NAME", bytes)).thenReturn("NAME")
-        whenever(fileFactory.create("NAME")).thenReturn(file)
+        whenever(fileFactory.create("NAME", 4)).thenReturn(file)
         whenever(fileDao.save(file)).thenReturn(file)
 
-        val response = uploadFileCommand.execute("FILE_NAME", bytes)
+        val response = uploadFileCommand.execute("FILE_NAME", bytes, 4)
 
         assertThat(response).isEqualTo(SuccessResponse(1))
     }
 
     private fun file(): File {
-        return File(1, "NAME", false, LocalDateTime.now(), LocalDateTime.now())
+        return File(1, "NAME", 4, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

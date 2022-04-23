@@ -15,7 +15,7 @@ class FileFactoryTest extends Specification {
     def 'should create photo'() {
 
         when:
-        def result = photoFactory.create("PHOTO_NAME")
+        def result = photoFactory.create("PHOTO_NAME", 4)
 
         then:
         Assertions.assertThat(result).usingRecursiveComparison()
@@ -24,7 +24,7 @@ class FileFactoryTest extends Specification {
     }
 
     private static File photo() {
-        return new File(0, "PHOTO_NAME", false, LocalDateTime.now(), LocalDateTime.now())
+        return new File(0, "PHOTO_NAME", 4, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

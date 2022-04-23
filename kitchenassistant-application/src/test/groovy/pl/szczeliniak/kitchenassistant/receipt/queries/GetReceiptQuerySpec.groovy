@@ -40,7 +40,7 @@ class GetReceiptQuerySpec extends Specification {
 
     private static Receipt receipt() {
         return new Receipt(1,
-                2,
+                4,
                 'RECEIPT_NAME',
                 'RECEIPT_DESCRIPTION',
                 'RECEIPT_AUTHOR',
@@ -49,6 +49,7 @@ class GetReceiptQuerySpec extends Specification {
                 Collections.singletonList(ingredient()),
                 Collections.singletonList(step()),
                 Collections.singletonList(photo("PHOTO_NAME")),
+                Collections.singletonList(tag("TAG_NAME")),
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now())
@@ -63,7 +64,7 @@ class GetReceiptQuerySpec extends Specification {
     }
 
     private static ReceiptDto receiptDto() {
-        return new ReceiptDto(1, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE", null, Collections.singletonList(ingredientDto()), Collections.singletonList(stepDto()), Collections.singletonList(fileDto("PHOTO_NAME")))
+        return new ReceiptDto(1, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE", null, Collections.singletonList(ingredientDto()), Collections.singletonList(stepDto()), Collections.singletonList(fileDto("PHOTO_NAME")), Collections.singletonList("TAG_NAME"))
     }
 
     private static IngredientDto ingredientDto() {
@@ -75,7 +76,11 @@ class GetReceiptQuerySpec extends Specification {
     }
 
     private static File photo(String name) {
-        return new File(99, name, false, LocalDateTime.now(), LocalDateTime.now())
+        return new File(99, name, 4, false, LocalDateTime.now(), LocalDateTime.now())
+    }
+
+    private static Tag tag(String name) {
+        return new Tag(98, name, 4, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static FileDto fileDto(String name) {

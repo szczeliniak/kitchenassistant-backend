@@ -7,6 +7,7 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.factories.*
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetCategoriesQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
+import pl.szczeliniak.kitchenassistant.receipt.queries.GetTagsQuery
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 
 @Configuration
@@ -23,8 +24,13 @@ class ReceiptConfiguration {
         AddReceiptCommand(receiptDao, receiptFactory)
 
     @Bean
-    fun updateReceiptCommand(receiptDao: ReceiptDao, categoryDao: CategoryDao): UpdateReceiptCommand =
-        UpdateReceiptCommand(receiptDao, categoryDao)
+    fun updateReceiptCommand(
+        receiptDao: ReceiptDao,
+        categoryDao: CategoryDao,
+        tagDao: TagDao,
+        tagFactory: TagFactory
+    ): UpdateReceiptCommand =
+        UpdateReceiptCommand(receiptDao, categoryDao, tagDao, tagFactory)
 
     @Bean
     fun addIngredientCommand(
@@ -68,6 +74,9 @@ class ReceiptConfiguration {
     fun photoFactory(): FileFactory = FileFactory()
 
     @Bean
+    fun tagFactory(): TagFactory = TagFactory()
+
+    @Bean
     fun addCategoryCommand(categoryDao: CategoryDao, categoryFactory: CategoryFactory): AddCategoryCommand =
         AddCategoryCommand(categoryDao, categoryFactory)
 
@@ -88,14 +97,20 @@ class ReceiptConfiguration {
     fun getCategoriesQuery(categoryDao: CategoryDao): GetCategoriesQuery = GetCategoriesQuery(categoryDao)
 
     @Bean
+    fun getTagsQuery(tagsDao: TagDao): GetTagsQuery = GetTagsQuery(tagsDao)
+
+    @Bean
     fun receiptFactory(
         getUserByIdQuery: GetUserByIdQuery,
         stepFactory: StepFactory,
         ingredientFactory: IngredientFactory,
         fileFactory: FileFactory,
         categoryDao: CategoryDao,
-        fileDao: FileDao
-    ): ReceiptFactory = ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, categoryDao, fileDao)
+        fileDao: FileDao,
+        tagDao: TagDao,
+        tagFactory: TagFactory
+    ): ReceiptFactory =
+        ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, categoryDao, fileDao, tagDao, tagFactory)
 
     @Bean
     fun assignPhotosToReceiptStepCommand(

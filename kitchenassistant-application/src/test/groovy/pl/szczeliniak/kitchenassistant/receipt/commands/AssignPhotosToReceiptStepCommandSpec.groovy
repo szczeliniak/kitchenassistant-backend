@@ -60,7 +60,7 @@ class AssignPhotosToReceiptStepCommandSpec extends Specification {
     private static Receipt receipt(List<Step> steps) {
         return new Receipt(1, 0, "", "", "", "",
                 new Category(0, "", 0, false, LocalDateTime.now(), LocalDateTime.now()),
-                Collections.emptyList(), steps, Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+                Collections.emptyList(), steps, Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Step step(List<File> photos) {
@@ -68,6 +68,6 @@ class AssignPhotosToReceiptStepCommandSpec extends Specification {
     }
 
     private static File photo() {
-        return new File(99, "NAME", false, LocalDateTime.now(), LocalDateTime.now())
+        return new File(99, "NAME", 4, false, LocalDateTime.now(), LocalDateTime.now())
     }
 }

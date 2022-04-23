@@ -9,9 +9,11 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.dto.*
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetCategoriesQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
+import pl.szczeliniak.kitchenassistant.receipt.queries.GetTagsQuery
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.CategoriesResponse
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptsResponse
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.TagsResponse
 import javax.validation.Valid
 
 @RestController
@@ -36,7 +38,8 @@ class ReceiptController(
     private val updateStepCommand: UpdateStepCommand,
     private val getCategoriesQuery: GetCategoriesQuery,
     private val assignPhotosToReceiptCommand: AssignPhotosToReceiptCommand,
-    private val divestPhotoFromReceiptCommand: DivestPhotoFromReceiptCommand
+    private val divestPhotoFromReceiptCommand: DivestPhotoFromReceiptCommand,
+    private val getTagsQuery: GetTagsQuery
 ) {
 
     @GetMapping("/{id}")
@@ -134,6 +137,14 @@ class ReceiptController(
     @GetMapping("/categories")
     fun getCategories(@RequestParam(required = false) userId: Int?): CategoriesResponse {
         return getCategoriesQuery.execute(CategoryCriteria(userId))
+    }
+
+    @GetMapping("/tags")
+    fun getTags(
+        @RequestParam(required = false) userId: Int?,
+        @RequestParam(required = false) name: String?
+    ): TagsResponse {
+        return getTagsQuery.execute(TagCriteria(name, userId))
     }
 
     @DeleteMapping("/categories/{id}")

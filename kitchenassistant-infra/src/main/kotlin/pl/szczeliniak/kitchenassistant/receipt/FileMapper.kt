@@ -10,6 +10,7 @@ class FileMapper {
         return File(
             entity.id,
             entity.name,
+            entity.userId,
             entity.deleted,
             entity.createdAt,
             entity.modifiedAt
@@ -20,6 +21,7 @@ class FileMapper {
         return FileEntity(
             file.id,
             file.name,
+            file.userId,
             file.deleted,
             file.createdAt,
             file.modifiedAt

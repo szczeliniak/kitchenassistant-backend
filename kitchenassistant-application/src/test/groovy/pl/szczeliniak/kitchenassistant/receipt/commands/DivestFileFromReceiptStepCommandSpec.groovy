@@ -76,7 +76,7 @@ class DivestFileFromReceiptStepCommandSpec extends Specification {
     }
 
     private static Receipt receipt(List<Step> steps) {
-        return new Receipt(1, 2, '', '', '', '', null, Collections.emptyList(), steps, Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 2, '', '', '', '', null, Collections.emptyList(), steps, Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Step step(List<File> photos) {
@@ -84,7 +84,7 @@ class DivestFileFromReceiptStepCommandSpec extends Specification {
     }
 
     private static File photo(boolean deleted) {
-        return new File(0, "NAME", deleted, LocalDateTime.now(), LocalDateTime.now())
+        return new File(0, "NAME", 4, deleted, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

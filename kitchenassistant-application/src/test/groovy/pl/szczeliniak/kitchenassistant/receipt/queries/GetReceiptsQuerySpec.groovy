@@ -39,14 +39,15 @@ class GetReceiptsQuerySpec extends Specification {
                 null,
                 Collections.singletonList(ingredient()),
                 Collections.singletonList(step()),
-                Collections.singletonList(photo("PHOTO_NAME")),
+                Collections.singletonList(file("PHOTO_NAME")),
+                Collections.singletonList(tag("TAG_NAME")),
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now())
     }
 
     private static Step step() {
-        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList(photo("STEP_PHOTO_NAME")), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList(file("STEP_PHOTO_NAME")), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Ingredient ingredient() {
@@ -55,7 +56,7 @@ class GetReceiptsQuerySpec extends Specification {
 
     private static ReceiptDto receiptDto() {
         return new ReceiptDto(1, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE",
-                null, Collections.singletonList(ingredientDto()), Collections.singletonList(stepDto()), Collections.singletonList(file("PHOTO_NAME")))
+                null, Collections.singletonList(ingredientDto()), Collections.singletonList(stepDto()), Collections.singletonList(fileDto("PHOTO_NAME")), Collections.singletonList("TAG_NAME"))
     }
 
     private static IngredientDto ingredientDto() {
@@ -63,14 +64,18 @@ class GetReceiptsQuerySpec extends Specification {
     }
 
     private static StepDto stepDto() {
-        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList(file("STEP_PHOTO_NAME")))
+        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList(fileDto("STEP_PHOTO_NAME")))
     }
 
-    private static File photo(String name) {
-        return new File(99, name, false, LocalDateTime.now(), LocalDateTime.now())
+    private static File file(String name) {
+        return new File(99, name, 4, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static FileDto file(String name) {
+    private static Tag tag(String name) {
+        return new Tag(98, name, 2, false, LocalDateTime.now(), LocalDateTime.now())
+    }
+
+    private static FileDto fileDto(String name) {
         return new FileDto(99, name)
     }
 

@@ -3,7 +3,7 @@ package pl.szczeliniak.kitchenassistant.receipt
 import pl.szczeliniak.kitchenassistant.exceptions.NotAllowedOperationException
 import java.time.LocalDateTime
 
-data class File(
+data class Tag(
     private var id_: Int = 0,
     private var name_: String,
     private var userId_: Int,
@@ -20,7 +20,7 @@ data class File(
 
     fun markAsDeleted() {
         if (deleted) {
-            throw NotAllowedOperationException("File is already marked as deleted!")
+            throw NotAllowedOperationException("Tag is already marked as deleted!")
         }
         deleted_ = true
         this.modifiedAt_ = LocalDateTime.now()

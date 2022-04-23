@@ -34,7 +34,7 @@ internal class DownloadFileFileCommandTest : JunitBaseClass() {
     }
 
     private fun file(): File {
-        return File(1, "NAME.jpg", false, LocalDateTime.now(), LocalDateTime.now())
+        return File(1, "NAME.jpg", 4, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }
