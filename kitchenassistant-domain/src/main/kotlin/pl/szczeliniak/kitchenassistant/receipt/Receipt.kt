@@ -50,16 +50,9 @@ class Receipt(
         this.source_ = source
         this.category_ = category
 
-        this.tags_.forEach { existing ->
-            if (tags.none { new -> existing.id == new.id }) {
-                existing.markAsDeleted()
-            }
-        }
-
+        this.tags_.clear()
         tags.forEach { new ->
-            if (this.tags_.none { existing -> existing.id == new.id }) {
-                this.tags_.add(new)
-            }
+            this.tags_.add(new)
         }
 
         this.modifiedAt_ = LocalDateTime.now()

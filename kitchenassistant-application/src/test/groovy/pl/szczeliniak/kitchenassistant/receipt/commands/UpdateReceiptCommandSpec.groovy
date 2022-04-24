@@ -46,8 +46,7 @@ class UpdateReceiptCommandSpec extends Specification {
         receipt.author == "AUTHOR"
         receipt.source == "SOURCE"
         receipt.category == newCategory
-        tagToRemove.deleted
-        receipt.tags == List.of(tagToRemove, assignedTag, existingTag, newTag)
+        receipt.tags == List.of(assignedTag, existingTag, newTag)
         result == new SuccessResponse(1)
     }
 
