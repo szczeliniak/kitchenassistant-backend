@@ -17,7 +17,7 @@ class GetReceiptsQuerySpec extends Specification {
 
     def "should return receipt"() {
         given:
-        def criteria = new ReceiptCriteria(1, 2, "NAME")
+        def criteria = new ReceiptCriteria(1, 2, "NAME", "TAG")
         receiptDao.findAll(criteria, 40, 10) >> Collections.singletonList(receipt())
         receiptDao.count(criteria) >> 413
 

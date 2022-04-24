@@ -10,15 +10,26 @@ import javax.transaction.Transactional
 class ReceiptRepository(@PersistenceContext private val entityManager: EntityManager) {
 
     fun findAll(criteria: SearchCriteria, offset: Int, limit: Int): MutableList<ReceiptEntity> {
-        val query = "SELECT r FROM ReceiptEntity r WHERE r.deleted = false" + prepareCriteria(criteria)
+        val query =
+            "SELECT DISTINCT r FROM ReceiptEntity r " + prepareJoin(criteria) + "WHERE r.deleted = false" + prepareCriteria(
+                criteria
+            )
         val typedQuery = applyParameters(criteria, entityManager.createQuery(query, ReceiptEntity::class.java))
         typedQuery.firstResult = offset
         typedQuery.maxResults = limit
         return typedQuery.resultList
     }
 
+    private fun prepareJoin(criteria: SearchCriteria): String {
+        val builder = StringBuilder()
+        if (criteria.tag != null) {
+            builder.append("JOIN r.tags t ")
+        }
+        return builder.toString()
+    }
+
     fun count(criteria: SearchCriteria): Long {
-        val query = "SELECT COUNT(r) FROM ReceiptEntity r WHERE r.deleted = false" + prepareCriteria(criteria)
+        val query = "SELECT DISTINCT COUNT(r) FROM ReceiptEntity r " + prepareJoin(criteria) + "WHERE r.deleted = false" + prepareCriteria(criteria)
         return applyParameters(criteria, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
     }
 
@@ -61,6 +72,9 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
         if (criteria.name != null) {
             builder.append(" AND LOWER(r.name) LIKE LOWER(:name)")
         }
+        if (criteria.tag != null) {
+            builder.append(" AND LOWER(t.name) LIKE LOWER(:tag)")
+        }
         return builder.toString()
     }
 
@@ -78,9 +92,12 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
         if (criteria.name != null) {
             query = typedQuery.setParameter("name", "%" + criteria.name + "%")
         }
+        if (criteria.tag != null) {
+            query = typedQuery.setParameter("tag", "%" + criteria.tag + "%")
+        }
         return query
     }
 
-    data class SearchCriteria(val userId: Int?, val categoryId: Int?, val name: String?)
+    data class SearchCriteria(val userId: Int?, val categoryId: Int?, val name: String?, val tag: String?)
 
 }

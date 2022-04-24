@@ -30,7 +30,8 @@ class ReceiptDaoImpl(
         return ReceiptRepository.SearchCriteria(
             criteria.userId,
             criteria.categoryId,
-            criteria.name
+            criteria.name,
+            criteria.tag
         )
     }
 
