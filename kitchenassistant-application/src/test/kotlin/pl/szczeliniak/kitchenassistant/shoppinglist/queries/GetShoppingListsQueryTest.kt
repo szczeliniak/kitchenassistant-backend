@@ -4,17 +4,16 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
+import pl.szczeliniak.kitchenassistant.common.dto.Pagination
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListCriteria
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
-import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.Pagination
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListItemDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListsResponse
 import java.time.LocalDate
 import java.time.Month
-import java.util.*
 
 internal class GetShoppingListsQueryTest : JunitBaseClass() {
 
@@ -29,11 +28,7 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
         val criteria = ShoppingListCriteria(1, false, "NAME", LocalDate.of(2020, Month.APRIL, 1))
 
         whenever(shoppingListDao.findAll(criteria, 90, 10)).thenReturn(
-            Collections.singletonList(
-                shoppingList(
-                    shoppingListItem()
-                )
-            )
+            mutableSetOf(shoppingList(shoppingListItem()))
         )
         whenever(shoppingListDao.count(criteria)).thenReturn(2137L)
 
@@ -41,7 +36,7 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
 
         assertThat(result).isEqualTo(
             ShoppingListsResponse(
-                Collections.singletonList(shoppingListDto(shoppingListItemDto())), Pagination(10, 10, 214)
+                mutableSetOf(shoppingListDto(shoppingListItemDto())), Pagination(10, 10, 214)
             )
         )
     }
@@ -60,7 +55,7 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
     }
 
     private fun shoppingListDto(shoppingListItemDto: ShoppingListItemDto): ShoppingListDto {
-        return ShoppingListDto(0, "NAME", "DESCRIPTION", null, false, mutableListOf(shoppingListItemDto))
+        return ShoppingListDto(0, "NAME", "DESCRIPTION", null, false, mutableSetOf(shoppingListItemDto))
     }
 
     private fun shoppingList(
@@ -70,7 +65,7 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
             userId_ = 1,
             name_ = "NAME",
             description_ = "DESCRIPTION",
-            items_ = mutableListOf(shoppingListItem)
+            items_ = mutableSetOf(shoppingListItem)
         )
     }
 

@@ -1,8 +1,8 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands.factories
 
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.file.queries.CheckIfFileExistsQuery
 import pl.szczeliniak.kitchenassistant.receipt.CategoryDao
-import pl.szczeliniak.kitchenassistant.receipt.FileDao
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.TagDao
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
@@ -13,13 +13,18 @@ open class ReceiptFactory(
     private val ingredientFactory: IngredientFactory,
     private val stepFactory: StepFactory,
     private val categoryDao: CategoryDao,
-    private val fileDao: FileDao,
+    private val photoFactory: PhotoFactory,
     private val tagDao: TagDao,
-    private val tagFactory: TagFactory
+    private val tagFactory: TagFactory,
+    private val checkIfFileExistsQuery: CheckIfFileExistsQuery
 ) {
 
     open fun create(dto: NewReceiptDto): Receipt {
         getUserByIdQuery.execute(dto.userId)
+        dto.photos.forEach {
+            if (!checkIfFileExistsQuery.execute(it).exists) throw NotFoundException("File not found")
+        }
+
         return Receipt(
             userId_ = dto.userId,
             name_ = dto.name,
@@ -29,12 +34,11 @@ open class ReceiptFactory(
                 categoryDao.findById(it) ?: throw NotFoundException("Category not found")
             },
             description_ = dto.description,
-            ingredients_ = dto.ingredients.map { ingredientFactory.create(it) }.toMutableList(),
-            steps_ = dto.steps.map { stepFactory.create(it) }.toMutableList(),
-            photos_ = dto.photos.map { fileDao.findById(it) ?: throw NotFoundException("File not found") }
-                .toMutableList(),
+            ingredients_ = dto.ingredients.map { ingredientFactory.create(it) }.toMutableSet(),
+            steps_ = dto.steps.map { stepFactory.create(it) }.toMutableSet(),
+            photos_ = dto.photos.map { photoFactory.create(it) }.toMutableSet(),
             tags_ = dto.tags.map { tagDao.findByName(it, dto.userId) ?: tagDao.save(tagFactory.create(it, dto.userId)) }
-                .toMutableList()
+                .toMutableSet()
         )
     }
 

@@ -27,7 +27,7 @@ class ShoppingListController(
     private val updateShoppingListCommand: UpdateShoppingListCommand,
     private val addShoppingListItemCommand: AddShoppingListItemCommand,
     private val updateShoppingListItemCommand: UpdateShoppingListItemCommand,
-    private val markShoppingListItemAsDoneCommand: MarkShoppingListItemAsDoneCommand,
+    private val markItemAsCompletedCommand: MarkItemAsCompletedCommand,
     private val markShoppingListAsArchivedCommand: MarkShoppingListAsArchivedCommand,
     private val deleteShoppingListCommand: DeleteShoppingListCommand,
     private val deleteShoppingListItemCommand: DeleteShoppingListItemCommand,
@@ -84,11 +84,11 @@ class ShoppingListController(
         return updateShoppingListItemCommand.execute(id, itemId, dto)
     }
 
-    @PostMapping("/{id}/items/{itemId}/done/{isDone}")
+    @PostMapping("/{id}/items/{itemId}/completed/{isCompleted}")
     fun markShoppingListItemAsDone(
-        @PathVariable id: Int, @PathVariable itemId: Int, @PathVariable isDone: Boolean
+        @PathVariable id: Int, @PathVariable itemId: Int, @PathVariable isCompleted: Boolean
     ): SuccessResponse {
-        return markShoppingListItemAsDoneCommand.execute(id, itemId, isDone)
+        return markItemAsCompletedCommand.execute(id, itemId, isCompleted)
     }
 
     @DeleteMapping("/{id}/items/{itemId}")

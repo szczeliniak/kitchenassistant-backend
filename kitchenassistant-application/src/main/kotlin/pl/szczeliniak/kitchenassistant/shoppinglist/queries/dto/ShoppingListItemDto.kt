@@ -7,7 +7,7 @@ data class ShoppingListItemDto(
     val name: String,
     val quantity: String,
     val sequence: Int?,
-    val done: Boolean
+    val completed: Boolean
 ) {
 
     companion object {
@@ -17,7 +17,7 @@ data class ShoppingListItemDto(
                 shoppingListItem.name,
                 shoppingListItem.quantity,
                 shoppingListItem.sequence,
-                shoppingListItem.done
+                shoppingListItem.completed
             )
         }
     }

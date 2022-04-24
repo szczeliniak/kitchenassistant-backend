@@ -22,8 +22,10 @@ class ReceiptDaoImpl(
         return receiptMapper.toDomain(byId)
     }
 
-    override fun findAll(criteria: ReceiptCriteria, offset: Int, limit: Int): List<Receipt> {
-        return receiptRepository.findAll(mapCriteria(criteria), offset, limit).map { receiptMapper.toDomain(it) }
+    override fun findAll(criteria: ReceiptCriteria, offset: Int, limit: Int): Set<Receipt> {
+        return receiptRepository.findAll(mapCriteria(criteria), offset, limit)
+            .map { receiptMapper.toDomain(it) }
+            .toSet()
     }
 
     private fun mapCriteria(criteria: ReceiptCriteria): ReceiptRepository.SearchCriteria {

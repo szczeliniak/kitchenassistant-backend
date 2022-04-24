@@ -1,6 +1,6 @@
-package pl.szczeliniak.kitchenassistant.receipt.queries.dto
+package pl.szczeliniak.kitchenassistant.file.queries.dtos
 
-import pl.szczeliniak.kitchenassistant.receipt.File
+import pl.szczeliniak.kitchenassistant.file.File
 
 data class FileDto(
     val id: Int,

@@ -1,8 +1,8 @@
 package pl.szczeliniak.kitchenassistant.user.queries.dto
 
-import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.Pagination
+import pl.szczeliniak.kitchenassistant.common.dto.Pagination
 
 data class UsersResponse(
-    val users: List<UserDto>,
+    val users: Set<UserDto>,
     val pagination: Pagination
 )

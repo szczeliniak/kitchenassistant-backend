@@ -20,7 +20,7 @@ class DeleteStepCommandSpec extends Specification {
     def 'should delete step'() {
         given:
         def step = step(false)
-        def receipt = receipt(Collections.singletonList(step))
+        def receipt = receipt(Set.of(step))
         receiptDao.findById(1) >> receipt
         receiptDao.save(receipt) >> receipt
 
@@ -34,7 +34,7 @@ class DeleteStepCommandSpec extends Specification {
 
     def 'should throw exception when step not found'() {
         given:
-        def receipt = receipt(Collections.emptyList())
+        def receipt = receipt(Collections.emptySet())
         receiptDao.findById(1) >> receipt
 
         when:
@@ -48,7 +48,7 @@ class DeleteStepCommandSpec extends Specification {
     def 'should throw exception when step is already marked as deleted'() {
         given:
         def step = step(true)
-        def receipt = receipt(Collections.singletonList(step))
+        def receipt = receipt(Set.of(step))
         receiptDao.findById(1) >> receipt
 
         when:
@@ -59,12 +59,12 @@ class DeleteStepCommandSpec extends Specification {
         e.message == "Step is already marked as deleted!"
     }
 
-    private static Receipt receipt(List<Step> steps) {
-        return new Receipt(1, 2, '', '', '', '', null, Collections.emptyList(), steps, Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+    private static Receipt receipt(Set<Step> steps) {
+        return new Receipt(1, 2, '', '', '', '', null, Collections.emptySet(), steps, Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Step step(boolean deleted) {
-        return new Step(3, '', '', 0, Collections.emptyList(), deleted, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(3, '', '', 0, Collections.emptySet(), deleted, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.receipt
+package pl.szczeliniak.kitchenassistant.file
 
 import pl.szczeliniak.kitchenassistant.exceptions.NotAllowedOperationException
 import java.time.LocalDateTime

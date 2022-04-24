@@ -36,7 +36,7 @@ internal class DeleteShoppingListItemCommandTest : JunitBaseClass() {
             id_ = 1,
             userId_ = 0,
             name_ = "",
-            items_ = mutableListOf(shoppingListItem)
+            items_ = mutableSetOf(shoppingListItem)
         )
     }
 

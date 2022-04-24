@@ -28,9 +28,9 @@ class UserDaoImpl(
         return userMapper.toDomain(byId)
     }
 
-    override fun findAll(offset: Int, limit: Int): List<User> {
+    override fun findAll(offset: Int, limit: Int): Set<User> {
         return userRepository.findAll(UserRepository.SearchCriteria(), offset, limit)
-            .map { userMapper.toDomain(it) }
+            .map { userMapper.toDomain(it) }.toSet()
     }
 
 }

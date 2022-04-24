@@ -31,11 +31,11 @@ class AddReceiptCommandSpec extends Specification {
     }
 
     private static NewReceiptDto newReceiptDto() {
-        return new NewReceiptDto(1, "", null, "", "", "", Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList())
+        return new NewReceiptDto(1, "", null, "", "", "", Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet())
     }
 
     private static Receipt receipt() {
-        return new Receipt(1, 2, "", "", "", "", null, Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 2, "", "", "", "", null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

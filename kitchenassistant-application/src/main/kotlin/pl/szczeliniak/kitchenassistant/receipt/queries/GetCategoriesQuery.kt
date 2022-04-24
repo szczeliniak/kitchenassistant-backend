@@ -8,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.receipt.queries.dto.CategoryDto
 class GetCategoriesQuery(private val categoryDao: CategoryDao) {
 
     fun execute(criteria: CategoryCriteria): CategoriesResponse {
-        return CategoriesResponse(categoryDao.findAll(criteria).map { CategoryDto.fromDomain(it) })
+        return CategoriesResponse(categoryDao.findAll(criteria).map { CategoryDto.fromDomain(it) }.toSet())
     }
 
 }

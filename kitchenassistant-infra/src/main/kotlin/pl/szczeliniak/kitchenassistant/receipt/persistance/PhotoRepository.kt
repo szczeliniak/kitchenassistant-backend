@@ -6,10 +6,10 @@ import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
 
 @Repository
-class FileRepository(@PersistenceContext private val entityManager: EntityManager) {
+class PhotoRepository(@PersistenceContext private val entityManager: EntityManager) {
 
     @Transactional
-    fun save(entity: FileEntity): FileEntity {
+    fun save(entity: PhotoEntity): PhotoEntity {
         if (entity.id == 0) {
             entityManager.persist(entity)
         } else {
@@ -18,11 +18,11 @@ class FileRepository(@PersistenceContext private val entityManager: EntityManage
         return entity
     }
 
-    fun findById(id: Int): FileEntity? {
+    fun findById(id: Int): PhotoEntity? {
         return entityManager
             .createQuery(
-                "SELECT r FROM FileEntity r WHERE r.id = :id AND r.deleted = false",
-                FileEntity::class.java
+                "SELECT r FROM PhotoEntity r WHERE r.id = :id AND r.deleted = false",
+                PhotoEntity::class.java
             )
             .setParameter("id", id)
             .resultList

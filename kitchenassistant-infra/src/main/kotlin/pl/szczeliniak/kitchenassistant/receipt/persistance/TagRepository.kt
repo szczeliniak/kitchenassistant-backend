@@ -45,7 +45,7 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
             .orElse(null)
     }
 
-    fun findAll(criteria: SearchCriteria): List<TagEntity> {
+    fun findAll(criteria: SearchCriteria): Set<TagEntity> {
         var query = "SELECT r FROM TagEntity r WHERE r.deleted = false"
         if (criteria.name != null) {
             query += " AND LOWER(r.name) LIKE (:name)"
@@ -62,7 +62,7 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
             typedQuery = typedQuery.setParameter("userId", criteria.userId)
         }
 
-        return typedQuery.resultList
+        return typedQuery.resultList.toMutableSet()
     }
 
     data class SearchCriteria(

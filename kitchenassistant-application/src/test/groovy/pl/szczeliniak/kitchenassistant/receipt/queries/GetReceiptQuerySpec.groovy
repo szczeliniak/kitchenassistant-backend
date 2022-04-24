@@ -46,17 +46,17 @@ class GetReceiptQuerySpec extends Specification {
                 'RECEIPT_AUTHOR',
                 'RECEIPT_SOURCE',
                 null,
-                Collections.singletonList(ingredient()),
-                Collections.singletonList(step()),
-                Collections.singletonList(photo("PHOTO_NAME")),
-                Collections.singletonList(tag("TAG_NAME")),
+                Set.of(ingredient()),
+                Set.of(step()),
+                Set.of(photo(1)),
+                Set.of(tag("TAG_NAME")),
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now())
     }
 
     private static Step step() {
-        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList(photo("STEP_PHOTO_NAME")), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Set.of(photo(2)), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Ingredient ingredient() {
@@ -64,7 +64,7 @@ class GetReceiptQuerySpec extends Specification {
     }
 
     private static ReceiptDto receiptDto() {
-        return new ReceiptDto(1, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE", null, Collections.singletonList(ingredientDto()), Collections.singletonList(stepDto()), Collections.singletonList(fileDto("PHOTO_NAME")), Collections.singletonList("TAG_NAME"))
+        return new ReceiptDto(1, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE", null, Set.of(ingredientDto()), Set.of(stepDto()), Set.of(photoDto(1)), Set.of("TAG_NAME"))
     }
 
     private static IngredientDto ingredientDto() {
@@ -72,19 +72,19 @@ class GetReceiptQuerySpec extends Specification {
     }
 
     private static StepDto stepDto() {
-        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList(fileDto("STEP_PHOTO_NAME")))
+        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList(photoDto(2)))
     }
 
-    private static File photo(String name) {
-        return new File(99, name, 4, false, LocalDateTime.now(), LocalDateTime.now())
+    private static Photo photo(Integer fileId) {
+        return new Photo(99, fileId, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Tag tag(String name) {
         return new Tag(98, name, 4, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static FileDto fileDto(String name) {
-        return new FileDto(99, name)
+    private static PhotoDto photoDto(Integer fileId) {
+        return new PhotoDto(99, fileId)
     }
 
 }

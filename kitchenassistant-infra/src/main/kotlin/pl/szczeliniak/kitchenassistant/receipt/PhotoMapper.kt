@@ -1,27 +1,25 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
 import org.springframework.stereotype.Component
-import pl.szczeliniak.kitchenassistant.receipt.persistance.FileEntity
+import pl.szczeliniak.kitchenassistant.receipt.persistance.PhotoEntity
 
 @Component
-class FileMapper {
+class PhotoMapper {
 
-    fun toDomain(entity: FileEntity): File {
-        return File(
+    fun toDomain(entity: PhotoEntity): Photo {
+        return Photo(
             entity.id,
-            entity.name,
-            entity.userId,
+            entity.fileId,
             entity.deleted,
             entity.createdAt,
             entity.modifiedAt
         )
     }
 
-    fun toEntity(file: File): FileEntity {
-        return FileEntity(
+    fun toEntity(file: Photo): PhotoEntity {
+        return PhotoEntity(
             file.id,
-            file.name,
-            file.userId,
+            file.fileId,
             file.deleted,
             file.createdAt,
             file.modifiedAt

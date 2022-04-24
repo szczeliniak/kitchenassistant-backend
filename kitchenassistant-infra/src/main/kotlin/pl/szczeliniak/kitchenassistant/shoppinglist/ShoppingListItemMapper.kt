@@ -13,7 +13,7 @@ class ShoppingListItemMapper {
             shoppingListItemEntity.quantity,
             shoppingListItemEntity.sequence,
             shoppingListItemEntity.deleted,
-            shoppingListItemEntity.done,
+            shoppingListItemEntity.completed,
             shoppingListItemEntity.createdAt,
             shoppingListItemEntity.modifiedAt
         )
@@ -26,7 +26,7 @@ class ShoppingListItemMapper {
             shoppingListItem.quantity,
             shoppingListItem.sequence,
             shoppingListItem.deleted,
-            shoppingListItem.done,
+            shoppingListItem.completed,
             shoppingListItem.createdAt,
             shoppingListItem.modifiedAt
         )

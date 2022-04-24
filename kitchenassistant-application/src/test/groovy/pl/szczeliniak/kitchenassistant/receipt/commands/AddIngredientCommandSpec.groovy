@@ -34,7 +34,7 @@ class AddIngredientCommandSpec extends Specification {
 
         then:
         result == new SuccessResponse(2)
-        receipt.ingredients == Collections.singletonList(ingredient)
+        receipt.ingredients == Set.of(ingredient)
     }
 
     private static NewIngredientDto newIngredientDto() {
@@ -46,7 +46,7 @@ class AddIngredientCommandSpec extends Specification {
     }
 
     private static Receipt receipt() {
-        return new Receipt(1, 0, "", "", "", "", null, new ArrayList<Ingredient>(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 0, "", "", "", "", null, new HashSet<Ingredient>(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

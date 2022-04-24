@@ -9,9 +9,10 @@ class CategoryDaoImpl(
     private val categoryMapper: CategoryMapper
 ) : CategoryDao {
 
-    override fun findAll(criteria: CategoryCriteria): List<Category> {
+    override fun findAll(criteria: CategoryCriteria): Set<Category> {
         return categoryRepository.findAll(CategoryRepository.SearchCriteria(criteria.userId))
             .map { categoryMapper.toDomain(it) }
+            .toSet()
     }
 
     override fun findById(id: Int): Category? {

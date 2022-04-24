@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
+import pl.szczeliniak.kitchenassistant.file.File
+import pl.szczeliniak.kitchenassistant.file.FileDao
 import pl.szczeliniak.kitchenassistant.file.FtpClient
 import pl.szczeliniak.kitchenassistant.file.SupportedMediaType
 import pl.szczeliniak.kitchenassistant.file.queries.dtos.GetFileResponse
-import pl.szczeliniak.kitchenassistant.receipt.File
-import pl.szczeliniak.kitchenassistant.receipt.FileDao
 import java.time.LocalDateTime
 
 internal class DownloadFileFileCommandTest : JunitBaseClass() {
@@ -20,7 +20,7 @@ internal class DownloadFileFileCommandTest : JunitBaseClass() {
     private lateinit var fileDao: FileDao
 
     @InjectMocks
-    private lateinit var downloadFileCommand: DownloadFileCommand
+    private lateinit var downloadFileQuery: DownloadFileQuery
 
     @Test
     fun shouldReturnPhoto() {
@@ -28,7 +28,7 @@ internal class DownloadFileFileCommandTest : JunitBaseClass() {
         whenever(fileDao.findById(3)).thenReturn(file())
         whenever(ftpClient.download("NAME.jpg")).thenReturn(bytes)
 
-        val result = downloadFileCommand.execute(3)
+        val result = downloadFileQuery.execute(3)
 
         assertThat(result).isEqualTo(GetFileResponse(SupportedMediaType.JPG, bytes))
     }

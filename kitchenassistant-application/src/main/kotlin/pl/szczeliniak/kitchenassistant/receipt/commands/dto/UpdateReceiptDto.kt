@@ -10,5 +10,5 @@ data class UpdateReceiptDto(
     @field:Length(max = 1000) var description: String? = null,
     @field:Length(max = 50) var author: String? = null,
     @field:Length(max = 100) var source: String? = null,
-    @field:Size(min = 0, max = 30) var tags: List<@NotNull String> = listOf()
+    @field:Size(min = 0, max = 30) var tags: Set<@NotNull String> = setOf()
 )

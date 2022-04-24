@@ -9,7 +9,6 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
 import java.time.LocalDate
-import java.util.*
 
 internal class ShoppingListFactoryTest : JunitBaseClass() {
 
@@ -24,7 +23,7 @@ internal class ShoppingListFactoryTest : JunitBaseClass() {
         val date = LocalDate.now()
         val newShoppingListItemDto = NewShoppingListItemDto()
         val newShoppingListDto =
-            NewShoppingListDto(1, "NAME", "DESCRIPTION", date, Collections.singletonList(newShoppingListItemDto))
+            NewShoppingListDto(1, "NAME", "DESCRIPTION", date, mutableSetOf(newShoppingListItemDto))
         val shoppingListItem = shoppingListItem()
 
         whenever(shoppingListItemFactory.create(newShoppingListItemDto)).thenReturn(shoppingListItem)
@@ -33,14 +32,14 @@ internal class ShoppingListFactoryTest : JunitBaseClass() {
 
         assertThat(result).usingRecursiveComparison()
             .ignoringFields("createdAt_", "modifiedAt_")
-            .isEqualTo(shoppingList(date, mutableListOf(shoppingListItem)))
+            .isEqualTo(shoppingList(date, mutableSetOf(shoppingListItem)))
     }
 
     private fun shoppingListItem(): ShoppingListItem {
         return ShoppingListItem(name_ = "", quantity_ = "", sequence_ = null)
     }
 
-    private fun shoppingList(date: LocalDate, items: MutableList<ShoppingListItem>): ShoppingList {
+    private fun shoppingList(date: LocalDate, items: MutableSet<ShoppingListItem>): ShoppingList {
         return ShoppingList(userId_ = 1, name_ = "NAME", description_ = "DESCRIPTION", date_ = date, items_ = items)
     }
 

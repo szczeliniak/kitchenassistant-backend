@@ -11,7 +11,6 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItemDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListItemFactory
-import java.util.*
 
 internal class AddShoppingListItemCommandTest : JunitBaseClass() {
 
@@ -40,7 +39,7 @@ internal class AddShoppingListItemCommandTest : JunitBaseClass() {
 
         val result = addShoppingListItemCommand.execute(1, newShoppingListItemDto)
 
-        assertThat(shoppingList.items).isEqualTo(Collections.singletonList(shoppingListItem))
+        assertThat(shoppingList.items).isEqualTo(setOf(shoppingListItem))
         assertThat(result).isEqualTo(SuccessResponse(2))
     }
 

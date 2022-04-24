@@ -20,7 +20,7 @@ class DeleteIngredientCommandSpec extends Specification {
     def 'should delete ingredient'() {
         given:
         def ingredient = ingredient(false)
-        def receipt = receipt(Collections.singletonList(ingredient))
+        def receipt = receipt(Set.of(ingredient))
         receiptDao.findById(1) >> receipt
         receiptDao.save(receipt) >> receipt
 
@@ -34,7 +34,7 @@ class DeleteIngredientCommandSpec extends Specification {
 
     def 'should throw exception when ingredient not found'() {
         given:
-        def receipt = receipt(Collections.emptyList())
+        def receipt = receipt(Collections.emptySet())
         receiptDao.findById(1) >> receipt
 
         when:
@@ -48,7 +48,7 @@ class DeleteIngredientCommandSpec extends Specification {
     def 'should throw exception when ingredient is already marked as deleted'() {
         given:
         def ingredient = ingredient(true)
-        def receipt = receipt(Collections.singletonList(ingredient))
+        def receipt = receipt(Set.of(ingredient))
         receiptDao.findById(1) >> receipt
 
         when:
@@ -59,8 +59,8 @@ class DeleteIngredientCommandSpec extends Specification {
         e.message == "Ingredient is already marked as deleted!"
     }
 
-    private static Receipt receipt(List<Ingredient> ingredients) {
-        return new Receipt(1, 2, '', '', '', '', null, ingredients, Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+    private static Receipt receipt(Set<Ingredient> ingredients) {
+        return new Receipt(1, 2, '', '', '', '', null, ingredients, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Ingredient ingredient(boolean deleted) {

@@ -16,12 +16,9 @@ data class ShoppingListEntity(
     var name: String,
     var description: String?,
     var date: LocalDate?,
-    @OneToMany(
-        cascade = [CascadeType.ALL],
-        fetch = FetchType.LAZY
-    )
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @OrderBy("sequence")
-    var items: MutableList<ShoppingListItemEntity>,
+    var items: MutableSet<ShoppingListItemEntity>,
     var deleted: Boolean,
     var archived: Boolean,
     var createdAt: LocalDateTime,

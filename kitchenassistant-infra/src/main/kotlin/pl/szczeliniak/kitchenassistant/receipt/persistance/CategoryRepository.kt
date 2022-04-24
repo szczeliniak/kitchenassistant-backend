@@ -18,7 +18,7 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
         return entity
     }
 
-    fun findAll(criteria: SearchCriteria): MutableList<CategoryEntity> {
+    fun findAll(criteria: SearchCriteria): MutableSet<CategoryEntity> {
         var query = "SELECT r FROM CategoryEntity r WHERE r.deleted = false"
         if (criteria.userId != null) {
             query += " AND r.userId = :userId"
@@ -29,7 +29,7 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
             typedQuery = typedQuery.setParameter("userId", criteria.userId)
         }
 
-        return typedQuery.resultList
+        return typedQuery.resultList.toMutableSet()
     }
 
     fun findById(id: Int): CategoryEntity? {

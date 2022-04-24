@@ -25,7 +25,7 @@ class UpdateReceiptCommandSpec extends Specification {
         def assignedTag = tag(11, "ASSIGNED_TAG")
         def newTag = tag(12, "NEW_TAG")
         def existingTag = tag(13, "EXISTING_TAG")
-        def receipt = receipt(new ArrayList<Tag>(List.of(tagToRemove, assignedTag)))
+        def receipt = receipt(new HashSet<Tag>(List.of(tagToRemove, assignedTag)))
         def newCategory = category(3)
 
         receiptDao.findById(1) >> receipt
@@ -35,7 +35,7 @@ class UpdateReceiptCommandSpec extends Specification {
         tagDao.findByName("NEW_TAG", 4) >> null
         tagFactory.create("NEW_TAG", 4) >> newTag
         tagDao.save(newTag) >> newTag
-        tagDao.saveAll(List.of(tagToRemove, assignedTag, existingTag, newTag))
+        tagDao.saveAll(Set.of(tagToRemove, assignedTag, existingTag, newTag))
 
         when:
         def result = updateReceiptCommand.execute(1, updateReceiptDto())
@@ -46,17 +46,17 @@ class UpdateReceiptCommandSpec extends Specification {
         receipt.author == "AUTHOR"
         receipt.source == "SOURCE"
         receipt.category == newCategory
-        receipt.tags == List.of(assignedTag, existingTag, newTag)
+        receipt.tags == Set.of(assignedTag, existingTag, newTag)
         result == new SuccessResponse(1)
     }
 
     private static UpdateReceiptDto updateReceiptDto() {
-        return new UpdateReceiptDto("NAME", 3, "DESC", "AUTHOR", "SOURCE", List.of("ASSIGNED_TAG", "EXISTING_TAG", "NEW_TAG",))
+        return new UpdateReceiptDto("NAME", 3, "DESC", "AUTHOR", "SOURCE", Set.of("ASSIGNED_TAG", "EXISTING_TAG", "NEW_TAG",))
     }
 
-    private static Receipt receipt(List<Tag> tags) {
-        return new Receipt(1, 4, "", "", "", "", category(0), Collections.emptyList(),
-                Collections.emptyList(), Collections.emptyList(), tags, false, LocalDateTime.now(), LocalDateTime.now())
+    private static Receipt receipt(Set<Tag> tags) {
+        return new Receipt(1, 4, "", "", "", "", category(0), Collections.emptySet(),
+                Collections.emptySet(), Collections.emptySet(), tags, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     static Category category(Integer id) {

@@ -4,12 +4,11 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
-import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.Pagination
+import pl.szczeliniak.kitchenassistant.common.dto.Pagination
 import pl.szczeliniak.kitchenassistant.user.User
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
-import java.util.*
 
 internal class GetUsersQueryTest : JunitBaseClass() {
 
@@ -21,11 +20,11 @@ internal class GetUsersQueryTest : JunitBaseClass() {
 
     @Test
     fun shouldReturnUsers() {
-        whenever(userDao.findAll(100, 25)).thenReturn(Collections.singletonList(user()))
+        whenever(userDao.findAll(100, 25)).thenReturn(mutableSetOf(user()))
         whenever(userDao.count()).thenReturn(280)
         val result = getUsersQuery.execute(5, 25)
 
-        assertThat(result).isEqualTo(UsersResponse(Collections.singletonList(userDto()), Pagination(5, 25, 12)))
+        assertThat(result).isEqualTo(UsersResponse(mutableSetOf(userDto()), Pagination(5, 25, 12)))
     }
 
     private fun userDto(): UserDto {

@@ -4,9 +4,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import pl.szczeliniak.kitchenassistant.file.commands.DeleteFileCommand
 import pl.szczeliniak.kitchenassistant.file.commands.UploadFileCommand
-import pl.szczeliniak.kitchenassistant.file.queries.DownloadFileCommand
-import pl.szczeliniak.kitchenassistant.receipt.FileDao
-import pl.szczeliniak.kitchenassistant.receipt.commands.factories.FileFactory
+import pl.szczeliniak.kitchenassistant.file.commands.factories.FileFactory
+import pl.szczeliniak.kitchenassistant.file.queries.CheckIfFileExistsQuery
+import pl.szczeliniak.kitchenassistant.file.queries.DownloadFileQuery
 
 @Configuration
 class FileConfiguration {
@@ -16,9 +16,15 @@ class FileConfiguration {
         UploadFileCommand(ftpClient, fileDao, fileFactory)
 
     @Bean
-    fun downloadFileCommand(ftpClient: FtpClient, fileDao: FileDao) = DownloadFileCommand(ftpClient, fileDao)
+    fun downloadFileCommand(ftpClient: FtpClient, fileDao: FileDao) = DownloadFileQuery(ftpClient, fileDao)
 
     @Bean
     fun deleteFileCommand(ftpClient: FtpClient, fileDao: FileDao) = DeleteFileCommand(ftpClient, fileDao)
+
+    @Bean
+    fun checkIfFileExistsQuery(fileDao: FileDao) = CheckIfFileExistsQuery(fileDao)
+
+    @Bean
+    fun fileFactory(): FileFactory = FileFactory()
 
 }

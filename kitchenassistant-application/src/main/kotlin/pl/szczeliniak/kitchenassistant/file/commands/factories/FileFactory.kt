@@ -1,6 +1,6 @@
-package pl.szczeliniak.kitchenassistant.receipt.commands.factories
+package pl.szczeliniak.kitchenassistant.file.commands.factories
 
-import pl.szczeliniak.kitchenassistant.receipt.File
+import pl.szczeliniak.kitchenassistant.file.File
 
 open class FileFactory {
 

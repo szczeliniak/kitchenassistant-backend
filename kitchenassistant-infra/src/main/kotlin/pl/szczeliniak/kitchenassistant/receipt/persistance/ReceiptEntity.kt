@@ -19,14 +19,14 @@ data class ReceiptEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     var category: CategoryEntity?,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var ingredients: MutableList<IngredientEntity>,
+    var ingredients: MutableSet<IngredientEntity>,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @OrderBy("sequence")
-    var steps: MutableList<StepEntity>,
+    var steps: MutableSet<StepEntity>,
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    var photos: MutableSet<PhotoEntity>,
     @ManyToMany(fetch = FetchType.LAZY)
-    var photos: MutableList<FileEntity>,
-    @ManyToMany(fetch = FetchType.LAZY)
-    var tags: MutableList<TagEntity>,
+    var tags: MutableSet<TagEntity>,
     var deleted: Boolean,
     var createdAt: LocalDateTime,
     var modifiedAt: LocalDateTime

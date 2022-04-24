@@ -12,7 +12,7 @@ data class ShoppingList(
     private var name_: String,
     private var description_: String? = null,
     private var date_: LocalDate? = null,
-    private var items_: MutableList<ShoppingListItem> = mutableListOf(),
+    private var items_: MutableSet<ShoppingListItem> = mutableSetOf(),
     private var deleted_: Boolean = false,
     private var archived_: Boolean = false,
     private val createdAt_: LocalDateTime = LocalDateTime.now(),
@@ -24,7 +24,7 @@ data class ShoppingList(
     val name: String get() = name_
     val date: LocalDate? get() = date_
     val description: String? get() = description_
-    val items: List<ShoppingListItem> get() = Collections.unmodifiableList(items_)
+    val items: Set<ShoppingListItem> get() = Collections.unmodifiableSet(items_)
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_

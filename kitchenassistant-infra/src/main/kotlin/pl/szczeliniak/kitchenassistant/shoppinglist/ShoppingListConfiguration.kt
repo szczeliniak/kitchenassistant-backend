@@ -45,7 +45,7 @@ class ShoppingListConfiguration {
 
     @Bean
     fun markShoppingListItemAsDoneCommand(shoppingListDao: ShoppingListDao, shoppingListItemDao: ShoppingListItemDao) =
-        MarkShoppingListItemAsDoneCommand(shoppingListDao, shoppingListItemDao)
+        MarkItemAsCompletedCommand(shoppingListDao, shoppingListItemDao)
 
     @Bean
     fun markShoppingListAsArchivedCommand(shoppingListDao: ShoppingListDao) =

@@ -8,7 +8,7 @@ class ReceiptMapper(
     private val stepMapper: StepMapper,
     private val ingredientMapper: IngredientMapper,
     private val categoryMapper: CategoryMapper,
-    private val fileMapper: FileMapper,
+    private val photoMapper: PhotoMapper,
     private val tagMapper: TagMapper
 ) {
 
@@ -21,10 +21,10 @@ class ReceiptMapper(
             receiptEntity.author,
             receiptEntity.source,
             receiptEntity.category?.let { categoryMapper.toDomain(it) },
-            receiptEntity.ingredients.map { ingredientMapper.toDomain(it) }.toMutableList(),
-            receiptEntity.steps.map { stepMapper.toDomain(it) }.toMutableList(),
-            receiptEntity.photos.map { fileMapper.toDomain(it) }.toMutableList(),
-            receiptEntity.tags.map { tagMapper.toDomain(it) }.toMutableList(),
+            receiptEntity.ingredients.map { ingredientMapper.toDomain(it) }.toMutableSet(),
+            receiptEntity.steps.map { stepMapper.toDomain(it) }.toMutableSet(),
+            receiptEntity.photos.map { photoMapper.toDomain(it) }.toMutableSet(),
+            receiptEntity.tags.map { tagMapper.toDomain(it) }.toMutableSet(),
             receiptEntity.deleted,
             receiptEntity.createdAt,
             receiptEntity.modifiedAt
@@ -40,10 +40,10 @@ class ReceiptMapper(
             receipt.author,
             receipt.source,
             receipt.category?.let { categoryMapper.toEntity(it) },
-            receipt.ingredients.map { ingredientMapper.toEntity(it) }.toMutableList(),
-            receipt.steps.map { stepMapper.toEntity(it) }.toMutableList(),
-            receipt.photos.map { fileMapper.toEntity(it) }.toMutableList(),
-            receipt.tags.map { tagMapper.toEntity(it) }.toMutableList(),
+            receipt.ingredients.map { ingredientMapper.toEntity(it) }.toMutableSet(),
+            receipt.steps.map { stepMapper.toEntity(it) }.toMutableSet(),
+            receipt.photos.map { photoMapper.toEntity(it) }.toMutableSet(),
+            receipt.tags.map { tagMapper.toEntity(it) }.toMutableSet(),
             receipt.deleted,
             receipt.createdAt,
             receipt.modifiedAt

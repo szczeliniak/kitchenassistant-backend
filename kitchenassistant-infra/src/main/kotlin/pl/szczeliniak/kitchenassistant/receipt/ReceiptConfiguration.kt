@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.receipt
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import pl.szczeliniak.kitchenassistant.file.queries.CheckIfFileExistsQuery
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.*
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetCategoriesQuery
@@ -62,7 +63,8 @@ class ReceiptConfiguration {
     fun deleteIngredientCommand(receiptDao: ReceiptDao): DeleteIngredientCommand = DeleteIngredientCommand(receiptDao)
 
     @Bean
-    fun stepFactory(fileDao: FileDao): StepFactory = StepFactory(fileDao)
+    fun stepFactory(photoFactory: PhotoFactory, checkIfFileExistsQuery: CheckIfFileExistsQuery): StepFactory =
+        StepFactory(photoFactory, checkIfFileExistsQuery)
 
     @Bean
     fun ingredientFactory(): IngredientFactory = IngredientFactory()
@@ -71,7 +73,7 @@ class ReceiptConfiguration {
     fun categoryFactory(): CategoryFactory = CategoryFactory()
 
     @Bean
-    fun photoFactory(): FileFactory = FileFactory()
+    fun photoFactory(): PhotoFactory = PhotoFactory()
 
     @Bean
     fun tagFactory(): TagFactory = TagFactory()
@@ -87,11 +89,17 @@ class ReceiptConfiguration {
     fun updateCategoryCommand(categoryDao: CategoryDao): UpdateCategoryCommand = UpdateCategoryCommand(categoryDao)
 
     @Bean
-    fun assignPhotosToReceiptCommand(receiptDao: ReceiptDao, fileDao: FileDao) =
-        AssignPhotosToReceiptCommand(receiptDao, fileDao)
+    fun assignPhotosToReceiptCommand(
+        receiptDao: ReceiptDao,
+        checkIfFileExistsQuery: CheckIfFileExistsQuery,
+        photoFactory: PhotoFactory,
+        photoDao: PhotoDao
+    ) =
+        AssignReceiptPhotosCommand(receiptDao, checkIfFileExistsQuery, photoFactory, photoDao)
 
     @Bean
-    fun divestPhotoFromReceiptCommand(receiptDao: ReceiptDao) = DivestPhotoFromReceiptCommand(receiptDao)
+    fun divestPhotoFromReceiptCommand(receiptDao: ReceiptDao, photoDao: PhotoDao) =
+        DivestReceiptPhotoCommand(receiptDao, photoDao)
 
     @Bean
     fun getCategoriesQuery(categoryDao: CategoryDao): GetCategoriesQuery = GetCategoriesQuery(categoryDao)
@@ -102,26 +110,37 @@ class ReceiptConfiguration {
     @Bean
     fun receiptFactory(
         getUserByIdQuery: GetUserByIdQuery,
-        stepFactory: StepFactory,
         ingredientFactory: IngredientFactory,
-        fileFactory: FileFactory,
+        stepFactory: StepFactory,
         categoryDao: CategoryDao,
-        fileDao: FileDao,
+        photoFactory: PhotoFactory,
         tagDao: TagDao,
-        tagFactory: TagFactory
+        tagFactory: TagFactory,
+        checkIfFileExistsQuery: CheckIfFileExistsQuery
     ): ReceiptFactory =
-        ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, categoryDao, fileDao, tagDao, tagFactory)
+        ReceiptFactory(
+            getUserByIdQuery,
+            ingredientFactory,
+            stepFactory,
+            categoryDao,
+            photoFactory,
+            tagDao,
+            tagFactory,
+            checkIfFileExistsQuery
+        )
 
     @Bean
     fun assignPhotosToReceiptStepCommand(
         receiptDao: ReceiptDao,
         stepDao: StepDao,
-        fileDao: FileDao,
-        fileFactory: FileFactory
-    ): AssignPhotosToReceiptStepCommand = AssignPhotosToReceiptStepCommand(receiptDao, stepDao, fileDao)
+        checkIfFileExistsQuery: CheckIfFileExistsQuery,
+        photoFactory: PhotoFactory,
+        photoDao: PhotoDao
+    ): AssignStepPhotosCommand =
+        AssignStepPhotosCommand(receiptDao, stepDao, checkIfFileExistsQuery, photoFactory, photoDao)
 
     @Bean
-    fun divestPhotoFromReceiptStepCommand(receiptDao: ReceiptDao, stepDao: StepDao) =
-        DivestPhotoFromReceiptStepCommand(receiptDao, stepDao)
+    fun divestPhotoFromReceiptStepCommand(receiptDao: ReceiptDao, photoDao: PhotoDao) =
+        DivestStepPhotoCommand(receiptDao, photoDao)
 
 }

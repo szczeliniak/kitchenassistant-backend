@@ -9,7 +9,7 @@ data class ShoppingListDto(
     val description: String?,
     val date: LocalDate?,
     val archived: Boolean,
-    val items: List<ShoppingListItemDto>
+    val items: Set<ShoppingListItemDto>
 ) {
 
     companion object {
@@ -20,7 +20,7 @@ data class ShoppingListDto(
                 shoppingList.description,
                 shoppingList.date,
                 shoppingList.archived,
-                shoppingList.items.map { ShoppingListItemDto.fromDomain(it) }
+                shoppingList.items.map { ShoppingListItemDto.fromDomain(it) }.toSet()
             )
         }
     }

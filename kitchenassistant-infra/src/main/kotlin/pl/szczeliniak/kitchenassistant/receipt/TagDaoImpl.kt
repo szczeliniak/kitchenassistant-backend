@@ -13,7 +13,7 @@ class TagDaoImpl(
         return tagMapper.toDomain(tagRepository.save(tagMapper.toEntity(tag)))
     }
 
-    override fun saveAll(tags: List<Tag>) {
+    override fun saveAll(tags: Set<Tag>) {
         tags.forEach { tagRepository.save(tagMapper.toEntity(it)) }
     }
 
@@ -21,9 +21,10 @@ class TagDaoImpl(
         return tagRepository.findByName(name, userId)?.let { tagMapper.toDomain(it) }
     }
 
-    override fun findAll(criteria: TagCriteria): List<Tag> {
+    override fun findAll(criteria: TagCriteria): Set<Tag> {
         return tagRepository.findAll(TagRepository.SearchCriteria(criteria.name, criteria.userId))
             .map { tagMapper.toDomain(it) }
+            .toSet()
     }
 
 }

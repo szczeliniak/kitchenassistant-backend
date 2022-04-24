@@ -8,14 +8,14 @@ import org.springframework.web.multipart.MultipartFile
 import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.file.commands.DeleteFileCommand
 import pl.szczeliniak.kitchenassistant.file.commands.UploadFileCommand
-import pl.szczeliniak.kitchenassistant.file.queries.DownloadFileCommand
+import pl.szczeliniak.kitchenassistant.file.queries.DownloadFileQuery
 
 @RestController
 @RequestMapping("/files")
 @Validated
 class FileController(
     private val uploadFileCommand: UploadFileCommand,
-    private val downloadFileCommand: DownloadFileCommand,
+    private val downloadFileQuery: DownloadFileQuery,
     private val deleteFileCommand: DeleteFileCommand
 ) {
 
@@ -26,7 +26,7 @@ class FileController(
 
     @GetMapping("/{id}")
     fun downloadFile(@PathVariable id: Int): ResponseEntity<ByteArray> {
-        val response = downloadFileCommand.execute(id)
+        val response = downloadFileQuery.execute(id)
         return ResponseEntity.ok()
             .contentType(MediaType.parseMediaType(response.mediaType.mimeType))
             .body(response.body)

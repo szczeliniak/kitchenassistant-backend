@@ -3,7 +3,8 @@ package pl.szczeliniak.kitchenassistant.receipt.commands
 import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.exceptions.NotAllowedOperationException
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
-import pl.szczeliniak.kitchenassistant.receipt.File
+import pl.szczeliniak.kitchenassistant.receipt.Photo
+import pl.szczeliniak.kitchenassistant.receipt.PhotoDao
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 import spock.lang.Specification
@@ -11,21 +12,23 @@ import spock.lang.Subject
 
 import java.time.LocalDateTime
 
-class DivestFileFromReceiptCommandSpec extends Specification {
+class DivestReceiptPhotoCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
+    def photoDao = Mock(PhotoDao)
+
     @Subject
-    def deletePhotoCommand = new DivestPhotoFromReceiptCommand(receiptDao)
+    def deletePhotoCommand = new DivestReceiptPhotoCommand(receiptDao, photoDao)
 
     def 'should delete photo'() {
         given:
         def photo = photo(false)
-        def receipt = receipt(Collections.singletonList(photo))
+        def receipt = receipt(Set.of(photo))
         receiptDao.findById(1) >> receipt
         receiptDao.save(receipt) >> receipt
 
         when:
-        def result = deletePhotoCommand.execute(1, "NAME")
+        def result = deletePhotoCommand.execute(1, 2)
 
         then:
         photo.deleted
@@ -34,11 +37,11 @@ class DivestFileFromReceiptCommandSpec extends Specification {
 
     def 'should throw exception when photo not found'() {
         given:
-        def receipt = receipt(Collections.emptyList())
+        def receipt = receipt(Collections.emptySet())
         receiptDao.findById(1) >> receipt
 
         when:
-        deletePhotoCommand.execute(1, "NAME")
+        deletePhotoCommand.execute(1, 2)
 
         then:
         def e = thrown(NotFoundException)
@@ -48,23 +51,23 @@ class DivestFileFromReceiptCommandSpec extends Specification {
     def 'should throw exception when photo is already marked as deleted'() {
         given:
         def photo = photo(true)
-        def receipt = receipt(Collections.singletonList(photo))
+        def receipt = receipt(Set.of(photo))
         receiptDao.findById(1) >> receipt
 
         when:
-        deletePhotoCommand.execute(1, "NAME")
+        deletePhotoCommand.execute(1, 2)
 
         then:
         def e = thrown(NotAllowedOperationException)
         e.message == "File is already marked as deleted!"
     }
 
-    private static Receipt receipt(List<File> photos) {
-        return new Receipt(1, 2, '', '', '', '', null, Collections.emptyList(), Collections.emptyList(), photos, Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+    private static Receipt receipt(Set<Photo> photos) {
+        return new Receipt(1, 4, '', '', '', '', null, Collections.emptySet(), Collections.emptySet(), photos, Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
-    private static File photo(boolean deleted) {
-        return new File(0, "NAME", 4, deleted, LocalDateTime.now(), LocalDateTime.now())
+    private static Photo photo(boolean deleted) {
+        return new Photo(2, 3, deleted, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

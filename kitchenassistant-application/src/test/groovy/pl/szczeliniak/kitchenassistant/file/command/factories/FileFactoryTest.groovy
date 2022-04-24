@@ -1,7 +1,8 @@
-package pl.szczeliniak.kitchenassistant.receipt.commands.factories
+package pl.szczeliniak.kitchenassistant.file.command.factories
 
 import org.assertj.core.api.Assertions
-import pl.szczeliniak.kitchenassistant.receipt.File
+import pl.szczeliniak.kitchenassistant.file.File
+import pl.szczeliniak.kitchenassistant.file.commands.factories.FileFactory
 import spock.lang.Specification
 import spock.lang.Subject
 

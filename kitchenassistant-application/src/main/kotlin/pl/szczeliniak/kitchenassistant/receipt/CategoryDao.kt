@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.receipt
 
 interface CategoryDao {
 
-    fun findAll(criteria: CategoryCriteria): List<Category>
+    fun findAll(criteria: CategoryCriteria): Set<Category>
 
     fun findById(id: Int): Category?
 

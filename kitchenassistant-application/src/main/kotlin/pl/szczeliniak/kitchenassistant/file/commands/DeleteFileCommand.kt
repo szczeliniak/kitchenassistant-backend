@@ -2,8 +2,8 @@ package pl.szczeliniak.kitchenassistant.file.commands
 
 import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.file.FileDao
 import pl.szczeliniak.kitchenassistant.file.FtpClient
-import pl.szczeliniak.kitchenassistant.receipt.FileDao
 
 class DeleteFileCommand(private val ftpClient: FtpClient, private val fileDao: FileDao) {
 

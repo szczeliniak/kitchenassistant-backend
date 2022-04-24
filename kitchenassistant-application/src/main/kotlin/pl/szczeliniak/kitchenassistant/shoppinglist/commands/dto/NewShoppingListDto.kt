@@ -11,5 +11,5 @@ data class NewShoppingListDto(
     @field:Length(min = 1, max = 100) var name: String = "",
     @field:Length(min = 1, max = 1000) var description: String? = null,
     var date: LocalDate? = null,
-    @field:Size(min = 0, max = 30) var items: List<@Valid NewShoppingListItemDto> = mutableListOf(),
+    @field:Size(min = 0, max = 30) var items: Set<@Valid NewShoppingListItemDto> = setOf(),
 )

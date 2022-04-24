@@ -13,10 +13,10 @@ class Receipt(
     private var author_: String?,
     private var source_: String?,
     private var category_: Category?,
-    private var ingredients_: MutableList<Ingredient> = mutableListOf(),
-    private var steps_: MutableList<Step> = mutableListOf(),
-    private var photos_: MutableList<File> = mutableListOf(),
-    private var tags_: MutableList<Tag> = mutableListOf(),
+    private var ingredients_: MutableSet<Ingredient> = mutableSetOf(),
+    private var steps_: MutableSet<Step> = mutableSetOf(),
+    private var photos_: MutableSet<Photo> = mutableSetOf(),
+    private var tags_: MutableSet<Tag> = mutableSetOf(),
     private var deleted_: Boolean = false,
     private val createdAt_: LocalDateTime = LocalDateTime.now(),
     private var modifiedAt_: LocalDateTime = LocalDateTime.now()
@@ -28,10 +28,10 @@ class Receipt(
     val author: String? get() = author_
     val source: String? get() = source_
     val category: Category? get() = category_
-    val ingredients: List<Ingredient> get() = Collections.unmodifiableList(ingredients_)
-    val steps: List<Step> get() = Collections.unmodifiableList(steps_)
-    val photos: List<File> get() = Collections.unmodifiableList(photos_)
-    val tags: List<Tag> get() = Collections.unmodifiableList(tags_)
+    val ingredients: Set<Ingredient> get() = Collections.unmodifiableSet(ingredients_)
+    val steps: Set<Step> get() = Collections.unmodifiableSet(steps_)
+    val photos: Set<Photo> get() = Collections.unmodifiableSet(photos_)
+    val tags: Set<Tag> get() = Collections.unmodifiableSet(tags_)
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_
@@ -91,19 +91,12 @@ class Receipt(
         return step
     }
 
-    fun deletePhotoByName(name: String): File {
-        val photo = photos.firstOrNull { it.name == name } ?: throw NotFoundException("Photo not found")
-        photo.markAsDeleted()
-        this.modifiedAt_ = LocalDateTime.now()
-        return photo
-    }
-
-    fun getPhotoById(id: Int): File? {
+    fun getPhotoById(id: Int): Photo? {
         return photos.firstOrNull { photo -> photo.id == id }
     }
 
-    fun addPhoto(file: File) {
-        photos_ += (file)
+    fun addPhoto(photo: Photo) {
+        photos_ += (photo)
         this.modifiedAt_ = LocalDateTime.now()
     }
 
@@ -113,6 +106,10 @@ class Receipt(
 
     fun getTagByName(name: String): Tag? {
         return tags_.firstOrNull { it.name.lowercase() == name.lowercase() }
+    }
+
+    fun hasPhotoWithFileId(fileId: Int): Boolean {
+        return this.photos_.any { it.fileId == fileId }
     }
 
 }

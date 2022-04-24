@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.receipt
+package pl.szczeliniak.kitchenassistant.file
 
 interface FileDao {
 

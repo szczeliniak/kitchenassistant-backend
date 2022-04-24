@@ -22,7 +22,7 @@ class UpdateStepCommandSpec extends Specification {
     def 'should update step'() {
         given:
         def step = step()
-        receiptDao.findById(1) >> receipt(Collections.singletonList(step))
+        receiptDao.findById(1) >> receipt(Set.of(step))
         stepDao.save(step) >> step
 
         when:
@@ -39,13 +39,13 @@ class UpdateStepCommandSpec extends Specification {
         return new UpdateStepDto("NAME", "DESCRIPTION", 1)
     }
 
-    private static Receipt receipt(List<Step> steps) {
-        return new Receipt(1, 1, "", "", "", "", null, Collections.emptyList(),
-                steps, Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+    private static Receipt receipt(Set<Step> steps) {
+        return new Receipt(1, 1, "", "", "", "", null, Collections.emptySet(),
+                steps, Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Step step() {
-        return new Step(2, "", "", 0, Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(2, "", "", 0, Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

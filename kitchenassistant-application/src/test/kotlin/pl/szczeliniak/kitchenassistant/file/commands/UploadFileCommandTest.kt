@@ -5,10 +5,10 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
+import pl.szczeliniak.kitchenassistant.file.File
+import pl.szczeliniak.kitchenassistant.file.FileDao
 import pl.szczeliniak.kitchenassistant.file.FtpClient
-import pl.szczeliniak.kitchenassistant.receipt.File
-import pl.szczeliniak.kitchenassistant.receipt.FileDao
-import pl.szczeliniak.kitchenassistant.receipt.commands.factories.FileFactory
+import pl.szczeliniak.kitchenassistant.file.commands.factories.FileFactory
 import java.time.LocalDateTime
 
 internal class UploadFileCommandTest : JunitBaseClass() {

@@ -22,7 +22,7 @@ class UpdateIngredientCommandSpec extends Specification {
     def 'should update ingredient'() {
         given:
         def ingredient = ingredient()
-        receiptDao.findById(1) >> receipt(Collections.singletonList(ingredient))
+        receiptDao.findById(1) >> receipt(Set.of(ingredient))
         ingredientDao.save(ingredient) >> ingredient
 
         when:
@@ -38,9 +38,9 @@ class UpdateIngredientCommandSpec extends Specification {
         return new UpdateIngredientDto("NAME", "QUANTITY")
     }
 
-    private static Receipt receipt(List<Ingredient> ingredients) {
+    private static Receipt receipt(Set<Ingredient> ingredients) {
         return new Receipt(1, 1, "", "", "", "", null, ingredients,
-                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+                Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Ingredient ingredient() {

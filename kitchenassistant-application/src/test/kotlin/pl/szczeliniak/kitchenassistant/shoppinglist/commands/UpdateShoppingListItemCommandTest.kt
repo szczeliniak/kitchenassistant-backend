@@ -10,7 +10,6 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItemDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListItemDto
-import java.util.*
 
 internal class UpdateShoppingListItemCommandTest : JunitBaseClass() {
 
@@ -26,7 +25,7 @@ internal class UpdateShoppingListItemCommandTest : JunitBaseClass() {
     @Test
     fun shouldUpdateShoppingList() {
         val shoppingListItem = shoppingListItem()
-        val shoppingList = shoppingList(Collections.singletonList(shoppingListItem))
+        val shoppingList = shoppingList(mutableSetOf(shoppingListItem))
 
         whenever(shoppingListDao.findById(1)).thenReturn(shoppingList)
         whenever(shoppingListItemDao.save(shoppingListItem)).thenReturn(shoppingListItem)
@@ -47,7 +46,7 @@ internal class UpdateShoppingListItemCommandTest : JunitBaseClass() {
         return UpdateShoppingListItemDto("NAME", "QUANTITY", 1)
     }
 
-    private fun shoppingList(items: MutableList<ShoppingListItem>): ShoppingList {
+    private fun shoppingList(items: MutableSet<ShoppingListItem>): ShoppingList {
         return ShoppingList(
             id_ = 1,
             userId_ = 0,

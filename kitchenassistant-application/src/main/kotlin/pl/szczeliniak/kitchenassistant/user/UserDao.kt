@@ -4,7 +4,7 @@ interface UserDao {
 
     fun findById(userId: Int): User?
 
-    fun findAll(offset: Int, limit: Int): List<User>
+    fun findAll(offset: Int, limit: Int): Set<User>
 
     fun save(user: User): User
 

@@ -34,19 +34,19 @@ class AddStepCommandSpec extends Specification {
 
         then:
         result == new SuccessResponse(2)
-        receipt.steps == Collections.singletonList(step)
+        receipt.steps == Set.of(step)
     }
 
     private static NewStepDto newStepDto() {
-        return new NewStepDto("", "", 0, Collections.emptyList())
+        return new NewStepDto("", "", 0, Collections.emptySet())
     }
 
     private static Step step() {
-        return new Step(2, "", "", 0, Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(2, "", "", 0, Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Receipt receipt() {
-        return new Receipt(1, 0, "", "", "", "", null, Collections.emptyList(), new ArrayList<Step>(), Collections.emptyList(), Collections.emptyList(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 0, "", "", "", "", null, Collections.emptySet(), new HashSet<Step>(), Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

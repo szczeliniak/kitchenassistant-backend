@@ -9,7 +9,7 @@ data class ShoppingListItem(
     private var quantity_: String,
     private var sequence_: Int? = null,
     private var deleted_: Boolean = false,
-    private var done_: Boolean = false,
+    private var completed_: Boolean = false,
     private val createdAt_: LocalDateTime = LocalDateTime.now(),
     private var modifiedAt_: LocalDateTime = LocalDateTime.now()
 ) {
@@ -19,7 +19,7 @@ data class ShoppingListItem(
     val sequence: Int? get() = sequence_
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
-    val done: Boolean get() = done_
+    val completed: Boolean get() = completed_
     val deleted: Boolean get() = deleted_
 
     fun markAsDeleted() {
@@ -30,8 +30,8 @@ data class ShoppingListItem(
         this.modifiedAt_ = LocalDateTime.now()
     }
 
-    fun markAsDone(done: Boolean) {
-        done_ = done
+    fun markAsCompleted(completed: Boolean) {
+        completed_ = completed
         this.modifiedAt_ = LocalDateTime.now()
     }
 

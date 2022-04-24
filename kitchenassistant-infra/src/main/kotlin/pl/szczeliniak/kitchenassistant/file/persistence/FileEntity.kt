@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.receipt.persistance
+package pl.szczeliniak.kitchenassistant.file.persistence
 
 import org.hibernate.annotations.Where
 import java.time.LocalDateTime
