@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist
 
 import org.springframework.stereotype.Component
-import pl.szczeliniak.kitchenassistant.shoppinglist.persistance.ShoppingListItemEntity
 
 @Component
 class ShoppingListItemMapper {

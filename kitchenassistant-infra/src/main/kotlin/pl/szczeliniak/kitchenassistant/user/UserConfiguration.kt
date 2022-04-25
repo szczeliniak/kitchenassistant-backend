@@ -2,9 +2,12 @@ package pl.szczeliniak.kitchenassistant.user
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import pl.szczeliniak.kitchenassistant.user.commands.AddUserCommand
+import pl.szczeliniak.kitchenassistant.user.commands.LoginCommand
+import pl.szczeliniak.kitchenassistant.user.commands.RegisterCommand
+import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
 import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory
-import pl.szczeliniak.kitchenassistant.user.queries.GetUserByEmailAndPasswordQuery
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import pl.szczeliniak.kitchenassistant.user.queries.GetUsersQuery
 
@@ -15,13 +18,6 @@ class UserConfiguration {
     fun getUserByIdQuery(userDao: UserDao): GetUserByIdQuery = GetUserByIdQuery(userDao)
 
     @Bean
-    fun getUserByEmailAndPasswordQuery(
-        userDao: UserDao,
-        passwordMatcher: PasswordMatcher
-    ): GetUserByEmailAndPasswordQuery =
-        GetUserByEmailAndPasswordQuery(userDao, passwordMatcher)
-
-    @Bean
     fun getUsersQuery(userDao: UserDao): GetUsersQuery = GetUsersQuery(userDao)
 
     @Bean
@@ -30,5 +26,21 @@ class UserConfiguration {
 
     @Bean
     fun userFactory(passwordEncoder: PasswordEncoder): UserFactory = UserFactory(passwordEncoder)
+
+    @Bean
+    fun loginCommand(
+        userDao: UserDao,
+        passwordMatcher: PasswordMatcher,
+        tokenFactory: TokenFactory
+    ): LoginCommand = LoginCommand(userDao, passwordMatcher, tokenFactory)
+
+    @Bean
+    fun registerCommand(addUserCommand: AddUserCommand, tokenFactory: TokenFactory): RegisterCommand =
+        RegisterCommand(addUserCommand, tokenFactory)
+
+    @Bean
+    fun passwordEncoder(): org.springframework.security.crypto.password.PasswordEncoder {
+        return BCryptPasswordEncoder()
+    }
 
 }

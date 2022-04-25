@@ -1,11 +1,11 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
-import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.file.queries.CheckIfFileExistsQuery
 import pl.szczeliniak.kitchenassistant.file.queries.dtos.CheckIfFileExistsResponse
 import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.AssignPhotosToReceiptStepDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.PhotoFactory
+import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
 import spock.lang.Subject
 

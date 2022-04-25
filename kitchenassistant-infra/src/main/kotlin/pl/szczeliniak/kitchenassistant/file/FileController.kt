@@ -5,10 +5,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.file.commands.DeleteFileCommand
 import pl.szczeliniak.kitchenassistant.file.commands.UploadFileCommand
 import pl.szczeliniak.kitchenassistant.file.queries.DownloadFileQuery
+import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 
 @RestController
 @RequestMapping("/files")

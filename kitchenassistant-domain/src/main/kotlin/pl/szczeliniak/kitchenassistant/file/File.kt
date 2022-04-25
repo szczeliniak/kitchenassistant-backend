@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.file
 
-import pl.szczeliniak.kitchenassistant.exceptions.NotAllowedOperationException
+import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
 import java.time.LocalDateTime
 
 data class File(

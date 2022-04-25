@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.user.commands
 
-import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
-import pl.szczeliniak.kitchenassistant.exceptions.UserExistsException
+import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.shared.exceptions.UserExistsException
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.commands.dto.AddUserDto
 import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory

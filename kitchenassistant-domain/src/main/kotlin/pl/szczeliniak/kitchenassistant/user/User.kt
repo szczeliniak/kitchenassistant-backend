@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.user
 
-import pl.szczeliniak.kitchenassistant.exceptions.LoginException
+import pl.szczeliniak.kitchenassistant.shared.exceptions.LoginException
 import java.time.LocalDateTime
 
 data class User(

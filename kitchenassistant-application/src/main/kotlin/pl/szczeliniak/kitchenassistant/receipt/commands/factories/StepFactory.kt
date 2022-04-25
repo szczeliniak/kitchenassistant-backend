@@ -1,9 +1,9 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands.factories
 
-import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.file.queries.CheckIfFileExistsQuery
 import pl.szczeliniak.kitchenassistant.receipt.Step
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
+import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 
 open class StepFactory(
     private val photoFactory: PhotoFactory,

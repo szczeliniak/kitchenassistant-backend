@@ -6,10 +6,10 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import pl.szczeliniak.kitchenassistant.exceptions.BadRequestException
-import pl.szczeliniak.kitchenassistant.exceptions.FileTooLargeException
-import pl.szczeliniak.kitchenassistant.exceptions.FtpException
-import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.exceptions.BadRequestException
+import pl.szczeliniak.kitchenassistant.shared.exceptions.FileTooLargeException
+import pl.szczeliniak.kitchenassistant.shared.exceptions.FtpException
+import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -33,7 +33,7 @@ class FtpClientImpl(
         if (content.size > MAX_BYTES_SIZE) {
             throw FileTooLargeException("File too large")
         }
-        if (SupportedMediaType.byExtension(name) == null) {
+        if (SupportedMediaType.byFileName(name) == null) {
             throw BadRequestException("Unsupported file media type")
         }
 

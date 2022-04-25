@@ -1,8 +1,8 @@
 package pl.szczeliniak.kitchenassistant.receipt.queries
 
-import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.*
+import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import spock.lang.Specification
 import spock.lang.Subject
 

@@ -1,11 +1,11 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
-import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
-import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.receipt.IngredientDao
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.IngredientFactory
+import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 
 class AddIngredientCommand(
     private val receiptDao: ReceiptDao,

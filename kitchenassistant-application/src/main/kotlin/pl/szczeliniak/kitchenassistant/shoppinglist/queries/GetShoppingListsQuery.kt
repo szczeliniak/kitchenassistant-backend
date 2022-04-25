@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.queries
 
-import pl.szczeliniak.kitchenassistant.common.dto.Pagination
-import pl.szczeliniak.kitchenassistant.common.dto.PaginationUtils
+import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
+import pl.szczeliniak.kitchenassistant.shared.dtos.PaginationUtils
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListCriteria
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto

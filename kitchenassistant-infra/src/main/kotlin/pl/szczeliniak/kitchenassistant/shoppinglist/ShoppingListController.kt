@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.Length
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
+import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.*
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto

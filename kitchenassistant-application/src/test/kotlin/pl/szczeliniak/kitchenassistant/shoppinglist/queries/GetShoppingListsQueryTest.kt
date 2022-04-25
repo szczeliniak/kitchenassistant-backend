@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
-import pl.szczeliniak.kitchenassistant.common.dto.Pagination
+import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListCriteria
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao

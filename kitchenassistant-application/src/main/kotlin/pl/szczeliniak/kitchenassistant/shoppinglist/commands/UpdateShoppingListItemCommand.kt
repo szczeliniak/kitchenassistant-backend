@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.commands
 
-import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
-import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItemDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListItemDto

@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.queries
 
-import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListResponse

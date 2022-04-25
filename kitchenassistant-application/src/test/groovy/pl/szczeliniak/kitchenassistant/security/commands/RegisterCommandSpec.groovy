@@ -1,11 +1,12 @@
 package pl.szczeliniak.kitchenassistant.security.commands
 
-import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
-import pl.szczeliniak.kitchenassistant.security.commands.dto.LoginResponse
-import pl.szczeliniak.kitchenassistant.security.commands.dto.RegisterDto
-import pl.szczeliniak.kitchenassistant.security.commands.factories.TokenFactory
+import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.user.commands.AddUserCommand
+import pl.szczeliniak.kitchenassistant.user.commands.RegisterCommand
 import pl.szczeliniak.kitchenassistant.user.commands.dto.AddUserDto
+import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
+import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterDto
+import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
 import spock.lang.Specification
 import spock.lang.Subject
 

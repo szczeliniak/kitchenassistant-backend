@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.user
 
 import org.springframework.stereotype.Component
-import pl.szczeliniak.kitchenassistant.user.persistance.UserRepository
 
 @Component
 class UserDaoImpl(

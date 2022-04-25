@@ -1,11 +1,11 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands.factories
 
-import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.file.queries.CheckIfFileExistsQuery
 import pl.szczeliniak.kitchenassistant.receipt.CategoryDao
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.TagDao
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
+import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 
 open class ReceiptFactory(

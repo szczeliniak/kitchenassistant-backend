@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
-import pl.szczeliniak.kitchenassistant.exceptions.NotAllowedOperationException
-import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
+import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import java.time.LocalDateTime
 import java.util.*
 

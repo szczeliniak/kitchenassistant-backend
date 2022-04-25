@@ -1,9 +1,9 @@
 package pl.szczeliniak.kitchenassistant.file.commands
 
-import pl.szczeliniak.kitchenassistant.common.dto.SuccessResponse
 import pl.szczeliniak.kitchenassistant.file.FileDao
 import pl.szczeliniak.kitchenassistant.file.FtpClient
 import pl.szczeliniak.kitchenassistant.file.commands.factories.FileFactory
+import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 
 class UploadFileCommand(
     private val ftpClient: FtpClient,

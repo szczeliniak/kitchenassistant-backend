@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.file
 
 import org.springframework.stereotype.Component
-import pl.szczeliniak.kitchenassistant.file.persistence.FileRepository
 
 @Component
 class FileDaoImpl(

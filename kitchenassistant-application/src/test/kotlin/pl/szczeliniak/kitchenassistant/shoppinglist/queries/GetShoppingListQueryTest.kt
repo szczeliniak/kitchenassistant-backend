@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
-import pl.szczeliniak.kitchenassistant.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
