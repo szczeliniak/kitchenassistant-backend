@@ -46,7 +46,7 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
     }
 
     fun findAll(criteria: SearchCriteria): Set<TagEntity> {
-        var query = "SELECT r FROM TagEntity r"
+        var query = "SELECT r FROM TagEntity r WHERE r.id IS NOT NULL"
         if (criteria.name != null) {
             query += " AND LOWER(r.name) LIKE (:name)"
         }
