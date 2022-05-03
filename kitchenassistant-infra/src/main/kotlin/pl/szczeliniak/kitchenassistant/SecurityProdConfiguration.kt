@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Configuration
-class SecurityProdConfiguration(
+open class SecurityProdConfiguration(
     objectMapper: ObjectMapper,
     private val request: HttpServletRequest,
     private val getUserByIdQuery: GetUserByIdQuery,

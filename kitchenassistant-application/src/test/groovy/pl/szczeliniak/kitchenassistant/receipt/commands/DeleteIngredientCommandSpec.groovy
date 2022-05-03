@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
 import pl.szczeliniak.kitchenassistant.receipt.Ingredient
+import pl.szczeliniak.kitchenassistant.receipt.IngredientDao
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
@@ -14,22 +15,24 @@ import java.time.LocalDateTime
 class DeleteIngredientCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
+    def ingredientDao = Mock(IngredientDao)
+
     @Subject
-    def deleteIngredientCommand = new DeleteIngredientCommand(receiptDao)
+    def deleteIngredientCommand = new DeleteIngredientCommand(receiptDao, ingredientDao)
 
     def 'should delete ingredient'() {
         given:
         def ingredient = ingredient(false)
         def receipt = receipt(Set.of(ingredient))
         receiptDao.findById(1) >> receipt
-        receiptDao.save(receipt) >> receipt
+        ingredientDao.save(ingredient) >> ingredient
 
         when:
         def result = deleteIngredientCommand.execute(1, 3)
 
         then:
         ingredient.deleted
-        result == new SuccessResponse(3)
+        result == new SuccessResponse(1)
     }
 
     def 'should throw exception when ingredient not found'() {

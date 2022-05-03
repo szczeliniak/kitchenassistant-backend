@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 
 @Configuration
 @EnableSwagger2
-class SwaggerConfiguration(
+open class SwaggerConfiguration(
     @Value("\${application.name}")
     private val applicationName: String,
     @Value("\${application.description}")
@@ -29,7 +29,7 @@ class SwaggerConfiguration(
 ) {
 
     @Bean
-    fun api(): Docket {
+    open fun api(): Docket {
         return Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
             .securityContexts(listOf(securityContext()))
             .securitySchemes(listOf(apiKey()))

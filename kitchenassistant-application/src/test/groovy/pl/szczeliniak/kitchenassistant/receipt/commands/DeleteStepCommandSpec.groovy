@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.receipt.commands
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 import pl.szczeliniak.kitchenassistant.receipt.Step
+import pl.szczeliniak.kitchenassistant.receipt.StepDao
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
@@ -14,22 +15,24 @@ import java.time.LocalDateTime
 class DeleteStepCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
+    def stepDao = Mock(StepDao)
+
     @Subject
-    def deleteStepCommand = new DeleteStepCommand(receiptDao)
+    def deleteStepCommand = new DeleteStepCommand(receiptDao, stepDao)
 
     def 'should delete step'() {
         given:
         def step = step(false)
         def receipt = receipt(Set.of(step))
         receiptDao.findById(1) >> receipt
-        receiptDao.save(receipt) >> receipt
+        stepDao.save(step) >> step
 
         when:
         def result = deleteStepCommand.execute(1, 3)
 
         then:
         step.deleted
-        result == new SuccessResponse(3)
+        result == new SuccessResponse(1)
     }
 
     def 'should throw exception when step not found'() {

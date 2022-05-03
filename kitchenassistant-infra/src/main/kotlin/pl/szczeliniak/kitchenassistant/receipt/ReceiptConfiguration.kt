@@ -59,10 +59,12 @@ class ReceiptConfiguration {
     fun deleteReceiptCommand(receiptDao: ReceiptDao): DeleteReceiptCommand = DeleteReceiptCommand(receiptDao)
 
     @Bean
-    fun deleteStepCommand(receiptDao: ReceiptDao): DeleteStepCommand = DeleteStepCommand(receiptDao)
+    fun deleteStepCommand(receiptDao: ReceiptDao, stepDao: StepDao): DeleteStepCommand =
+        DeleteStepCommand(receiptDao, stepDao)
 
     @Bean
-    fun deleteIngredientCommand(receiptDao: ReceiptDao): DeleteIngredientCommand = DeleteIngredientCommand(receiptDao)
+    fun deleteIngredientCommand(receiptDao: ReceiptDao, ingredientDao: IngredientDao): DeleteIngredientCommand =
+        DeleteIngredientCommand(receiptDao, ingredientDao)
 
     @Bean
     fun stepFactory(photoFactory: PhotoFactory, checkIfFileExistsQuery: CheckIfFileExistsQuery): StepFactory =
