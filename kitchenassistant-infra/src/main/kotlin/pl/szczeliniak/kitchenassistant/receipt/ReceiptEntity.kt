@@ -24,6 +24,7 @@ data class ReceiptEntity(
     @OrderBy("sequence")
     var steps: MutableSet<StepEntity>,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OrderBy("id")
     var photos: MutableSet<PhotoEntity>,
     @ManyToMany(fetch = FetchType.LAZY)
     var tags: MutableSet<TagEntity>,
