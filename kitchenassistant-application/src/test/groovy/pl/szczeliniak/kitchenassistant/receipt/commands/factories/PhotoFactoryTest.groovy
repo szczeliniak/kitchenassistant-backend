@@ -24,7 +24,7 @@ class PhotoFactoryTest extends Specification {
     }
 
     private static Photo photo() {
-        return new Photo(0, 4, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Photo(0, 4, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

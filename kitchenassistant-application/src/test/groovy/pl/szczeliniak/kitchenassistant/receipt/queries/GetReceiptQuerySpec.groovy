@@ -76,11 +76,11 @@ class GetReceiptQuerySpec extends Specification {
     }
 
     private static Photo photo(Integer fileId) {
-        return new Photo(99, fileId, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Photo(99, fileId, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Tag tag(String name) {
-        return new Tag(98, name, 4, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Tag(98, name, 4, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static PhotoDto photoDto(Integer fileId) {

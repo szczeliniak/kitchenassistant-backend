@@ -75,7 +75,7 @@ class AssignStepPhotosCommandSpec extends Specification {
     }
 
     private static Photo photo() {
-        return new Photo(99, 4, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Photo(99, 4, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static CheckIfFileExistsResponse checkIfFileExistsResponse() {

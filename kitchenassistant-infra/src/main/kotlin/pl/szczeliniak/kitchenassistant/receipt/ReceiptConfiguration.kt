@@ -29,9 +29,11 @@ class ReceiptConfiguration {
         receiptDao: ReceiptDao,
         categoryDao: CategoryDao,
         tagDao: TagDao,
-        tagFactory: TagFactory
+        tagFactory: TagFactory,
+        photoFactory: PhotoFactory,
+        photoDao: PhotoDao
     ): UpdateReceiptCommand =
-        UpdateReceiptCommand(receiptDao, categoryDao, tagDao, tagFactory)
+        UpdateReceiptCommand(receiptDao, categoryDao, tagDao, tagFactory, photoFactory, photoDao)
 
     @Bean
     fun addIngredientCommand(
@@ -98,8 +100,7 @@ class ReceiptConfiguration {
         AssignReceiptPhotosCommand(receiptDao, checkIfFileExistsQuery, photoFactory, photoDao)
 
     @Bean
-    fun divestPhotoFromReceiptCommand(receiptDao: ReceiptDao, photoDao: PhotoDao) =
-        DivestReceiptPhotoCommand(receiptDao, photoDao)
+    fun divestPhotoFromReceiptCommand(receiptDao: ReceiptDao) = DivestReceiptPhotoCommand(receiptDao)
 
     @Bean
     fun getCategoriesQuery(categoryDao: CategoryDao): GetCategoriesQuery = GetCategoriesQuery(categoryDao)
@@ -140,7 +141,7 @@ class ReceiptConfiguration {
         AssignStepPhotosCommand(receiptDao, stepDao, checkIfFileExistsQuery, photoFactory, photoDao)
 
     @Bean
-    fun divestPhotoFromReceiptStepCommand(receiptDao: ReceiptDao, photoDao: PhotoDao) =
-        DivestStepPhotoCommand(receiptDao, photoDao)
+    fun divestPhotoFromReceiptStepCommand(receiptDao: ReceiptDao, stepDao: StepDao) =
+        DivestStepPhotoCommand(receiptDao, stepDao)
 
 }

@@ -82,11 +82,11 @@ class ReceiptFactorySpec extends Specification {
     }
 
     private static Photo photo() {
-        return new Photo(99, 4, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Photo(99, 4, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Tag tag(Integer id, String name) {
-        return new Tag(id, name, 4, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Tag(id, name, 4, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Ingredient ingredient() {

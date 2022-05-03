@@ -14,7 +14,7 @@ data class StepEntity(
     var name: String,
     var description: String?,
     var sequence: Int?,
-    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var photos: MutableSet<PhotoEntity>,
     var deleted: Boolean,
     var createdAt: LocalDateTime,

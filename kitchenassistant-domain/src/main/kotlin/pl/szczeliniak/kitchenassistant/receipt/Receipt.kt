@@ -42,7 +42,8 @@ class Receipt(
         category: Category? = null,
         author: String? = null,
         source: String? = null,
-        tags: List<Tag> = Collections.emptyList()
+        tags: List<Tag> = Collections.emptyList(),
+        photos: List<Photo> = Collections.emptyList()
     ) {
         this.name_ = name
         this.description_ = description
@@ -50,12 +51,24 @@ class Receipt(
         this.source_ = source
         this.category_ = category
 
+        updateTags(tags)
+        updatePhotos(photos)
+
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
+    private fun updateTags(tags: List<Tag>) {
         this.tags_.clear()
         tags.forEach { new ->
             this.tags_.add(new)
         }
+    }
 
-        this.modifiedAt_ = LocalDateTime.now()
+    private fun updatePhotos(photos: List<Photo>) {
+        this.photos_.clear()
+        photos.forEach { new ->
+            this.photos_.add(new)
+        }
     }
 
     fun markAsDeleted() {
@@ -91,8 +104,14 @@ class Receipt(
         return step
     }
 
-    fun getPhotoById(id: Int): Photo? {
-        return photos.firstOrNull { photo -> photo.id == id }
+    fun deletePhotoById(id: Int): Photo {
+        val photo = photos_.firstOrNull { it.id == id } ?: throw NotFoundException("Photo not found")
+        photos_.remove(photo)
+        return photo
+    }
+
+    fun getPhotoByFileId(fileId: Int): Photo? {
+        return photos.firstOrNull { photo -> photo.fileId == fileId }
     }
 
     fun addPhoto(photo: Photo) {
@@ -100,8 +119,8 @@ class Receipt(
         this.modifiedAt_ = LocalDateTime.now()
     }
 
-    fun getStepById(stepId: Int): Step? {
-        return steps_.firstOrNull { it.id == stepId }
+    fun getStepById(stepId: Int): Step {
+        return steps_.firstOrNull { it.id == stepId } ?: throw NotFoundException("Step not found")
     }
 
     fun getTagByName(name: String): Tag? {

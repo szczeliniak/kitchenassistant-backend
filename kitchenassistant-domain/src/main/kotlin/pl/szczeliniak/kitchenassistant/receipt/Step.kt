@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
+import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import java.time.LocalDateTime
 import java.util.*
 
@@ -38,8 +39,10 @@ data class Step(
         this.modifiedAt_ = LocalDateTime.now()
     }
 
-    fun getPhotoById(id: Int): Photo? {
-        return photos_.firstOrNull { it.id == id }
+    fun deletePhotoById(id: Int): Photo {
+        val photo = photos_.firstOrNull { it.id == id } ?: throw NotFoundException("Photo not found")
+        photos_.remove(photo)
+        return photo
     }
 
     fun addPhoto(photo: Photo) {

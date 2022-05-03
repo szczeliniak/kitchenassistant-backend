@@ -21,7 +21,7 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
     fun findById(id: Int): TagEntity? {
         return entityManager
             .createQuery(
-                "SELECT r FROM TagEntity r WHERE r.id = :id AND r.deleted = false",
+                "SELECT r FROM TagEntity r WHERE r.id = :id",
                 TagEntity::class.java
             )
             .setParameter("id", id)
@@ -34,7 +34,7 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
     fun findByName(name: String, userId: Int): TagEntity? {
         return entityManager
             .createQuery(
-                "SELECT r FROM TagEntity r WHERE r.name = :name AND r.deleted = false AND r.userId = :userId",
+                "SELECT r FROM TagEntity r WHERE r.name = :name AND r.userId = :userId",
                 TagEntity::class.java
             )
             .setParameter("name", name)
@@ -46,7 +46,7 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
     }
 
     fun findAll(criteria: SearchCriteria): Set<TagEntity> {
-        var query = "SELECT r FROM TagEntity r WHERE r.deleted = false"
+        var query = "SELECT r FROM TagEntity r"
         if (criteria.name != null) {
             query += " AND LOWER(r.name) LIKE (:name)"
         }

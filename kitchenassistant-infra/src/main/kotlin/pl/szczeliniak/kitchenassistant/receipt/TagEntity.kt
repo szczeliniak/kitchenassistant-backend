@@ -1,11 +1,9 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
-import org.hibernate.annotations.Where
 import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@Where(clause = "deleted = false")
 data class TagEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_id_seq")
@@ -13,7 +11,6 @@ data class TagEntity(
     var id: Int,
     var name: String,
     var userId: Int,
-    var deleted: Boolean,
     var createdAt: LocalDateTime,
     var modifiedAt: LocalDateTime
 )

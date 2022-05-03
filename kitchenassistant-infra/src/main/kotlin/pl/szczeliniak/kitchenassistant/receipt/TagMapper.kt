@@ -10,7 +10,6 @@ class TagMapper {
             entity.id,
             entity.name,
             entity.userId,
-            entity.deleted,
             entity.createdAt,
             entity.modifiedAt
         )
@@ -21,7 +20,6 @@ class TagMapper {
             tag.id,
             tag.name,
             tag.userId,
-            tag.deleted,
             tag.createdAt,
             tag.modifiedAt
         )

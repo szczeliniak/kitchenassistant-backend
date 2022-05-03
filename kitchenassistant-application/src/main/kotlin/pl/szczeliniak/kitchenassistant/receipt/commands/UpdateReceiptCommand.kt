@@ -1,10 +1,8 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
-import pl.szczeliniak.kitchenassistant.receipt.Category
-import pl.szczeliniak.kitchenassistant.receipt.CategoryDao
-import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
-import pl.szczeliniak.kitchenassistant.receipt.TagDao
+import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.UpdateReceiptDto
+import pl.szczeliniak.kitchenassistant.receipt.commands.factories.PhotoFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.TagFactory
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
@@ -13,7 +11,9 @@ class UpdateReceiptCommand(
     private val receiptDao: ReceiptDao,
     private val categoryDao: CategoryDao,
     private val tagDao: TagDao,
-    private val tagFactory: TagFactory
+    private val tagFactory: TagFactory,
+    private val photoFactory: PhotoFactory,
+    private val photoDao: PhotoDao
 ) {
 
     fun execute(id: Int, dto: UpdateReceiptDto): SuccessResponse {
@@ -29,10 +29,12 @@ class UpdateReceiptCommand(
                 receipt.getTagByName(it) ?: tagDao.findByName(it, receipt.userId) ?: tagDao.save(
                     tagFactory.create(it, receipt.userId)
                 )
-            }
+            },
+            dto.photos.map { receipt.getPhotoByFileId(it) ?: photoDao.save(photoFactory.create(it)) }
         )
 
         tagDao.saveAll(receipt.tags)
+        photoDao.saveAll(receipt.photos)
         return SuccessResponse(receiptDao.save(receipt).id)
     }
 

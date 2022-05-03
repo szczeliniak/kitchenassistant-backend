@@ -9,7 +9,6 @@ class PhotoMapper {
         return Photo(
             entity.id,
             entity.fileId,
-            entity.deleted,
             entity.createdAt,
             entity.modifiedAt
         )
@@ -19,7 +18,6 @@ class PhotoMapper {
         return PhotoEntity(
             file.id,
             file.fileId,
-            file.deleted,
             file.createdAt,
             file.modifiedAt
         )

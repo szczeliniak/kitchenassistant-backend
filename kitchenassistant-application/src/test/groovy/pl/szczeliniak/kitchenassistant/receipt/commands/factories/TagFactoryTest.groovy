@@ -24,7 +24,7 @@ class TagFactoryTest extends Specification {
     }
 
     private static Tag tag() {
-        return new Tag(0, "TAG_NAME", 4, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Tag(0, "TAG_NAME", 4, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

@@ -12,4 +12,8 @@ class PhotoDaoImpl(
         return photoMapper.toDomain(photoRepository.save(photoMapper.toEntity(photo)))
     }
 
+    override fun saveAll(photos: Set<Photo>) {
+        photos.forEach { photoRepository.save(photoMapper.toEntity(it)) }
+    }
+
 }
