@@ -29,7 +29,6 @@
         <dependency.spock>2.2-M1-groovy-3.0</dependency.spock>
         <dependency.groovy>3.0.10</dependency.groovy>
         <dependency.jjwt>0.9.1</dependency.jjwt>
-        <dependency.h2>2.1.210</dependency.h2>
         <dependency.postgresql>42.3.3</dependency.postgresql>
         <dependency.restassured>4.5.1</dependency.restassured>
         <dependency.lombok>1.18.20</dependency.lombok>
@@ -165,12 +164,6 @@
                 <groupId>commons-net</groupId>
                 <artifactId>commons-net</artifactId>
                 <version>${dependency.commons.net}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <scope>runtime</scope>
-                <version>${dependency.h2}</version>
             </dependency>
             <dependency>
                 <groupId>io.rest-assured</groupId>
