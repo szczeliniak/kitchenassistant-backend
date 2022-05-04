@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 @Primary
 @Order(1)
 @Configuration
-open class SecurityDevConfiguration(objectMapper: ObjectMapper) : SecurityConfiguration(objectMapper) {
+class SecurityDevConfiguration(objectMapper: ObjectMapper) : SecurityConfiguration(objectMapper) {
 
     override fun configureHttpForEnv(http: HttpSecurity) {
         http.authorizeRequests().anyRequest().permitAll()

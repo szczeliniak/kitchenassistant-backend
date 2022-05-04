@@ -8,11 +8,15 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
+import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItemDao
 
 internal class DeleteShoppingListItemCommandTest : JunitBaseClass() {
 
     @Mock
     private lateinit var shoppingListDao: ShoppingListDao
+
+    @Mock
+    private lateinit var shoppingListItemDao: ShoppingListItemDao
 
     @InjectMocks
     private lateinit var deleteShoppingListItemCommand: DeleteShoppingListItemCommand
@@ -23,12 +27,12 @@ internal class DeleteShoppingListItemCommandTest : JunitBaseClass() {
         val shoppingList = shoppingList(shoppingListItem)
 
         whenever(shoppingListDao.findById(1)).thenReturn(shoppingList)
-        whenever(shoppingListDao.save(shoppingList)).thenReturn(shoppingList)
+        whenever(shoppingListItemDao.save(shoppingListItem)).thenReturn(shoppingListItem)
 
         val result = deleteShoppingListItemCommand.execute(1, 2)
 
         assertThat(shoppingListItem.deleted).isTrue
-        assertThat(result).isEqualTo(SuccessResponse(2))
+        assertThat(result).isEqualTo(SuccessResponse(1))
     }
 
     private fun shoppingList(shoppingListItem: ShoppingListItem): ShoppingList {
