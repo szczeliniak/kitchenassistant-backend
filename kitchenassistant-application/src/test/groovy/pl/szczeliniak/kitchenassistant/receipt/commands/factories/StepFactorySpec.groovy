@@ -13,16 +13,13 @@ import java.time.LocalDateTime
 
 class StepFactorySpec extends Specification {
 
-    def photoFactory = Mock(PhotoFactory)
     def checkIfFileExistsQuery = Mock(CheckIfFileExistsQuery)
 
     @Subject
-    def stepFactory = new StepFactory(photoFactory, checkIfFileExistsQuery)
+    def stepFactory = new StepFactory(checkIfFileExistsQuery)
 
     def 'should create step'() {
         given:
-        def photo = photo()
-        photoFactory.create(99) >> photo
         checkIfFileExistsQuery.execute(99) >> checkIfFileExistsResponse()
 
         when:
@@ -31,15 +28,15 @@ class StepFactorySpec extends Specification {
         then:
         Assertions.assertThat(result).usingRecursiveComparison()
                 .ignoringFields("createdAt_", "modifiedAt_")
-                .isEqualTo(step(Set.of(photo)))
+                .isEqualTo(step())
     }
 
     private static NewStepDto newStepDto() {
         return new NewStepDto("NAME", "DESCRIPTION", 1, Set.of(99))
     }
 
-    private static Step step(Set<Photo> photos) {
-        return new Step(0, "NAME", "DESCRIPTION", 1, photos, false, LocalDateTime.now(), LocalDateTime.now())
+    private static Step step() {
+        return new Step(0, "NAME", "DESCRIPTION", 1, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Photo photo() {

@@ -67,7 +67,7 @@ class DeleteStepCommandSpec extends Specification {
     }
 
     private static Step step(boolean deleted) {
-        return new Step(3, '', '', 0, Collections.emptySet(), deleted, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(3, '', '', 0, deleted, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

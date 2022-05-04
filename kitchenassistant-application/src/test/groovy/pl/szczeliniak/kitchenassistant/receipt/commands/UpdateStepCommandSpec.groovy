@@ -45,7 +45,7 @@ class UpdateStepCommandSpec extends Specification {
     }
 
     private static Step step() {
-        return new Step(2, "", "", 0, Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(2, "", "", 0, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

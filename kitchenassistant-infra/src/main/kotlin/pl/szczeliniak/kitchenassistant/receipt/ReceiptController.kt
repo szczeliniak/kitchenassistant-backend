@@ -31,14 +31,11 @@ class ReceiptController(
     private val updateIngredientCommand: UpdateIngredientCommand,
     private val addStepCommand: AddStepCommand,
     private val deleteStepCommand: DeleteStepCommand,
-    private val assignStepPhotosCommand: AssignStepPhotosCommand,
-    private val divestStepPhotoCommand: DivestStepPhotoCommand,
     private val deleteCategoryCommand: DeleteCategoryCommand,
     private val updateCategoryCommand: UpdateCategoryCommand,
     private val updateStepCommand: UpdateStepCommand,
     private val getCategoriesQuery: GetCategoriesQuery,
     private val assignReceiptPhotosCommand: AssignReceiptPhotosCommand,
-    private val divestReceiptPhotoCommand: DivestReceiptPhotoCommand,
     private val getTagsQuery: GetTagsQuery
 ) {
 
@@ -91,24 +88,6 @@ class ReceiptController(
     @DeleteMapping("/{id}/steps/{stepId}")
     fun deleteStep(@PathVariable id: Int, @PathVariable stepId: Int): SuccessResponse {
         return deleteStepCommand.execute(id, stepId)
-    }
-
-    @PutMapping("/{id}/steps/{stepId}/photos")
-    fun assignStepPhotos(
-        @PathVariable id: Int,
-        @PathVariable stepId: Int,
-        @Valid @RequestBody request: AssignPhotosToReceiptStepDto
-    ): SuccessResponse {
-        return assignStepPhotosCommand.execute(id, stepId, request)
-    }
-
-    @DeleteMapping("/{id}/steps/{stepId}/photos/{photoId}")
-    fun divestReceiptPhotoStep(
-        @PathVariable id: Int,
-        @PathVariable stepId: Int,
-        @PathVariable photoId: Int
-    ): SuccessResponse {
-        return divestStepPhotoCommand.execute(id, stepId, photoId)
     }
 
     @PostMapping("{id}/ingredients")
@@ -164,11 +143,6 @@ class ReceiptController(
         @Valid @RequestBody request: AssignFilesAsReceiptPhotosDto
     ): SuccessResponse {
         return assignReceiptPhotosCommand.execute(id, request)
-    }
-
-    @DeleteMapping("/{id}/photos/{photoId}")
-    fun divestReceiptPhoto(@PathVariable id: Int, @PathVariable photoId: Int): SuccessResponse {
-        return divestReceiptPhotoCommand.execute(id, photoId)
     }
 
 }

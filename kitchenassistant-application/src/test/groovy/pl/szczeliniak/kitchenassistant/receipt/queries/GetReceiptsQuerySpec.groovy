@@ -47,7 +47,7 @@ class GetReceiptsQuerySpec extends Specification {
     }
 
     private static Step step() {
-        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Set.of(photo(1)), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Ingredient ingredient() {
@@ -64,7 +64,7 @@ class GetReceiptsQuerySpec extends Specification {
     }
 
     private static StepDto stepDto() {
-        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1, Collections.singletonList(photoDto(1)))
+        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1)
     }
 
     private static Photo photo(Integer fileId) {

@@ -6,7 +6,6 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 
 open class StepFactory(
-    private val photoFactory: PhotoFactory,
     private val checkIfFileExistsQuery: CheckIfFileExistsQuery
 ) {
 
@@ -17,8 +16,7 @@ open class StepFactory(
         return Step(
             name_ = dto.name,
             description_ = dto.description,
-            sequence_ = dto.sequence,
-            photos_ = dto.photos.map { photoFactory.create(it) }.toMutableSet()
+            sequence_ = dto.sequence
         )
     }
 
