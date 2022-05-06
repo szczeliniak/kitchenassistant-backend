@@ -15,17 +15,22 @@ internal class GetUserByIdQueryTest : JunitBaseClass() {
     @Mock
     private lateinit var userDao: UserDao
 
+    @Mock
+    private lateinit var userConverter: UserConverter
+
     @InjectMocks
     private lateinit var getUserByIdQuery: GetUserByIdQuery
 
     @Test
     fun shouldReturnUser() {
         val user = user()
+        val userDto = userDto()
         whenever(userDao.findById(1)).thenReturn(user)
+        whenever(userConverter.map(user)).thenReturn(userDto)
 
         val result = getUserByIdQuery.execute(1)
 
-        assertThat(result).isEqualTo(UserResponse(userDto()))
+        assertThat(result).isEqualTo(UserResponse(userDto))
     }
 
     @Test
@@ -38,11 +43,11 @@ internal class GetUserByIdQueryTest : JunitBaseClass() {
     }
 
     private fun userDto(): UserDto {
-        return UserDto(0, "EMAIL", "NAME")
+        return UserDto(0, "", "")
     }
 
     private fun user(): User {
-        return User(email_ = "EMAIL", password_ = "", name_ = "NAME")
+        return User(email_ = "", password_ = "", name_ = "")
     }
 
 }

@@ -10,15 +10,21 @@ import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
 import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import pl.szczeliniak.kitchenassistant.user.queries.GetUsersQuery
+import pl.szczeliniak.kitchenassistant.user.queries.UserConverter
 
 @Configuration
 class UserConfiguration {
 
     @Bean
-    fun getUserByIdQuery(userDao: UserDao): GetUserByIdQuery = GetUserByIdQuery(userDao)
+    fun userConverter(): UserConverter = UserConverter()
 
     @Bean
-    fun getUsersQuery(userDao: UserDao): GetUsersQuery = GetUsersQuery(userDao)
+    fun getUserByIdQuery(userDao: UserDao, userConverter: UserConverter): GetUserByIdQuery =
+        GetUserByIdQuery(userDao, userConverter)
+
+    @Bean
+    fun getUsersQuery(userDao: UserDao, userConverter: UserConverter): GetUsersQuery =
+        GetUsersQuery(userDao, userConverter)
 
     @Bean
     fun addUserCommand(userDao: UserDao, userFactory: UserFactory): AddUserCommand =

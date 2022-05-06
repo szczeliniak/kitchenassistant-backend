@@ -15,23 +15,30 @@ internal class GetUsersQueryTest : JunitBaseClass() {
     @Mock
     private lateinit var userDao: UserDao
 
+    @Mock
+    private lateinit var userConverter: UserConverter
+
     @InjectMocks
     private lateinit var getUsersQuery: GetUsersQuery
 
     @Test
     fun shouldReturnUsers() {
-        whenever(userDao.findAll(100, 25)).thenReturn(mutableSetOf(user()))
+        val user = user()
+        val userDto = userDto()
+        whenever(userDao.findAll(100, 25)).thenReturn(setOf(user))
         whenever(userDao.count()).thenReturn(280)
+        whenever(userConverter.map(user)).thenReturn(userDto)
+
         val result = getUsersQuery.execute(5, 25)
 
-        assertThat(result).isEqualTo(UsersResponse(mutableSetOf(userDto()), Pagination(5, 25, 12)))
+        assertThat(result).isEqualTo(UsersResponse(setOf(userDto), Pagination(5, 25, 12)))
     }
 
     private fun userDto(): UserDto {
-        return UserDto(id = 0, email = "EMAIL", name = "NAME")
+        return UserDto(id = 0, email = "", name = "")
     }
 
     private fun user(): User {
-        return User(email_ = "EMAIL", name_ = "NAME", password_ = "")
+        return User(email_ = "", name_ = "", password_ = "")
     }
 }
