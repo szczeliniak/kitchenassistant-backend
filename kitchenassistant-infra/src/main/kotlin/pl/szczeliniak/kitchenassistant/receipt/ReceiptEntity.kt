@@ -21,7 +21,7 @@ data class ReceiptEntity(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var ingredients: MutableSet<IngredientEntity>,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    @OrderBy("sequence")
+    @OrderBy("sequence ASC, id ASC")
     var steps: MutableSet<StepEntity>,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @OrderBy("id")
