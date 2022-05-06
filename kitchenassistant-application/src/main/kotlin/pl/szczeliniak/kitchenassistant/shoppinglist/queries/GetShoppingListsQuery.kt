@@ -4,10 +4,12 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
 import pl.szczeliniak.kitchenassistant.shared.dtos.PaginationUtils
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListCriteria
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
-import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListsResponse
 
-class GetShoppingListsQuery(private val shoppingListDao: ShoppingListDao) {
+class GetShoppingListsQuery(
+    private val shoppingListDao: ShoppingListDao,
+    private val shoppingListConverter: ShoppingListConverter
+) {
 
     fun execute(page: Long?, limit: Int?, criteria: ShoppingListCriteria): ShoppingListsResponse {
         val currentPage = PaginationUtils.calculatePageNumber(page)
@@ -16,7 +18,7 @@ class GetShoppingListsQuery(private val shoppingListDao: ShoppingListDao) {
         val totalNumberOfPages = PaginationUtils.calculateNumberOfPages(currentLimit, shoppingListDao.count(criteria))
         return ShoppingListsResponse(
             shoppingListDao.findAll(criteria, offset, currentLimit)
-                .map { ShoppingListDto.fromDomain(it) }.toSet(),
+                .map { shoppingListConverter.map(it) }.toSet(),
             Pagination(currentPage, currentLimit, totalNumberOfPages)
         )
     }

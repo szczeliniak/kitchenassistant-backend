@@ -19,7 +19,7 @@ class UpdateShoppingListItemCommand(
             shoppingList.items.firstOrNull { it.id == ingredientId }
                 ?: throw NotFoundException("Shopping list item not found")
 
-        item.update(dto.name, dto.quantity, dto.sequence)
+        item.update(dto.name, dto.quantity, dto.sequence, dto.receiptId)
 
         return SuccessResponse(shoppingListItemDao.save(item).id)
     }

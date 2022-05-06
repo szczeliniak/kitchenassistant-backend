@@ -2,17 +2,20 @@ package pl.szczeliniak.kitchenassistant.shoppinglist
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.*
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListFactory
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListItemFactory
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.GetShoppingListQuery
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.GetShoppingListsQuery
+import pl.szczeliniak.kitchenassistant.shoppinglist.queries.ShoppingListConverter
 
 @Configuration
 class ShoppingListConfiguration {
 
     @Bean
-    fun shoppingListItemFactory(): ShoppingListItemFactory = ShoppingListItemFactory()
+    fun shoppingListItemFactory(getReceiptQuery: GetReceiptQuery): ShoppingListItemFactory =
+        ShoppingListItemFactory(getReceiptQuery)
 
     @Bean
     fun shoppingListFactory(shoppingListItemFactory: ShoppingListItemFactory): ShoppingListFactory =
@@ -53,9 +56,14 @@ class ShoppingListConfiguration {
         MarkShoppingListAsArchivedCommand(shoppingListDao)
 
     @Bean
-    fun getShoppingListQuery(shoppingListDao: ShoppingListDao) = GetShoppingListQuery(shoppingListDao)
+    fun shoppingListConverter(getReceiptQuery: GetReceiptQuery) = ShoppingListConverter(getReceiptQuery)
 
     @Bean
-    fun getShoppingListsQuery(shoppingListDao: ShoppingListDao) = GetShoppingListsQuery(shoppingListDao)
+    fun getShoppingListQuery(shoppingListDao: ShoppingListDao, shoppingListConverter: ShoppingListConverter) =
+        GetShoppingListQuery(shoppingListDao, shoppingListConverter)
+
+    @Bean
+    fun getShoppingListsQuery(shoppingListDao: ShoppingListDao, shoppingListConverter: ShoppingListConverter) =
+        GetShoppingListsQuery(shoppingListDao, shoppingListConverter)
 
 }

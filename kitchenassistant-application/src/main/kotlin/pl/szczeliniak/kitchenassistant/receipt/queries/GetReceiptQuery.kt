@@ -5,9 +5,9 @@ import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 
-class GetReceiptQuery(private val receiptDao: ReceiptDao) {
+open class GetReceiptQuery(private val receiptDao: ReceiptDao) {
 
-    fun execute(id: Int): ReceiptResponse {
+    open fun execute(id: Int): ReceiptResponse {
         return ReceiptResponse(
             ReceiptDto.fromDomain(
                 receiptDao.findById(id) ?: throw NotFoundException("Receipt not found")

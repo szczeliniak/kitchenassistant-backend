@@ -8,17 +8,19 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListCriteria
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
-import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
-import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListItemDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListsResponse
 import java.time.LocalDate
 import java.time.Month
+import java.util.*
 
 internal class GetShoppingListsQueryTest : JunitBaseClass() {
 
     @Mock
     private lateinit var shoppingListDao: ShoppingListDao
+
+    @Mock
+    private lateinit var shoppingListConverter: ShoppingListConverter
 
     @InjectMocks
     private lateinit var getShoppingListsQuery: GetShoppingListsQuery
@@ -26,46 +28,27 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
     @Test
     fun shouldReturnShoppingLists() {
         val criteria = ShoppingListCriteria(1, false, "NAME", LocalDate.of(2020, Month.APRIL, 1))
-
-        whenever(shoppingListDao.findAll(criteria, 90, 10)).thenReturn(
-            mutableSetOf(shoppingList(shoppingListItem()))
-        )
+        val shoppingList = shoppingList()
+        val shoppingListDto = shoppingListDto()
+        whenever(shoppingListDao.findAll(criteria, 90, 10)).thenReturn(mutableSetOf(shoppingList))
         whenever(shoppingListDao.count(criteria)).thenReturn(2137L)
+        whenever(shoppingListConverter.map(shoppingList)).thenReturn(shoppingListDto)
 
         val result = getShoppingListsQuery.execute(10, 10, criteria)
 
-        assertThat(result).isEqualTo(
-            ShoppingListsResponse(
-                mutableSetOf(shoppingListDto(shoppingListItemDto())), Pagination(10, 10, 214)
-            )
-        )
+        assertThat(result).isEqualTo(ShoppingListsResponse(mutableSetOf(shoppingListDto), Pagination(10, 10, 214)))
     }
 
-    private fun shoppingListItemDto(): ShoppingListItemDto {
-        return ShoppingListItemDto(2, "NAME", "QUANTITY", 0, false)
+    private fun shoppingListDto(): ShoppingListDto {
+        return ShoppingListDto(0, "", "", null, true, Collections.emptySet())
     }
 
-    private fun shoppingListItem(): ShoppingListItem {
-        return ShoppingListItem(
-            2,
-            "NAME",
-            "QUANTITY",
-            0
-        )
-    }
-
-    private fun shoppingListDto(shoppingListItemDto: ShoppingListItemDto): ShoppingListDto {
-        return ShoppingListDto(0, "NAME", "DESCRIPTION", null, false, mutableSetOf(shoppingListItemDto))
-    }
-
-    private fun shoppingList(
-        shoppingListItem: ShoppingListItem
-    ): ShoppingList {
+    private fun shoppingList(): ShoppingList {
         return ShoppingList(
             userId_ = 1,
-            name_ = "NAME",
-            description_ = "DESCRIPTION",
-            items_ = mutableSetOf(shoppingListItem)
+            name_ = "",
+            description_ = "",
+            items_ = Collections.emptySet()
         )
     }
 

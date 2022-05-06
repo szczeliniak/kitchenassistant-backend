@@ -1,6 +1,5 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto
 
-import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import java.time.LocalDate
 
 data class ShoppingListDto(
@@ -10,19 +9,4 @@ data class ShoppingListDto(
     val date: LocalDate?,
     val archived: Boolean,
     val items: Set<ShoppingListItemDto>
-) {
-
-    companion object {
-        fun fromDomain(shoppingList: ShoppingList): ShoppingListDto {
-            return ShoppingListDto(
-                shoppingList.id,
-                shoppingList.name,
-                shoppingList.description,
-                shoppingList.date,
-                shoppingList.archived,
-                shoppingList.items.map { ShoppingListItemDto.fromDomain(it) }.toSet()
-            )
-        }
-    }
-
-}
+)

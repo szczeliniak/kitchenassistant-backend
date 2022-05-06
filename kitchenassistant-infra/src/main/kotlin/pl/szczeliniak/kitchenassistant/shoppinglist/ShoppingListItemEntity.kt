@@ -18,6 +18,7 @@ data class ShoppingListItemEntity(
     var name: String,
     var quantity: String,
     var sequence: Int?,
+    var receiptId: Int?,
     var deleted: Boolean,
     var completed: Boolean,
     var createdAt: LocalDateTime,

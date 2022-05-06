@@ -8,6 +8,7 @@ data class ShoppingListItem(
     private var name_: String,
     private var quantity_: String,
     private var sequence_: Int? = null,
+    private var receiptId_: Int? = null,
     private var deleted_: Boolean = false,
     private var completed_: Boolean = false,
     private val createdAt_: LocalDateTime = LocalDateTime.now(),
@@ -17,6 +18,7 @@ data class ShoppingListItem(
     val name: String get() = name_
     val quantity: String get() = quantity_
     val sequence: Int? get() = sequence_
+    val receiptId: Int? get() = receiptId_
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
     val completed: Boolean get() = completed_
@@ -35,10 +37,11 @@ data class ShoppingListItem(
         this.modifiedAt_ = LocalDateTime.now()
     }
 
-    fun update(name: String, quantity: String, sequence: Int?) {
+    fun update(name: String, quantity: String, sequence: Int?, receiptId: Int?) {
         this.name_ = name
         this.quantity_ = quantity
         this.sequence_ = sequence
+        this.receiptId_ = receiptId
         this.modifiedAt_ = LocalDateTime.now()
     }
 

@@ -15,16 +15,22 @@ internal class GetShoppingListQueryTest : JunitBaseClass() {
     @Mock
     private lateinit var shoppingListDao: ShoppingListDao
 
+    @Mock
+    private lateinit var shoppingListConverter: ShoppingListConverter
+
     @InjectMocks
     private lateinit var getShoppingListQuery: GetShoppingListQuery
 
     @Test
     fun shouldReturnShoppingList() {
-        whenever(shoppingListDao.findById(1)).thenReturn(shoppingList())
+        val shoppingList = shoppingList()
+        val shoppingListDto = shoppingListDto()
+        whenever(shoppingListDao.findById(1)).thenReturn(shoppingList)
+        whenever(shoppingListConverter.map(shoppingList)).thenReturn(shoppingListDto)
 
         val result = getShoppingListQuery.execute(1)
 
-        assertThat(result).isEqualTo(ShoppingListResponse(shoppingListDto()))
+        assertThat(result).isEqualTo(ShoppingListResponse(shoppingListDto))
     }
 
     @Test
