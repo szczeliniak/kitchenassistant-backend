@@ -1,7 +1,10 @@
 package pl.szczeliniak.kitchenassistant.receipt.queries
 
-import pl.szczeliniak.kitchenassistant.receipt.*
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.*
+
+import pl.szczeliniak.kitchenassistant.receipt.Receipt
+import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDto
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import spock.lang.Specification
 import spock.lang.Subject
@@ -11,19 +14,23 @@ import java.time.LocalDateTime
 class GetReceiptQuerySpec extends Specification {
 
     private ReceiptDao receiptDao = Mock(ReceiptDao)
+    private receiptConverter = Mock(ReceiptConverter)
 
     @Subject
-    private GetReceiptQuery getReceiptQuery = new GetReceiptQuery(receiptDao)
+    private GetReceiptQuery getReceiptQuery = new GetReceiptQuery(receiptDao, receiptConverter)
 
     def "should return receipt"() {
         given:
-        receiptDao.findById(1) >> receipt()
+        def receipt = receipt()
+        def receiptDto = receiptDto()
+        receiptDao.findById(1) >> receipt
+        receiptConverter.map(receipt) >> receiptDto
 
         when:
         def result = getReceiptQuery.execute(1)
 
         then:
-        result == new ReceiptResponse(receiptDto())
+        result == new ReceiptResponse(receiptDto)
     }
 
     def "should throw exception receipt not found"() {
@@ -40,51 +47,23 @@ class GetReceiptQuerySpec extends Specification {
 
     private static Receipt receipt() {
         return new Receipt(1,
-                4,
-                'RECEIPT_NAME',
-                'RECEIPT_DESCRIPTION',
-                'RECEIPT_AUTHOR',
-                'RECEIPT_SOURCE',
+                0,
+                '',
+                '',
+                '',
+                '',
                 null,
-                Set.of(ingredient()),
-                Set.of(step()),
-                Set.of(photo(1)),
-                Set.of(tag("TAG_NAME")),
+                Collections.emptySet(),
+                Collections.emptySet(),
+                Collections.emptySet(),
+                Collections.emptySet(),
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now())
     }
 
-    private static Step step() {
-        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, false, LocalDateTime.now(), LocalDateTime.now())
-    }
-
-    private static Ingredient ingredient() {
-        return new Ingredient(3, "INGREDIENT_NAME", "INGREDIENT_QUANTITY", false, LocalDateTime.now(), LocalDateTime.now())
-    }
-
     private static ReceiptDto receiptDto() {
-        return new ReceiptDto(1, 'RECEIPT_NAME', 'RECEIPT_DESCRIPTION', "RECEIPT_AUTHOR", "RECEIPT_SOURCE", null, Set.of(ingredientDto()), Set.of(stepDto()), Set.of(photoDto(1)), Set.of("TAG_NAME"))
-    }
-
-    private static IngredientDto ingredientDto() {
-        return new IngredientDto(3, "INGREDIENT_NAME", "INGREDIENT_QUANTITY")
-    }
-
-    private static StepDto stepDto() {
-        return new StepDto(4, "STEP_NAME", "STEP_DESCRIPTION", 1)
-    }
-
-    private static Photo photo(Integer fileId) {
-        return new Photo(99, fileId, LocalDateTime.now(), LocalDateTime.now())
-    }
-
-    private static Tag tag(String name) {
-        return new Tag(98, name, 4, LocalDateTime.now(), LocalDateTime.now())
-    }
-
-    private static PhotoDto photoDto(Integer fileId) {
-        return new PhotoDto(99, fileId)
+        return new ReceiptDto(1, '', '', "", "", null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet())
     }
 
 }

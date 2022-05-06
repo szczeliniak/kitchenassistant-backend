@@ -5,20 +5,22 @@ import org.springframework.context.annotation.Configuration
 import pl.szczeliniak.kitchenassistant.file.queries.CheckIfFileExistsQuery
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.*
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetCategoriesQuery
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetTagsQuery
+import pl.szczeliniak.kitchenassistant.receipt.queries.*
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 
 @Configuration
 class ReceiptConfiguration {
 
     @Bean
-    fun getReceiptQuery(receiptDao: ReceiptDao): GetReceiptQuery = GetReceiptQuery(receiptDao)
+    fun receiptConverter(): ReceiptConverter = ReceiptConverter()
 
     @Bean
-    fun getReceiptsQuery(receiptDao: ReceiptDao): GetReceiptsQuery = GetReceiptsQuery(receiptDao)
+    fun getReceiptQuery(receiptDao: ReceiptDao, receiptConverter: ReceiptConverter): GetReceiptQuery =
+        GetReceiptQuery(receiptDao, receiptConverter)
+
+    @Bean
+    fun getReceiptsQuery(receiptDao: ReceiptDao, receiptConverter: ReceiptConverter): GetReceiptsQuery =
+        GetReceiptsQuery(receiptDao, receiptConverter)
 
     @Bean
     fun addReceiptCommand(receiptDao: ReceiptDao, receiptFactory: ReceiptFactory): AddReceiptCommand =
@@ -101,7 +103,8 @@ class ReceiptConfiguration {
         AssignReceiptPhotosCommand(receiptDao, checkIfFileExistsQuery, photoFactory, photoDao)
 
     @Bean
-    fun getCategoriesQuery(categoryDao: CategoryDao): GetCategoriesQuery = GetCategoriesQuery(categoryDao)
+    fun getCategoriesQuery(categoryDao: CategoryDao, receiptConverter: ReceiptConverter): GetCategoriesQuery =
+        GetCategoriesQuery(categoryDao, receiptConverter)
 
     @Bean
     fun getTagsQuery(tagsDao: TagDao): GetTagsQuery = GetTagsQuery(tagsDao)
