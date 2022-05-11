@@ -16,6 +16,7 @@ data class ReceiptEntity(
     var description: String?,
     var author: String?,
     var source: String?,
+    var favorite: Boolean,
     @ManyToOne(fetch = FetchType.LAZY)
     var category: CategoryEntity?,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)

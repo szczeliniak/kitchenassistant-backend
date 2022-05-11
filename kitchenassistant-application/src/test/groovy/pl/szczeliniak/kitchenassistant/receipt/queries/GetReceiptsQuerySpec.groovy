@@ -44,6 +44,7 @@ class GetReceiptsQuerySpec extends Specification {
                 '',
                 '',
                 '',
+                false,
                 null,
                 Collections.emptySet(),
                 Collections.emptySet(),
@@ -56,7 +57,7 @@ class GetReceiptsQuerySpec extends Specification {
 
     private static ReceiptDto receiptDto() {
         return new ReceiptDto(1, '', '', "", "",
-                null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet())
+                null, null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet())
     }
 
 }

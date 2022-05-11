@@ -110,6 +110,9 @@ class ReceiptConfiguration {
     fun getTagsQuery(tagsDao: TagDao): GetTagsQuery = GetTagsQuery(tagsDao)
 
     @Bean
+    fun markReceiptAsFavorite(receiptDao: ReceiptDao) = MarkReceiptAsFavoriteCommand(receiptDao)
+
+    @Bean
     fun receiptFactory(
         getUserByIdQuery: GetUserByIdQuery,
         ingredientFactory: IngredientFactory,

@@ -62,7 +62,7 @@ class AssignReceiptPhotosCommandSpec extends Specification {
     }
 
     private static Receipt receipt(Set<Photo> photos) {
-        return new Receipt(1, 0, "", "", "", "",
+        return new Receipt(1, 0, "", "", "", "", false,
                 new Category(0, "", 0, false, LocalDateTime.now(), LocalDateTime.now()),
                 Collections.emptySet(), Collections.emptySet(), photos, Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }

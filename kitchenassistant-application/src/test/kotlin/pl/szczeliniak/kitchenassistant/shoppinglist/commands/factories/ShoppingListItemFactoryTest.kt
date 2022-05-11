@@ -40,6 +40,7 @@ internal class ShoppingListItemFactoryTest : JunitBaseClass() {
                 null,
                 null,
                 null,
+                null,
                 Collections.emptySet(),
                 Collections.emptySet(),
                 Collections.emptySet(),

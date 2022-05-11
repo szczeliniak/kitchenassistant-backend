@@ -35,7 +35,7 @@ class AddReceiptCommandSpec extends Specification {
     }
 
     private static Receipt receipt() {
-        return new Receipt(1, 2, "", "", "", "", null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 2, "", "", "", "", false, null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
 }

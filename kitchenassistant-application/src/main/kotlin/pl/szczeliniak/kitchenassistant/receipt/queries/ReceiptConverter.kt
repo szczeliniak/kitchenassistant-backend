@@ -12,6 +12,7 @@ open class ReceiptConverter {
             receipt.description,
             receipt.author,
             receipt.source,
+            receipt.favorite,
             receipt.category?.let { map(it) },
             receipt.ingredients.map { map(it) }.toSet(),
             receipt.steps.map { map(it) }.toSet(),

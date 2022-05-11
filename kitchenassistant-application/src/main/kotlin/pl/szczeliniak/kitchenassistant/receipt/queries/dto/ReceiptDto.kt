@@ -6,6 +6,7 @@ data class ReceiptDto(
     val description: String?,
     val author: String?,
     val source: String?,
+    val favorite: Boolean?,
     val category: CategoryDto?,
     val ingredients: Set<IngredientDto>,
     val steps: Set<StepDto>,

@@ -78,7 +78,7 @@ class ReceiptFactorySpec extends Specification {
 
     private static Receipt receipt(Category category, Set<Tag> tags) {
         return new Receipt(0, 4, "RECEIPT_NAME", "RECEIPT_DESCRIPTION", "RECEIPT_AUTHOR",
-                "RECEIPT_SOURCE", category, new HashSet(Arrays.asList(ingredient())), new HashSet(Arrays.asList(step())), new HashSet(Arrays.asList(photo())), tags, false, LocalDateTime.now(), LocalDateTime.now())
+                "RECEIPT_SOURCE", false, category, new HashSet(Arrays.asList(ingredient())), new HashSet(Arrays.asList(step())), new HashSet(Arrays.asList(photo())), tags, false, LocalDateTime.now(), LocalDateTime.now())
     }
 
     private static Photo photo() {

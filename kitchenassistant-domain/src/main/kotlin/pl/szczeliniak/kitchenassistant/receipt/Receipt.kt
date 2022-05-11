@@ -12,6 +12,7 @@ class Receipt(
     private var description_: String?,
     private var author_: String?,
     private var source_: String?,
+    private var favorite_: Boolean = false,
     private var category_: Category?,
     private var ingredients_: MutableSet<Ingredient> = mutableSetOf(),
     private var steps_: MutableSet<Step> = mutableSetOf(),
@@ -32,6 +33,7 @@ class Receipt(
     val steps: Set<Step> get() = Collections.unmodifiableSet(steps_)
     val photos: Set<Photo> get() = Collections.unmodifiableSet(photos_)
     val tags: Set<Tag> get() = Collections.unmodifiableSet(tags_)
+    val favorite: Boolean get() = favorite_
     val createdAt: LocalDateTime get() = createdAt_
     val modifiedAt: LocalDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_
@@ -76,6 +78,11 @@ class Receipt(
             throw NotAllowedOperationException("Receipt is already marked as deleted!")
         }
         deleted_ = true
+        this.modifiedAt_ = LocalDateTime.now()
+    }
+
+    fun markAsFavorite(isFavorite: Boolean) {
+        favorite_ = isFavorite
         this.modifiedAt_ = LocalDateTime.now()
     }
 

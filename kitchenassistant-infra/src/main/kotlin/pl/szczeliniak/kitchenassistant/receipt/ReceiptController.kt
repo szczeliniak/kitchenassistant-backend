@@ -36,7 +36,8 @@ class ReceiptController(
     private val updateStepCommand: UpdateStepCommand,
     private val getCategoriesQuery: GetCategoriesQuery,
     private val assignReceiptPhotosCommand: AssignReceiptPhotosCommand,
-    private val getTagsQuery: GetTagsQuery
+    private val getTagsQuery: GetTagsQuery,
+    private val markReceiptAsFavoriteCommand: MarkReceiptAsFavoriteCommand
 ) {
 
     @GetMapping("/{id}")
@@ -143,6 +144,11 @@ class ReceiptController(
         @Valid @RequestBody request: AssignFilesAsReceiptPhotosDto
     ): SuccessResponse {
         return assignReceiptPhotosCommand.execute(id, request)
+    }
+
+    @PutMapping("/{id}/favorite/{isFavorite}")
+    fun markReceiptAsFavorite(@PathVariable id: Int, @PathVariable isFavorite: Boolean): SuccessResponse {
+        return markReceiptAsFavoriteCommand.execute(id, isFavorite)
     }
 
 }

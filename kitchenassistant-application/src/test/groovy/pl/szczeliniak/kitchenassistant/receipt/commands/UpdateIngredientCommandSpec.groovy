@@ -39,7 +39,7 @@ class UpdateIngredientCommandSpec extends Specification {
     }
 
     private static Receipt receipt(Set<Ingredient> ingredients) {
-        return new Receipt(1, 1, "", "", "", "", null, ingredients,
+        return new Receipt(1, 1, "", "", "", "", false, null, ingredients,
                 Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
     }
 
