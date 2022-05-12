@@ -11,7 +11,7 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
 
     fun findAll(criteria: SearchCriteria, offset: Int, limit: Int): MutableSet<ReceiptEntity> {
         val query =
-            "SELECT DISTINCT r FROM ReceiptEntity r " + prepareJoin(criteria) + "WHERE r.deleted = false" + prepareCriteria(
+            "SELECT DISTINCT r FROM ReceiptEntity r " + prepareJoin(criteria) + "WHERE r.deleted = false ORDER BY r.favorite DESC NULLS LAST, r.id ASC" + prepareCriteria(
                 criteria
             )
         val typedQuery = applyParameters(criteria, entityManager.createQuery(query, ReceiptEntity::class.java))
