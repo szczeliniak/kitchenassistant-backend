@@ -1,11 +1,11 @@
 package pl.szczeliniak.kitchenassistant
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtParser
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.MalformedJwtException
 import org.apache.logging.log4j.util.Strings
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -36,43 +36,46 @@ class SecurityProdConfiguration(
         )
     }
 
-    private class JwtAuthorizationFilter(
+    inner class JwtAuthorizationFilter(
         private val tokenProvider: TokenProvider,
         private val tokenParser: TokenParser
     ) : OncePerRequestFilter() {
-
         override fun doFilterInternal(
             request: HttpServletRequest,
             response: HttpServletResponse,
             filterChain: FilterChain
         ) {
-            tokenProvider.provide()?.let { token ->
-                tokenParser.parse(token)?.let { loggedUser ->
-                    SecurityContextHolder.getContext().authentication = KitchenAssistantAuthentication(loggedUser)
+            try {
+                tokenProvider.provide()?.let { token ->
+                    SecurityContextHolder.getContext().authentication =
+                        KitchenAssistantAuthentication(tokenParser.parse(token))
+                } ?: kotlin.run {
+                    throw TokenException("Token is missing")
                 }
+            } catch (e: Exception) {
+                writeException(response, e.message)
+                return
             }
             filterChain.doFilter(request, response)
         }
-
     }
 
-    private class TokenParser(private val jwtParser: JwtParser, private val getUserByIdQuery: GetUserByIdQuery) {
-
-        private val logger: Logger = LoggerFactory.getLogger(TokenParser::class.java)
-
-        fun parse(token: String): LoggedUser? {
+    class TokenParser(private val jwtParser: JwtParser, private val getUserByIdQuery: GetUserByIdQuery) {
+        fun parse(token: String): LoggedUser {
             try {
                 val user = getUserByIdQuery.execute(jwtParser.parseClaimsJws(token).body.subject.toInt()).user
                 return LoggedUser(token, user.id)
+            } catch (e: ExpiredJwtException) {
+                throw TokenException("Token is expired")
+            } catch (e: MalformedJwtException) {
+                throw TokenException("Token is malformed")
             } catch (e: Exception) {
-                logger.error(e.message, e)
+                throw TokenException("Unknown token error")
             }
-            return null
         }
-
     }
 
-    private class TokenProvider(private val request: HttpServletRequest) {
+    class TokenProvider(private val request: HttpServletRequest) {
 
         companion object {
             private const val HEADER_AUTHORIZATION = "Authorization"
@@ -91,5 +94,7 @@ class SecurityProdConfiguration(
     private fun jwtParser(): JwtParser {
         return Jwts.parser().setSigningKey(secret)
     }
+
+    private class TokenException(message: String) : Exception(message)
 
 }

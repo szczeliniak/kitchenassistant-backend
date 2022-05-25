@@ -30,9 +30,7 @@ abstract class SecurityConfiguration(private val objectMapper: ObjectMapper) : W
 
     private fun authenticationEntryPoint(): AuthenticationEntryPoint {
         return AuthenticationEntryPoint { _: HttpServletRequest?, httpServletResponse: HttpServletResponse, e: AuthenticationException ->
-            httpServletResponse.status = HttpStatus.FORBIDDEN.value()
-            httpServletResponse.contentType = MediaType.APPLICATION_JSON_VALUE
-            httpServletResponse.outputStream.write(objectMapper.writeValueAsBytes(ExceptionResponse(e.message)))
+            writeException(httpServletResponse, e.message)
         }
     }
 
@@ -46,6 +44,12 @@ abstract class SecurityConfiguration(private val objectMapper: ObjectMapper) : W
             "/webjars/**",
             "/"
         )
+    }
+
+    protected fun writeException(response: HttpServletResponse, message: String?) {
+        response.status = HttpStatus.FORBIDDEN.value()
+        response.contentType = MediaType.APPLICATION_JSON_VALUE
+        response.outputStream.write(objectMapper.writeValueAsBytes(ExceptionResponse(message)))
     }
 
 }
