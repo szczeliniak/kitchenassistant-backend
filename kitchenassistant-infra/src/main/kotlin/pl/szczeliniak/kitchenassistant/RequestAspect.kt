@@ -6,18 +6,22 @@ import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Pointcut
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.stereotype.Component
+import pl.szczeliniak.kitchenassistant.shared.RequestContext
+import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Aspect
 @Component
-class LoggingAspect(
+class RequestAspect(
     private val httpServletRequest: HttpServletRequest,
-    private val httpServletResponse: HttpServletResponse
+    private val httpServletResponse: HttpServletResponse,
+    private val requestContext: RequestContext
 ) {
 
-    private val logger: Logger = LoggerFactory.getLogger(LoggingAspect::class.java)
+    private val logger: Logger = LoggerFactory.getLogger(RequestAspect::class.java)
 
     @Pointcut(
         "@annotation(org.springframework.web.bind.annotation.RequestMapping) || " +
@@ -32,9 +36,14 @@ class LoggingAspect(
     @Around("anyRequest()")
     @Throws(Throwable::class)
     fun logAnyRequest(joinPoint: ProceedingJoinPoint): Any? {
+        requestContext.requestId(UUID.randomUUID())
+        MDC.put("requestId", requestContext.requestId().toString())
         logRequest(joinPoint.args)
+
         val proceed = joinPoint.proceed()
+
         logResponse(proceed)
+        MDC.clear()
         return proceed
     }
 
@@ -44,6 +53,7 @@ class LoggingAspect(
         logger.info("Request method: " + httpServletRequest.method)
         logger.info("Request headers: " + getRequestHeaders())
         logger.info("Request arguments: " + listOf(*args))
+        logger.info("Request ID: " + requestContext.requestId())
         logger.info("--------------------------- REQUEST FINISH----------------------------")
     }
 
@@ -60,6 +70,7 @@ class LoggingAspect(
         logger.info("Request method: " + httpServletRequest.method)
         logger.info("Response headers: " + getResponseHeaders())
         logger.info("Response argument: $proceed")
+        logger.info("Request ID: " + requestContext.requestId())
         logger.info("----------------------- RESPONSE FINISH -----------------------")
     }
 

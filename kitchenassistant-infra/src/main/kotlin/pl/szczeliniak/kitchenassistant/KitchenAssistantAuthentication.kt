@@ -4,12 +4,12 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import java.util.*
 
-class KitchenAssistantAuthentication(private val loggedUser: LoggedUser) : Authentication {
+class KitchenAssistantAuthentication(private val token: String) : Authentication {
 
     private var authenticated = true
 
     override fun getName(): String {
-        return loggedUser.token
+        return token
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {

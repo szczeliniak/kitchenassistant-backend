@@ -52,7 +52,7 @@ class SwaggerConfiguration(
     }
 
     private fun apiKey(): ApiKey {
-        return ApiKey("JWT", "Authorization", "header")
+        return ApiKey("JWT", "X-Token", "header")
     }
 
     private fun securityContext(): SecurityContext? {
