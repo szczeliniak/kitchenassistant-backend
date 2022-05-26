@@ -21,11 +21,14 @@ class TokenFactoryImpl(
 
     }
 
-    override fun create(userId: Int): String {
-        return jwtBuilder().setSubject(userId.toString())
-            .setIssuedAt(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)))
-            .setExpiration(Date.from(LocalDateTime.now().plusDays(TOKEN_VALIDITY_DAYS).toInstant(ZoneOffset.UTC)))
-            .compact()
+    override fun create(userId: Int): TokenFactory.Token {
+        val expiration = LocalDateTime.now().plusDays(TOKEN_VALIDITY_DAYS)
+        return TokenFactory.Token(
+            jwtBuilder().setSubject(userId.toString())
+                .setIssuedAt(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)))
+                .setExpiration(Date.from(expiration.toInstant(ZoneOffset.UTC)))
+                .compact(), expiration
+        )
     }
 
     private fun jwtBuilder(): JwtBuilder {

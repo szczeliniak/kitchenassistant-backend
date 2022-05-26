@@ -21,7 +21,8 @@ class RegisterCommand(
         val user = userFactory.create(dto)
         userDao.save(user)
 
-        return LoginResponse(tokenFactory.create(user.id), user.id)
+        val token = tokenFactory.create(user.id)
+        return LoginResponse(token.token, user.id, token.validTo)
     }
 
 }

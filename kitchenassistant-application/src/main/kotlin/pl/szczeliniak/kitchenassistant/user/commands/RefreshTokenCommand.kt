@@ -16,7 +16,8 @@ class RefreshTokenCommand(
     fun execute(): RefreshTokenResponse {
         val user = userDao.findById(requestContext.userId() ?: throw MissingUserIdException())
             ?: throw NotFoundException("User not found")
-        return RefreshTokenResponse(tokenFactory.create(user.id))
+        val token = tokenFactory.create(user.id)
+        return RefreshTokenResponse(token.token, token.validTo)
     }
 
 }

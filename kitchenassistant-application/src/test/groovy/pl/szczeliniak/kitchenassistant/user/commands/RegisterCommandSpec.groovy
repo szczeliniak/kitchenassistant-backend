@@ -10,6 +10,7 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 import java.time.LocalDateTime
+import java.time.Month
 
 class RegisterCommandSpec extends Specification {
 
@@ -24,13 +25,13 @@ class RegisterCommandSpec extends Specification {
         given:
         def user = user()
         userFactory.create(registerDto()) >> user
-        tokenFactory.create(2137) >> "TOKEN"
+        tokenFactory.create(2137) >> token()
 
         when:
         def result = registerCommand.execute(registerDto())
 
         then:
-        result == new LoginResponse("TOKEN", 2137)
+        result == new LoginResponse("TOKEN", 2137, LocalDateTime.of(2022, Month.JANUARY, 1, 0, 0))
         1 * userDao.save(user)
     }
 
@@ -38,7 +39,11 @@ class RegisterCommandSpec extends Specification {
         return new RegisterDto("", "", "", "")
     }
 
-    User user() {
+    private static TokenFactory.Token token() {
+        return new TokenFactory.Token("TOKEN", LocalDateTime.of(2022, Month.JANUARY, 1, 0, 0))
+    }
+
+    private static User user() {
         return new User(2137, "", "", "", LocalDateTime.now(), LocalDateTime.now())
     }
 }

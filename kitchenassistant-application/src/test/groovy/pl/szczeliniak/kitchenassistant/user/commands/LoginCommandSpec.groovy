@@ -14,6 +14,7 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 import java.time.LocalDateTime
+import java.time.Month
 
 class LoginCommandSpec extends Specification {
 
@@ -27,13 +28,13 @@ class LoginCommandSpec extends Specification {
         given:
         userDao.findByEmail("MAIL") >> user()
         passwordMatcher.matches("ENC_PASS", "PASS") >> true
-        tokenFactory.create(1) >> "TOKEN"
+        tokenFactory.create(1) >> token()
 
         when:
         def result = loginCommand.execute(dto())
 
         then:
-        result == new LoginResponse("TOKEN", 1)
+        result == new LoginResponse("TOKEN", 1, LocalDateTime.of(2022, Month.JANUARY, 1, 0, 0))
     }
 
     def 'should throw exception when user not found'() {
@@ -67,6 +68,10 @@ class LoginCommandSpec extends Specification {
 
     private static User user() {
         return new User(1, "EMAIL", "ENC_PASS", "NAME", LocalDateTime.now(), LocalDateTime.now())
+    }
+
+    private static TokenFactory.Token token() {
+        return new TokenFactory.Token("TOKEN", LocalDateTime.of(2022, Month.JANUARY, 1, 0, 0))
     }
 
 }

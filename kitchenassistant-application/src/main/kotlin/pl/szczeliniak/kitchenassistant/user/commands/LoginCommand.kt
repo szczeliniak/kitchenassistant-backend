@@ -16,7 +16,8 @@ class LoginCommand(
     fun execute(dto: LoginDto): LoginResponse {
         val user = userDao.findByEmail(dto.email) ?: throw NotFoundException("User not found")
         user.validatePassword(dto.password, passwordMatcher)
-        return LoginResponse(tokenFactory.create(user.id), user.id)
+        val token = tokenFactory.create(user.id)
+        return LoginResponse(token.token, user.id, token.validTo)
     }
 
 }
