@@ -3,8 +3,10 @@ package pl.szczeliniak.kitchenassistant.user
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.user.commands.AddUserCommand
 import pl.szczeliniak.kitchenassistant.user.commands.LoginCommand
+import pl.szczeliniak.kitchenassistant.user.commands.RefreshTokenCommand
 import pl.szczeliniak.kitchenassistant.user.commands.RegisterCommand
 import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
 import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory
@@ -43,6 +45,14 @@ class UserConfiguration {
     @Bean
     fun registerCommand(addUserCommand: AddUserCommand, tokenFactory: TokenFactory): RegisterCommand =
         RegisterCommand(addUserCommand, tokenFactory)
+
+    @Bean
+    fun refreshTokenCommand(
+        tokenFactory: TokenFactory,
+        requestContext: RequestContext,
+        getUserByIdQuery: GetUserByIdQuery
+    ): RefreshTokenCommand =
+        RefreshTokenCommand(tokenFactory, requestContext, getUserByIdQuery)
 
     @Bean
     fun passwordEncoder(): org.springframework.security.crypto.password.PasswordEncoder {

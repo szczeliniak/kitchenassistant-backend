@@ -4,11 +4,9 @@ import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.user.commands.AddUserCommand
 import pl.szczeliniak.kitchenassistant.user.commands.LoginCommand
+import pl.szczeliniak.kitchenassistant.user.commands.RefreshTokenCommand
 import pl.szczeliniak.kitchenassistant.user.commands.RegisterCommand
-import pl.szczeliniak.kitchenassistant.user.commands.dto.AddUserDto
-import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginDto
-import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
-import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterDto
+import pl.szczeliniak.kitchenassistant.user.commands.dto.*
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import pl.szczeliniak.kitchenassistant.user.queries.GetUsersQuery
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
@@ -22,7 +20,8 @@ class UserController(
     private val getUsersQuery: GetUsersQuery,
     private val addUserCommand: AddUserCommand,
     private val loginCommand: LoginCommand,
-    private val registerCommand: RegisterCommand
+    private val registerCommand: RegisterCommand,
+    private val refreshTokenCommand: RefreshTokenCommand,
 ) {
 
     @GetMapping("/{id}")
@@ -51,6 +50,11 @@ class UserController(
     @PostMapping("/register")
     fun register(@Valid @RequestBody dto: RegisterDto): LoginResponse {
         return registerCommand.execute(dto)
+    }
+
+    @PostMapping("/refresh")
+    fun refresh(): RefreshTokenResponse {
+        return refreshTokenCommand.execute()
     }
 
 }
