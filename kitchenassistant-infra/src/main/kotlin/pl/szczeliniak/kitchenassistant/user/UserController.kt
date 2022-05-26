@@ -7,6 +7,7 @@ import pl.szczeliniak.kitchenassistant.user.commands.LoginCommand
 import pl.szczeliniak.kitchenassistant.user.commands.RefreshTokenCommand
 import pl.szczeliniak.kitchenassistant.user.commands.RegisterCommand
 import pl.szczeliniak.kitchenassistant.user.commands.dto.*
+import pl.szczeliniak.kitchenassistant.user.queries.GetLoggedUserQuery
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import pl.szczeliniak.kitchenassistant.user.queries.GetUsersQuery
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
@@ -17,6 +18,7 @@ import javax.validation.Valid
 @RequestMapping("/users")
 class UserController(
     private val getUserByIdQuery: GetUserByIdQuery,
+    private val getLoggedUserQuery: GetLoggedUserQuery,
     private val getUsersQuery: GetUsersQuery,
     private val addUserCommand: AddUserCommand,
     private val loginCommand: LoginCommand,
@@ -55,6 +57,11 @@ class UserController(
     @PostMapping("/refresh")
     fun refresh(): RefreshTokenResponse {
         return refreshTokenCommand.execute()
+    }
+
+    @GetMapping("/me")
+    fun getLoggedUser(): UserResponse {
+        return getLoggedUserQuery.execute()
     }
 
 }
