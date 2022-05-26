@@ -7,7 +7,6 @@ import org.aspectj.lang.annotation.Pointcut
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
-import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import java.util.*
@@ -20,7 +19,6 @@ class RequestAspect(
     private val httpServletRequest: HttpServletRequest,
     private val httpServletResponse: HttpServletResponse,
     private val requestContext: RequestContext,
-    private val environment: Environment
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(RequestAspect::class.java)
@@ -38,11 +36,10 @@ class RequestAspect(
     @Around("anyRequest()")
     @Throws(Throwable::class)
     fun logAnyRequest(joinPoint: ProceedingJoinPoint): Any? {
-        if (environment.activeProfiles.contains("dev")) {
-            requestContext.userId(httpServletRequest.getHeader("Dev-UserId").toInt())
-        }
-        requestContext.requestId(UUID.randomUUID())
-        MDC.put("requestId", requestContext.requestId().toString())
+        val requestId = UUID.randomUUID()
+        requestContext.requestId(requestId)
+        MDC.put("requestId", requestId.toString())
+
         logRequest(joinPoint.args)
 
         val proceed = joinPoint.proceed()
