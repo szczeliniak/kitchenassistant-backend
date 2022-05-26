@@ -26,8 +26,12 @@ class UserConfiguration {
         GetUserByIdQuery(userDao, userConverter)
 
     @Bean
-    fun getLoggedUserQuery(getUserByIdQuery: GetUserByIdQuery, requestContext: RequestContext): GetLoggedUserQuery =
-        GetLoggedUserQuery(getUserByIdQuery, requestContext)
+    fun getLoggedUserQuery(
+        userDao: UserDao,
+        requestContext: RequestContext,
+        userConverter: UserConverter
+    ): GetLoggedUserQuery =
+        GetLoggedUserQuery(userDao, requestContext, userConverter)
 
     @Bean
     fun getUsersQuery(userDao: UserDao, userConverter: UserConverter): GetUsersQuery =
@@ -48,16 +52,16 @@ class UserConfiguration {
     ): LoginCommand = LoginCommand(userDao, passwordMatcher, tokenFactory)
 
     @Bean
-    fun registerCommand(addUserCommand: AddUserCommand, tokenFactory: TokenFactory): RegisterCommand =
-        RegisterCommand(addUserCommand, tokenFactory)
+    fun registerCommand(userDao: UserDao, userFactory: UserFactory, tokenFactory: TokenFactory): RegisterCommand =
+        RegisterCommand(userFactory, tokenFactory, userDao)
 
     @Bean
     fun refreshTokenCommand(
         tokenFactory: TokenFactory,
         requestContext: RequestContext,
-        getUserByIdQuery: GetUserByIdQuery
+        userDao: UserDao
     ): RefreshTokenCommand =
-        RefreshTokenCommand(tokenFactory, requestContext, getUserByIdQuery)
+        RefreshTokenCommand(tokenFactory, requestContext, userDao)
 
     @Bean
     fun passwordEncoder(): org.springframework.security.crypto.password.PasswordEncoder {

@@ -1,11 +1,10 @@
-package pl.szczeliniak.kitchenassistant.security.commands
+package pl.szczeliniak.kitchenassistant.user.commands
 
 import pl.szczeliniak.kitchenassistant.shared.exceptions.LoginException
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.user.PasswordMatcher
 import pl.szczeliniak.kitchenassistant.user.User
 import pl.szczeliniak.kitchenassistant.user.UserDao
-import pl.szczeliniak.kitchenassistant.user.commands.LoginCommand
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginDto
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
 import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
