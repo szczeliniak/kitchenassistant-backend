@@ -13,7 +13,7 @@ import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class ReceiptFactorySpec extends Specification {
 
@@ -78,27 +78,27 @@ class ReceiptFactorySpec extends Specification {
 
     private static Receipt receipt(Category category, Set<Tag> tags) {
         return new Receipt(0, 4, "RECEIPT_NAME", "RECEIPT_DESCRIPTION", "RECEIPT_AUTHOR",
-                "RECEIPT_SOURCE", false, category, new HashSet(Arrays.asList(ingredient())), new HashSet(Arrays.asList(step())), new HashSet(Arrays.asList(photo())), tags, false, LocalDateTime.now(), LocalDateTime.now())
+                "RECEIPT_SOURCE", false, category, new HashSet(Arrays.asList(ingredient())), new HashSet(Arrays.asList(step())), new HashSet(Arrays.asList(photo())), tags, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Photo photo() {
-        return new Photo(99, 4, LocalDateTime.now(), LocalDateTime.now())
+        return new Photo(99, 4, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Tag tag(Integer id, String name) {
-        return new Tag(id, name, 4, LocalDateTime.now(), LocalDateTime.now())
+        return new Tag(id, name, 4, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(3, "INGREDIENT_NAME", "INGREDIENT_QUANTITY", false, LocalDateTime.now(), LocalDateTime.now())
+        return new Ingredient(3, "INGREDIENT_NAME", "INGREDIENT_QUANTITY", false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Step step() {
-        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Category category() {
-        return new Category(0, "", 0, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Category(0, "", 0, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static CheckIfFileExistsResponse checkIfFileExistsResponse() {

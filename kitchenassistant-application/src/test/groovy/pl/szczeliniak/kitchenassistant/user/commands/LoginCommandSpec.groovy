@@ -13,8 +13,8 @@ import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
-import java.time.Month
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class LoginCommandSpec extends Specification {
 
@@ -34,7 +34,7 @@ class LoginCommandSpec extends Specification {
         def result = loginCommand.execute(dto())
 
         then:
-        result == new LoginResponse("TOKEN", 1, LocalDateTime.of(2022, Month.JANUARY, 1, 0, 0))
+        result == new LoginResponse("TOKEN", 1, ZonedDateTime.of(2022, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault()))
     }
 
     def 'should throw exception when user not found'() {
@@ -67,11 +67,11 @@ class LoginCommandSpec extends Specification {
     }
 
     private static User user() {
-        return new User(1, "EMAIL", "ENC_PASS", "NAME", LocalDateTime.now(), LocalDateTime.now())
+        return new User(1, "EMAIL", "ENC_PASS", "NAME", ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static TokenFactory.Token token() {
-        return new TokenFactory.Token("TOKEN", LocalDateTime.of(2022, Month.JANUARY, 1, 0, 0))
+        return new TokenFactory.Token("TOKEN", ZonedDateTime.of(2022, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault()))
     }
 
 }

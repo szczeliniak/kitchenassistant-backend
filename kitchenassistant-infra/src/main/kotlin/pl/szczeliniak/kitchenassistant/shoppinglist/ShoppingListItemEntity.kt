@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist
 
 import org.hibernate.annotations.Where
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.persistence.*
 
 @Entity
@@ -21,6 +21,6 @@ data class ShoppingListItemEntity(
     var receiptId: Int?,
     var deleted: Boolean,
     var completed: Boolean,
-    var createdAt: LocalDateTime,
-    var modifiedAt: LocalDateTime
+    var createdAt: ZonedDateTime,
+    var modifiedAt: ZonedDateTime
 )

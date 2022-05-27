@@ -8,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class DeleteReceiptCommandSpec extends Specification {
 
@@ -57,7 +57,7 @@ class DeleteReceiptCommandSpec extends Specification {
     }
 
     private static Receipt receipt(boolean deleted) {
-        return new Receipt(1, 2, '', '', '', '', false, null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), deleted, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 2, '', '', '', '', false, null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), deleted, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

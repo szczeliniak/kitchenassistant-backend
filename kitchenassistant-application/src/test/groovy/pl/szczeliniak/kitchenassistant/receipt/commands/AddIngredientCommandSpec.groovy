@@ -10,7 +10,7 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class AddIngredientCommandSpec extends Specification {
     def receiptDao = Mock(ReceiptDao)
@@ -42,11 +42,11 @@ class AddIngredientCommandSpec extends Specification {
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(2, "", "", false, LocalDateTime.now(), LocalDateTime.now())
+        return new Ingredient(2, "", "", false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Receipt receipt() {
-        return new Receipt(1, 0, "", "", "", "", false, null, new HashSet<Ingredient>(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 0, "", "", "", "", false, null, new HashSet<Ingredient>(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

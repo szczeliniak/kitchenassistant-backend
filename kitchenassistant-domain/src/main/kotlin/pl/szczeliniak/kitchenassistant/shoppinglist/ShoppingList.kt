@@ -3,7 +3,7 @@ package pl.szczeliniak.kitchenassistant.shoppinglist
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.util.*
 
 data class ShoppingList(
@@ -15,8 +15,8 @@ data class ShoppingList(
     private var items_: MutableSet<ShoppingListItem> = mutableSetOf(),
     private var deleted_: Boolean = false,
     private var archived_: Boolean = false,
-    private val createdAt_: LocalDateTime = LocalDateTime.now(),
-    private var modifiedAt_: LocalDateTime = LocalDateTime.now()
+    private val createdAt_: ZonedDateTime = ZonedDateTime.now(),
+    private var modifiedAt_: ZonedDateTime = ZonedDateTime.now()
 ) {
 
     val id: Int get() = id_
@@ -25,8 +25,8 @@ data class ShoppingList(
     val date: LocalDate? get() = date_
     val description: String? get() = description_
     val items: Set<ShoppingListItem> get() = Collections.unmodifiableSet(items_)
-    val createdAt: LocalDateTime get() = createdAt_
-    val modifiedAt: LocalDateTime get() = modifiedAt_
+    val createdAt: ZonedDateTime get() = createdAt_
+    val modifiedAt: ZonedDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_
     val archived: Boolean get() = archived_
 
@@ -35,24 +35,24 @@ data class ShoppingList(
             throw NotAllowedOperationException("Shopping list is already marked as deleted!")
         }
         deleted_ = true
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
     }
 
     fun markAsArchived(isArchived: Boolean) {
         archived_ = isArchived
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
     }
 
     fun addItem(shoppingListItem: ShoppingListItem) {
         items_ += shoppingListItem
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
     }
 
     fun deleteItemById(shoppingListItemId: Int): ShoppingListItem {
         val item =
             items.firstOrNull { it.id == shoppingListItemId } ?: throw NotFoundException("Shopping list item not found")
         item.markAsDeleted()
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
         return item
     }
 
@@ -60,7 +60,7 @@ data class ShoppingList(
         this.name_ = name
         this.description_ = description
         this.date_ = date
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
     }
 
 }

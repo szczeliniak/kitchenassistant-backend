@@ -10,7 +10,7 @@ import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class DeleteIngredientCommandSpec extends Specification {
 
@@ -63,11 +63,11 @@ class DeleteIngredientCommandSpec extends Specification {
     }
 
     private static Receipt receipt(Set<Ingredient> ingredients) {
-        return new Receipt(1, 2, '', '', '', '', false, null, ingredients, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 2, '', '', '', '', false, null, ingredients, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Ingredient ingredient(boolean deleted) {
-        return new Ingredient(3, '', '', deleted, LocalDateTime.now(), LocalDateTime.now())
+        return new Ingredient(3, '', '', deleted, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

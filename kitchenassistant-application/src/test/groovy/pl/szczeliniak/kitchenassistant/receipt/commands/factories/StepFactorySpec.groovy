@@ -9,7 +9,7 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class StepFactorySpec extends Specification {
 
@@ -36,11 +36,11 @@ class StepFactorySpec extends Specification {
     }
 
     private static Step step() {
-        return new Step(0, "NAME", "DESCRIPTION", 1, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(0, "NAME", "DESCRIPTION", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Photo photo() {
-        return new Photo(0, 4, LocalDateTime.now(), LocalDateTime.now())
+        return new Photo(0, 4, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static CheckIfFileExistsResponse checkIfFileExistsResponse() {

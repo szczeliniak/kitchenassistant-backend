@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.receipt
 
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.util.*
 
 class Receipt(
@@ -19,8 +19,8 @@ class Receipt(
     private var photos_: MutableSet<Photo> = mutableSetOf(),
     private var tags_: MutableSet<Tag> = mutableSetOf(),
     private var deleted_: Boolean = false,
-    private val createdAt_: LocalDateTime = LocalDateTime.now(),
-    private var modifiedAt_: LocalDateTime = LocalDateTime.now()
+    private val createdAt_: ZonedDateTime = ZonedDateTime.now(),
+    private var modifiedAt_: ZonedDateTime = ZonedDateTime.now()
 ) {
     val id: Int get() = id_
     val userId: Int get() = userId_
@@ -34,8 +34,8 @@ class Receipt(
     val photos: Set<Photo> get() = Collections.unmodifiableSet(photos_)
     val tags: Set<Tag> get() = Collections.unmodifiableSet(tags_)
     val favorite: Boolean get() = favorite_
-    val createdAt: LocalDateTime get() = createdAt_
-    val modifiedAt: LocalDateTime get() = modifiedAt_
+    val createdAt: ZonedDateTime get() = createdAt_
+    val modifiedAt: ZonedDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_
 
     fun update(
@@ -56,7 +56,7 @@ class Receipt(
         updateTags(tags)
         updatePhotos(photos)
 
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
     }
 
     private fun updateTags(tags: List<Tag>) {
@@ -78,36 +78,36 @@ class Receipt(
             throw NotAllowedOperationException("Receipt is already marked as deleted!")
         }
         deleted_ = true
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
     }
 
     fun markAsFavorite(isFavorite: Boolean) {
         favorite_ = isFavorite
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
     }
 
     fun addIngredient(ingredient: Ingredient) {
         ingredients_ += ingredient
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
     }
 
     fun addStep(step: Step) {
         steps_ += step
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
     }
 
     fun deleteIngredientById(ingredientId: Int): Ingredient {
         val ingredient =
             ingredients.firstOrNull { it.id == ingredientId } ?: throw NotFoundException("Ingredient not found")
         ingredient.markAsDeleted()
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
         return ingredient
     }
 
     fun deleteStepById(stepId: Int): Step {
         val step = steps.firstOrNull { it.id == stepId } ?: throw NotFoundException("Step not found")
         step.markAsDeleted()
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
         return step
     }
 
@@ -123,7 +123,7 @@ class Receipt(
 
     fun addPhoto(photo: Photo) {
         photos_ += (photo)
-        this.modifiedAt_ = LocalDateTime.now()
+        this.modifiedAt_ = ZonedDateTime.now()
     }
 
     fun getStepById(stepId: Int): Step {

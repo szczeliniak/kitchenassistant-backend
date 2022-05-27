@@ -9,7 +9,7 @@ import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class GetReceiptQuerySpec extends Specification {
 
@@ -59,8 +59,8 @@ class GetReceiptQuerySpec extends Specification {
                 Collections.emptySet(),
                 Collections.emptySet(),
                 false,
-                LocalDateTime.now(),
-                LocalDateTime.now())
+                ZonedDateTime.now(),
+                ZonedDateTime.now())
     }
 
     private static ReceiptDto receiptDto() {

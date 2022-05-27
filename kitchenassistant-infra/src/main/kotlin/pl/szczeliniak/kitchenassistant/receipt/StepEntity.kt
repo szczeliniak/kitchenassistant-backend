@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
 import org.hibernate.annotations.Where
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.persistence.*
 
 @Entity
@@ -15,6 +15,6 @@ data class StepEntity(
     var description: String?,
     var sequence: Int?,
     var deleted: Boolean,
-    var createdAt: LocalDateTime,
-    var modifiedAt: LocalDateTime
+    var createdAt: ZonedDateTime,
+    var modifiedAt: ZonedDateTime
 )

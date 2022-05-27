@@ -9,7 +9,7 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class AssignReceiptPhotosCommandSpec extends Specification {
 
@@ -63,12 +63,12 @@ class AssignReceiptPhotosCommandSpec extends Specification {
 
     private static Receipt receipt(Set<Photo> photos) {
         return new Receipt(1, 0, "", "", "", "", false,
-                new Category(0, "", 0, false, LocalDateTime.now(), LocalDateTime.now()),
-                Collections.emptySet(), Collections.emptySet(), photos, Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
+                new Category(0, "", 0, false, ZonedDateTime.now(), ZonedDateTime.now()),
+                Collections.emptySet(), Collections.emptySet(), photos, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Photo photo() {
-        return new Photo(0, 99, LocalDateTime.now(), LocalDateTime.now())
+        return new Photo(0, 99, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static CheckIfFileExistsResponse checkIfFileExistsResponse() {

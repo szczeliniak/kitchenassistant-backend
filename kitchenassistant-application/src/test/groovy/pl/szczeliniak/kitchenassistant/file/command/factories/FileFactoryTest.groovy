@@ -6,7 +6,7 @@ import pl.szczeliniak.kitchenassistant.file.commands.factories.FileFactory
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class FileFactoryTest extends Specification {
 
@@ -25,7 +25,7 @@ class FileFactoryTest extends Specification {
     }
 
     private static File photo() {
-        return new File(0, "PHOTO_NAME", 4, false, LocalDateTime.now(), LocalDateTime.now())
+        return new File(0, "PHOTO_NAME", 4, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

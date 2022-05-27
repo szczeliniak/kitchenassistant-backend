@@ -10,7 +10,7 @@ import pl.szczeliniak.kitchenassistant.file.File
 import pl.szczeliniak.kitchenassistant.file.FileDao
 import pl.szczeliniak.kitchenassistant.file.FtpClient
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 internal class DeleteFileCommandTest : JunitBaseClass() {
 
@@ -37,7 +37,7 @@ internal class DeleteFileCommandTest : JunitBaseClass() {
     }
 
     private fun file(): File {
-        return File(1, "NAME", 4, false, LocalDateTime.now(), LocalDateTime.now())
+        return File(1, "NAME", 4, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

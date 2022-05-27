@@ -7,7 +7,7 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class UpdateCategoryCommandSpec extends Specification {
 
@@ -35,7 +35,7 @@ class UpdateCategoryCommandSpec extends Specification {
     }
 
     private static Category category() {
-        return new Category(1, "", 1, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Category(1, "", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

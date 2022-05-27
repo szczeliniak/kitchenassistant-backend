@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.file
 
 import org.hibernate.annotations.Where
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.persistence.*
 
 @Entity
@@ -14,6 +14,6 @@ data class FileEntity(
     var name: String,
     var userId: Int,
     var deleted: Boolean,
-    var createdAt: LocalDateTime,
-    var modifiedAt: LocalDateTime
+    var createdAt: ZonedDateTime,
+    var modifiedAt: ZonedDateTime
 )

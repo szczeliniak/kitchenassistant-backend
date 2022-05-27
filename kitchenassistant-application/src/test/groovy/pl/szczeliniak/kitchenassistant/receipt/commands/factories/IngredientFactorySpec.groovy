@@ -6,7 +6,7 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientDto
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class IngredientFactorySpec extends Specification {
 
@@ -28,7 +28,7 @@ class IngredientFactorySpec extends Specification {
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(0, "NAME", "QUANTITY", false, LocalDateTime.now(), LocalDateTime.now())
+        return new Ingredient(0, "NAME", "QUANTITY", false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

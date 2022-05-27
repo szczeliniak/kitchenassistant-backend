@@ -8,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class DeleteCategoryCommandSpec extends Specification {
 
@@ -56,7 +56,7 @@ class DeleteCategoryCommandSpec extends Specification {
     }
 
     private static Category category(boolean deleted) {
-        return new Category(1, '', 1, deleted, LocalDateTime.now(), LocalDateTime.now())
+        return new Category(1, '', 1, deleted, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

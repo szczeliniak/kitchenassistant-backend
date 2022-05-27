@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.user
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.persistence.*
 
 @Entity
@@ -12,6 +12,6 @@ data class UserEntity(
     var email: String,
     var password: String,
     var name: String,
-    var createdAt: LocalDateTime,
-    var modifiedAt: LocalDateTime
+    var createdAt: ZonedDateTime,
+    var modifiedAt: ZonedDateTime
 )

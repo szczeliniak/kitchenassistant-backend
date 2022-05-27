@@ -9,7 +9,7 @@ import pl.szczeliniak.kitchenassistant.file.FileDao
 import pl.szczeliniak.kitchenassistant.file.FtpClient
 import pl.szczeliniak.kitchenassistant.file.SupportedMediaType
 import pl.szczeliniak.kitchenassistant.file.queries.dtos.GetFileResponse
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 internal class DownloadFileFileCommandTest : JunitBaseClass() {
 
@@ -34,7 +34,7 @@ internal class DownloadFileFileCommandTest : JunitBaseClass() {
     }
 
     private fun file(): File {
-        return File(1, "NAME.jpg", 4, false, LocalDateTime.now(), LocalDateTime.now())
+        return File(1, "NAME.jpg", 4, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

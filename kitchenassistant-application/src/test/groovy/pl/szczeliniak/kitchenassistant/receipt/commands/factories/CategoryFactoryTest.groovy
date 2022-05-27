@@ -6,7 +6,7 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewCategoryDto
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class CategoryFactoryTest extends Specification {
 
@@ -25,7 +25,7 @@ class CategoryFactoryTest extends Specification {
     }
 
     private static Category category() {
-        return new Category(0, "NAME", 1, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Category(0, "NAME", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static NewCategoryDto newCategoryDto() {

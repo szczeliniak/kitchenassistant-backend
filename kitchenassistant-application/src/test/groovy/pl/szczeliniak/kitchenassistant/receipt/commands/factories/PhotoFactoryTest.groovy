@@ -5,7 +5,7 @@ import pl.szczeliniak.kitchenassistant.receipt.Photo
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class PhotoFactoryTest extends Specification {
 
@@ -24,7 +24,7 @@ class PhotoFactoryTest extends Specification {
     }
 
     private static Photo photo() {
-        return new Photo(0, 4, LocalDateTime.now(), LocalDateTime.now())
+        return new Photo(0, 4, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

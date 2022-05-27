@@ -9,7 +9,7 @@ import pl.szczeliniak.kitchenassistant.file.FileDao
 import pl.szczeliniak.kitchenassistant.file.FtpClient
 import pl.szczeliniak.kitchenassistant.file.commands.factories.FileFactory
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 internal class UploadFileCommandTest : JunitBaseClass() {
 
@@ -39,7 +39,7 @@ internal class UploadFileCommandTest : JunitBaseClass() {
     }
 
     private fun file(): File {
-        return File(1, "NAME", 4, false, LocalDateTime.now(), LocalDateTime.now())
+        return File(1, "NAME", 4, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

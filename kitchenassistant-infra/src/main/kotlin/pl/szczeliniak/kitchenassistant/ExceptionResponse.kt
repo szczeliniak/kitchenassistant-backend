@@ -1,8 +1,8 @@
 package pl.szczeliniak.kitchenassistant
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 data class ExceptionResponse(
     val message: String?,
-    val timestamp: LocalDateTime = LocalDateTime.now()
+    val timestamp: ZonedDateTime = ZonedDateTime.now()
 )

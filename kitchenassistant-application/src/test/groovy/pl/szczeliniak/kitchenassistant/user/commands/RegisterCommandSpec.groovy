@@ -9,8 +9,8 @@ import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
-import java.time.Month
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class RegisterCommandSpec extends Specification {
 
@@ -31,7 +31,7 @@ class RegisterCommandSpec extends Specification {
         def result = registerCommand.execute(registerDto())
 
         then:
-        result == new LoginResponse("TOKEN", 2137, LocalDateTime.of(2022, Month.JANUARY, 1, 0, 0))
+        result == new LoginResponse("TOKEN", 2137, ZonedDateTime.of(2022, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault()))
         1 * userDao.save(user)
     }
 
@@ -40,10 +40,10 @@ class RegisterCommandSpec extends Specification {
     }
 
     private static TokenFactory.Token token() {
-        return new TokenFactory.Token("TOKEN", LocalDateTime.of(2022, Month.JANUARY, 1, 0, 0))
+        return new TokenFactory.Token("TOKEN", ZonedDateTime.of(2022, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault()))
     }
 
     private static User user() {
-        return new User(2137, "", "", "", LocalDateTime.now(), LocalDateTime.now())
+        return new User(2137, "", "", "", ZonedDateTime.now(), ZonedDateTime.now())
     }
 }

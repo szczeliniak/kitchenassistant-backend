@@ -9,7 +9,7 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class UpdateStepCommandSpec extends Specification {
 
@@ -41,11 +41,11 @@ class UpdateStepCommandSpec extends Specification {
 
     private static Receipt receipt(Set<Step> steps) {
         return new Receipt(1, 1, "", "", "", "", false, null, Collections.emptySet(),
-                steps, Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
+                steps, Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Step step() {
-        return new Step(2, "", "", 0, false, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(2, "", "", 0, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

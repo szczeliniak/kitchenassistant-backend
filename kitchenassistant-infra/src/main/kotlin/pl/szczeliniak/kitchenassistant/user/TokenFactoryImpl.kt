@@ -6,8 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.util.*
 
 @Component
@@ -16,17 +15,15 @@ class TokenFactoryImpl(
 ) : TokenFactory {
 
     companion object {
-
         private const val TOKEN_VALIDITY_DAYS = 14L
-
     }
 
     override fun create(userId: Int): TokenFactory.Token {
-        val expiration = LocalDateTime.now().plusDays(TOKEN_VALIDITY_DAYS)
+        val expiration = ZonedDateTime.now().plusDays(TOKEN_VALIDITY_DAYS)
         return TokenFactory.Token(
             jwtBuilder().setSubject(userId.toString())
-                .setIssuedAt(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)))
-                .setExpiration(Date.from(expiration.toInstant(ZoneOffset.UTC)))
+                .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
+                .setExpiration(Date.from(expiration.toInstant()))
                 .compact(), expiration
         )
     }

@@ -9,7 +9,7 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class UpdateIngredientCommandSpec extends Specification {
 
@@ -40,11 +40,11 @@ class UpdateIngredientCommandSpec extends Specification {
 
     private static Receipt receipt(Set<Ingredient> ingredients) {
         return new Receipt(1, 1, "", "", "", "", false, null, ingredients,
-                Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
+                Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(2, "", "", false, LocalDateTime.now(), LocalDateTime.now())
+        return new Ingredient(2, "", "", false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

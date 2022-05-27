@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.persistence.*
 
 @Entity
@@ -11,6 +11,6 @@ data class TagEntity(
     var id: Int,
     var name: String,
     var userId: Int,
-    var createdAt: LocalDateTime,
-    var modifiedAt: LocalDateTime
+    var createdAt: ZonedDateTime,
+    var modifiedAt: ZonedDateTime
 )

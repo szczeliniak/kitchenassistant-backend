@@ -10,7 +10,7 @@ import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class DeleteStepCommandSpec extends Specification {
 
@@ -63,11 +63,11 @@ class DeleteStepCommandSpec extends Specification {
     }
 
     private static Receipt receipt(Set<Step> steps) {
-        return new Receipt(1, 2, '', '', '', '', false, null, Collections.emptySet(), steps, Collections.emptySet(), Collections.emptySet(), false, LocalDateTime.now(), LocalDateTime.now())
+        return new Receipt(1, 2, '', '', '', '', false, null, Collections.emptySet(), steps, Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Step step(boolean deleted) {
-        return new Step(3, '', '', 0, deleted, LocalDateTime.now(), LocalDateTime.now())
+        return new Step(3, '', '', 0, deleted, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

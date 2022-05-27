@@ -8,7 +8,8 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class UpdateReceiptCommandSpec extends Specification {
 
@@ -68,21 +69,21 @@ class UpdateReceiptCommandSpec extends Specification {
 
     private static Receipt receipt(Set<Tag> tags, Set<Photo> photos) {
         return new Receipt(1, 4, "", "", "", "", false, category(0), Collections.emptySet(),
-                Collections.emptySet(), photos, tags, false, LocalDateTime.now(), LocalDateTime.now())
+                Collections.emptySet(), photos, tags, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     static Category category(Integer id) {
         return new Category(id, "", 3, false,
-                LocalDateTime.of(2000, 1, 1, 1, 1),
-                LocalDateTime.of(2000, 1, 1, 1, 2))
+                ZonedDateTime.of(2000, 1, 1, 1, 1, 0, 0, ZoneId.systemDefault()),
+                ZonedDateTime.of(2000, 1, 1, 1, 2, 0, 0, ZoneId.systemDefault()))
     }
 
     static Tag tag(Integer id, String name) {
-        return new Tag(id, name, 4, LocalDateTime.now(), LocalDateTime.now())
+        return new Tag(id, name, 4, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     static Photo photo(Integer id, Integer fileId) {
-        return new Photo(id, fileId, LocalDateTime.now(), LocalDateTime.now())
+        return new Photo(id, fileId, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

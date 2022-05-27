@@ -8,8 +8,8 @@ import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDateTime
-import java.time.Month
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class RefreshTokenCommandSpec extends Specification {
 
@@ -30,15 +30,15 @@ class RefreshTokenCommandSpec extends Specification {
         def result = refreshTokenCommand.execute()
 
         then:
-        result == new RefreshTokenResponse("TOKEN", LocalDateTime.of(2022, Month.JANUARY, 1, 0, 0))
+        result == new RefreshTokenResponse("TOKEN", ZonedDateTime.of(2022, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault()))
     }
 
     private static TokenFactory.Token token() {
-        return new TokenFactory.Token("TOKEN", LocalDateTime.of(2022, Month.JANUARY, 1, 0, 0))
+        return new TokenFactory.Token("TOKEN", ZonedDateTime.of(2022, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault()))
     }
 
     private static User user() {
-        return new User(1, "", "", "", LocalDateTime.now(), LocalDateTime.now())
+        return new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }
