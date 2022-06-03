@@ -1,9 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
-import pl.szczeliniak.kitchenassistant.receipt.Ingredient
-import pl.szczeliniak.kitchenassistant.receipt.IngredientDao
-import pl.szczeliniak.kitchenassistant.receipt.Receipt
-import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
+import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.IngredientFactory
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
@@ -46,7 +43,7 @@ class AddIngredientCommandSpec extends Specification {
     }
 
     private static Receipt receipt() {
-        return new Receipt(1, 0, "", "", "", "", false, null, new HashSet<Ingredient>(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Receipt(1, 0, "", "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, new HashSet<Ingredient>(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands.factories
 
 import pl.szczeliniak.kitchenassistant.file.queries.CheckIfFileExistsQuery
+import pl.szczeliniak.kitchenassistant.receipt.AuthorDao
 import pl.szczeliniak.kitchenassistant.receipt.CategoryDao
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.TagDao
@@ -16,7 +17,9 @@ open class ReceiptFactory(
     private val photoFactory: PhotoFactory,
     private val tagDao: TagDao,
     private val tagFactory: TagFactory,
-    private val checkIfFileExistsQuery: CheckIfFileExistsQuery
+    private val checkIfFileExistsQuery: CheckIfFileExistsQuery,
+    private val authorDao: AuthorDao,
+    private val authorFactory: AuthorFactory
 ) {
 
     open fun create(dto: NewReceiptDto): Receipt {
@@ -28,7 +31,14 @@ open class ReceiptFactory(
         return Receipt(
             userId_ = dto.userId,
             name_ = dto.name,
-            author_ = dto.author,
+            author_ = dto.author?.let {
+                authorDao.findByName(it, dto.userId) ?: authorDao.save(
+                    authorFactory.create(
+                        it,
+                        dto.userId
+                    )
+                )
+            },
             source_ = dto.source,
             category_ = dto.categoryId?.let {
                 categoryDao.findById(it) ?: throw NotFoundException("Category not found")

@@ -8,7 +8,8 @@ class ReceiptMapper(
     private val ingredientMapper: IngredientMapper,
     private val categoryMapper: CategoryMapper,
     private val photoMapper: PhotoMapper,
-    private val tagMapper: TagMapper
+    private val tagMapper: TagMapper,
+    private val authorMapper: AuthorMapper
 ) {
 
     fun toDomain(receiptEntity: ReceiptEntity): Receipt {
@@ -17,7 +18,7 @@ class ReceiptMapper(
             receiptEntity.userId,
             receiptEntity.name,
             receiptEntity.description,
-            receiptEntity.author,
+            receiptEntity.author?.let { authorMapper.toDomain(it) },
             receiptEntity.source,
             receiptEntity.favorite,
             receiptEntity.category?.let { categoryMapper.toDomain(it) },
@@ -37,7 +38,7 @@ class ReceiptMapper(
             receipt.name,
             receipt.userId,
             receipt.description,
-            receipt.author,
+            receipt.author?.let { authorMapper.toEntity(it) },
             receipt.source,
             receipt.favorite,
             receipt.category?.let { categoryMapper.toEntity(it) },

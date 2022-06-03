@@ -10,7 +10,7 @@ class Receipt(
     private var userId_: Int,
     private var name_: String,
     private var description_: String?,
-    private var author_: String?,
+    private var author_: Author?,
     private var source_: String?,
     private var favorite_: Boolean = false,
     private var category_: Category?,
@@ -26,7 +26,7 @@ class Receipt(
     val userId: Int get() = userId_
     val name: String get() = name_
     val description: String? get() = description_
-    val author: String? get() = author_
+    val author: Author? get() = author_
     val source: String? get() = source_
     val category: Category? get() = category_
     val ingredients: Set<Ingredient> get() = Collections.unmodifiableSet(ingredients_)
@@ -42,7 +42,7 @@ class Receipt(
         name: String,
         description: String? = null,
         category: Category? = null,
-        author: String? = null,
+        author: Author? = null,
         source: String? = null,
         tags: List<Tag> = Collections.emptyList(),
         photos: List<Photo> = Collections.emptyList()

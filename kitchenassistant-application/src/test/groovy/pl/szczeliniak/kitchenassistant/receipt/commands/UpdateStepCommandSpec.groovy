@@ -1,9 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
-import pl.szczeliniak.kitchenassistant.receipt.Receipt
-import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
-import pl.szczeliniak.kitchenassistant.receipt.Step
-import pl.szczeliniak.kitchenassistant.receipt.StepDao
+import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.UpdateStepDto
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
@@ -40,7 +37,7 @@ class UpdateStepCommandSpec extends Specification {
     }
 
     private static Receipt receipt(Set<Step> steps) {
-        return new Receipt(1, 1, "", "", "", "", false, null, Collections.emptySet(),
+        return new Receipt(1, 1, "", "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(),
                 steps, Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 

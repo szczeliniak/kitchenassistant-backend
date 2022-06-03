@@ -25,9 +25,11 @@ class ReceiptFactorySpec extends Specification {
     def tagDao = Mock(TagDao)
     def tagFactory = Mock(TagFactory)
     def checkIfFileExistsQuery = Mock(CheckIfFileExistsQuery)
+    def authorDao = Mock(AuthorDao)
+    def authorFactory = Mock(AuthorFactory)
 
     @Subject
-    def receiptFactory = new ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, categoryDao, photoFactory, tagDao, tagFactory, checkIfFileExistsQuery)
+    def receiptFactory = new ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, categoryDao, photoFactory, tagDao, tagFactory, checkIfFileExistsQuery, authorDao, authorFactory)
 
     def 'should create receipt'() {
         given:
@@ -36,6 +38,7 @@ class ReceiptFactorySpec extends Specification {
         def category = category()
         def newTag = tag(30, "NEW_TAG")
         def existingTag = tag(35, "EXISTING_TAG")
+        def author = author()
 
         getUserByIdQuery.execute(1) >> userResponse()
         checkIfFileExistsQuery.execute(99) >> checkIfFileExistsResponse()
@@ -47,6 +50,9 @@ class ReceiptFactorySpec extends Specification {
         tagDao.findByName("NEW_TAG", 4) >> null
         tagFactory.create("NEW_TAG", 4) >> newTag
         tagDao.save(newTag) >> newTag
+        authorDao.findByName("RECEIPT_AUTHOR", 4) >> null
+        authorFactory.create("RECEIPT_AUTHOR", 4) >> author
+        authorDao.save(author) >> author
 
         when:
         def result = receiptFactory.create(newReceiptDto(newIngredientDto, newStepDto))
@@ -55,7 +61,7 @@ class ReceiptFactorySpec extends Specification {
         Assertions.assertThat(result).usingRecursiveComparison()
                 .ignoringFields("createdAt_", "modifiedAt_", "ingredients_.createdAt_",
                         "ingredients_.modifiedAt_", "steps_.createdAt_", "steps_.modifiedAt_", "photos_.createdAt_", "photos_.modifiedAt_",
-                        "tags_.createdAt_", "tags_.modifiedAt_")
+                        "tags_.createdAt_", "tags_.modifiedAt_", "author_.createdAt_", "author_.modifiedAt_")
                 .isEqualTo(receipt(category, Set.of(existingTag, newTag)))
     }
 
@@ -77,7 +83,7 @@ class ReceiptFactorySpec extends Specification {
     }
 
     private static Receipt receipt(Category category, Set<Tag> tags) {
-        return new Receipt(0, 4, "RECEIPT_NAME", "RECEIPT_DESCRIPTION", "RECEIPT_AUTHOR",
+        return new Receipt(0, 4, "RECEIPT_NAME", "RECEIPT_DESCRIPTION", new Author(2, "RECEIPT_AUTHOR", 1, ZonedDateTime.now(), ZonedDateTime.now()),
                 "RECEIPT_SOURCE", false, category, new HashSet(Arrays.asList(ingredient())), new HashSet(Arrays.asList(step())), new HashSet(Arrays.asList(photo())), tags, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
@@ -103,5 +109,9 @@ class ReceiptFactorySpec extends Specification {
 
     private static CheckIfFileExistsResponse checkIfFileExistsResponse() {
         return new CheckIfFileExistsResponse(true)
+    }
+
+    static Author author() {
+        return new Author(2, "RECEIPT_AUTHOR", 1, ZonedDateTime.now(), ZonedDateTime.now())
     }
 }

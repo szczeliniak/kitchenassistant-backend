@@ -14,7 +14,8 @@ data class ReceiptEntity(
     var name: String,
     var userId: Int,
     var description: String?,
-    var author: String?,
+    @ManyToOne(fetch = FetchType.LAZY)
+    var author: AuthorEntity?,
     var source: String?,
     var favorite: Boolean,
     @ManyToOne(fetch = FetchType.LAZY)

@@ -10,7 +10,7 @@ open class ReceiptConverter {
             receipt.id,
             receipt.name,
             receipt.description,
-            receipt.author,
+            receipt.author?.name,
             receipt.source,
             receipt.favorite,
             receipt.category?.let { map(it) },

@@ -1,5 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
+import pl.szczeliniak.kitchenassistant.receipt.Author
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
@@ -35,7 +36,7 @@ class AddReceiptCommandSpec extends Specification {
     }
 
     private static Receipt receipt() {
-        return new Receipt(1, 2, "", "", "", "", false, null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Receipt(1, 2, "", "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

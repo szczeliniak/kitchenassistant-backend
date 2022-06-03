@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.receipt.commands
 
 import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.UpdateReceiptDto
+import pl.szczeliniak.kitchenassistant.receipt.commands.factories.AuthorFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.PhotoFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.TagFactory
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
@@ -19,9 +20,11 @@ class UpdateReceiptCommandSpec extends Specification {
     def tagFactory = Mock(TagFactory)
     def photoFactory = Mock(PhotoFactory)
     def photoDao = Mock(PhotoDao)
+    def authorDao = Mock(AuthorDao)
+    def authorFactory = Mock(AuthorFactory)
 
     @Subject
-    def updateReceiptCommand = new UpdateReceiptCommand(receiptDao, categoryDao, tagDao, tagFactory, photoFactory, photoDao)
+    def updateReceiptCommand = new UpdateReceiptCommand(receiptDao, categoryDao, tagDao, tagFactory, photoFactory, photoDao, authorFactory, authorDao)
 
     def 'should update receipt'() {
         given:
@@ -36,6 +39,7 @@ class UpdateReceiptCommandSpec extends Specification {
                 new HashSet<Tag>(List.of(tagToRemove, assignedTag)),
                 new HashSet<Photo>(List.of(photoToRemove, assignedPhoto)))
         def newCategory = category(3)
+        def author = author()
 
         receiptDao.findById(1) >> receipt
         receiptDao.save(receipt) >> receipt
@@ -43,9 +47,12 @@ class UpdateReceiptCommandSpec extends Specification {
         tagDao.findByName("EXISTING_TAG", 4) >> existingTag
         tagDao.findByName("NEW_TAG", 4) >> null
         tagFactory.create("NEW_TAG", 4) >> newTag
+        authorDao.findByName("AUTHOR", 4) >> null
         photoFactory.create(22) >> newPhoto
         tagDao.save(newTag) >> newTag
+        authorFactory.create("AUTHOR", 4) >> author
         photoDao.save(newPhoto) >> newPhoto
+        authorDao.save(author) >> author
         tagDao.saveAll(Set.of(tagToRemove, assignedTag, existingTag, newTag))
         photoDao.saveAll(Set.of(photoToRemove, assignedPhoto, newPhoto))
 
@@ -55,7 +62,7 @@ class UpdateReceiptCommandSpec extends Specification {
         then:
         receipt.name == "NAME"
         receipt.description == "DESC"
-        receipt.author == "AUTHOR"
+        receipt.author == author
         receipt.source == "SOURCE"
         receipt.category == newCategory
         receipt.tags == Set.of(assignedTag, existingTag, newTag)
@@ -68,7 +75,7 @@ class UpdateReceiptCommandSpec extends Specification {
     }
 
     private static Receipt receipt(Set<Tag> tags, Set<Photo> photos) {
-        return new Receipt(1, 4, "", "", "", "", false, category(0), Collections.emptySet(),
+        return new Receipt(1, 4, "", "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, category(0), Collections.emptySet(),
                 Collections.emptySet(), photos, tags, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
@@ -86,4 +93,7 @@ class UpdateReceiptCommandSpec extends Specification {
         return new Photo(id, fileId, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
+    static Author author() {
+        return new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now())
+    }
 }

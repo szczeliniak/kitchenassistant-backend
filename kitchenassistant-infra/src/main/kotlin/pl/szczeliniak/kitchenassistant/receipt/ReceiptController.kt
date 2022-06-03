@@ -5,14 +5,8 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.*
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetCategoriesQuery
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptsQuery
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetTagsQuery
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.CategoriesResponse
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptsResponse
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.TagsResponse
+import pl.szczeliniak.kitchenassistant.receipt.queries.*
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import javax.validation.Valid
 
@@ -37,7 +31,8 @@ class ReceiptController(
     private val getCategoriesQuery: GetCategoriesQuery,
     private val assignReceiptPhotosCommand: AssignReceiptPhotosCommand,
     private val getTagsQuery: GetTagsQuery,
-    private val markReceiptAsFavoriteCommand: MarkReceiptAsFavoriteCommand
+    private val markReceiptAsFavoriteCommand: MarkReceiptAsFavoriteCommand,
+    private val getAuthorsQuery: GetAuthorsQuery
 ) {
 
     @GetMapping("/{id}")
@@ -126,6 +121,14 @@ class ReceiptController(
         @RequestParam(required = false) name: String?
     ): TagsResponse {
         return getTagsQuery.execute(TagCriteria(name, userId))
+    }
+
+    @GetMapping("/authors")
+    fun getAuthors(
+        @RequestParam(required = false) userId: Int?,
+        @RequestParam(required = false) name: String?
+    ): AuthorsResponse {
+        return getAuthorsQuery.execute(AuthorCriteria(name, userId))
     }
 
     @DeleteMapping("/categories/{id}")

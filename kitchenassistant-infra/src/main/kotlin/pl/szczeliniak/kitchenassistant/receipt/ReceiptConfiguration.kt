@@ -33,9 +33,20 @@ class ReceiptConfiguration {
         tagDao: TagDao,
         tagFactory: TagFactory,
         photoFactory: PhotoFactory,
-        photoDao: PhotoDao
+        photoDao: PhotoDao,
+        authorFactory: AuthorFactory,
+        authorDao: AuthorDao
     ): UpdateReceiptCommand =
-        UpdateReceiptCommand(receiptDao, categoryDao, tagDao, tagFactory, photoFactory, photoDao)
+        UpdateReceiptCommand(
+            receiptDao,
+            categoryDao,
+            tagDao,
+            tagFactory,
+            photoFactory,
+            photoDao,
+            authorFactory,
+            authorDao
+        )
 
     @Bean
     fun addIngredientCommand(
@@ -84,6 +95,9 @@ class ReceiptConfiguration {
     fun tagFactory(): TagFactory = TagFactory()
 
     @Bean
+    fun authorFactory(): AuthorFactory = AuthorFactory()
+
+    @Bean
     fun addCategoryCommand(categoryDao: CategoryDao, categoryFactory: CategoryFactory): AddCategoryCommand =
         AddCategoryCommand(categoryDao, categoryFactory)
 
@@ -107,7 +121,10 @@ class ReceiptConfiguration {
         GetCategoriesQuery(categoryDao, receiptConverter)
 
     @Bean
-    fun getTagsQuery(tagsDao: TagDao): GetTagsQuery = GetTagsQuery(tagsDao)
+    fun getTagsQuery(tagDao: TagDao): GetTagsQuery = GetTagsQuery(tagDao)
+
+    @Bean
+    fun getAuthorsQuery(authorDao: AuthorDao): GetAuthorsQuery = GetAuthorsQuery(authorDao)
 
     @Bean
     fun markReceiptAsFavorite(receiptDao: ReceiptDao) = MarkReceiptAsFavoriteCommand(receiptDao)
@@ -121,7 +138,9 @@ class ReceiptConfiguration {
         photoFactory: PhotoFactory,
         tagDao: TagDao,
         tagFactory: TagFactory,
-        checkIfFileExistsQuery: CheckIfFileExistsQuery
+        checkIfFileExistsQuery: CheckIfFileExistsQuery,
+        authorDao: AuthorDao,
+        authorFactory: AuthorFactory
     ): ReceiptFactory =
         ReceiptFactory(
             getUserByIdQuery,
@@ -131,7 +150,9 @@ class ReceiptConfiguration {
             photoFactory,
             tagDao,
             tagFactory,
-            checkIfFileExistsQuery
+            checkIfFileExistsQuery,
+            authorDao,
+            authorFactory
         )
 
 }

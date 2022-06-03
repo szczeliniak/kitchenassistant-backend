@@ -1,9 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
-import pl.szczeliniak.kitchenassistant.receipt.Receipt
-import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
-import pl.szczeliniak.kitchenassistant.receipt.Step
-import pl.szczeliniak.kitchenassistant.receipt.StepDao
+import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
@@ -63,7 +60,7 @@ class DeleteStepCommandSpec extends Specification {
     }
 
     private static Receipt receipt(Set<Step> steps) {
-        return new Receipt(1, 2, '', '', '', '', false, null, Collections.emptySet(), steps, Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Receipt(1, 2, '', '', new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), '', false, null, Collections.emptySet(), steps, Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Step step(boolean deleted) {

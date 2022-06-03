@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.receipt.queries
 
-
+import pl.szczeliniak.kitchenassistant.receipt.Author
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptCriteria
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
@@ -42,7 +42,7 @@ class GetReceiptsQuerySpec extends Specification {
                 0,
                 '',
                 '',
-                '',
+                new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()),
                 '',
                 false,
                 null,
