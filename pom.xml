@@ -38,6 +38,7 @@
         <plugin.surefire>3.0.0-M5</plugin.surefire>
         <plugin.gmavenplus>1.13.1</plugin.gmavenplus>
         <plugin.jar>3.2.2</plugin.jar>
+        <dependency.flyway>8.5.12</dependency.flyway>
     </properties>
 
     <dependencies>
@@ -180,6 +181,11 @@
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${dependency.hibernate.validator}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${dependency.flyway}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

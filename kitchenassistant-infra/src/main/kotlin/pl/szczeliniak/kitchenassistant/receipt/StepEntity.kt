@@ -5,11 +5,12 @@ import java.time.ZonedDateTime
 import javax.persistence.*
 
 @Entity
+@Table(name = "steps")
 @Where(clause = "deleted = false")
 data class StepEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "step_id_seq")
-    @SequenceGenerator(name = "step_id_seq", sequenceName = "step_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "step_id_generator")
+    @SequenceGenerator(name = "step_id_generator", sequenceName = "seq_step_id", allocationSize = 1)
     var id: Int,
     var name: String,
     var description: String?,

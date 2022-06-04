@@ -4,10 +4,11 @@ import java.time.ZonedDateTime
 import javax.persistence.*
 
 @Entity
+@Table(name = "tags")
 data class TagEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_id_seq")
-    @SequenceGenerator(name = "tag_id_seq", sequenceName = "tag_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_id_generator")
+    @SequenceGenerator(name = "tag_id_generator", sequenceName = "seq_tag_id", allocationSize = 1)
     var id: Int,
     var name: String,
     var userId: Int,

@@ -4,10 +4,11 @@ import java.time.ZonedDateTime
 import javax.persistence.*
 
 @Entity
+@Table(name = "users")
 data class UserEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
-    @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_generator")
+    @SequenceGenerator(name = "user_id_generator", sequenceName = "seq_user_id", allocationSize = 1)
     var id: Int,
     var email: String,
     var password: String,
