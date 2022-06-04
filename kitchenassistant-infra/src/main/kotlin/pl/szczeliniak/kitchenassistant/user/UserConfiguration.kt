@@ -4,10 +4,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
-import pl.szczeliniak.kitchenassistant.user.commands.AddUserCommand
-import pl.szczeliniak.kitchenassistant.user.commands.LoginCommand
-import pl.szczeliniak.kitchenassistant.user.commands.RefreshTokenCommand
-import pl.szczeliniak.kitchenassistant.user.commands.RegisterCommand
+import pl.szczeliniak.kitchenassistant.user.commands.*
 import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
 import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory
 import pl.szczeliniak.kitchenassistant.user.queries.GetLoggedUserQuery
@@ -50,6 +47,14 @@ class UserConfiguration {
         passwordMatcher: PasswordMatcher,
         tokenFactory: TokenFactory
     ): LoginCommand = LoginCommand(userDao, passwordMatcher, tokenFactory)
+
+    @Bean
+    fun loginWithFacebookCommand(
+        userDao: UserDao,
+        tokenFactory: TokenFactory,
+        facebookConnector: FacebookConnector,
+        userFactory: UserFactory
+    ): LoginWithFacebookCommand = LoginWithFacebookCommand(userDao, tokenFactory, facebookConnector, userFactory)
 
     @Bean
     fun registerCommand(userDao: UserDao, userFactory: UserFactory, tokenFactory: TokenFactory): RegisterCommand =

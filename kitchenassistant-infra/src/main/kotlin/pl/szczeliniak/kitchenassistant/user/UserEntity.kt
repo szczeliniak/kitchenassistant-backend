@@ -11,7 +11,7 @@ data class UserEntity(
     @SequenceGenerator(name = "user_id_generator", sequenceName = "seq_user_id", allocationSize = 1)
     var id: Int,
     var email: String,
-    var password: String,
+    var password: String?,
     var name: String,
     var createdAt: ZonedDateTime,
     var modifiedAt: ZonedDateTime

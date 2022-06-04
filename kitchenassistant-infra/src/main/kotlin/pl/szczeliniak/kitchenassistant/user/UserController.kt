@@ -2,10 +2,7 @@ package pl.szczeliniak.kitchenassistant.user
 
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.user.commands.AddUserCommand
-import pl.szczeliniak.kitchenassistant.user.commands.LoginCommand
-import pl.szczeliniak.kitchenassistant.user.commands.RefreshTokenCommand
-import pl.szczeliniak.kitchenassistant.user.commands.RegisterCommand
+import pl.szczeliniak.kitchenassistant.user.commands.*
 import pl.szczeliniak.kitchenassistant.user.commands.dto.*
 import pl.szczeliniak.kitchenassistant.user.queries.GetLoggedUserQuery
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
@@ -22,6 +19,7 @@ class UserController(
     private val getUsersQuery: GetUsersQuery,
     private val addUserCommand: AddUserCommand,
     private val loginCommand: LoginCommand,
+    private val loginWithFacebookCommand: LoginWithFacebookCommand,
     private val registerCommand: RegisterCommand,
     private val refreshTokenCommand: RefreshTokenCommand,
 ) {
@@ -47,6 +45,11 @@ class UserController(
     @PostMapping("/login")
     fun login(@Valid @RequestBody dto: LoginDto): LoginResponse {
         return loginCommand.execute(dto)
+    }
+
+    @PostMapping("/login/facebook")
+    fun login(@Valid @RequestBody dto: LoginWithFacebookDto): LoginResponse {
+        return loginWithFacebookCommand.execute(dto)
     }
 
     @PostMapping("/register")

@@ -6,7 +6,7 @@ import java.time.ZonedDateTime
 data class User(
     private val id_: Int = 0,
     private val email_: String,
-    private val password_: String,
+    private val password_: String?,
     private val name_: String,
     private val createdAt_: ZonedDateTime = ZonedDateTime.now(),
     private val modifiedAt_: ZonedDateTime = ZonedDateTime.now()
@@ -14,14 +14,16 @@ data class User(
 
     val id: Int get() = id_
     val email: String get() = email_
-    val password: String get() = password_
+    val password: String? get() = password_
     val name: String get() = name_
     val createdAt: ZonedDateTime get() = createdAt_
     val modifiedAt: ZonedDateTime get() = modifiedAt_
 
     fun validatePassword(password: String, passwordMatcher: PasswordMatcher) {
-        if (!passwordMatcher.matches(this.password, password)) {
-            throw LoginException("Passwords do not match")
+        this.password?.let {
+            if (!passwordMatcher.matches(it, password)) {
+                throw LoginException("Passwords do not match")
+            }
         }
     }
 

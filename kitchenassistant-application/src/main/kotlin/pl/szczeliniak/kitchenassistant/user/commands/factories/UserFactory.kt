@@ -11,8 +11,8 @@ open class UserFactory(private val passwordEncoder: PasswordEncoder) {
         return create(dto.email, dto.password, dto.name)
     }
 
-    private fun create(email: String, password: String, name: String): User {
-        return User(email_ = email, password_ = passwordEncoder.encode(password), name_ = name)
+    open fun create(email: String, password: String?, name: String): User {
+        return User(email_ = email, password_ = password?.let { passwordEncoder.encode(it) }, name_ = name)
     }
 
     open fun create(dto: RegisterDto): User {
