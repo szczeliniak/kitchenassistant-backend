@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.file
+package pl.szczeliniak.kitchenassistant.receipt
 
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPReply

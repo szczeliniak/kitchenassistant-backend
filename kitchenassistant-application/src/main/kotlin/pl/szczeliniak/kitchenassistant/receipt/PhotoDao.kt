@@ -6,4 +6,6 @@ interface PhotoDao {
 
     fun saveAll(photos: Set<Photo>)
 
+    fun findById(id: Int): Photo?
+
 }

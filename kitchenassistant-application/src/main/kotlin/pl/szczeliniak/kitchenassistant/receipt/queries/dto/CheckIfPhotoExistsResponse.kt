@@ -1,6 +1,3 @@
 package pl.szczeliniak.kitchenassistant.receipt.queries.dto
 
-data class PhotoDto(
-    val id: Int,
-    val name: String
-)
+data class CheckIfFileExistsResponse(val exists: Boolean)

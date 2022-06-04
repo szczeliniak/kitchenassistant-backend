@@ -16,4 +16,8 @@ class PhotoDaoImpl(
         photos.forEach { photoRepository.save(photoMapper.toEntity(it)) }
     }
 
+    override fun findById(id: Int): Photo? {
+        return photoRepository.findById(id)?.let { photoMapper.toDomain(it) }
+    }
+
 }

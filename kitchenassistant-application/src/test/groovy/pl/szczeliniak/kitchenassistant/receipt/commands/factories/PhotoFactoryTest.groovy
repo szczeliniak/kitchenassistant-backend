@@ -15,7 +15,7 @@ class PhotoFactoryTest extends Specification {
     def 'should create photo'() {
 
         when:
-        def result = photoFactory.create(4)
+        def result = photoFactory.create("name", 1)
 
         then:
         Assertions.assertThat(result).usingRecursiveComparison()
@@ -24,7 +24,7 @@ class PhotoFactoryTest extends Specification {
     }
 
     private static Photo photo() {
-        return new Photo(0, 4, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Photo(0, "name", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

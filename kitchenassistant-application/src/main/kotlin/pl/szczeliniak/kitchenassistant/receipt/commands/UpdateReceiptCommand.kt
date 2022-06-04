@@ -3,7 +3,6 @@ package pl.szczeliniak.kitchenassistant.receipt.commands
 import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.UpdateReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.AuthorFactory
-import pl.szczeliniak.kitchenassistant.receipt.commands.factories.PhotoFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.TagFactory
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
@@ -13,7 +12,6 @@ class UpdateReceiptCommand(
     private val categoryDao: CategoryDao,
     private val tagDao: TagDao,
     private val tagFactory: TagFactory,
-    private val photoFactory: PhotoFactory,
     private val photoDao: PhotoDao,
     private val authorFactory: AuthorFactory,
     private val authorDao: AuthorDao
@@ -40,7 +38,10 @@ class UpdateReceiptCommand(
                     tagFactory.create(it, receipt.userId)
                 )
             },
-            dto.photos.map { receipt.getPhotoByFileId(it) ?: photoDao.save(photoFactory.create(it)) }
+            dto.photos.map {
+                receipt.getPhotoById(it) ?: photoDao.findById(it)
+                ?: throw NotFoundException("Photo with id $it not found")
+            }
         )
 
         tagDao.saveAll(receipt.tags)

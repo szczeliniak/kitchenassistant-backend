@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.file
+package pl.szczeliniak.kitchenassistant.receipt
 
 enum class SupportedMediaType(val extension: String, val mimeType: String) {
 

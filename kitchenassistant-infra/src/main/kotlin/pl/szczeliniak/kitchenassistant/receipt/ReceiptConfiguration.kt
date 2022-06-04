@@ -2,7 +2,6 @@ package pl.szczeliniak.kitchenassistant.receipt
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import pl.szczeliniak.kitchenassistant.file.queries.CheckIfFileExistsQuery
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.*
 import pl.szczeliniak.kitchenassistant.receipt.queries.*
@@ -32,7 +31,6 @@ class ReceiptConfiguration {
         categoryDao: CategoryDao,
         tagDao: TagDao,
         tagFactory: TagFactory,
-        photoFactory: PhotoFactory,
         photoDao: PhotoDao,
         authorFactory: AuthorFactory,
         authorDao: AuthorDao
@@ -42,7 +40,6 @@ class ReceiptConfiguration {
             categoryDao,
             tagDao,
             tagFactory,
-            photoFactory,
             photoDao,
             authorFactory,
             authorDao
@@ -80,7 +77,7 @@ class ReceiptConfiguration {
         DeleteIngredientCommand(receiptDao, ingredientDao)
 
     @Bean
-    fun stepFactory(checkIfFileExistsQuery: CheckIfFileExistsQuery): StepFactory = StepFactory(checkIfFileExistsQuery)
+    fun stepFactory(): StepFactory = StepFactory()
 
     @Bean
     fun ingredientFactory(): IngredientFactory = IngredientFactory()
@@ -110,11 +107,9 @@ class ReceiptConfiguration {
     @Bean
     fun assignPhotosToReceiptCommand(
         receiptDao: ReceiptDao,
-        checkIfFileExistsQuery: CheckIfFileExistsQuery,
-        photoFactory: PhotoFactory,
         photoDao: PhotoDao
     ) =
-        AssignReceiptPhotosCommand(receiptDao, checkIfFileExistsQuery, photoFactory, photoDao)
+        AssignReceiptPhotosCommand(receiptDao, photoDao)
 
     @Bean
     fun getCategoriesQuery(categoryDao: CategoryDao, receiptConverter: ReceiptConverter): GetCategoriesQuery =
@@ -135,24 +130,32 @@ class ReceiptConfiguration {
         ingredientFactory: IngredientFactory,
         stepFactory: StepFactory,
         categoryDao: CategoryDao,
-        photoFactory: PhotoFactory,
         tagDao: TagDao,
         tagFactory: TagFactory,
-        checkIfFileExistsQuery: CheckIfFileExistsQuery,
         authorDao: AuthorDao,
-        authorFactory: AuthorFactory
+        authorFactory: AuthorFactory,
+        photoDao: PhotoDao
     ): ReceiptFactory =
         ReceiptFactory(
             getUserByIdQuery,
             ingredientFactory,
             stepFactory,
             categoryDao,
-            photoFactory,
             tagDao,
             tagFactory,
-            checkIfFileExistsQuery,
             authorDao,
-            authorFactory
+            authorFactory,
+            photoDao
         )
+
+    @Bean
+    fun uploadPhotoCommand(ftpClient: FtpClient, photoDao: PhotoDao, photoFactory: PhotoFactory) =
+        UploadPhotoCommand(ftpClient, photoDao, photoFactory)
+
+    @Bean
+    fun downloadPhotoCommand(ftpClient: FtpClient, photoDao: PhotoDao) = DownloadPhotoQuery(ftpClient, photoDao)
+
+    @Bean
+    fun deletePhotoCommand(ftpClient: FtpClient, photoDao: PhotoDao) = DeletePhotoCommand(ftpClient, photoDao)
 
 }

@@ -1,12 +1,11 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands.factories
 
 import org.assertj.core.api.Assertions
-import pl.szczeliniak.kitchenassistant.file.queries.CheckIfFileExistsQuery
-import pl.szczeliniak.kitchenassistant.file.queries.dtos.CheckIfFileExistsResponse
 import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.CheckIfFileExistsResponse
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
@@ -21,15 +20,14 @@ class ReceiptFactorySpec extends Specification {
     def ingredientFactory = Mock(IngredientFactory)
     def stepFactory = Mock(StepFactory)
     def categoryDao = Mock(CategoryDao)
-    def photoFactory = Mock(PhotoFactory)
     def tagDao = Mock(TagDao)
     def tagFactory = Mock(TagFactory)
-    def checkIfFileExistsQuery = Mock(CheckIfFileExistsQuery)
     def authorDao = Mock(AuthorDao)
     def authorFactory = Mock(AuthorFactory)
+    def photoDao = Mock(PhotoDao)
 
     @Subject
-    def receiptFactory = new ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, categoryDao, photoFactory, tagDao, tagFactory, checkIfFileExistsQuery, authorDao, authorFactory)
+    def receiptFactory = new ReceiptFactory(getUserByIdQuery, ingredientFactory, stepFactory, categoryDao, tagDao, tagFactory, authorDao, authorFactory, photoDao)
 
     def 'should create receipt'() {
         given:
@@ -41,10 +39,9 @@ class ReceiptFactorySpec extends Specification {
         def author = author()
 
         getUserByIdQuery.execute(1) >> userResponse()
-        checkIfFileExistsQuery.execute(99) >> checkIfFileExistsResponse()
+        photoDao.findById(99) >> photo()
         ingredientFactory.create(newIngredientDto) >> ingredient()
         stepFactory.create(newStepDto) >> step()
-        photoFactory.create(99) >> photo()
         categoryDao.findById(2) >> category
         tagDao.findByName("EXISTING_TAG", 4) >> tag(35, "EXISTING_TAG")
         tagDao.findByName("NEW_TAG", 4) >> null
@@ -75,7 +72,7 @@ class ReceiptFactorySpec extends Specification {
     }
 
     private static NewStepDto newStepDto() {
-        return new NewStepDto("", "", 0, Collections.emptySet())
+        return new NewStepDto("", "", 0)
     }
 
     private static UserResponse userResponse() {
@@ -88,7 +85,7 @@ class ReceiptFactorySpec extends Specification {
     }
 
     private static Photo photo() {
-        return new Photo(99, 4, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Photo(99, "", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Tag tag(Integer id, String name) {

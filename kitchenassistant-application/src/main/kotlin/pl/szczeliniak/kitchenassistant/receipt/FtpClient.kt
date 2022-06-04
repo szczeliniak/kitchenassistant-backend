@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.file
+package pl.szczeliniak.kitchenassistant.receipt
 
 interface FtpClient {
 

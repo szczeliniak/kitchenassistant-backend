@@ -37,7 +37,7 @@ open class ReceiptConverter {
     }
 
     private fun map(photo: Photo): PhotoDto {
-        return PhotoDto(photo.id, photo.fileId)
+        return PhotoDto(photo.id, photo.name)
     }
 
     private fun map(step: Step): StepDto {

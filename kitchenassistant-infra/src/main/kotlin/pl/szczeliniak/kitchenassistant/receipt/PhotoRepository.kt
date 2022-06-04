@@ -18,4 +18,17 @@ class PhotoRepository(@PersistenceContext private val entityManager: EntityManag
         return entity
     }
 
+    fun findById(id: Int): PhotoEntity? {
+        return entityManager
+            .createQuery(
+                "SELECT r FROM PhotoEntity r WHERE r.id = :id AND r.deleted = false",
+                PhotoEntity::class.java
+            )
+            .setParameter("id", id)
+            .resultList
+            .stream()
+            .findFirst()
+            .orElse(null)
+    }
+
 }

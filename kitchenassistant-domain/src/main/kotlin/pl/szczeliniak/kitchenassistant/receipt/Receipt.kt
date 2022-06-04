@@ -117,8 +117,8 @@ class Receipt(
         return photo
     }
 
-    fun getPhotoByFileId(fileId: Int): Photo? {
-        return photos.firstOrNull { photo -> photo.fileId == fileId }
+    fun getPhotoById(photoId: Int): Photo? {
+        return photos.firstOrNull { photo -> photo.id == photoId }
     }
 
     fun addPhoto(photo: Photo) {
@@ -134,8 +134,8 @@ class Receipt(
         return tags_.firstOrNull { it.name.lowercase() == name.lowercase() }
     }
 
-    fun hasPhotoWithFileId(fileId: Int): Boolean {
-        return this.photos_.any { it.fileId == fileId }
+    fun hasPhotoWithId(photoId: Int): Boolean {
+        return this.photos_.any { it.id == photoId }
     }
 
 }

@@ -8,18 +8,22 @@ class PhotoMapper {
     fun toDomain(entity: PhotoEntity): Photo {
         return Photo(
             entity.id,
-            entity.fileId,
+            entity.name,
+            entity.userId,
+            entity.deleted,
             entity.createdAt,
             entity.modifiedAt
         )
     }
 
-    fun toEntity(file: Photo): PhotoEntity {
+    fun toEntity(photo: Photo): PhotoEntity {
         return PhotoEntity(
-            file.id,
-            file.fileId,
-            file.createdAt,
-            file.modifiedAt
+            photo.id,
+            photo.name,
+            photo.userId,
+            photo.deleted,
+            photo.createdAt,
+            photo.modifiedAt
         )
     }
 

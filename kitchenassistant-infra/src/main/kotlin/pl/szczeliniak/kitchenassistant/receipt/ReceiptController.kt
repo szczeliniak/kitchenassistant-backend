@@ -1,8 +1,11 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
 import org.hibernate.validator.constraints.Length
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.*
 import pl.szczeliniak.kitchenassistant.receipt.queries.*
@@ -32,7 +35,10 @@ class ReceiptController(
     private val assignReceiptPhotosCommand: AssignReceiptPhotosCommand,
     private val getTagsQuery: GetTagsQuery,
     private val markReceiptAsFavoriteCommand: MarkReceiptAsFavoriteCommand,
-    private val getAuthorsQuery: GetAuthorsQuery
+    private val getAuthorsQuery: GetAuthorsQuery,
+    private val uploadPhotoCommand: UploadPhotoCommand,
+    private val deletePhotoCommand: DeletePhotoCommand,
+    private val downloadPhotoQuery: DownloadPhotoQuery
 ) {
 
     @GetMapping("/{id}")
@@ -144,7 +150,7 @@ class ReceiptController(
     @PutMapping("/{id}/photos")
     fun assignReceiptPhotos(
         @PathVariable id: Int,
-        @Valid @RequestBody request: AssignFilesAsReceiptPhotosDto
+        @Valid @RequestBody request: AssignPhotosToReceiptDto
     ): SuccessResponse {
         return assignReceiptPhotosCommand.execute(id, request)
     }
@@ -152,6 +158,24 @@ class ReceiptController(
     @PutMapping("/{id}/favorite/{isFavorite}")
     fun markReceiptAsFavorite(@PathVariable id: Int, @PathVariable isFavorite: Boolean): SuccessResponse {
         return markReceiptAsFavoriteCommand.execute(id, isFavorite)
+    }
+
+    @PostMapping("/photos")
+    fun uploadPhoto(@RequestParam userId: Int, @RequestParam("file") file: MultipartFile): SuccessResponse {
+        return uploadPhotoCommand.execute(file.originalFilename ?: file.name, file.bytes, userId)
+    }
+
+    @GetMapping("/photos/{id}")
+    fun downloadPhoto(@PathVariable id: Int): ResponseEntity<ByteArray> {
+        val response = downloadPhotoQuery.execute(id)
+        return ResponseEntity.ok()
+            .contentType(MediaType.parseMediaType(response.mediaType.mimeType))
+            .body(response.body)
+    }
+
+    @DeleteMapping("/photos/{id}")
+    fun deletePhoto(@PathVariable id: Int): SuccessResponse {
+        return deletePhotoCommand.execute(id)
     }
 
 }

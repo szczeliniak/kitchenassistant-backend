@@ -1,14 +1,14 @@
-package pl.szczeliniak.kitchenassistant.file.queries.dtos
+package pl.szczeliniak.kitchenassistant.receipt.queries.dto
 
-import pl.szczeliniak.kitchenassistant.file.SupportedMediaType
+import pl.szczeliniak.kitchenassistant.receipt.SupportedMediaType
 
-data class GetFileResponse(val mediaType: SupportedMediaType, val body: ByteArray) {
+data class GetPhotoResponse(val mediaType: SupportedMediaType, val body: ByteArray) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as GetFileResponse
+        other as GetPhotoResponse
 
         if (mediaType != other.mediaType) return false
         if (!body.contentEquals(other.body)) return false

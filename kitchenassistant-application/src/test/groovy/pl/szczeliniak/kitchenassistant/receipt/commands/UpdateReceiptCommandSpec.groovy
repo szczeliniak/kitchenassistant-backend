@@ -3,7 +3,6 @@ package pl.szczeliniak.kitchenassistant.receipt.commands
 import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.UpdateReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.AuthorFactory
-import pl.szczeliniak.kitchenassistant.receipt.commands.factories.PhotoFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.TagFactory
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
@@ -18,13 +17,12 @@ class UpdateReceiptCommandSpec extends Specification {
     def categoryDao = Mock(CategoryDao)
     def tagDao = Mock(TagDao)
     def tagFactory = Mock(TagFactory)
-    def photoFactory = Mock(PhotoFactory)
     def photoDao = Mock(PhotoDao)
     def authorDao = Mock(AuthorDao)
     def authorFactory = Mock(AuthorFactory)
 
     @Subject
-    def updateReceiptCommand = new UpdateReceiptCommand(receiptDao, categoryDao, tagDao, tagFactory, photoFactory, photoDao, authorFactory, authorDao)
+    def updateReceiptCommand = new UpdateReceiptCommand(receiptDao, categoryDao, tagDao, tagFactory, photoDao, authorFactory, authorDao)
 
     def 'should update receipt'() {
         given:
@@ -32,9 +30,9 @@ class UpdateReceiptCommandSpec extends Specification {
         def assignedTag = tag(11, "ASSIGNED_TAG")
         def newTag = tag(12, "NEW_TAG")
         def existingTag = tag(13, "EXISTING_TAG")
-        def photoToRemove = photo(15, 20)
-        def assignedPhoto = photo(16, 21)
-        def newPhoto = photo(17, 22)
+        def photoToRemove = photo(15)
+        def assignedPhoto = photo(16)
+        def newPhoto = photo(17)
         def receipt = receipt(
                 new HashSet<Tag>(List.of(tagToRemove, assignedTag)),
                 new HashSet<Photo>(List.of(photoToRemove, assignedPhoto)))
@@ -48,7 +46,7 @@ class UpdateReceiptCommandSpec extends Specification {
         tagDao.findByName("NEW_TAG", 4) >> null
         tagFactory.create("NEW_TAG", 4) >> newTag
         authorDao.findByName("AUTHOR", 4) >> null
-        photoFactory.create(22) >> newPhoto
+        photoDao.findById(22) >> newPhoto
         tagDao.save(newTag) >> newTag
         authorFactory.create("AUTHOR", 4) >> author
         photoDao.save(newPhoto) >> newPhoto
@@ -71,7 +69,7 @@ class UpdateReceiptCommandSpec extends Specification {
     }
 
     private static UpdateReceiptDto updateReceiptDto() {
-        return new UpdateReceiptDto("NAME", 3, "DESC", "AUTHOR", "SOURCE", Set.of("ASSIGNED_TAG", "EXISTING_TAG", "NEW_TAG",), Set.of(21, 22))
+        return new UpdateReceiptDto("NAME", 3, "DESC", "AUTHOR", "SOURCE", Set.of("ASSIGNED_TAG", "EXISTING_TAG", "NEW_TAG",), Set.of(16, 22))
     }
 
     private static Receipt receipt(Set<Tag> tags, Set<Photo> photos) {
@@ -89,8 +87,8 @@ class UpdateReceiptCommandSpec extends Specification {
         return new Tag(id, name, 4, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
-    static Photo photo(Integer id, Integer fileId) {
-        return new Photo(id, fileId, ZonedDateTime.now(), ZonedDateTime.now())
+    static Photo photo(Integer id) {
+        return new Photo(id, "", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     static Author author() {

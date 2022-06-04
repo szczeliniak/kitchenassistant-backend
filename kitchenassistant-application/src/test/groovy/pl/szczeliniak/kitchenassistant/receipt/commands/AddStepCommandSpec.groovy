@@ -35,7 +35,7 @@ class AddStepCommandSpec extends Specification {
     }
 
     private static NewStepDto newStepDto() {
-        return new NewStepDto("", "", 0, Collections.emptySet())
+        return new NewStepDto("", "", 0)
     }
 
     private static Step step() {
