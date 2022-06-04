@@ -12,8 +12,8 @@ class UploadPhotoCommand(
 ) {
 
     fun execute(name: String, content: ByteArray, userId: Int): SuccessResponse {
-        val file = photoFactory.create(ftpClient.upload(name, content), userId)
-        return SuccessResponse(photoDao.save(file).id)
+        val photo = photoFactory.create(ftpClient.upload(name, content), userId)
+        return SuccessResponse(photoDao.save(photo).id)
     }
 
 }

@@ -25,7 +25,7 @@ internal class DownloadPhotoCommandTest : JunitBaseClass() {
     @Test
     fun shouldReturnPhoto() {
         val bytes = ByteArray(10)
-        whenever(photoDao.findById(3)).thenReturn(file())
+        whenever(photoDao.findById(3)).thenReturn(photo())
         whenever(ftpClient.download("NAME.jpg")).thenReturn(bytes)
 
         val result = downloadPhotoQuery.execute(3)
@@ -33,7 +33,7 @@ internal class DownloadPhotoCommandTest : JunitBaseClass() {
         assertThat(result).isEqualTo(GetPhotoResponse(SupportedMediaType.JPG, bytes))
     }
 
-    private fun file(): Photo {
+    private fun photo(): Photo {
         return Photo(1, "NAME.jpg", 4, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 

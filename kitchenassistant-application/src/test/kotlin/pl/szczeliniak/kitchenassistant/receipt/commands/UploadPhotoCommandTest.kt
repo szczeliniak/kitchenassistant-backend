@@ -27,13 +27,13 @@ internal class UploadPhotoCommandTest : JunitBaseClass() {
 
     @Test
     fun shouldUploadPhoto() {
-        val file = photo()
+        val photo = photo()
         val bytes = ByteArray(10)
-        whenever(ftpClient.upload("FILE_NAME", bytes)).thenReturn("NAME")
-        whenever(photoFactory.create("NAME", 4)).thenReturn(file)
-        whenever(photoDao.save(file)).thenReturn(file)
+        whenever(ftpClient.upload("PHOTO_NAME", bytes)).thenReturn("NAME")
+        whenever(photoFactory.create("NAME", 4)).thenReturn(photo)
+        whenever(photoDao.save(photo)).thenReturn(photo)
 
-        val response = uploadPhotoCommand.execute("FILE_NAME", bytes, 4)
+        val response = uploadPhotoCommand.execute("PHOTO_NAME", bytes, 4)
 
         assertThat(response).isEqualTo(SuccessResponse(1))
     }

@@ -5,7 +5,6 @@ import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.CheckIfFileExistsResponse
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
@@ -102,10 +101,6 @@ class ReceiptFactorySpec extends Specification {
 
     private static Category category() {
         return new Category(0, "", 0, false, ZonedDateTime.now(), ZonedDateTime.now())
-    }
-
-    private static CheckIfFileExistsResponse checkIfFileExistsResponse() {
-        return new CheckIfFileExistsResponse(true)
     }
 
     static Author author() {

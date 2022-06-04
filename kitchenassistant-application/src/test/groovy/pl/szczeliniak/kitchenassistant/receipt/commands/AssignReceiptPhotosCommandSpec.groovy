@@ -34,7 +34,7 @@ class AssignReceiptPhotosCommandSpec extends Specification {
         receipt.photos.contains(photo)
     }
 
-    def 'should not add photo to receipt when photo with file id already added'() {
+    def 'should not add photo to receipt when photo already added'() {
         given:
         def photo = photo()
         def receipt = receipt(Set.of(photo))

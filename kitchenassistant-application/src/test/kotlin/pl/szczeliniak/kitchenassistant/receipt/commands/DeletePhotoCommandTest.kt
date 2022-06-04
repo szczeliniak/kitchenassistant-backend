@@ -25,14 +25,14 @@ internal class DeletePhotoCommandTest : JunitBaseClass() {
 
     @Test
     fun shouldDeletePhoto() {
-        val file = photo()
-        whenever(photoDao.findById(1)).thenReturn(file)
-        whenever(photoDao.save(file)).thenReturn(file)
+        val photo = photo()
+        whenever(photoDao.findById(1)).thenReturn(photo)
+        whenever(photoDao.save(photo)).thenReturn(photo)
 
         val response = deletePhotoCommand.execute(1)
 
         Mockito.verify(ftpClient).delete("NAME")
-        Assertions.assertEquals(true, file.deleted)
+        Assertions.assertEquals(true, photo.deleted)
         Assertions.assertEquals(SuccessResponse(1), response)
     }
 

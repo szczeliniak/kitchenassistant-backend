@@ -10,10 +10,10 @@ import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 class DownloadPhotoQuery(private val ftpClient: FtpClient, private val photoDao: PhotoDao) {
 
     fun execute(id: Int): GetPhotoResponse {
-        val file = photoDao.findById(id) ?: throw NotFoundException("Photo not found")
+        val photo = photoDao.findById(id) ?: throw NotFoundException("Photo not found")
         return GetPhotoResponse(
-            SupportedMediaType.byFileName(file.name) ?: throw BadRequestException("Unsupported file media type"),
-            ftpClient.download(file.name)
+            SupportedMediaType.byFileName(photo.name) ?: throw BadRequestException("Unsupported file media type"),
+            ftpClient.download(photo.name)
         )
     }
 
