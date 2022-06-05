@@ -16,8 +16,8 @@ class LoginWithFacebookCommand(
 ) {
 
     fun execute(dto: LoginWithFacebookDto): LoginResponse {
-        val user = facebookConnector.login(dto.id, dto.token)?.let {
-            userDao.findByEmail(it.email) ?: userDao.save(userFactory.create(it.email, null, it.name))
+        val user = facebookConnector.login(dto.token)?.let {
+            userDao.findByEmail(it.email!!) ?: userDao.save(userFactory.create(it.email, null, it.name!!))
         } ?: throw KitchenAssistantException(ErrorCode.CANNOT_LOGIN_WITH_FACEBOOK)
 
         val token = tokenFactory.create(user.id)
