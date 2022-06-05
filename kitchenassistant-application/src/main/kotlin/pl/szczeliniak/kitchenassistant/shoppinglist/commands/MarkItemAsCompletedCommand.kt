@@ -1,7 +1,8 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.commands
 
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItemDao
 
@@ -12,10 +13,11 @@ class MarkItemAsCompletedCommand(
 
     fun execute(shoppingListId: Int, itemId: Int, completed: Boolean): SuccessResponse {
         val shoppingList =
-            shoppingListDao.findById(shoppingListId) ?: throw NotFoundException("Shopping list not found")
+            shoppingListDao.findById(shoppingListId)
+                ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_NOT_FOUND)
 
         val shoppingListItem = shoppingList.items.firstOrNull { it.id == itemId }
-            ?: throw NotFoundException("Shopping list item not found")
+            ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_ITEM_NOT_FOUND)
         shoppingListItem.markAsCompleted(completed)
 
         shoppingListItemDao.save(shoppingListItem)

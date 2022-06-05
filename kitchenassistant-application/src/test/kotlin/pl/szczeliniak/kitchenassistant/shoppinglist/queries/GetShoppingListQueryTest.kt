@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
@@ -38,7 +38,7 @@ internal class GetShoppingListQueryTest : JunitBaseClass() {
         whenever(shoppingListDao.findById(1)).thenReturn(null)
 
         assertThatThrownBy { getShoppingListQuery.execute(1) }
-            .isInstanceOf(NotFoundException::class.java)
+            .isInstanceOf(KitchenAssistantException::class.java)
             .hasMessage("Shopping list not found")
     }
 

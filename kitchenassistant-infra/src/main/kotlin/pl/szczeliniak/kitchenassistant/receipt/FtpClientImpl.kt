@@ -6,10 +6,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import pl.szczeliniak.kitchenassistant.shared.exceptions.BadRequestException
-import pl.szczeliniak.kitchenassistant.shared.exceptions.FileTooLargeException
-import pl.szczeliniak.kitchenassistant.shared.exceptions.FtpException
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -31,10 +29,10 @@ class FtpClientImpl(
 
     override fun upload(name: String, content: ByteArray): String {
         if (content.size > MAX_BYTES_SIZE) {
-            throw FileTooLargeException("File too large")
+            throw KitchenAssistantException(ErrorCode.FILE_TOO_LARGE)
         }
         if (SupportedMediaType.byFileName(name) == null) {
-            throw BadRequestException("Unsupported file media type")
+            throw KitchenAssistantException(ErrorCode.UNSUPPORTED_MEDIA_TYPE)
         }
 
         logger.info("Uploading file with name: $name")
@@ -48,7 +46,7 @@ class FtpClientImpl(
             client.storeFile("$BASE_DIRECTORY/$photoName", inputStream)
         } catch (exception: IOException) {
             logger.error(exception.message ?: "Error while file upload", exception)
-            throw FtpException(exception.message ?: "Error while file upload")
+            throw KitchenAssistantException(ErrorCode.FTP_UPLOAD_ERROR)
         } finally {
             close(client)
             inputStream?.close()
@@ -63,7 +61,7 @@ class FtpClientImpl(
         val client = open()
 
         if (!exists(client, name)) {
-            throw NotFoundException("File $name not found")
+            throw KitchenAssistantException(ErrorCode.FTP_FILE_NOT_FOUND)
         }
 
         val content: ByteArray
@@ -74,7 +72,7 @@ class FtpClientImpl(
             byteArrayOutputStream.close()
         } catch (exception: IOException) {
             logger.error(exception.message ?: "Error while file download", exception)
-            throw FtpException(exception.message ?: "Error while file download")
+            throw KitchenAssistantException(ErrorCode.FTP_DOWNLOAD_ERROR)
         } finally {
             close(client)
         }
@@ -88,14 +86,14 @@ class FtpClientImpl(
         val client = open()
 
         if (!exists(client, name)) {
-            throw NotFoundException("File $name not found")
+            throw KitchenAssistantException(ErrorCode.FTP_FILE_NOT_FOUND)
         }
 
         try {
             client.deleteFile("$BASE_DIRECTORY/$name")
         } catch (exception: IOException) {
             logger.error(exception.message ?: "Error while file delete", exception)
-            throw FtpException(exception.message ?: "Error while file delete")
+            throw KitchenAssistantException(ErrorCode.FTP_DELETE_ERROR)
         } finally {
             close(client)
         }
@@ -109,9 +107,8 @@ class FtpClientImpl(
         ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE)
         ftpClient.login(user, password)
         if (!FTPReply.isPositiveCompletion(ftpClient.replyCode)) {
-            val code = ftpClient.replyCode
             close(ftpClient)
-            throw FtpException("FTP connection error. Code: $code")
+            throw KitchenAssistantException(ErrorCode.FTP_GENERIC_ERROR)
         }
         return ftpClient
     }
@@ -140,7 +137,7 @@ class FtpClientImpl(
             }
         } catch (exception: IOException) {
             logger.error(exception.message ?: "Error while file exist check", exception)
-            throw FtpException(exception.message ?: "Error while file exist check")
+            throw KitchenAssistantException(ErrorCode.FTP_FILE_CHECK_ERROR)
         }
         return false
     }

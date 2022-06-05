@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.user
 
-import pl.szczeliniak.kitchenassistant.shared.exceptions.LoginException
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import java.time.ZonedDateTime
 
 data class User(
@@ -22,7 +23,7 @@ data class User(
     fun validatePassword(password: String, passwordMatcher: PasswordMatcher) {
         this.password?.let {
             if (!passwordMatcher.matches(it, password)) {
-                throw LoginException("Passwords do not match")
+                throw KitchenAssistantException(ErrorCode.PASSWORDS_DO_NOT_MATCH)
             }
         }
     }

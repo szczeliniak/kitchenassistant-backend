@@ -1,8 +1,8 @@
 package pl.szczeliniak.kitchenassistant.user.queries
 
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
-import pl.szczeliniak.kitchenassistant.shared.exceptions.MissingUserIdException
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 
@@ -16,8 +16,8 @@ open class GetLoggedUserQuery(
         return UserResponse(
             userConverter.map(
                 userDao.findById(
-                    requestContext.userId() ?: throw MissingUserIdException()
-                ) ?: throw NotFoundException("User not found")
+                    requestContext.userId() ?: throw KitchenAssistantException(ErrorCode.MISSING_USER_ID)
+                ) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
             )
         )
     }

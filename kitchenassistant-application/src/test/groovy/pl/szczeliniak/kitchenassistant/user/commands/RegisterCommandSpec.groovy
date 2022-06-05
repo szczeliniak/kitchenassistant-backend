@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.user.commands
 
-
-import pl.szczeliniak.kitchenassistant.shared.exceptions.UserExistsException
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.User
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
@@ -46,7 +45,7 @@ class RegisterCommandSpec extends Specification {
         registerCommand.execute(registerDto())
 
         then:
-        thrown(UserExistsException)
+        thrown(KitchenAssistantException)
     }
 
     private static RegisterDto registerDto() {

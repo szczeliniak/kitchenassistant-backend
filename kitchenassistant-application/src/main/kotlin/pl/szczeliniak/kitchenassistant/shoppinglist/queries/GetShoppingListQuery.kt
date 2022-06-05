@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.queries
 
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListResponse
 
@@ -12,7 +13,7 @@ class GetShoppingListQuery(
     fun execute(userId: Int): ShoppingListResponse {
         return ShoppingListResponse(
             shoppingListConverter.map(
-                shoppingListDao.findById(userId) ?: throw NotFoundException("Shopping list not found")
+                shoppingListDao.findById(userId) ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_NOT_FOUND)
             )
         )
     }

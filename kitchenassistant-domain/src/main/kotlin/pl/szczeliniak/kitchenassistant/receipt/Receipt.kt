@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import java.time.ZonedDateTime
 import java.util.*
 
@@ -75,7 +75,7 @@ class Receipt(
 
     fun markAsDeleted() {
         if (deleted_) {
-            throw NotAllowedOperationException("Receipt is already marked as deleted!")
+            throw KitchenAssistantException(ErrorCode.RECEIPT_ALREADY_REMOVED)
         }
         deleted_ = true
         this.modifiedAt_ = ZonedDateTime.now()
@@ -98,23 +98,18 @@ class Receipt(
 
     fun deleteIngredientById(ingredientId: Int): Ingredient {
         val ingredient =
-            ingredients.firstOrNull { it.id == ingredientId } ?: throw NotFoundException("Ingredient not found")
+            ingredients.firstOrNull { it.id == ingredientId }
+                ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_NOT_FOUND)
         ingredient.markAsDeleted()
         this.modifiedAt_ = ZonedDateTime.now()
         return ingredient
     }
 
     fun deleteStepById(stepId: Int): Step {
-        val step = steps.firstOrNull { it.id == stepId } ?: throw NotFoundException("Step not found")
+        val step = steps.firstOrNull { it.id == stepId } ?: throw KitchenAssistantException(ErrorCode.STEP_NOT_FOUND)
         step.markAsDeleted()
         this.modifiedAt_ = ZonedDateTime.now()
         return step
-    }
-
-    fun deletePhotoById(id: Int): Photo {
-        val photo = photos_.firstOrNull { it.id == id } ?: throw NotFoundException("Photo not found")
-        photos_.remove(photo)
-        return photo
     }
 
     fun getPhotoById(photoId: Int): Photo? {
@@ -124,10 +119,6 @@ class Receipt(
     fun addPhoto(photo: Photo) {
         photos_ += (photo)
         this.modifiedAt_ = ZonedDateTime.now()
-    }
-
-    fun getStepById(stepId: Int): Step {
-        return steps_.firstOrNull { it.id == stepId } ?: throw NotFoundException("Step not found")
     }
 
     fun getTagByName(name: String): Tag? {

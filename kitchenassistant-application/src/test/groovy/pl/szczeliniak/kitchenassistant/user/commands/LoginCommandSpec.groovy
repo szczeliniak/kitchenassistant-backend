@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.user.commands
 
-import pl.szczeliniak.kitchenassistant.shared.exceptions.LoginException
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.PasswordMatcher
 import pl.szczeliniak.kitchenassistant.user.User
 import pl.szczeliniak.kitchenassistant.user.UserDao
@@ -44,7 +43,7 @@ class LoginCommandSpec extends Specification {
         loginCommand.execute(dto())
 
         then:
-        thrown(NotFoundException)
+        thrown(KitchenAssistantException)
     }
 
     def 'should throw exception when passwords do not match'() {
@@ -55,7 +54,7 @@ class LoginCommandSpec extends Specification {
         loginCommand.execute(dto())
 
         then:
-        thrown(LoginException)
+        thrown(KitchenAssistantException)
     }
 
     private static LoginDto dto() {

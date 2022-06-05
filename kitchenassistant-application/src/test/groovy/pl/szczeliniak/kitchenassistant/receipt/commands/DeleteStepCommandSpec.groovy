@@ -1,9 +1,8 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
 import pl.szczeliniak.kitchenassistant.receipt.*
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -41,7 +40,7 @@ class DeleteStepCommandSpec extends Specification {
         deleteStepCommand.execute(1, 3)
 
         then:
-        def e = thrown(NotFoundException)
+        def e = thrown(KitchenAssistantException)
         e.message == "Step not found"
     }
 
@@ -55,7 +54,7 @@ class DeleteStepCommandSpec extends Specification {
         deleteStepCommand.execute(1, 3)
 
         then:
-        def e = thrown(NotAllowedOperationException)
+        def e = thrown(KitchenAssistantException)
         e.message == "Step is already marked as deleted!"
     }
 

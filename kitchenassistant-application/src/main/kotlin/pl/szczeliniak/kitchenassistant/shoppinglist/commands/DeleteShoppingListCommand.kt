@@ -1,7 +1,8 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.commands
 
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
 
 class DeleteShoppingListCommand(
@@ -9,7 +10,8 @@ class DeleteShoppingListCommand(
 ) {
 
     fun execute(id: Int): SuccessResponse {
-        val shoppingList = shoppingListDao.findById(id) ?: throw NotFoundException("Shopping list not found")
+        val shoppingList =
+            shoppingListDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_NOT_FOUND)
         shoppingList.markAsDeleted()
 
         return SuccessResponse(shoppingListDao.save(shoppingList).id)

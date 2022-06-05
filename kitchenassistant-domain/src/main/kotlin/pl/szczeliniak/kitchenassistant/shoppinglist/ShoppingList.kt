@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist
 
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.util.*
@@ -32,7 +32,7 @@ data class ShoppingList(
 
     fun markAsDeleted() {
         if (deleted_) {
-            throw NotAllowedOperationException("Shopping list is already marked as deleted!")
+            throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_ALREADY_REMOVED)
         }
         deleted_ = true
         this.modifiedAt_ = ZonedDateTime.now()
@@ -50,7 +50,8 @@ data class ShoppingList(
 
     fun deleteItemById(shoppingListItemId: Int): ShoppingListItem {
         val item =
-            items.firstOrNull { it.id == shoppingListItemId } ?: throw NotFoundException("Shopping list item not found")
+            items.firstOrNull { it.id == shoppingListItemId }
+                ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_ITEM_NOT_FOUND)
         item.markAsDeleted()
         this.modifiedAt_ = ZonedDateTime.now()
         return item

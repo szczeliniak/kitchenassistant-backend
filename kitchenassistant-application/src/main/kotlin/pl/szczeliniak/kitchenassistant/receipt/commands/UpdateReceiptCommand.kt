@@ -4,8 +4,9 @@ import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.UpdateReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.AuthorFactory
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.TagFactory
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 
 class UpdateReceiptCommand(
     private val receiptDao: ReceiptDao,
@@ -18,7 +19,8 @@ class UpdateReceiptCommand(
 ) {
 
     fun execute(id: Int, dto: UpdateReceiptDto): SuccessResponse {
-        val receipt = receiptDao.findById(id) ?: throw NotFoundException("Receipt not found")
+        val receipt =
+            receiptDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
 
         receipt.update(
             dto.name,
@@ -40,7 +42,7 @@ class UpdateReceiptCommand(
             },
             dto.photos.map {
                 receipt.getPhotoById(it) ?: photoDao.findById(it)
-                ?: throw NotFoundException("Photo with id $it not found")
+                ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
             }
         )
 
@@ -53,7 +55,9 @@ class UpdateReceiptCommand(
         if (category != null && categoryId != null && category.id == categoryId) {
             return category
         }
-        return categoryId?.let { categoryDao.findById(it) ?: throw NotFoundException("Category not found") }
+        return categoryId?.let {
+            categoryDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
+        }
     }
 
 }

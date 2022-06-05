@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import java.time.ZonedDateTime
 
 data class Step(
@@ -22,7 +23,7 @@ data class Step(
 
     fun markAsDeleted() {
         if (deleted) {
-            throw NotAllowedOperationException("Step is already marked as deleted!")
+            throw KitchenAssistantException(ErrorCode.STEP_ALREADY_REMOVED)
         }
         deleted_ = true
         this.modifiedAt_ = ZonedDateTime.now()

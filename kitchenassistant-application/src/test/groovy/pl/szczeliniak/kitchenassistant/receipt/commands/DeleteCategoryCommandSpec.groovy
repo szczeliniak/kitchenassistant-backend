@@ -2,9 +2,8 @@ package pl.szczeliniak.kitchenassistant.receipt.commands
 
 import pl.szczeliniak.kitchenassistant.receipt.Category
 import pl.szczeliniak.kitchenassistant.receipt.CategoryDao
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -38,7 +37,7 @@ class DeleteCategoryCommandSpec extends Specification {
         deleteCategoryCommand.execute(1)
 
         then:
-        def e = thrown(NotFoundException)
+        def e = thrown(KitchenAssistantException)
         e.message == "Category not found"
     }
 
@@ -51,7 +50,7 @@ class DeleteCategoryCommandSpec extends Specification {
         deleteCategoryCommand.execute(1)
 
         then:
-        def e = thrown(NotAllowedOperationException)
+        def e = thrown(KitchenAssistantException)
         e.message == "Category is already marked as deleted!"
     }
 

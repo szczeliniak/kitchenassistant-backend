@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.user.commands
 
-import pl.szczeliniak.kitchenassistant.shared.exceptions.BadRequestException
-import pl.szczeliniak.kitchenassistant.shared.exceptions.UserExistsException
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
 import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterDto
@@ -16,12 +16,12 @@ class RegisterCommand(
 
     fun execute(dto: RegisterDto): LoginResponse {
         if (dto.password != dto.passwordRepeated) {
-            throw BadRequestException("Passwords do not match to each other")
+            throw KitchenAssistantException(ErrorCode.PASSWORDS_DO_NOT_MATCH)
         }
 
         var user = userDao.findByEmail(dto.email)
         if (user != null) {
-            throw UserExistsException("User with email already exists")
+            throw KitchenAssistantException(ErrorCode.USER_ALREADY_EXISTS)
         }
 
         user = userDao.save(userFactory.create(dto))

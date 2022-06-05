@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist
 
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import java.time.ZonedDateTime
 
 data class ShoppingListItem(
@@ -26,7 +27,7 @@ data class ShoppingListItem(
 
     fun markAsDeleted() {
         if (deleted_) {
-            throw NotAllowedOperationException("Shopping list item is already marked as deleted!")
+            throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_ITEM_ALREADY_REMOVED)
         }
         deleted_ = true
         this.modifiedAt_ = ZonedDateTime.now()

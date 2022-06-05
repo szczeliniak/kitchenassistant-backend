@@ -4,8 +4,9 @@ import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 import pl.szczeliniak.kitchenassistant.receipt.StepDao
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.StepFactory
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 
 class AddStepCommand(
     private val receiptDao: ReceiptDao,
@@ -14,7 +15,7 @@ class AddStepCommand(
 ) {
 
     fun execute(receiptId: Int, dto: NewStepDto): SuccessResponse {
-        val receipt = receiptDao.findById(receiptId) ?: throw NotFoundException("Receipt not found")
+        val receipt = receiptDao.findById(receiptId) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
         val step = stepDao.save(stepFactory.create(dto))
 
         receipt.addStep(step)

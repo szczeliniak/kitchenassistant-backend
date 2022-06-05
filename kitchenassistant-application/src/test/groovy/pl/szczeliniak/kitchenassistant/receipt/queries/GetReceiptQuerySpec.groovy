@@ -5,7 +5,7 @@ import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -41,7 +41,7 @@ class GetReceiptQuerySpec extends Specification {
         getReceiptQuery.execute(1)
 
         then:
-        def e = thrown(NotFoundException)
+        def e = thrown(KitchenAssistantException)
         e.message == "Receipt not found"
     }
 

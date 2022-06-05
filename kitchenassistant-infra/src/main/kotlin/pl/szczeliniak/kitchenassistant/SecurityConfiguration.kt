@@ -19,6 +19,8 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import javax.servlet.FilterChain
@@ -95,9 +97,9 @@ class SecurityConfiguration(
                         requestContext.userId(userId)
                         SecurityContextHolder.getContext().authentication = KitchenAssistantAuthentication(token)
                     } ?: kotlin.run {
-                        throw TokenException("Token is missing")
+                        throw KitchenAssistantException(ErrorCode.JWT_MISSING_TOKEN)
                     }
-                } catch (e: Exception) {
+                } catch (e: KitchenAssistantException) {
                     writeException(response, e.message)
                     return
                 }
@@ -109,16 +111,14 @@ class SecurityConfiguration(
             try {
                 return jwtParser.parseClaimsJws(token).body.subject.toInt()
             } catch (e: ExpiredJwtException) {
-                throw TokenException("Token is expired")
+                throw KitchenAssistantException(ErrorCode.JWT_EXPIRED_TOKEN)
             } catch (e: MalformedJwtException) {
-                throw TokenException("Token is malformed")
-            } catch (e: Exception) {
-                throw TokenException("Unknown token error")
+                throw KitchenAssistantException(ErrorCode.JWT_MALFORMED_TOKEN)
+            } catch (e: KitchenAssistantException) {
+                throw KitchenAssistantException(ErrorCode.JWT_GENERIC_ERROR)
             }
         }
 
     }
-
-    private class TokenException(message: String) : Exception(message)
 
 }

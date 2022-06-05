@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.User
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
@@ -38,7 +38,7 @@ internal class GetUserByIdQueryTest : JunitBaseClass() {
         whenever(userDao.findById(1)).thenReturn(null)
 
         assertThatThrownBy { getUserByIdQuery.execute(1) }
-            .isInstanceOf(NotFoundException::class.java)
+            .isInstanceOf(KitchenAssistantException::class.java)
             .hasMessage("User not found")
     }
 

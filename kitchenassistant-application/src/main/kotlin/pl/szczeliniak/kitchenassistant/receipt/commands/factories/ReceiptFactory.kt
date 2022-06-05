@@ -2,7 +2,8 @@ package pl.szczeliniak.kitchenassistant.receipt.commands.factories
 
 import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 
 open class ReceiptFactory(
@@ -32,12 +33,14 @@ open class ReceiptFactory(
             },
             source_ = dto.source,
             category_ = dto.categoryId?.let {
-                categoryDao.findById(it) ?: throw NotFoundException("Category with id $it not found")
+                categoryDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
             },
             description_ = dto.description,
             ingredients_ = dto.ingredients.map { ingredientFactory.create(it) }.toMutableSet(),
             steps_ = dto.steps.map { stepFactory.create(it) }.toMutableSet(),
-            photos_ = dto.photos.map { photoDao.findById(it) ?: throw NotFoundException("Photo with id $it not found") }
+            photos_ = dto.photos.map {
+                photoDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
+            }
                 .toMutableSet(),
             tags_ = dto.tags.map { tagDao.findByName(it, dto.userId) ?: tagDao.save(tagFactory.create(it, dto.userId)) }
                 .toMutableSet()

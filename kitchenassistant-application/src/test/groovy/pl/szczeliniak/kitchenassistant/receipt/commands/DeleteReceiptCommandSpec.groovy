@@ -3,9 +3,8 @@ package pl.szczeliniak.kitchenassistant.receipt.commands
 import pl.szczeliniak.kitchenassistant.receipt.Author
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotAllowedOperationException
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -39,7 +38,7 @@ class DeleteReceiptCommandSpec extends Specification {
         deleteReceiptCommand.execute(1)
 
         then:
-        def e = thrown(NotFoundException)
+        def e = thrown(KitchenAssistantException)
         e.message == "Receipt not found"
     }
 
@@ -53,7 +52,8 @@ class DeleteReceiptCommandSpec extends Specification {
         deleteReceiptCommand.execute(1)
 
         then:
-        def e = thrown(NotAllowedOperationException)
+        def e = thrown(KitchenAssistantException)
+        e.message == "Receipt is already marked as deleted!"
         e.message == "Receipt is already marked as deleted!"
     }
 

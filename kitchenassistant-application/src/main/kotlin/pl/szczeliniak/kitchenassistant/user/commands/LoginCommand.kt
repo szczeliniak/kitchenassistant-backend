@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.user.commands
 
-import pl.szczeliniak.kitchenassistant.shared.exceptions.NotFoundException
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.PasswordMatcher
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginDto
@@ -14,7 +15,7 @@ class LoginCommand(
 ) {
 
     fun execute(dto: LoginDto): LoginResponse {
-        val user = userDao.findByEmail(dto.email) ?: throw NotFoundException("User not found")
+        val user = userDao.findByEmail(dto.email) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
         user.validatePassword(dto.password, passwordMatcher)
         val token = tokenFactory.create(user.id)
         return LoginResponse(token.token, user.id, token.validTo)
