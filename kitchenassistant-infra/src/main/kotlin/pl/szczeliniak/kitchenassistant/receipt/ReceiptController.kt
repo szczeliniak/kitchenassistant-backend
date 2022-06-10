@@ -38,12 +38,14 @@ class ReceiptController(
     private val getAuthorsQuery: GetAuthorsQuery,
     private val uploadPhotoCommand: UploadPhotoCommand,
     private val deletePhotoCommand: DeletePhotoCommand,
-    private val downloadPhotoQuery: DownloadPhotoQuery
+    private val downloadPhotoQuery: DownloadPhotoQuery,
+    private val addIngredientGroupCommand: AddIngredientGroupCommand,
+    private val deleteIngredientGroupCommand: DeleteIngredientGroupCommand
 ) {
 
-    @GetMapping("/{id}")
-    fun getReceipt(@PathVariable id: Int): ReceiptResponse {
-        return getReceiptQuery.execute(id)
+    @GetMapping("/{receiptId}")
+    fun getReceipt(@PathVariable receiptId: Int): ReceiptResponse {
+        return getReceiptQuery.execute(receiptId)
     }
 
     @GetMapping
@@ -63,52 +65,77 @@ class ReceiptController(
         return addReceiptCommand.execute(dto)
     }
 
-    @PutMapping("/{id}")
-    fun updateReceipt(@PathVariable id: Int, @Valid @RequestBody dto: UpdateReceiptDto): SuccessResponse {
-        return updateReceiptCommand.execute(id, dto)
+    @PutMapping("/{receiptId}")
+    fun updateReceipt(@PathVariable receiptId: Int, @Valid @RequestBody dto: UpdateReceiptDto): SuccessResponse {
+        return updateReceiptCommand.execute(receiptId, dto)
     }
 
-    @DeleteMapping("/{id}")
-    fun deleteReceipt(@PathVariable id: Int): SuccessResponse {
-        return deleteReceiptCommand.execute(id)
+    @DeleteMapping("/{receiptId}")
+    fun deleteReceipt(@PathVariable receiptId: Int): SuccessResponse {
+        return deleteReceiptCommand.execute(receiptId)
     }
 
-    @PostMapping("{id}/steps")
-    fun addStep(@PathVariable id: Int, @Valid @RequestBody dto: NewStepDto): SuccessResponse {
-        return addStepCommand.execute(id, dto)
+    @PostMapping("{receiptId}/steps")
+    fun addStep(@PathVariable receiptId: Int, @Valid @RequestBody dto: NewStepDto): SuccessResponse {
+        return addStepCommand.execute(receiptId, dto)
     }
 
-    @PutMapping("/{id}/steps/{stepId}")
+    @PutMapping("/{receiptId}/steps/{stepId}")
     fun updateStep(
-        @PathVariable id: Int,
+        @PathVariable receiptId: Int,
         @PathVariable stepId: Int,
         @Valid @RequestBody dto: UpdateStepDto
     ): SuccessResponse {
-        return updateStepCommand.execute(id, stepId, dto)
+        return updateStepCommand.execute(receiptId, stepId, dto)
     }
 
-    @DeleteMapping("/{id}/steps/{stepId}")
-    fun deleteStep(@PathVariable id: Int, @PathVariable stepId: Int): SuccessResponse {
-        return deleteStepCommand.execute(id, stepId)
+    @DeleteMapping("/{receiptId}/steps/{stepId}")
+    fun deleteStep(@PathVariable receiptId: Int, @PathVariable stepId: Int): SuccessResponse {
+        return deleteStepCommand.execute(receiptId, stepId)
     }
 
-    @PostMapping("{id}/ingredients")
-    fun addIngredient(@PathVariable id: Int, @Valid @RequestBody dto: NewIngredientDto): SuccessResponse {
-        return addIngredientCommand.execute(id, dto)
+    @PostMapping("/{receiptId}/ingredientGroups")
+    fun addIngredientGroup(
+        @PathVariable receiptId: Int,
+        @Valid @RequestBody dto: NewIngredientGroupDto
+    ): SuccessResponse {
+        return addIngredientGroupCommand.execute(receiptId, dto)
     }
 
-    @PutMapping("/{id}/ingredients/{ingredientId}")
+    @DeleteMapping("/{receiptId}/ingredientGroups/{ingredientGroupId}")
+    fun deleteIngredientGroup(
+        @PathVariable receiptId: Int,
+        @PathVariable ingredientGroupId: Int
+    ): SuccessResponse {
+        return deleteIngredientGroupCommand.execute(receiptId, ingredientGroupId)
+    }
+
+    @PostMapping("/{receiptId}/ingredientGroups/{ingredientGroupId}/ingredients")
+    fun addIngredient(
+        @PathVariable receiptId: Int,
+        @PathVariable ingredientGroupId: Int,
+        @Valid @RequestBody dto: NewIngredientDto
+    ): SuccessResponse {
+        return addIngredientCommand.execute(receiptId, ingredientGroupId, dto)
+    }
+
+    @PutMapping("/{receiptId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}")
     fun updateIngredient(
-        @PathVariable id: Int,
+        @PathVariable receiptId: Int,
+        @PathVariable ingredientGroupId: Int,
         @PathVariable ingredientId: Int,
         @Valid @RequestBody dto: UpdateIngredientDto
     ): SuccessResponse {
-        return updateIngredientCommand.execute(id, ingredientId, dto)
+        return updateIngredientCommand.execute(receiptId, ingredientGroupId, ingredientId, dto)
     }
 
-    @DeleteMapping("/{id}/ingredients/{ingredientId}")
-    fun deleteIngredient(@PathVariable id: Int, @PathVariable ingredientId: Int): SuccessResponse {
-        return deleteIngredientCommand.execute(id, ingredientId)
+    @DeleteMapping("/{receiptId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}")
+    fun deleteIngredient(
+        @PathVariable receiptId: Int,
+        @PathVariable ingredientGroupId: Int,
+        @PathVariable ingredientId: Int
+    ): SuccessResponse {
+        return deleteIngredientCommand.execute(receiptId, ingredientGroupId, ingredientId)
     }
 
     @PostMapping("/categories")
@@ -137,27 +164,27 @@ class ReceiptController(
         return getAuthorsQuery.execute(AuthorCriteria(name, userId))
     }
 
-    @DeleteMapping("/categories/{id}")
-    fun deleteCategory(@PathVariable id: Int): SuccessResponse {
-        return deleteCategoryCommand.execute(id)
+    @DeleteMapping("/categories/{categoryId}")
+    fun deleteCategory(@PathVariable categoryId: Int): SuccessResponse {
+        return deleteCategoryCommand.execute(categoryId)
     }
 
-    @PutMapping("/categories/{id}")
-    fun updateCategory(@PathVariable id: Int, @Valid @RequestBody request: UpdateCategoryDto): SuccessResponse {
-        return updateCategoryCommand.execute(id, request)
+    @PutMapping("/categories/{categoryId}")
+    fun updateCategory(@PathVariable categoryId: Int, @Valid @RequestBody request: UpdateCategoryDto): SuccessResponse {
+        return updateCategoryCommand.execute(categoryId, request)
     }
 
-    @PutMapping("/{id}/photos")
+    @PutMapping("/{receiptId}/photos")
     fun assignReceiptPhotos(
-        @PathVariable id: Int,
+        @PathVariable receiptId: Int,
         @Valid @RequestBody request: AssignPhotosToReceiptDto
     ): SuccessResponse {
-        return assignReceiptPhotosCommand.execute(id, request)
+        return assignReceiptPhotosCommand.execute(receiptId, request)
     }
 
-    @PutMapping("/{id}/favorite/{isFavorite}")
-    fun markReceiptAsFavorite(@PathVariable id: Int, @PathVariable isFavorite: Boolean): SuccessResponse {
-        return markReceiptAsFavoriteCommand.execute(id, isFavorite)
+    @PutMapping("/{receiptId}/favorite/{isFavorite}")
+    fun markReceiptAsFavorite(@PathVariable receiptId: Int, @PathVariable isFavorite: Boolean): SuccessResponse {
+        return markReceiptAsFavoriteCommand.execute(receiptId, isFavorite)
     }
 
     @PostMapping("/photos")
@@ -165,17 +192,17 @@ class ReceiptController(
         return uploadPhotoCommand.execute(file.originalFilename ?: file.name, file.bytes, userId)
     }
 
-    @GetMapping("/photos/{id}")
-    fun downloadPhoto(@PathVariable id: Int): ResponseEntity<ByteArray> {
-        val response = downloadPhotoQuery.execute(id)
+    @GetMapping("/photos/{photoId}")
+    fun downloadPhoto(@PathVariable photoId: Int): ResponseEntity<ByteArray> {
+        val response = downloadPhotoQuery.execute(photoId)
         return ResponseEntity.ok()
             .contentType(MediaType.parseMediaType(response.mediaType.mimeType))
             .body(response.body)
     }
 
-    @DeleteMapping("/photos/{id}")
-    fun deletePhoto(@PathVariable id: Int): SuccessResponse {
-        return deletePhotoCommand.execute(id)
+    @DeleteMapping("/photos/{photoId}")
+    fun deletePhoto(@PathVariable photoId: Int): SuccessResponse {
+        return deletePhotoCommand.execute(photoId)
     }
 
 }

@@ -14,7 +14,7 @@ class Receipt(
     private var source_: String?,
     private var favorite_: Boolean = false,
     private var category_: Category?,
-    private var ingredients_: MutableSet<Ingredient> = mutableSetOf(),
+    private var ingredientGroups_: MutableSet<IngredientGroup> = mutableSetOf(),
     private var steps_: MutableSet<Step> = mutableSetOf(),
     private var photos_: MutableSet<Photo> = mutableSetOf(),
     private var tags_: MutableSet<Tag> = mutableSetOf(),
@@ -29,7 +29,7 @@ class Receipt(
     val author: Author? get() = author_
     val source: String? get() = source_
     val category: Category? get() = category_
-    val ingredients: Set<Ingredient> get() = Collections.unmodifiableSet(ingredients_)
+    val ingredientGroups: Set<IngredientGroup> get() = Collections.unmodifiableSet(ingredientGroups_)
     val steps: Set<Step> get() = Collections.unmodifiableSet(steps_)
     val photos: Set<Photo> get() = Collections.unmodifiableSet(photos_)
     val tags: Set<Tag> get() = Collections.unmodifiableSet(tags_)
@@ -44,8 +44,7 @@ class Receipt(
         category: Category? = null,
         author: Author? = null,
         source: String? = null,
-        tags: List<Tag> = Collections.emptyList(),
-        photos: List<Photo> = Collections.emptyList()
+        tags: List<Tag> = Collections.emptyList()
     ) {
         this.name_ = name
         this.description_ = description
@@ -54,7 +53,6 @@ class Receipt(
         this.category_ = category
 
         updateTags(tags)
-        updatePhotos(photos)
 
         this.modifiedAt_ = ZonedDateTime.now()
     }
@@ -63,13 +61,6 @@ class Receipt(
         this.tags_.clear()
         tags.forEach { new ->
             this.tags_.add(new)
-        }
-    }
-
-    private fun updatePhotos(photos: List<Photo>) {
-        this.photos_.clear()
-        photos.forEach { new ->
-            this.photos_.add(new)
         }
     }
 
@@ -86,23 +77,9 @@ class Receipt(
         this.modifiedAt_ = ZonedDateTime.now()
     }
 
-    fun addIngredient(ingredient: Ingredient) {
-        ingredients_ += ingredient
-        this.modifiedAt_ = ZonedDateTime.now()
-    }
-
     fun addStep(step: Step) {
         steps_ += step
         this.modifiedAt_ = ZonedDateTime.now()
-    }
-
-    fun deleteIngredientById(ingredientId: Int): Ingredient {
-        val ingredient =
-            ingredients.firstOrNull { it.id == ingredientId }
-                ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_NOT_FOUND)
-        ingredient.markAsDeleted()
-        this.modifiedAt_ = ZonedDateTime.now()
-        return ingredient
     }
 
     fun deleteStepById(stepId: Int): Step {
@@ -110,10 +87,6 @@ class Receipt(
         step.markAsDeleted()
         this.modifiedAt_ = ZonedDateTime.now()
         return step
-    }
-
-    fun getPhotoById(photoId: Int): Photo? {
-        return photos.firstOrNull { photo -> photo.id == photoId }
     }
 
     fun addPhoto(photo: Photo) {
@@ -127,6 +100,20 @@ class Receipt(
 
     fun hasPhotoWithId(photoId: Int): Boolean {
         return this.photos_.any { it.id == photoId }
+    }
+
+    fun getIngredientGroupById(ingredientGroupId: Int): IngredientGroup? {
+        return this.ingredientGroups_.firstOrNull { it.id == ingredientGroupId }
+    }
+
+    fun addIngredientGroup(ingredientGroup: IngredientGroup) {
+        this.ingredientGroups_ += ingredientGroup
+    }
+
+    fun deleteIngredientGroupById(ingredientGroupId: Int): IngredientGroup? {
+        val ingredientGroup = this.ingredientGroups_.firstOrNull { it.id == ingredientGroupId }
+        ingredientGroup?.markAsDeleted()
+        return ingredientGroup
     }
 
 }

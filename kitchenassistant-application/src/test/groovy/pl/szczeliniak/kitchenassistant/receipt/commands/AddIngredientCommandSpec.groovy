@@ -27,11 +27,11 @@ class AddIngredientCommandSpec extends Specification {
         receiptDao.save(receipt) >> receipt
 
         when:
-        def result = addIngredientCommand.execute(1, dto)
+        def result = addIngredientCommand.execute(1, 2, dto)
 
         then:
-        result == new SuccessResponse(2)
-        receipt.ingredients == Set.of(ingredient)
+        result == new SuccessResponse(3)
+        receipt.ingredientGroups[0].ingredients == Set.of(ingredient)
     }
 
     private static NewIngredientDto newIngredientDto() {
@@ -39,11 +39,15 @@ class AddIngredientCommandSpec extends Specification {
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(2, "", "", false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Ingredient(3, "", "", false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Receipt receipt() {
-        return new Receipt(1, 0, "", "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, new HashSet<Ingredient>(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Receipt(1, 0, "", "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.singleton(ingredientGroup()), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+    }
+
+    private static IngredientGroup ingredientGroup() {
+        return new IngredientGroup(2, "GROUP_NAME", new HashSet<Ingredient>(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

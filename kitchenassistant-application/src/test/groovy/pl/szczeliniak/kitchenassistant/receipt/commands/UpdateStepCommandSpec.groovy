@@ -1,6 +1,10 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
-import pl.szczeliniak.kitchenassistant.receipt.*
+
+import pl.szczeliniak.kitchenassistant.receipt.Author
+import pl.szczeliniak.kitchenassistant.receipt.Receipt
+import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
+import pl.szczeliniak.kitchenassistant.receipt.Step
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.UpdateStepDto
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
@@ -11,16 +15,16 @@ import java.time.ZonedDateTime
 class UpdateStepCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
-    def stepDao = Mock(StepDao)
 
     @Subject
-    def updateStepCommand = new UpdateStepCommand(receiptDao, stepDao)
+    def updateStepCommand = new UpdateStepCommand(receiptDao)
 
     def 'should update step'() {
         given:
         def step = step()
-        receiptDao.findById(1) >> receipt(Set.of(step))
-        stepDao.save(step) >> step
+        def receipt = receipt(Set.of(step))
+        receiptDao.findById(1) >> receipt
+        receiptDao.save(receipt) >> receipt
 
         when:
         def result = updateStepCommand.execute(1, 2, updateStepDto())

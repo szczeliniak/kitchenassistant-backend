@@ -11,37 +11,42 @@ import java.time.ZonedDateTime
 class UpdateIngredientCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
-    def ingredientDao = Mock(IngredientDao)
 
     @Subject
-    def updateIngredientCommand = new UpdateIngredientCommand(receiptDao, ingredientDao)
+    def updateIngredientCommand = new UpdateIngredientCommand(receiptDao)
 
     def 'should update ingredient'() {
         given:
         def ingredient = ingredient()
-        receiptDao.findById(1) >> receipt(Set.of(ingredient))
-        ingredientDao.save(ingredient) >> ingredient
+        def ingredientGroup = ingredientGroup(Set.of(ingredient))
+        def receipt = receipt(Set.of(ingredientGroup))
+        receiptDao.findById(1) >> receipt
+        receiptDao.save(receipt) >> receipt
 
         when:
-        def result = updateIngredientCommand.execute(1, 2, updateIngredientDto())
+        def result = updateIngredientCommand.execute(1, 2, 3, updateIngredientDto())
 
         then:
         ingredient.name == "NAME"
         ingredient.quantity == "QUANTITY"
-        result == new SuccessResponse(2)
+        result == new SuccessResponse(3)
     }
 
     private static UpdateIngredientDto updateIngredientDto() {
         return new UpdateIngredientDto("NAME", "QUANTITY")
     }
 
-    private static Receipt receipt(Set<Ingredient> ingredients) {
-        return new Receipt(1, 1, "", "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, ingredients,
+    private static Receipt receipt(Set<IngredientGroup> ingredientGroups) {
+        return new Receipt(1, 1, "", "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, ingredientGroups,
                 Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(2, "", "", false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Ingredient(3, "", "", false, ZonedDateTime.now(), ZonedDateTime.now())
+    }
+
+    private static IngredientGroup ingredientGroup(Set<Ingredient> ingredients) {
+        return new IngredientGroup(2, "GROUP_NAME", ingredients, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

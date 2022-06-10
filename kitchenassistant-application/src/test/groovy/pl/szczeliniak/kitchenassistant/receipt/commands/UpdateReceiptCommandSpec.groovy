@@ -17,12 +17,11 @@ class UpdateReceiptCommandSpec extends Specification {
     def categoryDao = Mock(CategoryDao)
     def tagDao = Mock(TagDao)
     def tagFactory = Mock(TagFactory)
-    def photoDao = Mock(PhotoDao)
     def authorDao = Mock(AuthorDao)
     def authorFactory = Mock(AuthorFactory)
 
     @Subject
-    def updateReceiptCommand = new UpdateReceiptCommand(receiptDao, categoryDao, tagDao, tagFactory, photoDao, authorFactory, authorDao)
+    def updateReceiptCommand = new UpdateReceiptCommand(receiptDao, categoryDao, tagDao, tagFactory, authorFactory, authorDao)
 
     def 'should update receipt'() {
         given:
@@ -30,12 +29,7 @@ class UpdateReceiptCommandSpec extends Specification {
         def assignedTag = tag(11, "ASSIGNED_TAG")
         def newTag = tag(12, "NEW_TAG")
         def existingTag = tag(13, "EXISTING_TAG")
-        def photoToRemove = photo(15)
-        def assignedPhoto = photo(16)
-        def newPhoto = photo(17)
-        def receipt = receipt(
-                new HashSet<Tag>(List.of(tagToRemove, assignedTag)),
-                new HashSet<Photo>(List.of(photoToRemove, assignedPhoto)))
+        def receipt = receipt(new HashSet<Tag>(List.of(tagToRemove, assignedTag)))
         def newCategory = category(3)
         def author = author()
 
@@ -46,13 +40,9 @@ class UpdateReceiptCommandSpec extends Specification {
         tagDao.findByName("NEW_TAG", 4) >> null
         tagFactory.create("NEW_TAG", 4) >> newTag
         authorDao.findByName("AUTHOR", 4) >> null
-        photoDao.findById(22) >> newPhoto
         tagDao.save(newTag) >> newTag
         authorFactory.create("AUTHOR", 4) >> author
-        photoDao.save(newPhoto) >> newPhoto
         authorDao.save(author) >> author
-        tagDao.saveAll(Set.of(tagToRemove, assignedTag, existingTag, newTag))
-        photoDao.saveAll(Set.of(photoToRemove, assignedPhoto, newPhoto))
 
         when:
         def result = updateReceiptCommand.execute(1, updateReceiptDto())
@@ -64,17 +54,16 @@ class UpdateReceiptCommandSpec extends Specification {
         receipt.source == "SOURCE"
         receipt.category == newCategory
         receipt.tags == Set.of(assignedTag, existingTag, newTag)
-        receipt.photos == Set.of(assignedPhoto, newPhoto)
         result == new SuccessResponse(1)
     }
 
     private static UpdateReceiptDto updateReceiptDto() {
-        return new UpdateReceiptDto("NAME", 3, "DESC", "AUTHOR", "SOURCE", Set.of("ASSIGNED_TAG", "EXISTING_TAG", "NEW_TAG",), Set.of(16, 22))
+        return new UpdateReceiptDto("NAME", 3, "DESC", "AUTHOR", "SOURCE", Set.of("ASSIGNED_TAG", "EXISTING_TAG", "NEW_TAG",))
     }
 
-    private static Receipt receipt(Set<Tag> tags, Set<Photo> photos) {
+    private static Receipt receipt(Set<Tag> tags) {
         return new Receipt(1, 4, "", "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, category(0), Collections.emptySet(),
-                Collections.emptySet(), photos, tags, false, ZonedDateTime.now(), ZonedDateTime.now())
+                Collections.emptySet(), Collections.emptySet(), tags, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     static Category category(Integer id) {

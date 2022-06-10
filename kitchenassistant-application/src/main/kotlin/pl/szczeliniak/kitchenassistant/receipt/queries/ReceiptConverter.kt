@@ -14,7 +14,7 @@ open class ReceiptConverter {
             receipt.source,
             receipt.favorite,
             receipt.category?.let { map(it) },
-            receipt.ingredients.map { map(it) }.toSet(),
+            receipt.ingredientGroups.map { map(it) }.toSet(),
             receipt.steps.map { map(it) }.toSet(),
             receipt.photos.map { map(it) }.toSet(),
             receipt.tags.map { it.name }.toSet()
@@ -46,6 +46,14 @@ open class ReceiptConverter {
             step.name,
             step.description,
             step.sequence
+        )
+    }
+
+    private fun map(ingredientGroup: IngredientGroup): IngredientGroupDto {
+        return IngredientGroupDto(
+            ingredientGroup.id,
+            ingredientGroup.name,
+            ingredientGroup.ingredients.map { map(it) }.toSet()
         )
     }
 

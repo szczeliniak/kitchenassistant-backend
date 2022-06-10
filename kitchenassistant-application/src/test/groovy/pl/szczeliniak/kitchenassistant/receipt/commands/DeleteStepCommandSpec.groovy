@@ -1,6 +1,10 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
-import pl.szczeliniak.kitchenassistant.receipt.*
+
+import pl.szczeliniak.kitchenassistant.receipt.Author
+import pl.szczeliniak.kitchenassistant.receipt.Receipt
+import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
+import pl.szczeliniak.kitchenassistant.receipt.Step
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
@@ -11,24 +15,23 @@ import java.time.ZonedDateTime
 class DeleteStepCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
-    def stepDao = Mock(StepDao)
 
     @Subject
-    def deleteStepCommand = new DeleteStepCommand(receiptDao, stepDao)
+    def deleteStepCommand = new DeleteStepCommand(receiptDao)
 
     def 'should delete step'() {
         given:
         def step = step(false)
         def receipt = receipt(Set.of(step))
         receiptDao.findById(1) >> receipt
-        stepDao.save(step) >> step
+        receiptDao.save(receipt) >> receipt
 
         when:
         def result = deleteStepCommand.execute(1, 3)
 
         then:
         step.deleted
-        result == new SuccessResponse(1)
+        result == new SuccessResponse(3)
     }
 
     def 'should throw exception when step not found'() {

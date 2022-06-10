@@ -25,7 +25,8 @@ data class ReceiptEntity(
     var category: CategoryEntity?,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "receipt_id", nullable = false)
-    var ingredients: MutableSet<IngredientEntity>,
+    @OrderBy("id ASC")
+    var ingredientGroups: MutableSet<IngredientGroupEntity>,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "receipt_id", nullable = false)
     @OrderBy("sequence ASC, id ASC")

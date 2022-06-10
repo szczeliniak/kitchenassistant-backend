@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.AuthenticationException
@@ -36,7 +35,17 @@ class SecurityConfiguration(
 ) : WebSecurityConfigurerAdapter() {
 
     companion object {
-        val PATH_WITHOUT_AUTHORIZATION = listOf("/users/login/**", "/users/register/**")
+        val PATH_WITHOUT_AUTHORIZATION = listOf(
+            "/users/login/**",
+            "/users/register/**",
+            "/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/"
+        )
     }
 
     override fun configure(http: HttpSecurity?) {
@@ -60,18 +69,6 @@ class SecurityConfiguration(
         return AuthenticationEntryPoint { _: HttpServletRequest?, httpServletResponse: HttpServletResponse, e: AuthenticationException ->
             writeException(httpServletResponse, e.message)
         }
-    }
-
-    override fun configure(web: WebSecurity?) {
-        web?.ignoring()?.antMatchers(
-            "/v2/api-docs",
-            "/configuration/ui",
-            "/swagger-resources/**",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**",
-            "/"
-        )
     }
 
     protected fun writeException(response: HttpServletResponse, message: String?) {

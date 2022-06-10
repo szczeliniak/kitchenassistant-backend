@@ -13,7 +13,6 @@ class UpdateReceiptCommand(
     private val categoryDao: CategoryDao,
     private val tagDao: TagDao,
     private val tagFactory: TagFactory,
-    private val photoDao: PhotoDao,
     private val authorFactory: AuthorFactory,
     private val authorDao: AuthorDao
 ) {
@@ -39,15 +38,9 @@ class UpdateReceiptCommand(
                 receipt.getTagByName(it) ?: tagDao.findByName(it, receipt.userId) ?: tagDao.save(
                     tagFactory.create(it, receipt.userId)
                 )
-            },
-            dto.photos.map {
-                receipt.getPhotoById(it) ?: photoDao.findById(it)
-                ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
             }
         )
 
-        tagDao.saveAll(receipt.tags)
-        photoDao.saveAll(receipt.photos)
         return SuccessResponse(receiptDao.save(receipt).id)
     }
 

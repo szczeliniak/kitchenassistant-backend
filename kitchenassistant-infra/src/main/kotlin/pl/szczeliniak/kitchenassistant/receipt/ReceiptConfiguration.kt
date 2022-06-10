@@ -31,7 +31,6 @@ class ReceiptConfiguration {
         categoryDao: CategoryDao,
         tagDao: TagDao,
         tagFactory: TagFactory,
-        photoDao: PhotoDao,
         authorFactory: AuthorFactory,
         authorDao: AuthorDao
     ): UpdateReceiptCommand =
@@ -40,7 +39,6 @@ class ReceiptConfiguration {
             categoryDao,
             tagDao,
             tagFactory,
-            photoDao,
             authorFactory,
             authorDao
         )
@@ -49,32 +47,29 @@ class ReceiptConfiguration {
     fun addIngredientCommand(
         receiptDao: ReceiptDao,
         ingredientDao: IngredientDao,
-        ingredientFactory: IngredientFactory
+        ingredientFactory: IngredientFactory,
     ): AddIngredientCommand =
         AddIngredientCommand(receiptDao, ingredientDao, ingredientFactory)
 
     @Bean
-    fun updateIngredientCommand(receiptDao: ReceiptDao, ingredientDao: IngredientDao): UpdateIngredientCommand =
-        UpdateIngredientCommand(receiptDao, ingredientDao)
+    fun updateIngredientCommand(receiptDao: ReceiptDao): UpdateIngredientCommand = UpdateIngredientCommand(receiptDao)
 
     @Bean
     fun addStepCommand(receiptDao: ReceiptDao, stepDao: StepDao, stepFactory: StepFactory): AddStepCommand =
         AddStepCommand(receiptDao, stepDao, stepFactory)
 
     @Bean
-    fun updateStepCommand(receiptDao: ReceiptDao, stepDao: StepDao): UpdateStepCommand =
-        UpdateStepCommand(receiptDao, stepDao)
+    fun updateStepCommand(receiptDao: ReceiptDao): UpdateStepCommand = UpdateStepCommand(receiptDao)
 
     @Bean
     fun deleteReceiptCommand(receiptDao: ReceiptDao): DeleteReceiptCommand = DeleteReceiptCommand(receiptDao)
 
     @Bean
-    fun deleteStepCommand(receiptDao: ReceiptDao, stepDao: StepDao): DeleteStepCommand =
-        DeleteStepCommand(receiptDao, stepDao)
+    fun deleteStepCommand(receiptDao: ReceiptDao): DeleteStepCommand = DeleteStepCommand(receiptDao)
 
     @Bean
-    fun deleteIngredientCommand(receiptDao: ReceiptDao, ingredientDao: IngredientDao): DeleteIngredientCommand =
-        DeleteIngredientCommand(receiptDao, ingredientDao)
+    fun deleteIngredientCommand(receiptDao: ReceiptDao): DeleteIngredientCommand =
+        DeleteIngredientCommand(receiptDao)
 
     @Bean
     fun stepFactory(): StepFactory = StepFactory()
@@ -93,6 +88,10 @@ class ReceiptConfiguration {
 
     @Bean
     fun authorFactory(): AuthorFactory = AuthorFactory()
+
+    @Bean
+    fun ingredientGroupFactory(ingredientFactory: IngredientFactory): IngredientGroupFactory =
+        IngredientGroupFactory(ingredientFactory)
 
     @Bean
     fun addCategoryCommand(categoryDao: CategoryDao, categoryFactory: CategoryFactory): AddCategoryCommand =
@@ -127,25 +126,25 @@ class ReceiptConfiguration {
     @Bean
     fun receiptFactory(
         getUserByIdQuery: GetUserByIdQuery,
-        ingredientFactory: IngredientFactory,
         stepFactory: StepFactory,
         categoryDao: CategoryDao,
         tagDao: TagDao,
         tagFactory: TagFactory,
         authorDao: AuthorDao,
         authorFactory: AuthorFactory,
-        photoDao: PhotoDao
+        photoDao: PhotoDao,
+        ingredientGroupFactory: IngredientGroupFactory
     ): ReceiptFactory =
         ReceiptFactory(
             getUserByIdQuery,
-            ingredientFactory,
             stepFactory,
             categoryDao,
             tagDao,
             tagFactory,
             authorDao,
             authorFactory,
-            photoDao
+            photoDao,
+            ingredientGroupFactory
         )
 
     @Bean
@@ -157,5 +156,15 @@ class ReceiptConfiguration {
 
     @Bean
     fun deletePhotoCommand(ftpClient: FtpClient, photoDao: PhotoDao) = DeletePhotoCommand(ftpClient, photoDao)
+
+    @Bean
+    fun addIngredientGroupCommand(
+        receiptDao: ReceiptDao,
+        ingredientGroupFactory: IngredientGroupFactory,
+        ingredientGroupDao: IngredientGroupDao
+    ) = AddIngredientGroupCommand(receiptDao, ingredientGroupFactory, ingredientGroupDao)
+
+    @Bean
+    fun deleteIngredientGroupCommand(receiptDao: ReceiptDao) = DeleteIngredientGroupCommand(receiptDao)
 
 }
