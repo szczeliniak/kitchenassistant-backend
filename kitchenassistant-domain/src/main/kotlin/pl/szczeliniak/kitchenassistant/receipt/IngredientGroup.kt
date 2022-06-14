@@ -49,4 +49,8 @@ data class IngredientGroup(
         return ingredient
     }
 
+    fun removeIngredientById(ingredientId: Int) {
+        val res = this.ingredients_.removeIf { it.id == ingredientId}
+    }
+
 }

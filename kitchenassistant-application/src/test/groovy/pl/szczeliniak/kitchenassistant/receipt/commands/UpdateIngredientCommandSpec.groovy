@@ -15,25 +15,46 @@ class UpdateIngredientCommandSpec extends Specification {
     @Subject
     def updateIngredientCommand = new UpdateIngredientCommand(receiptDao)
 
-    def 'should update ingredient'() {
+    def 'should update ingredient without ingredient group'() {
         given:
         def ingredient = ingredient()
-        def ingredientGroup = ingredientGroup(Set.of(ingredient))
+        def ingredientGroup = group(2, Set.of(ingredient))
         def receipt = receipt(Set.of(ingredientGroup))
         receiptDao.findById(1) >> receipt
         receiptDao.save(receipt) >> receipt
 
         when:
-        def result = updateIngredientCommand.execute(1, 2, 3, updateIngredientDto())
+        def result = updateIngredientCommand.execute(1, 2, 3, updateIngredientDto(2))
 
         then:
+        ingredientGroup.ingredients.contains(ingredient)
         ingredient.name == "NAME"
         ingredient.quantity == "QUANTITY"
         result == new SuccessResponse(3)
     }
 
-    private static UpdateIngredientDto updateIngredientDto() {
-        return new UpdateIngredientDto("NAME", "QUANTITY")
+    def 'should update ingredient with ingredient group'() {
+        given:
+        def ingredient = ingredient()
+        def ingredientGroup = group(2, new HashSet<Ingredient>(Arrays.asList(ingredient)))
+        def newIngredientGroup = group(4, new HashSet<Ingredient>())
+        def receipt = receipt(Set.of(ingredientGroup, newIngredientGroup))
+        receiptDao.findById(1) >> receipt
+        receiptDao.save(receipt) >> receipt
+
+        when:
+        def result = updateIngredientCommand.execute(1, 2, 3, updateIngredientDto(4))
+
+        then:
+        ingredientGroup.ingredients.isEmpty()
+        newIngredientGroup.ingredients.contains(ingredient)
+        ingredient.name == "NAME"
+        ingredient.quantity == "QUANTITY"
+        result == new SuccessResponse(3)
+    }
+
+    private static UpdateIngredientDto updateIngredientDto(Integer ingredientGroupId) {
+        return new UpdateIngredientDto("NAME", "QUANTITY", ingredientGroupId)
     }
 
     private static Receipt receipt(Set<IngredientGroup> ingredientGroups) {
@@ -45,8 +66,8 @@ class UpdateIngredientCommandSpec extends Specification {
         return new Ingredient(3, "", "", false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
-    private static IngredientGroup ingredientGroup(Set<Ingredient> ingredients) {
-        return new IngredientGroup(2, "GROUP_NAME", ingredients, false, ZonedDateTime.now(), ZonedDateTime.now())
+    private static IngredientGroup group(Integer id, Set<Ingredient> ingredients) {
+        return new IngredientGroup(id, "GROUP_NAME", ingredients, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

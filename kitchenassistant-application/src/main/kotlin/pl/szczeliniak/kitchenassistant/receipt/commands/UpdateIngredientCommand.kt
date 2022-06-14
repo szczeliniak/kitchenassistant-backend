@@ -14,7 +14,15 @@ class UpdateIngredientCommand(private val receiptDao: ReceiptDao) {
             ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_GROUP_NOT_FOUND)
         val ingredient = ingredientGroup.getIngredientById(ingredientId)
             ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_NOT_FOUND)
+
         ingredient.update(dto.name, dto.quantity)
+
+        if (ingredientGroup.id != dto.ingredientGroupId) {
+            val newIngredientGroup = receipt.getIngredientGroupById(dto.ingredientGroupId)
+                ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_GROUP_NOT_FOUND)
+            ingredientGroup.removeIngredientById(ingredient.id)
+            newIngredientGroup.addIngredient(ingredient)
+        }
 
         receiptDao.save(receipt)
 

@@ -31,7 +31,7 @@ data class ReceiptEntity(
     @JoinColumn(name = "receipt_id", nullable = false)
     @OrderBy("sequence ASC, id ASC")
     var steps: MutableSet<StepEntity>,
-    @OneToMany(cascade = [CascadeType.MERGE], fetch = FetchType.LAZY)
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "receipt_id", nullable = false)
     @OrderBy("id")
     var photos: MutableSet<PhotoEntity>,
