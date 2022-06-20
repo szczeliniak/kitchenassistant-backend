@@ -10,6 +10,7 @@ class CategoryMapper {
             entity.id,
             entity.name,
             entity.userId,
+            entity.sequence,
             entity.deleted,
             entity.createdAt,
             entity.modifiedAt
@@ -21,6 +22,7 @@ class CategoryMapper {
             category.id,
             category.name,
             category.userId,
+            category.sequence,
             category.deleted,
             category.createdAt,
             category.modifiedAt

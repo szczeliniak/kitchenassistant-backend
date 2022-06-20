@@ -19,10 +19,12 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
     }
 
     fun findAll(criteria: SearchCriteria): MutableSet<CategoryEntity> {
-        var query = "SELECT r FROM CategoryEntity r WHERE r.deleted = false"
+        var query = "SELECT c FROM CategoryEntity c WHERE c.deleted = false"
         if (criteria.userId != null) {
-            query += " AND r.userId = :userId"
+            query += " AND c.userId = :userId"
         }
+
+        query += " ORDER BY c.sequence ASC NULLS LAST, c.id ASC"
 
         var typedQuery = entityManager.createQuery(query, CategoryEntity::class.java)
         if (criteria.userId != null) {

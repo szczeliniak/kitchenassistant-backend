@@ -34,10 +34,10 @@ class AddCategoryCommandSpec extends Specification {
     }
 
     private static NewCategoryDto newCategoryDto() {
-        return new NewCategoryDto("NAME", 1)
+        return new NewCategoryDto("NAME", 1, 2)
     }
 
     private static Category category() {
-        return new Category(0, "", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Category(0, "", 1, 2, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 }

@@ -34,11 +34,11 @@ class GetCategoriesQuerySpec extends Specification {
     }
 
     private static Category category() {
-        return new Category(0, "NAME", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Category(0, "NAME", 1, 2, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static CategoryDto categoryDto() {
-        return new CategoryDto(0, "NAME")
+        return new CategoryDto(0, "NAME", 2)
     }
 
 }

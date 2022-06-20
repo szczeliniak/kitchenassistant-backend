@@ -55,7 +55,7 @@ class DeleteCategoryCommandSpec extends Specification {
     }
 
     private static Category category(boolean deleted) {
-        return new Category(1, '', 1, deleted, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Category(1, '', 1, 2, deleted, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

@@ -10,7 +10,7 @@ class UpdateCategoryCommand(private val categoryDao: CategoryDao) {
 
     fun execute(id: Int, dto: UpdateCategoryDto): SuccessResponse {
         val category = categoryDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
-        category.update(dto.name)
+        category.update(dto.name, dto.sequence)
         return SuccessResponse(categoryDao.save(category).id)
     }
 

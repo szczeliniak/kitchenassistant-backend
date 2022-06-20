@@ -95,7 +95,7 @@ class ReceiptFactorySpec extends Specification {
     }
 
     private static Category category() {
-        return new Category(0, "", 0, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Category(0, "", 0, 3, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Author author() {

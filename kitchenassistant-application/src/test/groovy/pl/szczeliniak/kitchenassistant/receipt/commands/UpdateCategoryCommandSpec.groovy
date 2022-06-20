@@ -31,11 +31,11 @@ class UpdateCategoryCommandSpec extends Specification {
     }
 
     private static UpdateCategoryDto updateCategoryDto() {
-        return new UpdateCategoryDto("NAME")
+        return new UpdateCategoryDto("NAME", 1)
     }
 
     private static Category category() {
-        return new Category(1, "", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Category(1, "", 1, 1, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

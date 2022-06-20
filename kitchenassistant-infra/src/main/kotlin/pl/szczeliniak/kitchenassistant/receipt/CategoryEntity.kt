@@ -14,6 +14,7 @@ data class CategoryEntity(
     var id: Int,
     var name: String,
     var userId: Int,
+    var sequence: Int?,
     var deleted: Boolean,
     var createdAt: ZonedDateTime,
     var modifiedAt: ZonedDateTime

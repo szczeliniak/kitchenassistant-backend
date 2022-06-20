@@ -25,10 +25,10 @@ class CategoryFactoryTest extends Specification {
     }
 
     private static Category category() {
-        return new Category(0, "NAME", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Category(0, "NAME", 1, 3, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static NewCategoryDto newCategoryDto() {
-        return new NewCategoryDto("NAME", 1)
+        return new NewCategoryDto("NAME", 1, 3)
     }
 }

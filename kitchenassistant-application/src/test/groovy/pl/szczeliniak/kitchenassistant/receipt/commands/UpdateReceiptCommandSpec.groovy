@@ -67,7 +67,7 @@ class UpdateReceiptCommandSpec extends Specification {
     }
 
     static Category category(Integer id) {
-        return new Category(id, "", 3, false,
+        return new Category(id, "", 3, 4, false,
                 ZonedDateTime.of(2000, 1, 1, 1, 1, 0, 0, ZoneId.systemDefault()),
                 ZonedDateTime.of(2000, 1, 1, 1, 2, 0, 0, ZoneId.systemDefault()))
     }

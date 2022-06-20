@@ -6,7 +6,7 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewCategoryDto
 open class CategoryFactory {
 
     open fun create(dto: NewCategoryDto): Category {
-        return Category(name_ = dto.name, userId_ = dto.userId)
+        return Category(name_ = dto.name, userId_ = dto.userId, sequence_ = dto.sequence)
     }
 
 }

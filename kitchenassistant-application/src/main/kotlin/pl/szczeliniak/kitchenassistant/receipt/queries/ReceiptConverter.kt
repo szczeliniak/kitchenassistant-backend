@@ -24,7 +24,8 @@ open class ReceiptConverter {
     open fun map(category: Category): CategoryDto {
         return CategoryDto(
             category.id,
-            category.name
+            category.name,
+            category.sequence
         )
     }
 
