@@ -12,6 +12,10 @@ class ReceiptDaoImpl(
         return receiptMapper.toDomain(receiptRepository.save(receiptMapper.toEntity(receipt)))
     }
 
+    override fun save(receipts: Set<Receipt>) {
+        receipts.forEach(this::save)
+    }
+
     override fun count(criteria: ReceiptCriteria): Long {
         return receiptRepository.count(mapCriteria(criteria))
     }
@@ -21,7 +25,7 @@ class ReceiptDaoImpl(
         return receiptMapper.toDomain(byId)
     }
 
-    override fun findAll(criteria: ReceiptCriteria, offset: Int, limit: Int): Set<Receipt> {
+    override fun findAll(criteria: ReceiptCriteria, offset: Int?, limit: Int?): Set<Receipt> {
         return receiptRepository.findAll(mapCriteria(criteria), offset, limit)
             .map { receiptMapper.toDomain(it) }
             .toSet()

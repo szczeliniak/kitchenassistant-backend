@@ -38,6 +38,11 @@ class Receipt(
     val modifiedAt: ZonedDateTime get() = modifiedAt_
     val deleted: Boolean get() = deleted_
 
+    fun removeCategory() {
+        this.category_ = null
+        this.modifiedAt_ = ZonedDateTime.now()
+    }
+
     fun update(
         name: String,
         description: String? = null,

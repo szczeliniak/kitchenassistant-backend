@@ -9,14 +9,14 @@ import javax.transaction.Transactional
 @Repository
 class ReceiptRepository(@PersistenceContext private val entityManager: EntityManager) {
 
-    fun findAll(criteria: SearchCriteria, offset: Int, limit: Int): MutableSet<ReceiptEntity> {
+    fun findAll(criteria: SearchCriteria, offset: Int?, limit: Int?): MutableSet<ReceiptEntity> {
         val query =
             "SELECT DISTINCT r FROM ReceiptEntity r " + prepareJoin(criteria) + "WHERE r.deleted = false" + prepareCriteria(
                 criteria
             ) + " ORDER BY r.favorite DESC NULLS LAST, r.id ASC"
         val typedQuery = applyParameters(criteria, entityManager.createQuery(query, ReceiptEntity::class.java))
-        typedQuery.firstResult = offset
-        typedQuery.maxResults = limit
+        offset?.let { typedQuery.firstResult = it }
+        limit?.let { typedQuery.maxResults = it }
         return typedQuery.resultList.toMutableSet()
     }
 
@@ -52,6 +52,7 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
     @Transactional
     fun save(entity: ReceiptEntity): ReceiptEntity {
         if (entity.id == 0) {
+
             entityManager.persist(entity)
         } else {
             entityManager.merge(entity)

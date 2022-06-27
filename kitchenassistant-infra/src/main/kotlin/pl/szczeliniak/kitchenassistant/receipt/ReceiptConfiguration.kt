@@ -98,7 +98,8 @@ class ReceiptConfiguration {
         AddCategoryCommand(categoryDao, categoryFactory)
 
     @Bean
-    fun deleteCategoryCommand(categoryDao: CategoryDao): DeleteCategoryCommand = DeleteCategoryCommand(categoryDao)
+    fun deleteCategoryCommand(categoryDao: CategoryDao, receiptDao: ReceiptDao): DeleteCategoryCommand =
+        DeleteCategoryCommand(categoryDao, receiptDao)
 
     @Bean
     fun updateCategoryCommand(categoryDao: CategoryDao): UpdateCategoryCommand = UpdateCategoryCommand(categoryDao)
