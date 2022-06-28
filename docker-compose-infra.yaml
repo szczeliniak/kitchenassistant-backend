@@ -23,9 +23,29 @@ services:
     networks:
       - kitchenassistant-network
 
+  kitchenassistant-ftp:
+    image: stilliard/pure-ftpd
+    restart: always
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    volumes:
+      - kitchenassistant-ftp-passwd:/etc/pure-ftpd/passwd
+      - kitchenassistant-ftp-data:/home/qwe
+    networks:
+      - kitchenassistant-network
+    environment:
+      FTP_USER_NAME: kitchenassistant
+      FTP_USER_PASS: kitchenassistant
+      FTP_USER_HOME: /home/kitchenassistant
+
 volumes:
   kitchenassistant-db-volume:
     name: kitchenassistant-db-volume
+  kitchenassistant-ftp-passwd:
+    name: kitchenassistant-ftp-passwd
+  kitchenassistant-ftp-data:
+    name: kitchenassistant-ftp-data
 
 networks:
   kitchenassistant-network:
