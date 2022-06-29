@@ -13,7 +13,7 @@ data class IngredientEntity(
     @SequenceGenerator(name = "ingredient_id_generator", sequenceName = "seq_ingredient_id", allocationSize = 1)
     var id: Int,
     var name: String,
-    var quantity: String,
+    var quantity: String?,
     var deleted: Boolean,
     var createdAt: ZonedDateTime,
     var modifiedAt: ZonedDateTime
