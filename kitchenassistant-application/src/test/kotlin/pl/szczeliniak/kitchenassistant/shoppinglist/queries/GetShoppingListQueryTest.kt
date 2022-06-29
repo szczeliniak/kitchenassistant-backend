@@ -7,7 +7,7 @@ import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListDao
-import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDetailsDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListResponse
 
 internal class GetShoppingListQueryTest : JunitBaseClass() {
@@ -24,13 +24,13 @@ internal class GetShoppingListQueryTest : JunitBaseClass() {
     @Test
     fun shouldReturnShoppingList() {
         val shoppingList = shoppingList()
-        val shoppingListDto = shoppingListDto()
+        val shoppingListDetailsDto = shoppingListDetailsDto()
         whenever(shoppingListDao.findById(1)).thenReturn(shoppingList)
-        whenever(shoppingListConverter.map(shoppingList)).thenReturn(shoppingListDto)
+        whenever(shoppingListConverter.mapDetails(shoppingList)).thenReturn(shoppingListDetailsDto)
 
         val result = getShoppingListQuery.execute(1)
 
-        assertThat(result).isEqualTo(ShoppingListResponse(shoppingListDto))
+        assertThat(result).isEqualTo(ShoppingListResponse(shoppingListDetailsDto))
     }
 
     @Test
@@ -42,8 +42,8 @@ internal class GetShoppingListQueryTest : JunitBaseClass() {
             .hasMessage("Shopping list not found")
     }
 
-    private fun shoppingListDto(): ShoppingListDto {
-        return ShoppingListDto(0, "", null, null, false, mutableSetOf())
+    private fun shoppingListDetailsDto(): ShoppingListDetailsDto {
+        return ShoppingListDetailsDto(0, "", null, null, mutableSetOf())
     }
 
     private fun shoppingList(): ShoppingList {

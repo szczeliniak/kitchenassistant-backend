@@ -3,7 +3,7 @@ package pl.szczeliniak.kitchenassistant.receipt.queries
 import pl.szczeliniak.kitchenassistant.receipt.Author
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDto
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDetailsDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import spock.lang.Specification
@@ -22,15 +22,15 @@ class GetReceiptQuerySpec extends Specification {
     def "should return receipt"() {
         given:
         def receipt = receipt()
-        def receiptDto = receiptDto()
+        def receiptDetailsDto = receiptDetailsDto()
         receiptDao.findById(1) >> receipt
-        receiptConverter.map(receipt) >> receiptDto
+        receiptConverter.mapDetails(receipt) >> receiptDetailsDto
 
         when:
         def result = getReceiptQuery.execute(1)
 
         then:
-        result == new ReceiptResponse(receiptDto)
+        result == new ReceiptResponse(receiptDetailsDto)
     }
 
     def "should throw exception receipt not found"() {
@@ -63,8 +63,8 @@ class GetReceiptQuerySpec extends Specification {
                 ZonedDateTime.now())
     }
 
-    private static ReceiptDto receiptDto() {
-        return new ReceiptDto(1, '', '', "", "", null, null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet())
+    private static ReceiptDetailsDto receiptDetailsDto() {
+        return new ReceiptDetailsDto(1, '', '', "", "", null, null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet())
     }
 
 }

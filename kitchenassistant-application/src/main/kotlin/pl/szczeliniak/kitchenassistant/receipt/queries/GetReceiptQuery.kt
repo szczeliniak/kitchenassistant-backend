@@ -9,7 +9,7 @@ open class GetReceiptQuery(private val receiptDao: ReceiptDao, private val recei
 
     open fun execute(id: Int): ReceiptResponse {
         return ReceiptResponse(
-            receiptConverter.map(
+            receiptConverter.mapDetails(
                 receiptDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
             )
         )

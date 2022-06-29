@@ -40,7 +40,7 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
     }
 
     private fun shoppingListDto(): ShoppingListDto {
-        return ShoppingListDto(0, "", "", null, true, Collections.emptySet())
+        return ShoppingListDto(0, "", "", null)
     }
 
     private fun shoppingList(): ShoppingList {

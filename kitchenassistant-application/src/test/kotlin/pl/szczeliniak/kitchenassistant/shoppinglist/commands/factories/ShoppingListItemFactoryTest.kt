@@ -5,7 +5,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDto
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDetailsDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
@@ -33,7 +33,7 @@ internal class ShoppingListItemFactoryTest : JunitBaseClass() {
 
     private fun receiptResponse(): ReceiptResponse {
         return ReceiptResponse(
-            ReceiptDto(
+            ReceiptDetailsDto(
                 0,
                 "",
                 null,

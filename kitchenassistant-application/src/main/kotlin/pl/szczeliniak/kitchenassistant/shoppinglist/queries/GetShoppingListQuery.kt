@@ -12,7 +12,7 @@ class GetShoppingListQuery(
 
     fun execute(userId: Int): ShoppingListResponse {
         return ShoppingListResponse(
-            shoppingListConverter.map(
+            shoppingListConverter.mapDetails(
                 shoppingListDao.findById(userId) ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_NOT_FOUND)
             )
         )

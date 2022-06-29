@@ -9,6 +9,17 @@ open class ReceiptConverter {
         return ReceiptDto(
             receipt.id,
             receipt.name,
+            receipt.author?.name,
+            receipt.favorite,
+            receipt.category?.let { map(it) },
+            receipt.tags.map { it.name }.toSet()
+        )
+    }
+
+    open fun mapDetails(receipt: Receipt): ReceiptDetailsDto {
+        return ReceiptDetailsDto(
+            receipt.id,
+            receipt.name,
             receipt.description,
             receipt.author?.name,
             receipt.source,
