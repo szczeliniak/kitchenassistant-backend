@@ -50,7 +50,7 @@ internal class ShoppingListItemFactoryTest : JunitBaseClass() {
     }
 
     private fun shoppingListItem(): ShoppingListItem {
-        return ShoppingListItem(name_ = "", quantity_ = "", sequence_ = null, receiptId_ = 1)
+        return ShoppingListItem(name_ = "", quantity_ = null, sequence_ = null, receiptId_ = 1)
     }
 
     private fun newShoppingListItemDto(): NewShoppingListItemDto {

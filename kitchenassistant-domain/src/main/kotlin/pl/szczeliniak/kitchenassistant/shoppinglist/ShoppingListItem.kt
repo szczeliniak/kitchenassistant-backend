@@ -7,7 +7,7 @@ import java.time.ZonedDateTime
 data class ShoppingListItem(
     private var id_: Int = 0,
     private var name_: String,
-    private var quantity_: String,
+    private var quantity_: String?,
     private var sequence_: Int? = null,
     private var receiptId_: Int? = null,
     private var deleted_: Boolean = false,
@@ -17,7 +17,7 @@ data class ShoppingListItem(
 ) {
     val id: Int get() = id_
     val name: String get() = name_
-    val quantity: String get() = quantity_
+    val quantity: String? get() = quantity_
     val sequence: Int? get() = sequence_
     val receiptId: Int? get() = receiptId_
     val createdAt: ZonedDateTime get() = createdAt_
@@ -38,7 +38,7 @@ data class ShoppingListItem(
         this.modifiedAt_ = ZonedDateTime.now()
     }
 
-    fun update(name: String, quantity: String, sequence: Int?, receiptId: Int?) {
+    fun update(name: String, quantity: String?, sequence: Int?, receiptId: Int?) {
         this.name_ = name
         this.quantity_ = quantity
         this.sequence_ = sequence

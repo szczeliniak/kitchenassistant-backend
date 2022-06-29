@@ -13,7 +13,7 @@ data class ShoppingListItemEntity(
     @SequenceGenerator(name = "shopping_list_item_id_generator", sequenceName = "seq_shopping_list_item_id", allocationSize = 1)
     var id: Int,
     var name: String,
-    var quantity: String,
+    var quantity: String?,
     var sequence: Int?,
     var receiptId: Int?,
     var deleted: Boolean,
