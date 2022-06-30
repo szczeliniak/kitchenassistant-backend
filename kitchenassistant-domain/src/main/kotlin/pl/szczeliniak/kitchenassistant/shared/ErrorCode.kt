@@ -17,12 +17,15 @@ enum class ErrorCode(val message: String, val code: Int) {
     STEP_ALREADY_REMOVED("Step is already marked as deleted!", 404),
     RECEIPT_ALREADY_REMOVED("Receipt is already marked as deleted!", 404),
     SHOPPING_LIST_ALREADY_REMOVED("Shopping list is already marked as deleted!", 404),
+    DAY_PLAN_ALREADY_REMOVED("Day plan is already deleted!", 404),
+    DAY_PLAN_ALREADY_ARCHIVED("Day plan is already archived!", 404),
     SHOPPING_LIST_ITEM_ALREADY_REMOVED("Shopping list item is already marked as deleted!", 404),
     USER_ALREADY_EXISTS("User with email already exists", 409),
     RECEIPT_NOT_FOUND("Receipt not found", 404),
     USER_NOT_FOUND("User not found", 404),
     PHOTO_NOT_FOUND("Photo not found", 404),
     INGREDIENT_NOT_FOUND("Ingredient not found", 404),
+    DAY_PLAN_NOT_FOUND("Day plan not found", 404),
     STEP_NOT_FOUND("Step not found", 404),
     CATEGORY_NOT_FOUND("Category not found", 404),
     SHOPPING_LIST_NOT_FOUND("Shopping list not found", 404),
@@ -33,6 +36,7 @@ enum class ErrorCode(val message: String, val code: Int) {
     JWT_EXPIRED_TOKEN("Token is expired", 400),
     JWT_MALFORMED_TOKEN("Token is malformed", 400),
     JWT_GENERIC_ERROR("Unknown token error", 400),
-    INGREDIENT_GROUP_NOT_FOUND("Ingredient group not found", 404)
+    INGREDIENT_GROUP_NOT_FOUND("Ingredient group not found", 404),
+    RECEIPT_ID_IS_NOT_ASSIGNED_TO_DAY_PLAN("Receipt id is not assigned to day play", 404)
 
 }

@@ -35,7 +35,7 @@ data class ReceiptEntity(
     @JoinColumn(name = "receipt_id", nullable = false)
     @OrderBy("id")
     var photos: MutableSet<PhotoEntity>,
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinTable(
         name = "receipt_tags",
         joinColumns = [JoinColumn(name = "receipt_id", nullable = false)],

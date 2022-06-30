@@ -1,0 +1,1 @@
+ALTER TABLE day_plans ALTER COLUMN date TYPE DATE;
