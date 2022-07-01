@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.user.commands
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.PasswordMatcher
 import pl.szczeliniak.kitchenassistant.user.User
+import pl.szczeliniak.kitchenassistant.user.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginDto
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
@@ -25,7 +26,7 @@ class LoginCommandSpec extends Specification {
 
     def 'should login'() {
         given:
-        userDao.findByEmail("MAIL") >> user()
+        userDao.findAll(new UserCriteria("MAIL"), 0, 1) >> Collections.singleton(user())
         passwordMatcher.matches("ENC_PASS", "PASS") >> true
         tokenFactory.create(1) >> token()
 
@@ -38,7 +39,7 @@ class LoginCommandSpec extends Specification {
 
     def 'should throw exception when user not found'() {
         given:
-        userDao.findByEmail("MAIL") >> null
+        userDao.findAll(new UserCriteria("MAIL"), 0, 1) >> Collections.emptySet()
         when:
         loginCommand.execute(dto())
 
@@ -48,7 +49,7 @@ class LoginCommandSpec extends Specification {
 
     def 'should throw exception when passwords do not match'() {
         given:
-        userDao.findByEmail("MAIL") >> user()
+        userDao.findAll(new UserCriteria("MAIL"), 0, 1) >> Collections.singleton(user())
         passwordMatcher.matches("ENC_PASS", "PASS") >> false
         when:
         loginCommand.execute(dto())

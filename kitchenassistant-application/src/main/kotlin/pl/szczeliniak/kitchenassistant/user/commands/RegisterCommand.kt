@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.user.commands
 
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
+import pl.szczeliniak.kitchenassistant.user.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
 import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterDto
@@ -19,13 +20,11 @@ class RegisterCommand(
             throw KitchenAssistantException(ErrorCode.PASSWORDS_DO_NOT_MATCH)
         }
 
-        var user = userDao.findByEmail(dto.email)
-        if (user != null) {
+        if (userDao.findAll(UserCriteria(dto.email), 0, 1).firstOrNull() != null) {
             throw KitchenAssistantException(ErrorCode.USER_ALREADY_EXISTS)
         }
 
-        user = userDao.save(userFactory.create(dto))
-
+        val user = userDao.save(userFactory.create(dto))
         val token = tokenFactory.create(user.id)
         return LoginResponse(token.token, user.id, token.validTo)
     }

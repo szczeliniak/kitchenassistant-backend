@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.user.commands
 
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.User
+import pl.szczeliniak.kitchenassistant.user.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
 import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterDto
@@ -25,7 +26,7 @@ class RegisterCommandSpec extends Specification {
     def 'should register'() {
         given:
         def user = user()
-        userDao.findByEmail("EMAIL") >> null
+        userDao.findAll(new UserCriteria("EMAIL"), 0, 1) >> Collections.emptySet()
         userFactory.create(registerDto()) >> user
         userDao.save(user) >> user
         tokenFactory.create(2137) >> token()
@@ -39,7 +40,7 @@ class RegisterCommandSpec extends Specification {
 
     def 'should not register when user already exists'() {
         given:
-        userDao.findByEmail("EMAIL") >> user()
+        userDao.findAll(new UserCriteria("EMAIL"), 0, 1) >> Collections.singleton(user())
 
         when:
         registerCommand.execute(registerDto())

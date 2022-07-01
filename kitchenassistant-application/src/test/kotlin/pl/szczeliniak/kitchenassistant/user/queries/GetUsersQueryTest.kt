@@ -6,6 +6,7 @@ import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
 import pl.szczeliniak.kitchenassistant.user.User
+import pl.szczeliniak.kitchenassistant.user.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
@@ -25,8 +26,9 @@ internal class GetUsersQueryTest : JunitBaseClass() {
     fun shouldReturnUsers() {
         val user = user()
         val userDto = userDto()
-        whenever(userDao.findAll(100, 25)).thenReturn(setOf(user))
-        whenever(userDao.count()).thenReturn(280)
+        val criteria = UserCriteria()
+        whenever(userDao.findAll(criteria, 100, 25)).thenReturn(setOf(user))
+        whenever(userDao.count(criteria)).thenReturn(280)
         whenever(userConverter.map(user)).thenReturn(userDto)
 
         val result = getUsersQuery.execute(5, 25)
@@ -39,6 +41,6 @@ internal class GetUsersQueryTest : JunitBaseClass() {
     }
 
     private fun user(): User {
-        return User(email_ = "", name_ = "", password_ = "")
+        return User(email = "", name = "", password = "")
     }
 }

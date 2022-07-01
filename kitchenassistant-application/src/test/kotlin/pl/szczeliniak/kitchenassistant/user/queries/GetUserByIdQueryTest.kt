@@ -47,7 +47,7 @@ internal class GetUserByIdQueryTest : JunitBaseClass() {
     }
 
     private fun user(): User {
-        return User(email_ = "", password_ = "", name_ = "")
+        return User(email = "", password = "", name = "")
     }
 
 }

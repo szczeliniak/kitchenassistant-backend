@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.user.commands
 
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
+import pl.szczeliniak.kitchenassistant.user.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginWithFacebookDto
@@ -17,7 +18,13 @@ class LoginWithFacebookCommand(
 
     fun execute(dto: LoginWithFacebookDto): LoginResponse {
         val user = facebookConnector.login(dto.token)?.let {
-            userDao.findByEmail(it.email!!) ?: userDao.save(userFactory.create(it.email, null, it.name!!))
+            userDao.findAll(UserCriteria(it.email!!), 0, 1).firstOrNull() ?: userDao.save(
+                userFactory.create(
+                    it.email,
+                    "",
+                    it.name!!
+                )
+            )
         } ?: throw KitchenAssistantException(ErrorCode.CANNOT_LOGIN_WITH_FACEBOOK)
 
         val token = tokenFactory.create(user.id)

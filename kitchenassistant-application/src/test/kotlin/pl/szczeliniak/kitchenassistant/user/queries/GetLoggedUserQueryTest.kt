@@ -42,7 +42,7 @@ internal class GetLoggedUserQueryTest : JunitBaseClass() {
     }
 
     private fun user(): User {
-        return User(email_ = "", password_ = "", name_ = "")
+        return User(0, "", "", "")
     }
 
 }

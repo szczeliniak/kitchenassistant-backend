@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.user.commands
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.PasswordMatcher
+import pl.szczeliniak.kitchenassistant.user.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginDto
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
@@ -15,8 +16,13 @@ class LoginCommand(
 ) {
 
     fun execute(dto: LoginDto): LoginResponse {
-        val user = userDao.findByEmail(dto.email) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
-        user.validatePassword(dto.password, passwordMatcher)
+        val user = userDao.findAll(UserCriteria(dto.email), 0, 1).firstOrNull() ?: throw KitchenAssistantException(
+            ErrorCode.USER_NOT_FOUND
+        )
+
+        if (user.password?.let { !passwordMatcher.matches(it, dto.password) } == true) {
+            throw KitchenAssistantException(ErrorCode.PASSWORDS_DO_NOT_MATCH)
+        }
         val token = tokenFactory.create(user.id)
         return LoginResponse(token.token, user.id, token.validTo)
     }
