@@ -9,7 +9,7 @@ data class Tag(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_id_generator")
     @SequenceGenerator(name = "tag_id_generator", sequenceName = "seq_tag_id", allocationSize = 1)
-    var id: Int,
+    var id: Int = 0,
     var name: String,
     var userId: Int,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
