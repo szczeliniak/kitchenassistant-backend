@@ -45,10 +45,10 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
 
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
-            userId_ = 1,
-            name_ = "",
-            description_ = "",
-            items_ = Collections.emptySet()
+            userId = 1,
+            name = "",
+            description = "",
+            items = Collections.emptySet()
         )
     }
 

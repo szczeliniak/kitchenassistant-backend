@@ -35,14 +35,14 @@ internal class MarkItemAsCompletedCommandTest : JunitBaseClass() {
     }
 
     private fun shoppingListItem(): ShoppingListItem {
-        return ShoppingListItem(id_ = 2, name_ = "", quantity_ = "", sequence_ = 0, completed_ = false)
+        return ShoppingListItem(id = 2, name = "", quantity = "", sequence = 0, completed = false)
     }
 
     private fun shoppingList(shoppingListItem: ShoppingListItem): ShoppingList {
         return ShoppingList(
-            userId_ = 4,
-            name_ = "",
-            items_ = mutableSetOf(shoppingListItem)
+            userId = 4,
+            name = "",
+            items = mutableSetOf(shoppingListItem)
         )
     }
 

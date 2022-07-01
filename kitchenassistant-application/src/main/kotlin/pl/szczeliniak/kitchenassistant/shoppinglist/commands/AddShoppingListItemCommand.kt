@@ -20,10 +20,8 @@ class AddShoppingListItemCommand(
                 ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_NOT_FOUND)
 
         val item = shoppingListItemDao.save(shoppingListItemFactory.create(dto))
-
-        shoppingList.addItem(item)
+        shoppingList.items.add(item)
         shoppingListDao.save(shoppingList)
-
         return SuccessResponse(item.id)
     }
 

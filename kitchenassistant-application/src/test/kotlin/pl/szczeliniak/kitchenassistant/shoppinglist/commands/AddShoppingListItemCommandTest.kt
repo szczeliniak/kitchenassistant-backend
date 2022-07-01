@@ -45,18 +45,18 @@ internal class AddShoppingListItemCommandTest : JunitBaseClass() {
 
     private fun shoppingListItem(): ShoppingListItem {
         return ShoppingListItem(
-            id_ = 2,
-            name_ = "",
-            quantity_ = "",
-            sequence_ = 0
+            id = 2,
+            name = "",
+            quantity = "",
+            sequence = 0
         )
     }
 
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
-            id_ = 1,
-            userId_ = 0,
-            name_ = ""
+            id = 1,
+            userId = 0,
+            name = ""
         )
     }
 

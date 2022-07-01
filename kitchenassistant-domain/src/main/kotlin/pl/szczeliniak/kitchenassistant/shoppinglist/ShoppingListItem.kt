@@ -1,49 +1,27 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist
 
-import pl.szczeliniak.kitchenassistant.shared.ErrorCode
-import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
+import org.hibernate.annotations.Where
 import java.time.ZonedDateTime
+import javax.persistence.*
 
+@Entity
+@Table(name = "shopping_list_items")
+@Where(clause = "deleted = false")
 data class ShoppingListItem(
-    private var id_: Int = 0,
-    private var name_: String,
-    private var quantity_: String?,
-    private var sequence_: Int? = null,
-    private var receiptId_: Int? = null,
-    private var deleted_: Boolean = false,
-    private var completed_: Boolean = false,
-    private val createdAt_: ZonedDateTime = ZonedDateTime.now(),
-    private var modifiedAt_: ZonedDateTime = ZonedDateTime.now()
-) {
-    val id: Int get() = id_
-    val name: String get() = name_
-    val quantity: String? get() = quantity_
-    val sequence: Int? get() = sequence_
-    val receiptId: Int? get() = receiptId_
-    val createdAt: ZonedDateTime get() = createdAt_
-    val modifiedAt: ZonedDateTime get() = modifiedAt_
-    val completed: Boolean get() = completed_
-    val deleted: Boolean get() = deleted_
-
-    fun markAsDeleted() {
-        if (deleted_) {
-            throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_ITEM_ALREADY_REMOVED)
-        }
-        deleted_ = true
-        this.modifiedAt_ = ZonedDateTime.now()
-    }
-
-    fun markAsCompleted(completed: Boolean) {
-        completed_ = completed
-        this.modifiedAt_ = ZonedDateTime.now()
-    }
-
-    fun update(name: String, quantity: String?, sequence: Int?, receiptId: Int?) {
-        this.name_ = name
-        this.quantity_ = quantity
-        this.sequence_ = sequence
-        this.receiptId_ = receiptId
-        this.modifiedAt_ = ZonedDateTime.now()
-    }
-
-}
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shopping_list_item_id_generator")
+    @SequenceGenerator(
+        name = "shopping_list_item_id_generator",
+        sequenceName = "seq_shopping_list_item_id",
+        allocationSize = 1
+    )
+    var id: Int = 0,
+    var name: String,
+    var quantity: String? = null,
+    var sequence: Int? = null,
+    var receiptId: Int? = null,
+    var deleted: Boolean = false,
+    var completed: Boolean = false,
+    var createdAt: ZonedDateTime = ZonedDateTime.now(),
+    var modifiedAt: ZonedDateTime = ZonedDateTime.now()
+)

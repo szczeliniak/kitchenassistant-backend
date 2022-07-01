@@ -31,16 +31,16 @@ internal class ShoppingListFactoryTest : JunitBaseClass() {
         val result = shoppingListFactory.create(newShoppingListDto)
 
         assertThat(result).usingRecursiveComparison()
-            .ignoringFields("createdAt_", "modifiedAt_")
+            .ignoringFields("createdAt", "modifiedAt")
             .isEqualTo(shoppingList(date, mutableSetOf(shoppingListItem)))
     }
 
     private fun shoppingListItem(): ShoppingListItem {
-        return ShoppingListItem(name_ = "", quantity_ = "", sequence_ = null)
+        return ShoppingListItem(name = "", quantity = "", sequence = null)
     }
 
     private fun shoppingList(date: LocalDate, items: MutableSet<ShoppingListItem>): ShoppingList {
-        return ShoppingList(userId_ = 1, name_ = "NAME", description_ = "DESCRIPTION", date_ = date, items_ = items)
+        return ShoppingList(userId = 1, name = "NAME", description = "DESCRIPTION", date = date, items = items)
     }
 
 }

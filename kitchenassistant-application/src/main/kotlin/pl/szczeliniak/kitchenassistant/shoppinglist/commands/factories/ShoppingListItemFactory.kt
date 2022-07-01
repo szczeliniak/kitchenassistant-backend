@@ -12,10 +12,10 @@ open class ShoppingListItemFactory(private val getReceiptQuery: GetReceiptQuery)
         }
 
         return ShoppingListItem(
-            name_ = dto.name,
-            quantity_ = dto.quantity,
-            sequence_ = dto.sequence,
-            receiptId_ = dto.receiptId
+            name = dto.name,
+            quantity = dto.quantity,
+            sequence = dto.sequence,
+            receiptId = dto.receiptId
         )
     }
 

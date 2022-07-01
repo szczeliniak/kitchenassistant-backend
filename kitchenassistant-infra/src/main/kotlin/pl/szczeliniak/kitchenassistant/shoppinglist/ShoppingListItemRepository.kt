@@ -6,16 +6,16 @@ import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
 
 @Repository
-class ShoppingListItemRepository(@PersistenceContext private val entityManager: EntityManager) {
+class ShoppingListItemRepository(@PersistenceContext private val entityManager: EntityManager) : ShoppingListItemDao {
 
     @Transactional
-    fun save(entity: ShoppingListItemEntity): ShoppingListItemEntity {
-        if (entity.id == 0) {
-            entityManager.persist(entity)
+    override fun save(shoppingListItem: ShoppingListItem): ShoppingListItem {
+        if (shoppingListItem.id == 0) {
+            entityManager.persist(shoppingListItem)
         } else {
-            entityManager.merge(entity)
+            entityManager.merge(shoppingListItem)
         }
-        return entity
+        return shoppingListItem
     }
 
 }

@@ -1,33 +1,32 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist
 
 import org.springframework.stereotype.Repository
-import java.time.LocalDate
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.persistence.TypedQuery
 import javax.transaction.Transactional
 
 @Repository
-class ShoppingListRepository(@PersistenceContext private val entityManager: EntityManager) {
+class ShoppingListRepository(@PersistenceContext private val entityManager: EntityManager) : ShoppingListDao {
 
-    fun findAll(criteria: SearchCriteria, offset: Int, limit: Int): MutableList<ShoppingListEntity> {
-        val query = "SELECT sl FROM ShoppingListEntity sl WHERE sl.deleted = false" + prepareCriteria(criteria)
-        val typedQuery = applyParameters(criteria, entityManager.createQuery(query, ShoppingListEntity::class.java))
+    override fun findAll(criteria: ShoppingListCriteria, offset: Int, limit: Int): Set<ShoppingList> {
+        val query = "SELECT sl FROM ShoppingList sl WHERE sl.deleted = false" + prepareCriteria(criteria)
+        val typedQuery = applyParameters(criteria, entityManager.createQuery(query, ShoppingList::class.java))
         typedQuery.firstResult = offset
         typedQuery.maxResults = limit
-        return typedQuery.resultList
+        return typedQuery.resultList.toSet()
     }
 
-    fun count(criteria: SearchCriteria): Long {
-        val query = "SELECT COUNT(sl) FROM ShoppingListEntity sl WHERE sl.deleted = false" + prepareCriteria(criteria)
+    override fun count(criteria: ShoppingListCriteria): Long {
+        val query = "SELECT COUNT(sl) FROM ShoppingList sl WHERE sl.deleted = false" + prepareCriteria(criteria)
         return applyParameters(criteria, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
     }
 
-    fun findById(id: Int): ShoppingListEntity? {
+    override fun findById(id: Int): ShoppingList? {
         return entityManager
             .createQuery(
-                "SELECT sl FROM ShoppingListEntity sl WHERE sl.id = :id AND sl.deleted = false",
-                ShoppingListEntity::class.java
+                "SELECT sl FROM ShoppingList sl WHERE sl.id = :id AND sl.deleted = false",
+                ShoppingList::class.java
             )
             .setParameter("id", id)
             .resultList
@@ -37,21 +36,16 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
     }
 
     @Transactional
-    fun save(entity: ShoppingListEntity): ShoppingListEntity {
-        if (entity.id == 0) {
-            entityManager.persist(entity)
+    override fun save(shoppingList: ShoppingList): ShoppingList {
+        if (shoppingList.id == 0) {
+            entityManager.persist(shoppingList)
         } else {
-            entityManager.merge(entity)
+            entityManager.merge(shoppingList)
         }
-        return entity
+        return shoppingList
     }
 
-    @Transactional
-    fun clear() {
-        entityManager.createQuery("DELETE FROM ShoppingListEntity").executeUpdate()
-    }
-
-    private fun prepareCriteria(criteria: SearchCriteria): String {
+    private fun prepareCriteria(criteria: ShoppingListCriteria): String {
         val builder = StringBuilder().append("")
         if (criteria.userId != null) {
             builder.append(" AND sl.userId = :userId")
@@ -69,7 +63,7 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
     }
 
     private fun <T> applyParameters(
-        criteria: SearchCriteria,
+        criteria: ShoppingListCriteria,
         typedQuery: TypedQuery<T>
     ): TypedQuery<T> {
         var query = typedQuery
@@ -87,7 +81,5 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
         }
         return query
     }
-
-    data class SearchCriteria(val userId: Int?, val archived: Boolean?, val name: String?, val date: LocalDate?)
 
 }

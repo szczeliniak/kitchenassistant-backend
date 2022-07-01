@@ -11,9 +11,9 @@ class UpdateShoppingListCommand(private val shoppingListDao: ShoppingListDao) {
     fun execute(id: Int, dto: UpdateShoppingListDto): SuccessResponse {
         val shoppingList =
             shoppingListDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_NOT_FOUND)
-
-        shoppingList.update(dto.name, dto.description, dto.date)
-
+        shoppingList.name = dto.name
+        shoppingList.description = dto.description
+        shoppingList.date = dto.date
         return SuccessResponse(shoppingListDao.save(shoppingList).id)
     }
 

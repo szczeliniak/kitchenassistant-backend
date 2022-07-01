@@ -21,7 +21,10 @@ class UpdateShoppingListItemCommand(
             shoppingList.items.firstOrNull { it.id == ingredientId }
                 ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_ITEM_NOT_FOUND)
 
-        item.update(dto.name, dto.quantity, dto.sequence, dto.receiptId)
+        item.name = dto.name
+        item.quantity = dto.quantity
+        item.sequence = dto.sequence
+        item.receiptId = dto.receiptId
 
         return SuccessResponse(shoppingListItemDao.save(item).id)
     }

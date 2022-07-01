@@ -13,11 +13,8 @@ class MarkShoppingListAsArchivedCommand(
         val shoppingList =
             shoppingListDao.findById(shoppingListId)
                 ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_NOT_FOUND)
-
-        shoppingList.markAsArchived(archived)
-
+        shoppingList.archived = archived
         shoppingListDao.save(shoppingList)
-
         return SuccessResponse(shoppingList.id)
     }
 

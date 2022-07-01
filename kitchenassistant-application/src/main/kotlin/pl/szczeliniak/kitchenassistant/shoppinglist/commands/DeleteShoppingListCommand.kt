@@ -12,7 +12,10 @@ class DeleteShoppingListCommand(
     fun execute(id: Int): SuccessResponse {
         val shoppingList =
             shoppingListDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_NOT_FOUND)
-        shoppingList.markAsDeleted()
+        if (shoppingList.deleted) {
+            throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_ALREADY_REMOVED)
+        }
+        shoppingList.deleted = true
 
         return SuccessResponse(shoppingListDao.save(shoppingList).id)
     }

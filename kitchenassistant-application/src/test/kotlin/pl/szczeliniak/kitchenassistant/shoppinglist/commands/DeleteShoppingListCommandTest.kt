@@ -31,9 +31,9 @@ internal class DeleteShoppingListCommandTest : JunitBaseClass() {
 
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
-            id_ = 1,
-            userId_ = 0,
-            name_ = ""
+            id = 1,
+            userId = 0,
+            name = ""
         )
     }
 

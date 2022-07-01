@@ -48,8 +48,8 @@ internal class GetShoppingListQueryTest : JunitBaseClass() {
 
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
-            userId_ = 0,
-            name_ = ""
+            userId = 0,
+            name = ""
         )
     }
 

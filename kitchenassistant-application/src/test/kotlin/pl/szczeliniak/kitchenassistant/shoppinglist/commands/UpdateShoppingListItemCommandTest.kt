@@ -48,10 +48,10 @@ internal class UpdateShoppingListItemCommandTest : JunitBaseClass() {
 
     private fun shoppingList(items: MutableSet<ShoppingListItem>): ShoppingList {
         return ShoppingList(
-            id_ = 1,
-            userId_ = 0,
-            name_ = "",
-            items_ = items
+            id = 1,
+            userId = 0,
+            name = "",
+            items = items
         )
     }
 

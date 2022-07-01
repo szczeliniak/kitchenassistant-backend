@@ -7,11 +7,11 @@ open class ShoppingListFactory(private val shoppingListItemFactory: ShoppingList
 
     open fun create(dto: NewShoppingListDto): ShoppingList {
         return ShoppingList(
-            userId_ = dto.userId,
-            name_ = dto.name,
-            description_ = dto.description,
-            date_ = dto.date,
-            items_ = dto.items.map { shoppingListItemFactory.create(it) }.toMutableSet()
+            userId = dto.userId,
+            name = dto.name,
+            description = dto.description,
+            date = dto.date,
+            items = dto.items.map { shoppingListItemFactory.create(it) }.toMutableSet()
         )
     }
 

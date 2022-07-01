@@ -37,18 +37,18 @@ internal class DeleteShoppingListItemCommandTest : JunitBaseClass() {
 
     private fun shoppingList(shoppingListItem: ShoppingListItem): ShoppingList {
         return ShoppingList(
-            id_ = 1,
-            userId_ = 0,
-            name_ = "",
-            items_ = mutableSetOf(shoppingListItem)
+            id = 1,
+            userId = 0,
+            name = "",
+            items = mutableSetOf(shoppingListItem)
         )
     }
 
     private fun shoppingListItem(): ShoppingListItem {
         return ShoppingListItem(
-            id_ = 2,
-            name_ = "",
-            quantity_ = "",
+            id = 2,
+            name = "",
+            quantity = "",
             0
         )
     }

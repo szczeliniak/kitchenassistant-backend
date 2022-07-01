@@ -27,7 +27,7 @@ internal class ShoppingListItemFactoryTest : JunitBaseClass() {
         val result = shoppingListItemFactory.create(newShoppingListItemDto)
 
         assertThat(result).usingRecursiveComparison()
-            .ignoringFields("createdAt_", "modifiedAt_")
+            .ignoringFields("createdAt", "modifiedAt")
             .isEqualTo(shoppingListItem())
     }
 
@@ -50,7 +50,7 @@ internal class ShoppingListItemFactoryTest : JunitBaseClass() {
     }
 
     private fun shoppingListItem(): ShoppingListItem {
-        return ShoppingListItem(name_ = "", quantity_ = null, sequence_ = null, receiptId_ = 1)
+        return ShoppingListItem(name = "", quantity = null, sequence = null, receiptId = 1)
     }
 
     private fun newShoppingListItemDto(): NewShoppingListItemDto {

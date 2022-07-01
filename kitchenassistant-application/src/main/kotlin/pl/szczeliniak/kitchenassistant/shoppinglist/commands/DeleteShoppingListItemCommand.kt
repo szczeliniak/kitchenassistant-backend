@@ -15,7 +15,15 @@ class DeleteShoppingListItemCommand(
         val shoppingList =
             shoppingListDao.findById(shoppingListId)
                 ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_NOT_FOUND)
-        val item = shoppingList.deleteItemById(shoppingListItemId)
+
+        val item = shoppingList.items.firstOrNull { it.id == shoppingListItemId }
+            ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_ITEM_NOT_FOUND)
+
+        if (item.deleted) {
+            throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_ITEM_ALREADY_REMOVED)
+        }
+        item.deleted = true
+
         shoppingListItemDao.save(item)
         return SuccessResponse(shoppingList.id)
     }

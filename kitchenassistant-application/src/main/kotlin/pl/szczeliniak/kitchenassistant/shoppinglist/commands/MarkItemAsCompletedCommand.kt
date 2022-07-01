@@ -18,7 +18,7 @@ class MarkItemAsCompletedCommand(
 
         val shoppingListItem = shoppingList.items.firstOrNull { it.id == itemId }
             ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_ITEM_NOT_FOUND)
-        shoppingListItem.markAsCompleted(completed)
+        shoppingListItem.completed = completed
 
         shoppingListItemDao.save(shoppingListItem)
 
