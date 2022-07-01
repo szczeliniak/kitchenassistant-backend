@@ -10,7 +10,7 @@ class UpdateDayPlanCommand(private val dayPlanDao: DayPlanDao) {
 
     fun execute(dayPlanId: Int, dto: UpdateDayPlanDto): SuccessResponse {
         val dayPlan = dayPlanDao.findById(dayPlanId) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
-        dayPlan.update(dto.date)
+        dayPlan.date = dto.date
         return SuccessResponse(dayPlanDao.save(dayPlan).id)
     }
 

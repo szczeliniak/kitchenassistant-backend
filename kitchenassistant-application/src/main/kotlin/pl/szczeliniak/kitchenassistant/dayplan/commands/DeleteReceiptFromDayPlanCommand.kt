@@ -9,7 +9,10 @@ class DeleteReceiptFromDayPlanCommand(private val dayPlanDao: DayPlanDao) {
 
     fun execute(dayPlanId: Int, receiptId: Int): SuccessResponse {
         val dayPlan = dayPlanDao.findById(dayPlanId) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
-        dayPlan.removeReceiptId(receiptId)
+        if (!dayPlan.receiptIds.contains(receiptId)) {
+            throw KitchenAssistantException(ErrorCode.RECEIPT_ID_IS_NOT_ASSIGNED_TO_DAY_PLAN)
+        }
+        dayPlan.receiptIds.remove(receiptId)
         return SuccessResponse(dayPlanDao.save(dayPlan).id)
     }
 

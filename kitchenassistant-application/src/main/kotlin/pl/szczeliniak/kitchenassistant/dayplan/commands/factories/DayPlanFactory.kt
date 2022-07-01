@@ -6,7 +6,7 @@ import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.NewDayPlanDto
 open class DayPlanFactory {
 
     open fun create(dto: NewDayPlanDto): DayPlan {
-        return DayPlan(userId_ = dto.userId, date_ = dto.date)
+        return DayPlan(userId = dto.userId, date = dto.date)
     }
 
 }

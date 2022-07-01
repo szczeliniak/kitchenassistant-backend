@@ -1,30 +1,31 @@
 package pl.szczeliniak.kitchenassistant.dayplan
 
 import org.springframework.stereotype.Repository
+import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.persistence.TypedQuery
 import javax.transaction.Transactional
 
 @Repository
-class DayPlanRepository(@PersistenceContext private val entityManager: EntityManager) {
+class DayPlanRepository(@PersistenceContext private val entityManager: EntityManager) : DayPlanDao {
 
     @Transactional
-    fun save(entity: DayPlanEntity): DayPlanEntity {
-        if (entity.id == 0) {
-            entityManager.persist(entity)
+    override fun save(dayPlan: DayPlan): DayPlan {
+        if (dayPlan.id == 0) {
+            entityManager.persist(dayPlan)
         } else {
-            entityManager.merge(entity)
+            entityManager.merge(dayPlan)
         }
-        return entity
+        return dayPlan
     }
 
-    fun findAll(offset: Int?, limit: Int?, criteria: SearchCriteria): MutableSet<DayPlanEntity> {
+    override fun findAll(criteria: DayPlanCriteria, offset: Int?, limit: Int?): Set<DayPlan> {
         val typedQuery = applyParameters(
             criteria,
             entityManager.createQuery(
-                "SELECT dp FROM DayPlanEntity dp WHERE dp.deleted = false" + prepareCriteria(criteria) + " ORDER BY dp.date DESC, dp.id ASC",
-                DayPlanEntity::class.java
+                "SELECT dp FROM DayPlan dp WHERE dp.deleted = false" + prepareCriteria(criteria) + " ORDER BY dp.date DESC, dp.id ASC",
+                DayPlan::class.java
             )
         )
         offset?.let { typedQuery.firstResult = it }
@@ -32,11 +33,11 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         return typedQuery.resultList.toMutableSet()
     }
 
-    fun findById(id: Int): DayPlanEntity? {
+    override fun findById(id: Int): DayPlan? {
         return entityManager
             .createQuery(
-                "SELECT dp FROM DayPlanEntity dp WHERE dp.id = :id AND dp.deleted = false",
-                DayPlanEntity::class.java
+                "SELECT dp FROM DayPlan dp WHERE dp.id = :id AND dp.deleted = false",
+                DayPlan::class.java
             )
             .setParameter("id", id)
             .resultList
@@ -45,22 +46,17 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
             .orElse(null)
     }
 
-    @Transactional
-    fun clear() {
-        entityManager.createQuery("DELETE FROM DayPlanEntity").executeUpdate()
-    }
-
-    fun count(criteria: SearchCriteria): Long {
+    override fun count(criteria: DayPlanCriteria): Long {
         return applyParameters(
             criteria,
             entityManager.createQuery(
-                "SELECT DISTINCT COUNT(dp) FROM DayPlanEntity dp WHERE dp.deleted = false" + prepareCriteria(criteria),
+                "SELECT DISTINCT COUNT(dp) FROM DayPlan dp WHERE dp.deleted = false" + prepareCriteria(criteria),
                 Long::class.javaObjectType
             )
         ).singleResult
     }
 
-    private fun prepareCriteria(criteria: SearchCriteria): String {
+    private fun prepareCriteria(criteria: DayPlanCriteria): String {
         val builder = StringBuilder().append("")
         if (criteria.userId != null) {
             builder.append(" AND dp.userId = :userId")
@@ -72,7 +68,7 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
     }
 
     private fun <T> applyParameters(
-        criteria: SearchCriteria,
+        criteria: DayPlanCriteria,
         typedQuery: TypedQuery<T>
     ): TypedQuery<T> {
         var query = typedQuery
@@ -84,7 +80,5 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         }
         return query
     }
-
-    data class SearchCriteria(val userId: Int?, val archived: Boolean?)
 
 }

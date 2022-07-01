@@ -9,7 +9,10 @@ class ArchiveDayPlanCommand(private val dayPlanDao: DayPlanDao) {
 
     fun execute(dayPlanId: Int): SuccessResponse {
         val dayPlan = dayPlanDao.findById(dayPlanId) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
-        dayPlan.archive()
+        if (dayPlan.archived) {
+            throw KitchenAssistantException(ErrorCode.DAY_PLAN_ALREADY_ARCHIVED)
+        }
+        dayPlan.archived = true
         return SuccessResponse(dayPlanDao.save(dayPlan).id)
     }
 

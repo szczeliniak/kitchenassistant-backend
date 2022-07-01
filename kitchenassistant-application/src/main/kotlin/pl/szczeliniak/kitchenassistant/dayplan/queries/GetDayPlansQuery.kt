@@ -14,7 +14,7 @@ class GetDayPlansQuery(private val dayPlanDao: DayPlanDao, private val dayPlanCo
         val offset = PaginationUtils.calculateOffset(currentPage, currentLimit)
         val totalNumberOfPages = PaginationUtils.calculateNumberOfPages(currentLimit, dayPlanDao.count(criteria))
         return DayPlansResponse(
-            dayPlanDao.findAll(offset, currentLimit, criteria).map { dayPlanConverter.map(it) },
+            dayPlanDao.findAll(criteria, offset, currentLimit).map { dayPlanConverter.map(it) },
             Pagination(currentPage, currentLimit, totalNumberOfPages)
         )
     }

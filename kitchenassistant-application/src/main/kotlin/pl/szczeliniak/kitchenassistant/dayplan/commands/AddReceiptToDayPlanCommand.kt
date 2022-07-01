@@ -11,7 +11,7 @@ class AddReceiptToDayPlanCommand(private val dayPlanDao: DayPlanDao, private val
     fun execute(dayPlanId: Int, receiptId: Int): SuccessResponse {
         val dayPlan = dayPlanDao.findById(dayPlanId) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
         getReceiptQuery.execute(receiptId)
-        dayPlan.addReceiptId(receiptId)
+        dayPlan.receiptIds.add(receiptId)
         return SuccessResponse(dayPlanDao.save(dayPlan).id)
     }
 }
