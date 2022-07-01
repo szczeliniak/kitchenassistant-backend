@@ -5,7 +5,7 @@ import pl.szczeliniak.kitchenassistant.receipt.Photo
 open class PhotoFactory {
 
     open fun create(name: String, userId: Int): Photo {
-        return Photo(name_ = name, userId_ = userId)
+        return Photo(0, name, userId)
     }
 
 }

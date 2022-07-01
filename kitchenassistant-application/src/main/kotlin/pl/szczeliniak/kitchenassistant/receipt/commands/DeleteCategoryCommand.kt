@@ -11,10 +11,13 @@ class DeleteCategoryCommand(private val categoryDao: CategoryDao, private val re
 
     fun execute(categoryId: Int): SuccessResponse {
         val category = categoryDao.findById(categoryId) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
-        category.markAsDeleted()
+        if (category.deleted) {
+            throw KitchenAssistantException(ErrorCode.CATEGORY_ALREADY_REMOVED)
+        }
+        category.deleted = true
 
         val receipts = receiptDao.findAll(ReceiptCriteria(category.userId, category.id))
-        receipts.forEach { it.removeCategory() }
+        receipts.forEach { it.category = null }
         receiptDao.save(receipts)
 
         categoryDao.save(category)

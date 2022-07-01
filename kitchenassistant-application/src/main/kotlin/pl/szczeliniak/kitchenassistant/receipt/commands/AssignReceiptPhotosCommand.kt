@@ -16,12 +16,10 @@ class AssignReceiptPhotosCommand(
         val receipt = receiptDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
 
         request.ids.forEach {
-            if (receipt.hasPhotoWithId(it)) {
+            if (receipt.photos.any { photo -> photo.id == it }) {
                 return@forEach
             }
-            receipt.addPhoto(
-                photoDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
-            )
+            receipt.photos.add(photoDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND))
         }
 
         return SuccessResponse(receiptDao.save(receipt).id)

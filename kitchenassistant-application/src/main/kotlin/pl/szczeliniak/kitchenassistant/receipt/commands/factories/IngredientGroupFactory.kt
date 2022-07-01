@@ -8,10 +8,7 @@ open class IngredientGroupFactory(
 ) {
 
     open fun create(dto: NewIngredientGroupDto): IngredientGroup {
-        return IngredientGroup(
-            name_ = dto.name,
-            ingredients_ = dto.ingredients.map { ingredientFactory.create(it) }.toMutableSet()
-        )
+        return IngredientGroup(0, dto.name, dto.ingredients.map { ingredientFactory.create(it) }.toMutableSet())
     }
 
 }

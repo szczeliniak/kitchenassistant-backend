@@ -17,7 +17,7 @@ class AddIngredientGroupCommand(
     fun execute(receiptId: Int, dto: NewIngredientGroupDto): SuccessResponse {
         val receipt = receiptDao.findById(receiptId) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
         val ingredientGroup = ingredientGroupDao.save(ingredientGroupFactory.create(dto))
-        receipt.addIngredientGroup(ingredientGroup)
+        receipt.ingredientGroups.add(ingredientGroup)
         receiptDao.save(receipt)
         return SuccessResponse(ingredientGroup.id)
     }

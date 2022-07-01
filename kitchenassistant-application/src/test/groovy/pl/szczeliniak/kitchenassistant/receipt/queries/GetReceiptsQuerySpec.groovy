@@ -39,8 +39,8 @@ class GetReceiptsQuerySpec extends Specification {
 
     private static Receipt receipt() {
         return new Receipt(1,
-                0,
                 '',
+                0,
                 '',
                 new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()),
                 '',

@@ -14,7 +14,9 @@ class UpdateStepCommand(private val receiptDao: ReceiptDao) {
         val step =
             receipt.steps.firstOrNull { it.id == stepId } ?: throw KitchenAssistantException(ErrorCode.STEP_NOT_FOUND)
 
-        step.update(dto.name, dto.description, dto.sequence)
+        step.name = dto.name
+        step.description = dto.description
+        step.sequence = dto.sequence
 
         receiptDao.save(receipt)
 

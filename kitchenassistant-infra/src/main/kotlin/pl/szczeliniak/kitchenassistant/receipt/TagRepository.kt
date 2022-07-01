@@ -6,23 +6,27 @@ import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
 
 @Repository
-class TagRepository(@PersistenceContext private val entityManager: EntityManager) {
+class TagRepository(@PersistenceContext private val entityManager: EntityManager) : TagDao {
 
     @Transactional
-    fun save(entity: TagEntity): TagEntity {
-        if (entity.id == 0) {
-            entityManager.persist(entity)
+    override fun save(tag: Tag): Tag {
+        if (tag.id == 0) {
+            entityManager.persist(tag)
         } else {
-            entityManager.merge(entity)
+            entityManager.merge(tag)
         }
-        return entity
+        return tag
     }
 
-    fun findById(id: Int): TagEntity? {
+    override fun saveAll(tags: Set<Tag>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun findById(id: Int): Tag? {
         return entityManager
             .createQuery(
-                "SELECT r FROM TagEntity r WHERE r.id = :id",
-                TagEntity::class.java
+                "SELECT t FROM Tag t WHERE t.id = :id",
+                Tag::class.java
             )
             .setParameter("id", id)
             .resultList
@@ -31,11 +35,11 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
             .orElse(null)
     }
 
-    fun findByName(name: String, userId: Int): TagEntity? {
+    override fun findByName(name: String, userId: Int): Tag? {
         return entityManager
             .createQuery(
-                "SELECT r FROM TagEntity r WHERE r.name = :name AND r.userId = :userId",
-                TagEntity::class.java
+                "SELECT t FROM Tag t WHERE t.name = :name AND t.userId = :userId",
+                Tag::class.java
             )
             .setParameter("name", name)
             .setParameter("userId", userId)
@@ -45,16 +49,16 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
             .orElse(null)
     }
 
-    fun findAll(criteria: SearchCriteria): Set<TagEntity> {
-        var query = "SELECT r FROM TagEntity r WHERE r.id IS NOT NULL"
+    override fun findAll(criteria: TagCriteria): Set<Tag> {
+        var query = "SELECT t FROM Tag t WHERE t.id IS NOT NULL"
         if (criteria.name != null) {
-            query += " AND LOWER(r.name) LIKE (:name)"
+            query += " AND LOWER(t.name) LIKE (:name)"
         }
         if (criteria.userId != null) {
-            query += " AND r.userId = :userId"
+            query += " AND t.userId = :userId"
         }
 
-        var typedQuery = entityManager.createQuery(query, TagEntity::class.java)
+        var typedQuery = entityManager.createQuery(query, Tag::class.java)
         if (criteria.name != null) {
             typedQuery = typedQuery.setParameter("name", "%" + criteria.name + "%")
         }
@@ -64,10 +68,5 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
 
         return typedQuery.resultList.toMutableSet()
     }
-
-    data class SearchCriteria(
-        val name: String?,
-        val userId: Int?
-    )
 
 }

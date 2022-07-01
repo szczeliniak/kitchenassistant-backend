@@ -6,16 +6,16 @@ import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
 
 @Repository
-class StepRepository(@PersistenceContext private val entityManager: EntityManager) {
+class StepRepository(@PersistenceContext private val entityManager: EntityManager) : StepDao {
 
     @Transactional
-    fun save(entity: StepEntity): StepEntity {
-        if (entity.id == 0) {
-            entityManager.persist(entity)
+    override fun save(step: Step): Step {
+        if (step.id == 0) {
+            entityManager.persist(step)
         } else {
-            entityManager.merge(entity)
+            entityManager.merge(step)
         }
-        return entity
+        return step
     }
 
 }

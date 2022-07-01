@@ -10,18 +10,19 @@ class UpdateIngredientCommand(private val receiptDao: ReceiptDao) {
 
     fun execute(receiptId: Int, ingredientGroupId: Int, ingredientId: Int, dto: UpdateIngredientDto): SuccessResponse {
         val receipt = receiptDao.findById(receiptId) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
-        val ingredientGroup = receipt.getIngredientGroupById(ingredientGroupId)
+        val ingredientGroup = receipt.ingredientGroups.firstOrNull { ingredientGroupId == it.id }
             ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_GROUP_NOT_FOUND)
-        val ingredient = ingredientGroup.getIngredientById(ingredientId)
+        val ingredient = ingredientGroup.ingredients.firstOrNull { ingredientId == it.id }
             ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_NOT_FOUND)
 
-        ingredient.update(dto.name, dto.quantity)
+        ingredient.name = dto.name
+        ingredient.quantity = dto.quantity
 
         if (ingredientGroup.id != dto.ingredientGroupId) {
-            val newIngredientGroup = receipt.getIngredientGroupById(dto.ingredientGroupId)
+            val newIngredientGroup = receipt.ingredientGroups.firstOrNull { it.id == dto.ingredientGroupId }
                 ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_GROUP_NOT_FOUND)
-            ingredientGroup.removeIngredientById(ingredient.id)
-            newIngredientGroup.addIngredient(ingredient)
+            ingredientGroup.ingredients.removeIf { ingredient.id == it.id }
+            newIngredientGroup.ingredients.add(ingredient)
         }
 
         receiptDao.save(receipt)

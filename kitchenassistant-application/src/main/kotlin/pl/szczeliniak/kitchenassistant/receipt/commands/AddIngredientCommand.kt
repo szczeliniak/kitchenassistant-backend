@@ -17,11 +17,12 @@ class AddIngredientCommand(
     fun execute(receiptId: Int, ingredientGroupId: Int?, dto: NewIngredientDto): SuccessResponse {
         val receipt = receiptDao.findById(receiptId) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
 
-        val ingredientGroup = ingredientGroupId?.let { receipt.getIngredientGroupById(ingredientGroupId) }
-            ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_GROUP_NOT_FOUND)
+        val ingredientGroup =
+            ingredientGroupId?.let { receipt.ingredientGroups.firstOrNull { ingredientGroupId == it.id } }
+                ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_GROUP_NOT_FOUND)
 
         val ingredient = ingredientDao.save(ingredientFactory.create(dto))
-        ingredientGroup.addIngredient(ingredient)
+        ingredientGroup.ingredients.add(ingredient)
 
         receiptDao.save(receipt)
         return SuccessResponse(ingredient.id)

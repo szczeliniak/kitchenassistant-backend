@@ -9,8 +9,9 @@ class DeleteIngredientGroupCommand(private val receiptDao: ReceiptDao) {
 
     fun execute(receiptId: Int, ingredientGroupId: Int): SuccessResponse {
         val receipt = receiptDao.findById(receiptId) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
-        val ingredientGroup = receipt.deleteIngredientGroupById(ingredientGroupId)
+        val ingredientGroup = receipt.ingredientGroups.firstOrNull { it.id == ingredientGroupId }
             ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_GROUP_NOT_FOUND)
+        ingredientGroup.deleted = true
         receiptDao.save(receipt)
         return SuccessResponse(ingredientGroup.id)
     }

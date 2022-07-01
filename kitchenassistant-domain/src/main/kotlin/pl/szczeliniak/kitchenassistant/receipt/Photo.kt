@@ -1,30 +1,20 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
-import pl.szczeliniak.kitchenassistant.shared.ErrorCode
-import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
+import org.hibernate.annotations.Where
 import java.time.ZonedDateTime
+import javax.persistence.*
 
+@Entity
+@Table(name = "photos")
+@Where(clause = "deleted = false")
 data class Photo(
-    private var id_: Int = 0,
-    private var name_: String,
-    private var userId_: Int,
-    private var deleted_: Boolean = false,
-    private val createdAt_: ZonedDateTime = ZonedDateTime.now(),
-    private var modifiedAt_: ZonedDateTime = ZonedDateTime.now()
-) {
-    val id: Int get() = id_
-    val userId: Int get() = userId_
-    val name: String get() = name_
-    val deleted: Boolean get() = deleted_
-    val createdAt: ZonedDateTime get() = createdAt_
-    val modifiedAt: ZonedDateTime get() = modifiedAt_
-
-    fun markAsDeleted() {
-        if (deleted) {
-            throw KitchenAssistantException(ErrorCode.PHOTO_ALREADY_REMOVED)
-        }
-        deleted_ = true
-        this.modifiedAt_ = ZonedDateTime.now()
-    }
-
-}
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "photo_id_generator")
+    @SequenceGenerator(name = "photo_id_generator", sequenceName = "seq_photo_id", allocationSize = 1)
+    var id: Int,
+    var name: String,
+    var userId: Int,
+    var deleted: Boolean = false,
+    var createdAt: ZonedDateTime = ZonedDateTime.now(),
+    var modifiedAt: ZonedDateTime = ZonedDateTime.now()
+)

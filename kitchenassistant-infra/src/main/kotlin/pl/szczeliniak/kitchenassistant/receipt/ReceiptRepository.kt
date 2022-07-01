@@ -7,20 +7,20 @@ import javax.persistence.TypedQuery
 import javax.transaction.Transactional
 
 @Repository
-class ReceiptRepository(@PersistenceContext private val entityManager: EntityManager) {
+class ReceiptRepository(@PersistenceContext private val entityManager: EntityManager) : ReceiptDao {
 
-    fun findAll(criteria: SearchCriteria, offset: Int?, limit: Int?): MutableSet<ReceiptEntity> {
+    override fun findAll(criteria: ReceiptCriteria, offset: Int?, limit: Int?): Set<Receipt> {
         val query =
-            "SELECT DISTINCT r FROM ReceiptEntity r " + prepareJoin(criteria) + "WHERE r.deleted = false" + prepareCriteria(
+            "SELECT DISTINCT r FROM Receipt r " + prepareJoin(criteria) + "WHERE r.deleted = false" + prepareCriteria(
                 criteria
             ) + " ORDER BY r.favorite DESC NULLS LAST, r.id ASC"
-        val typedQuery = applyParameters(criteria, entityManager.createQuery(query, ReceiptEntity::class.java))
+        val typedQuery = applyParameters(criteria, entityManager.createQuery(query, Receipt::class.java))
         offset?.let { typedQuery.firstResult = it }
         limit?.let { typedQuery.maxResults = it }
         return typedQuery.resultList.toMutableSet()
     }
 
-    private fun prepareJoin(criteria: SearchCriteria): String {
+    private fun prepareJoin(criteria: ReceiptCriteria): String {
         val builder = StringBuilder()
         if (criteria.tag != null) {
             builder.append("JOIN r.tags t ")
@@ -28,19 +28,19 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
         return builder.toString()
     }
 
-    fun count(criteria: SearchCriteria): Long {
+    override fun count(criteria: ReceiptCriteria): Long {
         val query =
-            "SELECT DISTINCT COUNT(r) FROM ReceiptEntity r " + prepareJoin(criteria) + "WHERE r.deleted = false" + prepareCriteria(
+            "SELECT DISTINCT COUNT(r) FROM Receipt r " + prepareJoin(criteria) + "WHERE r.deleted = false" + prepareCriteria(
                 criteria
             )
         return applyParameters(criteria, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
     }
 
-    fun findById(id: Int): ReceiptEntity? {
+    override fun findById(id: Int): Receipt? {
         return entityManager
             .createQuery(
-                "SELECT r FROM ReceiptEntity r WHERE r.id = :id AND r.deleted = false",
-                ReceiptEntity::class.java
+                "SELECT r FROM Receipt r WHERE r.id = :id AND r.deleted = false",
+                Receipt::class.java
             )
             .setParameter("id", id)
             .resultList
@@ -50,22 +50,20 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
     }
 
     @Transactional
-    fun save(entity: ReceiptEntity): ReceiptEntity {
-        if (entity.id == 0) {
-
-            entityManager.persist(entity)
+    override fun save(receipt: Receipt): Receipt {
+        if (receipt.id == 0) {
+            entityManager.persist(receipt)
         } else {
-            entityManager.merge(entity)
+            entityManager.merge(receipt)
         }
-        return entity
+        return receipt
     }
 
-    @Transactional
-    fun clear() {
-        entityManager.createQuery("DELETE FROM ReceiptEntity").executeUpdate()
+    override fun save(receipts: Set<Receipt>) {
+        receipts.forEach { save(it) }
     }
 
-    private fun prepareCriteria(criteria: SearchCriteria): String {
+    private fun prepareCriteria(criteria: ReceiptCriteria): String {
         val builder = StringBuilder().append("")
         if (criteria.userId != null) {
             builder.append(" AND r.userId = :userId")
@@ -83,7 +81,7 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
     }
 
     private fun <T> applyParameters(
-        criteria: SearchCriteria,
+        criteria: ReceiptCriteria,
         typedQuery: TypedQuery<T>
     ): TypedQuery<T> {
         var query = typedQuery
@@ -101,7 +99,5 @@ class ReceiptRepository(@PersistenceContext private val entityManager: EntityMan
         }
         return query
     }
-
-    data class SearchCriteria(val userId: Int?, val categoryId: Int?, val name: String?, val tag: String?)
 
 }

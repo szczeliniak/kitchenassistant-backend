@@ -6,23 +6,27 @@ import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
 
 @Repository
-class AuthorRepository(@PersistenceContext private val entityManager: EntityManager) {
+class AuthorRepository(@PersistenceContext private val entityManager: EntityManager) : AuthorDao {
 
     @Transactional
-    fun save(entity: AuthorEntity): AuthorEntity {
-        if (entity.id == 0) {
-            entityManager.persist(entity)
+    override fun save(author: Author): Author {
+        if (author.id == 0) {
+            entityManager.persist(author)
         } else {
-            entityManager.merge(entity)
+            entityManager.merge(author)
         }
-        return entity
+        return author
     }
 
-    fun findById(id: Int): AuthorEntity? {
+    override fun saveAll(authors: Set<Author>) {
+        authors.forEach { save(it) }
+    }
+
+    override fun findById(id: Int): Author? {
         return entityManager
             .createQuery(
-                "SELECT r FROM AuthorEntity r WHERE r.id = :id",
-                AuthorEntity::class.java
+                "SELECT r FROM Author r WHERE r.id = :id",
+                Author::class.java
             )
             .setParameter("id", id)
             .resultList
@@ -31,11 +35,11 @@ class AuthorRepository(@PersistenceContext private val entityManager: EntityMana
             .orElse(null)
     }
 
-    fun findByName(name: String, userId: Int): AuthorEntity? {
+    override fun findByName(name: String, userId: Int): Author? {
         return entityManager
             .createQuery(
-                "SELECT r FROM AuthorEntity r WHERE r.name = :name AND r.userId = :userId",
-                AuthorEntity::class.java
+                "SELECT r FROM Author r WHERE r.name = :name AND r.userId = :userId",
+                Author::class.java
             )
             .setParameter("name", name)
             .setParameter("userId", userId)
@@ -45,8 +49,8 @@ class AuthorRepository(@PersistenceContext private val entityManager: EntityMana
             .orElse(null)
     }
 
-    fun findAll(criteria: SearchCriteria): Set<AuthorEntity> {
-        var query = "SELECT r FROM AuthorEntity r WHERE r.id IS NOT NULL"
+    override fun findAll(criteria: AuthorCriteria): Set<Author> {
+        var query = "SELECT r FROM Author r WHERE r.id IS NOT NULL"
         if (criteria.name != null) {
             query += " AND LOWER(r.name) LIKE (:name)"
         }
@@ -54,7 +58,7 @@ class AuthorRepository(@PersistenceContext private val entityManager: EntityMana
             query += " AND r.userId = :userId"
         }
 
-        var typedQuery = entityManager.createQuery(query, AuthorEntity::class.java)
+        var typedQuery = entityManager.createQuery(query, Author::class.java)
         if (criteria.name != null) {
             typedQuery = typedQuery.setParameter("name", "%" + criteria.name + "%")
         }
@@ -64,10 +68,5 @@ class AuthorRepository(@PersistenceContext private val entityManager: EntityMana
 
         return typedQuery.resultList.toMutableSet()
     }
-
-    data class SearchCriteria(
-        val name: String?,
-        val userId: Int?
-    )
 
 }

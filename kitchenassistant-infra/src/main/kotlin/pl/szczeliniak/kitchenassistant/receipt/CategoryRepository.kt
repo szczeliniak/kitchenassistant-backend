@@ -6,27 +6,27 @@ import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
 
 @Repository
-class CategoryRepository(@PersistenceContext private val entityManager: EntityManager) {
+class CategoryRepository(@PersistenceContext private val entityManager: EntityManager) : CategoryDao {
 
     @Transactional
-    fun save(entity: CategoryEntity): CategoryEntity {
-        if (entity.id == 0) {
-            entityManager.persist(entity)
+    override fun save(category: Category): Category {
+        if (category.id == 0) {
+            entityManager.persist(category)
         } else {
-            entityManager.merge(entity)
+            entityManager.merge(category)
         }
-        return entity
+        return category
     }
 
-    fun findAll(criteria: SearchCriteria): MutableSet<CategoryEntity> {
-        var query = "SELECT c FROM CategoryEntity c WHERE c.deleted = false"
+    override fun findAll(criteria: CategoryCriteria): MutableSet<Category> {
+        var query = "SELECT c FROM Category c WHERE c.deleted = false"
         if (criteria.userId != null) {
             query += " AND c.userId = :userId"
         }
 
         query += " ORDER BY c.sequence ASC NULLS LAST, c.id ASC"
 
-        var typedQuery = entityManager.createQuery(query, CategoryEntity::class.java)
+        var typedQuery = entityManager.createQuery(query, Category::class.java)
         if (criteria.userId != null) {
             typedQuery = typedQuery.setParameter("userId", criteria.userId)
         }
@@ -34,11 +34,11 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
         return typedQuery.resultList.toMutableSet()
     }
 
-    fun findById(id: Int): CategoryEntity? {
+    override fun findById(id: Int): Category? {
         return entityManager
             .createQuery(
-                "SELECT r FROM CategoryEntity r WHERE r.id = :id AND r.deleted = false",
-                CategoryEntity::class.java
+                "SELECT r FROM Category r WHERE r.id = :id AND r.deleted = false",
+                Category::class.java
             )
             .setParameter("id", id)
             .resultList
@@ -46,12 +46,5 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
             .findFirst()
             .orElse(null)
     }
-
-    @Transactional
-    fun clear() {
-        entityManager.createQuery("DELETE FROM CategoryEntity").executeUpdate()
-    }
-
-    data class SearchCriteria(val userId: Int?)
 
 }

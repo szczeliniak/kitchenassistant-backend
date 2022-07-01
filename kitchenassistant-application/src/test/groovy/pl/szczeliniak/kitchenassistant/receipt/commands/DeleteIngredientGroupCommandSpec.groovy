@@ -31,7 +31,7 @@ class DeleteIngredientGroupCommandSpec extends Specification {
     }
 
     private static Receipt receipt(IngredientGroup ingredientGroup) {
-        return new Receipt(1, 1, "", "", null, "", false, null, Collections.singleton(ingredientGroup), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Receipt(1, "", 1, "", null, "", false, null, Collections.singleton(ingredientGroup), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static IngredientGroup ingredientGroup() {

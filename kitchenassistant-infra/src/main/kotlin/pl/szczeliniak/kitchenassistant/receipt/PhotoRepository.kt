@@ -6,23 +6,27 @@ import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
 
 @Repository
-class PhotoRepository(@PersistenceContext private val entityManager: EntityManager) {
+class PhotoRepository(@PersistenceContext private val entityManager: EntityManager) : PhotoDao {
 
     @Transactional
-    fun save(entity: PhotoEntity): PhotoEntity {
-        if (entity.id == 0) {
-            entityManager.persist(entity)
+    override fun save(photo: Photo): Photo {
+        if (photo.id == 0) {
+            entityManager.persist(photo)
         } else {
-            entityManager.merge(entity)
+            entityManager.merge(photo)
         }
-        return entity
+        return photo
     }
 
-    fun findById(id: Int): PhotoEntity? {
+    override fun saveAll(photos: Set<Photo>) {
+        photos.forEach { save(it) }
+    }
+
+    override fun findById(id: Int): Photo? {
         return entityManager
             .createQuery(
-                "SELECT r FROM PhotoEntity r WHERE r.id = :id AND r.deleted = false",
-                PhotoEntity::class.java
+                "SELECT r FROM Photo r WHERE r.id = :id AND r.deleted = false",
+                Photo::class.java
             )
             .setParameter("id", id)
             .resultList

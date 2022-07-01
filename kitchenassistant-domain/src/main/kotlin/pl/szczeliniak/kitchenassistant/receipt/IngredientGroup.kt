@@ -1,56 +1,27 @@
 package pl.szczeliniak.kitchenassistant.receipt
 
-import pl.szczeliniak.kitchenassistant.shared.ErrorCode
-import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
+import org.hibernate.annotations.Where
 import java.time.ZonedDateTime
-import java.util.*
+import javax.persistence.*
 
+@Entity
+@Table(name = "ingredientGroups")
+@Where(clause = "deleted = false")
 data class IngredientGroup(
-    private var id_: Int = 0,
-    private var name_: String,
-    private var ingredients_: MutableSet<Ingredient> = mutableSetOf(),
-    private var deleted_: Boolean = false,
-    private val createdAt_: ZonedDateTime = ZonedDateTime.now(),
-    private var modifiedAt_: ZonedDateTime = ZonedDateTime.now()
-) {
-    val id: Int get() = id_
-    val name: String get() = name_
-    val ingredients: Set<Ingredient> get() = Collections.unmodifiableSet(ingredients_)
-    val deleted: Boolean get() = deleted_
-    val createdAt: ZonedDateTime get() = createdAt_
-    val modifiedAt: ZonedDateTime get() = modifiedAt_
-
-    fun markAsDeleted() {
-        if (deleted) {
-            throw KitchenAssistantException(ErrorCode.INGREDIENT_ALREADY_REMOVED)
-        }
-        deleted_ = true
-        this.modifiedAt_ = ZonedDateTime.now()
-    }
-
-    fun update(name: String) {
-        this.name_ = name
-        this.modifiedAt_ = ZonedDateTime.now()
-    }
-
-    fun addIngredient(ingredient: Ingredient) {
-        this.ingredients_ += ingredient
-    }
-
-    fun getIngredientById(ingredientId: Int): Ingredient? {
-        return this.ingredients_.firstOrNull { it.id == ingredientId }
-    }
-
-    fun deleteIngredientById(ingredientId: Int): Ingredient {
-        val ingredient = this.ingredients_.firstOrNull { it.id == ingredientId }
-            ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_NOT_FOUND)
-        ingredient.markAsDeleted()
-
-        return ingredient
-    }
-
-    fun removeIngredientById(ingredientId: Int) {
-        val res = this.ingredients_.removeIf { it.id == ingredientId}
-    }
-
-}
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingredient_group_id_generator")
+    @SequenceGenerator(
+        name = "ingredient_group_id_generator",
+        sequenceName = "seq_ingredient_group_id",
+        allocationSize = 1
+    )
+    var id: Int,
+    var name: String,
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @JoinColumn(name = "ingredient_group_id", nullable = false)
+    @OrderBy("id ASC")
+    var ingredients: MutableSet<Ingredient>,
+    var deleted: Boolean = false,
+    var createdAt: ZonedDateTime = ZonedDateTime.now(),
+    var modifiedAt: ZonedDateTime = ZonedDateTime.now()
+)

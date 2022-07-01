@@ -17,10 +17,8 @@ class AddStepCommand(
     fun execute(receiptId: Int, dto: NewStepDto): SuccessResponse {
         val receipt = receiptDao.findById(receiptId) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
         val step = stepDao.save(stepFactory.create(dto))
-
-        receipt.addStep(step)
+        receipt.steps.add(step)
         receiptDao.save(receipt)
-
         return SuccessResponse(step.id)
     }
 

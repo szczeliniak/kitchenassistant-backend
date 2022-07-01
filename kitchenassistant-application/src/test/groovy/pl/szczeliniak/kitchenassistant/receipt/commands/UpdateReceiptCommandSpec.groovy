@@ -62,7 +62,7 @@ class UpdateReceiptCommandSpec extends Specification {
     }
 
     private static Receipt receipt(Set<Tag> tags) {
-        return new Receipt(1, 4, "", "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, category(0), Collections.emptySet(),
+        return new Receipt(1, "", 4, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, category(0), Collections.emptySet(),
                 Collections.emptySet(), Collections.emptySet(), tags, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 

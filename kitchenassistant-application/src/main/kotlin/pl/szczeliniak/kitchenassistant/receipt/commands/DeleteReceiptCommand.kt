@@ -10,7 +10,10 @@ class DeleteReceiptCommand(private val receiptDao: ReceiptDao) {
     fun execute(id: Int): SuccessResponse {
         val receipt =
             receiptDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
-        receipt.markAsDeleted()
+        if (receipt.deleted) {
+            throw KitchenAssistantException(ErrorCode.RECEIPT_ALREADY_REMOVED)
+        }
+        receipt.deleted = true
 
         return SuccessResponse(receiptDao.save(receipt).id)
     }

@@ -11,9 +11,7 @@ class MarkReceiptAsFavoriteCommand(
 
     fun execute(id: Int, isFavorite: Boolean): SuccessResponse {
         val receipt = receiptDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
-
-        receipt.markAsFavorite(isFavorite)
-
+        receipt.favorite = isFavorite
         return SuccessResponse(receiptDao.save(receipt).id)
     }
 

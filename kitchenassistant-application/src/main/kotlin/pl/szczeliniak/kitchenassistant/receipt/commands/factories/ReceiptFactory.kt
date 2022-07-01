@@ -20,10 +20,10 @@ open class ReceiptFactory(
 
     open fun create(dto: NewReceiptDto): Receipt {
         getUserByIdQuery.execute(dto.userId)
-        return Receipt(
-            userId_ = dto.userId,
-            name_ = dto.name,
-            author_ = dto.author?.let {
+        return Receipt(0,
+            userId = dto.userId,
+            name = dto.name,
+            author = dto.author?.let {
                 authorDao.findByName(it, dto.userId) ?: authorDao.save(
                     authorFactory.create(
                         it,
@@ -31,18 +31,18 @@ open class ReceiptFactory(
                     )
                 )
             },
-            source_ = dto.source,
-            category_ = dto.categoryId?.let {
+            source = dto.source,
+            category = dto.categoryId?.let {
                 categoryDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
             },
-            description_ = dto.description,
-            ingredientGroups_ = dto.ingredientGroups.map { ingredientGroupFactory.create(it) }.toMutableSet(),
-            steps_ = dto.steps.map { stepFactory.create(it) }.toMutableSet(),
-            photos_ = dto.photos.map {
+            description = dto.description,
+            ingredientGroups = dto.ingredientGroups.map { ingredientGroupFactory.create(it) }.toMutableSet(),
+            steps = dto.steps.map { stepFactory.create(it) }.toMutableSet(),
+            photos = dto.photos.map {
                 photoDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
             }
                 .toMutableSet(),
-            tags_ = dto.tags.map { tagDao.findByName(it, dto.userId) ?: tagFactory.create(it, dto.userId) }
+            tags = dto.tags.map { tagDao.findByName(it, dto.userId) ?: tagFactory.create(it, dto.userId) }
                 .toMutableSet()
         )
     }

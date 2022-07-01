@@ -65,7 +65,7 @@ class DeleteCategoryCommandSpec extends Specification {
     }
 
     private static Receipt receipt() {
-        return new Receipt(10, 1, "", "", null, null, false, category(false), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Receipt(10, "", 1, "", null, null, false, category(false), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

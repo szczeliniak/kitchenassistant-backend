@@ -11,7 +11,7 @@ class DeletePhotoCommand(private val ftpClient: FtpClient, private val photoDao:
     fun execute(id: Int): SuccessResponse {
         val photo = photoDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
         ftpClient.delete(photo.name)
-        photo.markAsDeleted()
+        photo.deleted = true
         return SuccessResponse(photoDao.save(photo).id)
     }
 

@@ -6,6 +6,8 @@ interface AuthorDao {
 
     fun saveAll(authors: Set<Author>)
 
+    fun findById(id: Int): Author?
+
     fun findByName(name: String, userId: Int): Author?
 
     fun findAll(criteria: AuthorCriteria): Set<Author>

@@ -19,7 +19,7 @@ class PhotoFactoryTest extends Specification {
 
         then:
         Assertions.assertThat(result).usingRecursiveComparison()
-                .ignoringFields("createdAt_", "modifiedAt_")
+                .ignoringFields("createdAt", "modifiedAt")
                 .isEqualTo(photo())
     }
 

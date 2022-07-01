@@ -12,4 +12,11 @@
 
     <artifactId>kitchenassistant-domain</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

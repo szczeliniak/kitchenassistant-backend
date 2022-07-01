@@ -6,16 +6,16 @@ import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
 
 @Repository
-class IngredientRepository(@PersistenceContext private val entityManager: EntityManager) {
+class IngredientRepository(@PersistenceContext private val entityManager: EntityManager) : IngredientDao {
 
     @Transactional
-    fun save(entity: IngredientEntity): IngredientEntity {
-        if (entity.id == 0) {
-            entityManager.persist(entity)
+    override fun save(ingredient: Ingredient): Ingredient {
+        if (ingredient.id == 0) {
+            entityManager.persist(ingredient)
         } else {
-            entityManager.merge(entity)
+            entityManager.merge(ingredient)
         }
-        return entity
+        return ingredient
     }
 
 }

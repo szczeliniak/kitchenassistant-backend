@@ -21,25 +21,23 @@ class UpdateReceiptCommand(
         val receipt =
             receiptDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
 
-        receipt.update(
-            dto.name,
-            dto.description,
-            getCategory(receipt.category, dto.categoryId),
-            dto.author?.let {
-                authorDao.findByName(it, receipt.userId) ?: authorDao.save(
-                    authorFactory.create(
-                        it,
-                        receipt.userId
-                    )
+        receipt.name = dto.name
+        receipt.description = dto.description
+        receipt.category = getCategory(receipt.category, dto.categoryId)
+        receipt.source = dto.source
+        receipt.author = dto.author?.let {
+            authorDao.findByName(it, receipt.userId) ?: authorDao.save(
+                authorFactory.create(
+                    it,
+                    receipt.userId
                 )
-            },
-            dto.source,
-            dto.tags.map {
-                receipt.getTagByName(it) ?: tagDao.findByName(it, receipt.userId) ?: tagDao.save(
-                    tagFactory.create(it, receipt.userId)
-                )
-            }
-        )
+            )
+        }
+        receipt.tags = dto.tags.map {
+            receipt.tags.firstOrNull { tag -> it == tag.name } ?: tagDao.findByName(it, receipt.userId) ?: tagDao.save(
+                tagFactory.create(it, receipt.userId)
+            )
+        }.toMutableSet()
 
         return SuccessResponse(receiptDao.save(receipt).id)
     }

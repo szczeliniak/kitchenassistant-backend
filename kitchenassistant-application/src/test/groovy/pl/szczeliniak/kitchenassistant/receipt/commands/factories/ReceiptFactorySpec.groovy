@@ -54,9 +54,9 @@ class ReceiptFactorySpec extends Specification {
 
         then:
         Assertions.assertThat(result).usingRecursiveComparison()
-                .ignoringFields("createdAt_", "modifiedAt_", "ingredientGroups_.createdAt_",
-                        "ingredientGroups_.modifiedAt_", "steps_.createdAt_", "steps_.modifiedAt_", "photos_.createdAt_", "photos_.modifiedAt_",
-                        "tags_.createdAt_", "tags_.modifiedAt_", "author_.createdAt_", "author_.modifiedAt_")
+                .ignoringFields("createdAt", "modifiedAt", "ingredientGroups.createdAt",
+                        "ingredientGroups.modifiedAt", "steps.createdAt", "steps.modifiedAt", "photos.createdAt", "photos.modifiedAt",
+                        "tags.createdAt", "tags.modifiedAt", "author.createdAt", "author.modifiedAt")
                 .isEqualTo(receipt(category, Set.of(existingTag, newTag)))
     }
 
@@ -74,7 +74,7 @@ class ReceiptFactorySpec extends Specification {
     }
 
     private static Receipt receipt(Category category, Set<Tag> tags) {
-        return new Receipt(0, 4, "RECEIPT_NAME", "RECEIPT_DESCRIPTION", new Author(2, "RECEIPT_AUTHOR", 1, ZonedDateTime.now(), ZonedDateTime.now()),
+        return new Receipt(0, "RECEIPT_NAME", 4, "RECEIPT_DESCRIPTION", new Author(2, "RECEIPT_AUTHOR", 1, ZonedDateTime.now(), ZonedDateTime.now()),
                 "RECEIPT_SOURCE", false, category, new HashSet(Arrays.asList(ingredientGroup())), new HashSet(Arrays.asList(step())), new HashSet(Arrays.asList(photo())), tags, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 

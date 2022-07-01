@@ -6,7 +6,7 @@ import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientDto
 open class IngredientFactory {
 
     open fun create(dto: NewIngredientDto): Ingredient {
-        return Ingredient(name_ = dto.name, quantity_ = dto.quantity)
+        return Ingredient(0, dto.name, dto.quantity)
     }
 
 }

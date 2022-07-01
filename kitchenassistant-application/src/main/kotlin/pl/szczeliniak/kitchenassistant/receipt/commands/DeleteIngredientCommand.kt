@@ -9,11 +9,22 @@ class DeleteIngredientCommand(private val receiptDao: ReceiptDao) {
 
     fun execute(receiptId: Int, ingredientGroupId: Int, ingredientId: Int): SuccessResponse {
         val receipt = receiptDao.findById(receiptId) ?: throw KitchenAssistantException(ErrorCode.RECEIPT_NOT_FOUND)
-        val ingredientGroup = receipt.getIngredientGroupById(ingredientGroupId)
+        val ingredientGroup = receipt.ingredientGroups.firstOrNull { ingredientGroupId == it.id }
             ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_GROUP_NOT_FOUND)
-        val ingredient = ingredientGroup.deleteIngredientById(ingredientId)
+
+        val ingredient =
+            ingredientGroup.ingredients.firstOrNull { it.id == ingredientId } ?: throw KitchenAssistantException(
+                ErrorCode.INGREDIENT_NOT_FOUND
+            )
+
+        if (ingredient.deleted) {
+            throw KitchenAssistantException(ErrorCode.INGREDIENT_ALREADY_REMOVED)
+        }
+
+        ingredient.deleted = true
+
         receiptDao.save(receipt)
-        return SuccessResponse(ingredient.id)
+        return SuccessResponse(ingredientId)
     }
 
 }
