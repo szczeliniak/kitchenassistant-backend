@@ -23,7 +23,7 @@ class DayPlanConfiguration {
     fun updateDayPlanCommand(dayPlanDao: DayPlanDao) = UpdateDayPlanCommand(dayPlanDao)
 
     @Bean
-    fun dayPlanConverter() = DayPlanConverter()
+    fun dayPlanConverter(getReceiptQuery: GetReceiptQuery) = DayPlanConverter(getReceiptQuery)
 
     @Bean
     fun getDayPlanQuery(dayPlanDao: DayPlanDao, dayPlanConverter: DayPlanConverter) =

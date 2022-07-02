@@ -5,5 +5,5 @@ import java.time.LocalDate
 data class DayPlanDetailsDto(
     private val id: Int,
     private val date: LocalDate,
-    private val receipts: Set<Int>
+    private val receipts: List<SimpleReceiptDto>
 )
