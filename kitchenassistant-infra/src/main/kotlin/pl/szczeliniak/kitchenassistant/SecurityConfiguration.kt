@@ -6,6 +6,7 @@ import io.jsonwebtoken.JwtParser
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -14,6 +15,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.util.AntPathMatcher
@@ -21,7 +24,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
-import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
+import pl.szczeliniak.kitchenassistant.user.UserFacade
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -30,7 +33,7 @@ import javax.servlet.http.HttpServletResponse
 class SecurityConfiguration(
     private val objectMapper: ObjectMapper,
     private val requestContext: RequestContext,
-    private val getUserByIdQuery: GetUserByIdQuery,
+    @org.springframework.context.annotation.Lazy private val userFacade: UserFacade,
     @Value("\${security.jwt.secret}") private val secret: String
 ) : WebSecurityConfigurerAdapter() {
 
@@ -90,7 +93,7 @@ class SecurityConfiguration(
                 try {
                     request.getHeader("X-Token")?.let { token ->
                         val userId = parseToken(token)
-                        getUserByIdQuery.execute(userId)
+                        userFacade.getUser(userId)
                         requestContext.userId(userId)
                         SecurityContextHolder.getContext().authentication = KitchenAssistantAuthentication(token)
                     } ?: kotlin.run {
@@ -116,6 +119,11 @@ class SecurityConfiguration(
             }
         }
 
+    }
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
     }
 
 }

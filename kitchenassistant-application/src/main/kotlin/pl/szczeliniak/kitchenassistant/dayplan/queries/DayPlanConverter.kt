@@ -4,10 +4,10 @@ import pl.szczeliniak.kitchenassistant.dayplan.DayPlan
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanDetailsDto
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.SimpleReceiptDto
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
+import pl.szczeliniak.kitchenassistant.receipt.ReceiptFacade
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
 
-open class DayPlanConverter(private val getReceiptQuery: GetReceiptQuery) {
+open class DayPlanConverter(private val receiptFacade: ReceiptFacade) {
 
     open fun map(dayPlan: DayPlan): DayPlanDto {
         return DayPlanDto(
@@ -20,7 +20,7 @@ open class DayPlanConverter(private val getReceiptQuery: GetReceiptQuery) {
         return DayPlanDetailsDto(
             dayPlan.id,
             dayPlan.date,
-            dayPlan.receiptIds.map { mapReceipt(getReceiptQuery.execute(it)) }
+            dayPlan.receiptIds.map { mapReceipt(receiptFacade.getReceipt(it)) }
         )
     }
 

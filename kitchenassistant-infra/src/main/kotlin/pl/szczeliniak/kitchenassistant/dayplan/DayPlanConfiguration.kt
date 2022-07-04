@@ -7,43 +7,24 @@ import pl.szczeliniak.kitchenassistant.dayplan.commands.factories.DayPlanFactory
 import pl.szczeliniak.kitchenassistant.dayplan.queries.DayPlanConverter
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlanQuery
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlansQuery
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
+import pl.szczeliniak.kitchenassistant.receipt.ReceiptFacade
 
 @Configuration
 class DayPlanConfiguration {
 
     @Bean
-    fun dayPlanFactory(): DayPlanFactory = DayPlanFactory()
-
-    @Bean
-    fun addDayPlanCommand(dayPlanDao: DayPlanDao, dayPlanFactory: DayPlanFactory) =
-        AddDayPlanCommand(dayPlanDao, dayPlanFactory)
-
-    @Bean
-    fun updateDayPlanCommand(dayPlanDao: DayPlanDao) = UpdateDayPlanCommand(dayPlanDao)
-
-    @Bean
-    fun dayPlanConverter(getReceiptQuery: GetReceiptQuery) = DayPlanConverter(getReceiptQuery)
-
-    @Bean
-    fun getDayPlanQuery(dayPlanDao: DayPlanDao, dayPlanConverter: DayPlanConverter) =
-        GetDayPlanQuery(dayPlanDao, dayPlanConverter)
-
-    @Bean
-    fun getDayPlansQuery(dayPlanDao: DayPlanDao, dayPlanConverter: DayPlanConverter) =
-        GetDayPlansQuery(dayPlanDao, dayPlanConverter)
-
-    @Bean
-    fun addReceiptToDayPlan(dayPlanDao: DayPlanDao, getReceiptQuery: GetReceiptQuery) =
-        AddReceiptToDayPlanCommand(dayPlanDao, getReceiptQuery)
-
-    @Bean
-    fun deleteReceiptFromDayPlan(dayPlanDao: DayPlanDao) = DeleteReceiptFromDayPlanCommand(dayPlanDao)
-
-    @Bean
-    fun deleteDayPlan(dayPlanDao: DayPlanDao) = DeleteDayPlanCommand(dayPlanDao)
-
-    @Bean
-    fun archiveDayPlan(dayPlanDao: DayPlanDao) = ArchiveDayPlanCommand(dayPlanDao)
+    fun dayPlanFacade(dayPlanDao: DayPlanDao, receiptFacade: ReceiptFacade): DayPlanFacade {
+        val dayPlanConverter = DayPlanConverter(receiptFacade)
+        return DayPlanFacade(
+            GetDayPlanQuery(dayPlanDao, dayPlanConverter),
+            GetDayPlansQuery(dayPlanDao, dayPlanConverter),
+            AddDayPlanCommand(dayPlanDao, DayPlanFactory()),
+            UpdateDayPlanCommand(dayPlanDao),
+            AddReceiptToDayPlanCommand(dayPlanDao, receiptFacade),
+            DeleteReceiptFromDayPlanCommand(dayPlanDao),
+            DeleteDayPlanCommand(dayPlanDao),
+            ArchiveDayPlanCommand(dayPlanDao)
+        )
+    }
 
 }

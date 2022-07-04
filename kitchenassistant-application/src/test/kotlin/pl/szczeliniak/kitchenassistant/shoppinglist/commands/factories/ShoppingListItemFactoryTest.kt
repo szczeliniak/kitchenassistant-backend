@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
+import pl.szczeliniak.kitchenassistant.receipt.ReceiptFacade
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDetailsDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
@@ -14,7 +14,7 @@ import java.util.*
 internal class ShoppingListItemFactoryTest : JunitBaseClass() {
 
     @Mock
-    private lateinit var getReceiptQuery: GetReceiptQuery
+    private lateinit var receiptFacade: ReceiptFacade
 
     @InjectMocks
     private lateinit var shoppingListItemFactory: ShoppingListItemFactory
@@ -22,7 +22,7 @@ internal class ShoppingListItemFactoryTest : JunitBaseClass() {
     @Test
     fun shouldCreateShoppingList() {
         val newShoppingListItemDto = newShoppingListItemDto()
-        whenever(getReceiptQuery.execute(1)).thenReturn(receiptResponse())
+        whenever(receiptFacade.getReceipt(1)).thenReturn(receiptResponse())
 
         val result = shoppingListItemFactory.create(newShoppingListItemDto)
 

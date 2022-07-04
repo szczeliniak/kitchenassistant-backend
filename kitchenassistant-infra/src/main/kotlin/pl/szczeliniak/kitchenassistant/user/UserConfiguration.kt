@@ -2,7 +2,6 @@ package pl.szczeliniak.kitchenassistant.user
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.user.commands.*
 import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
@@ -16,61 +15,26 @@ import pl.szczeliniak.kitchenassistant.user.queries.UserConverter
 class UserConfiguration {
 
     @Bean
-    fun userConverter(): UserConverter = UserConverter()
-
-    @Bean
-    fun getUserByIdQuery(userDao: UserDao, userConverter: UserConverter): GetUserByIdQuery =
-        GetUserByIdQuery(userDao, userConverter)
-
-    @Bean
-    fun getLoggedUserQuery(
+    fun userFacade(
         userDao: UserDao,
         requestContext: RequestContext,
-        userConverter: UserConverter
-    ): GetLoggedUserQuery =
-        GetLoggedUserQuery(userDao, requestContext, userConverter)
-
-    @Bean
-    fun getUsersQuery(userDao: UserDao, userConverter: UserConverter): GetUsersQuery =
-        GetUsersQuery(userDao, userConverter)
-
-    @Bean
-    fun addUserCommand(userDao: UserDao, userFactory: UserFactory): AddUserCommand =
-        AddUserCommand(userDao, userFactory)
-
-    @Bean
-    fun userFactory(passwordEncoder: PasswordEncoder): UserFactory = UserFactory(passwordEncoder)
-
-    @Bean
-    fun loginCommand(
-        userDao: UserDao,
+        passwordEncoder: PasswordEncoder,
         passwordMatcher: PasswordMatcher,
-        tokenFactory: TokenFactory
-    ): LoginCommand = LoginCommand(userDao, passwordMatcher, tokenFactory)
-
-    @Bean
-    fun loginWithFacebookCommand(
-        userDao: UserDao,
         tokenFactory: TokenFactory,
-        facebookConnector: FacebookConnector,
-        userFactory: UserFactory
-    ): LoginWithFacebookCommand = LoginWithFacebookCommand(userDao, tokenFactory, facebookConnector, userFactory)
-
-    @Bean
-    fun registerCommand(userDao: UserDao, userFactory: UserFactory, tokenFactory: TokenFactory): RegisterCommand =
-        RegisterCommand(userFactory, tokenFactory, userDao)
-
-    @Bean
-    fun refreshTokenCommand(
-        tokenFactory: TokenFactory,
-        requestContext: RequestContext,
-        userDao: UserDao
-    ): RefreshTokenCommand =
-        RefreshTokenCommand(tokenFactory, requestContext, userDao)
-
-    @Bean
-    fun passwordEncoder(): org.springframework.security.crypto.password.PasswordEncoder {
-        return BCryptPasswordEncoder()
+        facebookConnector: FacebookConnector
+    ): UserFacade {
+        val userConverter = UserConverter()
+        val userFactory = UserFactory(passwordEncoder)
+        return UserFacade(
+            GetUserByIdQuery(userDao, userConverter),
+            GetLoggedUserQuery(userDao, requestContext, userConverter),
+            GetUsersQuery(userDao, userConverter),
+            AddUserCommand(userDao, userFactory),
+            LoginCommand(userDao, passwordMatcher, tokenFactory),
+            LoginWithFacebookCommand(userDao, tokenFactory, facebookConnector, userFactory),
+            RegisterCommand(userFactory, tokenFactory, userDao),
+            RefreshTokenCommand(tokenFactory, requestContext, userDao)
+        )
     }
 
 }

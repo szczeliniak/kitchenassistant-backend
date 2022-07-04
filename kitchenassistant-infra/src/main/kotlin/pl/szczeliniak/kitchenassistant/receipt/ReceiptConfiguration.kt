@@ -5,139 +5,33 @@ import org.springframework.context.annotation.Configuration
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.*
 import pl.szczeliniak.kitchenassistant.receipt.queries.*
-import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
+import pl.szczeliniak.kitchenassistant.user.UserFacade
 
 @Configuration
 class ReceiptConfiguration {
 
     @Bean
-    fun receiptConverter(): ReceiptConverter = ReceiptConverter()
-
-    @Bean
-    fun getReceiptQuery(receiptDao: ReceiptDao, receiptConverter: ReceiptConverter): GetReceiptQuery =
-        GetReceiptQuery(receiptDao, receiptConverter)
-
-    @Bean
-    fun getReceiptsQuery(receiptDao: ReceiptDao, receiptConverter: ReceiptConverter): GetReceiptsQuery =
-        GetReceiptsQuery(receiptDao, receiptConverter)
-
-    @Bean
-    fun addReceiptCommand(receiptDao: ReceiptDao, receiptFactory: ReceiptFactory): AddReceiptCommand =
-        AddReceiptCommand(receiptDao, receiptFactory)
-
-    @Bean
-    fun updateReceiptCommand(
+    fun receiptFacade(
         receiptDao: ReceiptDao,
+        userFacade: UserFacade,
         categoryDao: CategoryDao,
         tagDao: TagDao,
-        tagFactory: TagFactory,
-        authorFactory: AuthorFactory,
-        authorDao: AuthorDao
-    ): UpdateReceiptCommand =
-        UpdateReceiptCommand(
-            receiptDao,
-            categoryDao,
-            tagDao,
-            tagFactory,
-            authorFactory,
-            authorDao
-        )
-
-    @Bean
-    fun addIngredientCommand(
-        receiptDao: ReceiptDao,
-        ingredientDao: IngredientDao,
-        ingredientFactory: IngredientFactory,
-    ): AddIngredientCommand =
-        AddIngredientCommand(receiptDao, ingredientDao, ingredientFactory)
-
-    @Bean
-    fun updateIngredientCommand(receiptDao: ReceiptDao): UpdateIngredientCommand = UpdateIngredientCommand(receiptDao)
-
-    @Bean
-    fun addStepCommand(receiptDao: ReceiptDao, stepDao: StepDao, stepFactory: StepFactory): AddStepCommand =
-        AddStepCommand(receiptDao, stepDao, stepFactory)
-
-    @Bean
-    fun updateStepCommand(receiptDao: ReceiptDao): UpdateStepCommand = UpdateStepCommand(receiptDao)
-
-    @Bean
-    fun deleteReceiptCommand(receiptDao: ReceiptDao): DeleteReceiptCommand = DeleteReceiptCommand(receiptDao)
-
-    @Bean
-    fun deleteStepCommand(receiptDao: ReceiptDao): DeleteStepCommand = DeleteStepCommand(receiptDao)
-
-    @Bean
-    fun deleteIngredientCommand(receiptDao: ReceiptDao): DeleteIngredientCommand =
-        DeleteIngredientCommand(receiptDao)
-
-    @Bean
-    fun stepFactory(): StepFactory = StepFactory()
-
-    @Bean
-    fun ingredientFactory(): IngredientFactory = IngredientFactory()
-
-    @Bean
-    fun categoryFactory(): CategoryFactory = CategoryFactory()
-
-    @Bean
-    fun photoFactory(): PhotoFactory = PhotoFactory()
-
-    @Bean
-    fun tagFactory(): TagFactory = TagFactory()
-
-    @Bean
-    fun authorFactory(): AuthorFactory = AuthorFactory()
-
-    @Bean
-    fun ingredientGroupFactory(ingredientFactory: IngredientFactory): IngredientGroupFactory =
-        IngredientGroupFactory(ingredientFactory)
-
-    @Bean
-    fun addCategoryCommand(categoryDao: CategoryDao, categoryFactory: CategoryFactory): AddCategoryCommand =
-        AddCategoryCommand(categoryDao, categoryFactory)
-
-    @Bean
-    fun deleteCategoryCommand(categoryDao: CategoryDao, receiptDao: ReceiptDao): DeleteCategoryCommand =
-        DeleteCategoryCommand(categoryDao, receiptDao)
-
-    @Bean
-    fun updateCategoryCommand(categoryDao: CategoryDao): UpdateCategoryCommand = UpdateCategoryCommand(categoryDao)
-
-    @Bean
-    fun assignPhotosToReceiptCommand(
-        receiptDao: ReceiptDao,
-        photoDao: PhotoDao
-    ) =
-        AssignReceiptPhotosCommand(receiptDao, photoDao)
-
-    @Bean
-    fun getCategoriesQuery(categoryDao: CategoryDao, receiptConverter: ReceiptConverter): GetCategoriesQuery =
-        GetCategoriesQuery(categoryDao, receiptConverter)
-
-    @Bean
-    fun getTagsQuery(tagDao: TagDao): GetTagsQuery = GetTagsQuery(tagDao)
-
-    @Bean
-    fun getAuthorsQuery(authorDao: AuthorDao): GetAuthorsQuery = GetAuthorsQuery(authorDao)
-
-    @Bean
-    fun markReceiptAsFavorite(receiptDao: ReceiptDao) = MarkReceiptAsFavoriteCommand(receiptDao)
-
-    @Bean
-    fun receiptFactory(
-        getUserByIdQuery: GetUserByIdQuery,
-        stepFactory: StepFactory,
-        categoryDao: CategoryDao,
-        tagDao: TagDao,
-        tagFactory: TagFactory,
         authorDao: AuthorDao,
-        authorFactory: AuthorFactory,
         photoDao: PhotoDao,
-        ingredientGroupFactory: IngredientGroupFactory
-    ): ReceiptFactory =
-        ReceiptFactory(
-            getUserByIdQuery,
+        ingredientDao: IngredientDao,
+        stepDao: StepDao,
+        ftpClient: FtpClient,
+        ingredientGroupDao: IngredientGroupDao
+    ): ReceiptFacade {
+        val receiptConverter = ReceiptConverter()
+        val stepFactory = StepFactory()
+        val tagFactory = TagFactory()
+        val authorFactory = AuthorFactory()
+        val categoryFactory = CategoryFactory()
+        val ingredientFactory = IngredientFactory()
+        val ingredientGroupFactory = IngredientGroupFactory(ingredientFactory)
+        val receiptFactory = ReceiptFactory(
+            userFacade,
             stepFactory,
             categoryDao,
             tagDao,
@@ -147,25 +41,33 @@ class ReceiptConfiguration {
             photoDao,
             ingredientGroupFactory
         )
-
-    @Bean
-    fun uploadPhotoCommand(ftpClient: FtpClient, photoDao: PhotoDao, photoFactory: PhotoFactory) =
-        UploadPhotoCommand(ftpClient, photoDao, photoFactory)
-
-    @Bean
-    fun downloadPhotoCommand(ftpClient: FtpClient, photoDao: PhotoDao) = DownloadPhotoQuery(ftpClient, photoDao)
-
-    @Bean
-    fun deletePhotoCommand(ftpClient: FtpClient, photoDao: PhotoDao) = DeletePhotoCommand(ftpClient, photoDao)
-
-    @Bean
-    fun addIngredientGroupCommand(
-        receiptDao: ReceiptDao,
-        ingredientGroupFactory: IngredientGroupFactory,
-        ingredientGroupDao: IngredientGroupDao
-    ) = AddIngredientGroupCommand(receiptDao, ingredientGroupFactory, ingredientGroupDao)
-
-    @Bean
-    fun deleteIngredientGroupCommand(receiptDao: ReceiptDao) = DeleteIngredientGroupCommand(receiptDao)
+        val photoFactory = PhotoFactory()
+        return ReceiptFacade(
+            GetReceiptQuery(receiptDao, receiptConverter),
+            GetReceiptsQuery(receiptDao, receiptConverter),
+            AddReceiptCommand(receiptDao, receiptFactory),
+            AddCategoryCommand(categoryDao, categoryFactory),
+            DeleteReceiptCommand(receiptDao),
+            UpdateReceiptCommand(receiptDao, categoryDao, tagDao, tagFactory, authorFactory, authorDao),
+            AddIngredientCommand(receiptDao, ingredientDao, ingredientFactory),
+            DeleteIngredientCommand(receiptDao),
+            UpdateIngredientCommand(receiptDao),
+            AddStepCommand(receiptDao, stepDao, stepFactory),
+            DeleteStepCommand(receiptDao),
+            DeleteCategoryCommand(categoryDao, receiptDao),
+            UpdateCategoryCommand(categoryDao),
+            UpdateStepCommand(receiptDao),
+            GetCategoriesQuery(categoryDao, receiptConverter),
+            AssignReceiptPhotosCommand(receiptDao, photoDao),
+            GetTagsQuery(tagDao),
+            MarkReceiptAsFavoriteCommand(receiptDao),
+            GetAuthorsQuery(authorDao),
+            UploadPhotoCommand(ftpClient, photoDao, photoFactory),
+            DeletePhotoCommand(ftpClient, photoDao),
+            DownloadPhotoQuery(ftpClient, photoDao),
+            AddIngredientGroupCommand(receiptDao, ingredientGroupFactory, ingredientGroupDao),
+            DeleteIngredientGroupCommand(receiptDao)
+        )
+    }
 
 }

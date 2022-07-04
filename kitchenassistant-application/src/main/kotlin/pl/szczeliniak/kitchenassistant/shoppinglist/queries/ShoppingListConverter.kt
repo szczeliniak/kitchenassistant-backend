@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.queries
 
-import pl.szczeliniak.kitchenassistant.receipt.queries.GetReceiptQuery
+import pl.szczeliniak.kitchenassistant.receipt.ReceiptFacade
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDetailsDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
@@ -9,7 +9,7 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListItemDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.SimpleReceiptDto
 
-open class ShoppingListConverter(private val getReceiptQuery: GetReceiptQuery) {
+open class ShoppingListConverter(private val receiptFacade: ReceiptFacade) {
 
     open fun map(shoppingList: ShoppingList): ShoppingListDto {
         return ShoppingListDto(
@@ -37,7 +37,7 @@ open class ShoppingListConverter(private val getReceiptQuery: GetReceiptQuery) {
             shoppingListItem.quantity,
             shoppingListItem.sequence,
             shoppingListItem.completed,
-            shoppingListItem.receiptId?.let { map(getReceiptQuery.execute(it).receipt) }
+            shoppingListItem.receiptId?.let { map(receiptFacade.getReceipt(it).receipt) }
         )
     }
 

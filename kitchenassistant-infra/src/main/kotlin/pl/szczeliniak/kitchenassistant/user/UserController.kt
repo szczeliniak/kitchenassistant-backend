@@ -2,11 +2,7 @@ package pl.szczeliniak.kitchenassistant.user
 
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.user.commands.*
 import pl.szczeliniak.kitchenassistant.user.commands.dto.*
-import pl.szczeliniak.kitchenassistant.user.queries.GetLoggedUserQuery
-import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
-import pl.szczeliniak.kitchenassistant.user.queries.GetUsersQuery
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
 import javax.validation.Valid
@@ -14,19 +10,12 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/users")
 class UserController(
-    private val getUserByIdQuery: GetUserByIdQuery,
-    private val getLoggedUserQuery: GetLoggedUserQuery,
-    private val getUsersQuery: GetUsersQuery,
-    private val addUserCommand: AddUserCommand,
-    private val loginCommand: LoginCommand,
-    private val loginWithFacebookCommand: LoginWithFacebookCommand,
-    private val registerCommand: RegisterCommand,
-    private val refreshTokenCommand: RefreshTokenCommand,
+    private val userFacade: UserFacade
 ) {
 
     @GetMapping("/{id}")
     fun getUser(@PathVariable id: Int): UserResponse {
-        return getUserByIdQuery.execute(id)
+        return userFacade.getUser(id)
     }
 
     @GetMapping
@@ -34,37 +23,37 @@ class UserController(
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?
     ): UsersResponse {
-        return getUsersQuery.execute(page, limit)
+        return userFacade.getUsers(page, limit)
     }
 
     @PostMapping
     fun addUser(@Valid @RequestBody dto: AddUserDto): SuccessResponse {
-        return addUserCommand.execute(dto)
+        return userFacade.addUser(dto)
     }
 
     @PostMapping("/login")
     fun login(@Valid @RequestBody dto: LoginDto): LoginResponse {
-        return loginCommand.execute(dto)
+        return userFacade.login(dto)
     }
 
     @PostMapping("/login/facebook")
     fun login(@Valid @RequestBody dto: LoginWithFacebookDto): LoginResponse {
-        return loginWithFacebookCommand.execute(dto)
+        return userFacade.login(dto)
     }
 
     @PostMapping("/register")
     fun register(@Valid @RequestBody dto: RegisterDto): LoginResponse {
-        return registerCommand.execute(dto)
+        return userFacade.register(dto)
     }
 
     @PostMapping("/refresh")
     fun refresh(): RefreshTokenResponse {
-        return refreshTokenCommand.execute()
+        return userFacade.refresh()
     }
 
     @GetMapping("/me")
     fun getLoggedUser(): UserResponse {
-        return getLoggedUserQuery.execute()
+        return userFacade.getLoggedUser()
     }
 
 }
