@@ -57,9 +57,9 @@ class DayPlanController(
         return deleteDayPlanCommand.execute(id)
     }
 
-    @PutMapping("/{id}/archive")
-    fun archiveDayPlan(@PathVariable id: Int): SuccessResponse {
-        return archiveDayPlanCommand.execute(id)
+    @PutMapping("/{id}/archive/{archive}")
+    fun archiveDayPlan(@PathVariable id: Int, @PathVariable archive: Boolean): SuccessResponse {
+        return archiveDayPlanCommand.execute(id, archive)
     }
 
     @PostMapping("/{id}/receipts/{receiptId}")
