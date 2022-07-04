@@ -1,10 +1,12 @@
 package pl.szczeliniak.kitchenassistant.receipt.commands
 
+import pl.szczeliniak.kitchenassistant.dayplan.commands.DeassignReceiptsFromDayPlansCommand
 import pl.szczeliniak.kitchenassistant.receipt.Author
 import pl.szczeliniak.kitchenassistant.receipt.Receipt
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptDao
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.DeassignReceiptFromShoppingListsCommand
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -13,8 +15,10 @@ import java.time.ZonedDateTime
 class DeleteReceiptCommandSpec extends Specification {
 
     def receiptDao = Mock(ReceiptDao)
+    def deassignReceiptFromShoppingListsCommand = Mock(DeassignReceiptFromShoppingListsCommand)
+    def deassignReceiptsFromDayPlansCommand = Mock(DeassignReceiptsFromDayPlansCommand)
     @Subject
-    def deleteReceiptCommand = new DeleteReceiptCommand(receiptDao)
+    def deleteReceiptCommand = new DeleteReceiptCommand(receiptDao, deassignReceiptsFromDayPlansCommand, deassignReceiptFromShoppingListsCommand)
 
     def 'should delete receipt'() {
         given:
@@ -28,6 +32,8 @@ class DeleteReceiptCommandSpec extends Specification {
         then:
         receipt.deleted
         result == new SuccessResponse(1)
+        1 * deassignReceiptFromShoppingListsCommand.execute(1)
+        1 * deassignReceiptsFromDayPlansCommand.execute(1)
     }
 
     def 'should throw exception when receipt not found'() {

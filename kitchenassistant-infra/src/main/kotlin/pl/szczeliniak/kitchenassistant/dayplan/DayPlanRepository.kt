@@ -12,12 +12,13 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
 
     @Transactional
     override fun save(dayPlan: DayPlan): DayPlan {
-        if (dayPlan.id == 0) {
-            entityManager.persist(dayPlan)
-        } else {
-            entityManager.merge(dayPlan)
-        }
+        entityManager.persist(dayPlan)
         return dayPlan
+    }
+
+    @Transactional
+    override fun save(dayPlans: Set<DayPlan>) {
+        dayPlans.forEach { save(it) }
     }
 
     override fun findAll(criteria: DayPlanCriteria, offset: Int?, limit: Int?): Set<DayPlan> {

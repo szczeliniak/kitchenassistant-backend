@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.dayplan.queries.dto
 
 data class DayPlanCriteria(
-    val userId: Int?,
-    val archived: Boolean?
+    val userId: Int? = null,
+    val archived: Boolean? = null,
+    val receiptId: Int? = null
 )

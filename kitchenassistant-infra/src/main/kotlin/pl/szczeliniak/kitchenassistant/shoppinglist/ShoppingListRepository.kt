@@ -9,11 +9,11 @@ import javax.transaction.Transactional
 @Repository
 class ShoppingListRepository(@PersistenceContext private val entityManager: EntityManager) : ShoppingListDao {
 
-    override fun findAll(criteria: ShoppingListCriteria, offset: Int, limit: Int): Set<ShoppingList> {
+    override fun findAll(criteria: ShoppingListCriteria, offset: Int?, limit: Int?): Set<ShoppingList> {
         val query = "SELECT sl FROM ShoppingList sl WHERE sl.deleted = false" + prepareCriteria(criteria)
         val typedQuery = applyParameters(criteria, entityManager.createQuery(query, ShoppingList::class.java))
-        typedQuery.firstResult = offset
-        typedQuery.maxResults = limit
+        offset?.let { typedQuery.firstResult = it }
+        limit?.let { typedQuery.maxResults = it }
         return typedQuery.resultList.toSet()
     }
 
@@ -43,6 +43,11 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
             entityManager.merge(shoppingList)
         }
         return shoppingList
+    }
+
+    @Transactional
+    override fun save(shoppingLists: Set<ShoppingList>) {
+        shoppingLists.forEach { save(it) }
     }
 
     private fun prepareCriteria(criteria: ShoppingListCriteria): String {

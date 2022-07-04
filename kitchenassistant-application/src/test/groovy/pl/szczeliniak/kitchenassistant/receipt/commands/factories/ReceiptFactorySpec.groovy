@@ -5,7 +5,7 @@ import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewIngredientGroupDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewStepDto
-import pl.szczeliniak.kitchenassistant.user.UserFacade
+import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 import spock.lang.Specification
@@ -15,7 +15,7 @@ import java.time.ZonedDateTime
 
 class ReceiptFactorySpec extends Specification {
 
-    def userFacade = Mock(UserFacade)
+    def getUserByIdQuery = Mock(GetUserByIdQuery)
     def stepFactory = Mock(StepFactory)
     def categoryDao = Mock(CategoryDao)
     def tagDao = Mock(TagDao)
@@ -26,7 +26,7 @@ class ReceiptFactorySpec extends Specification {
     def ingredientGroupFactory = Mock(IngredientGroupFactory)
 
     @Subject
-    def receiptFactory = new ReceiptFactory(userFacade, stepFactory, categoryDao, tagDao, tagFactory, authorDao, authorFactory, photoDao, ingredientGroupFactory)
+    def receiptFactory = new ReceiptFactory(getUserByIdQuery, stepFactory, categoryDao, tagDao, tagFactory, authorDao, authorFactory, photoDao, ingredientGroupFactory)
 
     def 'should create receipt'() {
         given:
@@ -37,7 +37,7 @@ class ReceiptFactorySpec extends Specification {
         def existingTag = tag(35, "EXISTING_TAG")
         def author = author()
 
-        userFacade.getUser(1) >> userResponse()
+        getUserByIdQuery.execute(1) >> userResponse()
         photoDao.findById(99) >> photo()
         ingredientGroupFactory.create(newIngredientGroupDto) >> ingredientGroup()
         stepFactory.create(newStepDto) >> step()

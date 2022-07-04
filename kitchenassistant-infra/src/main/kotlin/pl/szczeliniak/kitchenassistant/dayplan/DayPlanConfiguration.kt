@@ -13,9 +13,17 @@ import pl.szczeliniak.kitchenassistant.receipt.ReceiptFacade
 class DayPlanConfiguration {
 
     @Bean
-    fun dayPlanFacade(dayPlanDao: DayPlanDao, receiptFacade: ReceiptFacade): DayPlanFacade {
+    fun deassignReceiptsFromDayPlansCommand(dayPlanDao: DayPlanDao): DeassignReceiptsFromDayPlansCommand =
+        DeassignReceiptsFromDayPlansCommand(dayPlanDao)
+
+    @Bean
+    fun dayPlanFacade(
+        dayPlanDao: DayPlanDao,
+        receiptFacade: ReceiptFacade,
+        deassignReceiptsFromDayPlansCommand: DeassignReceiptsFromDayPlansCommand
+    ): DayPlanFacade {
         val dayPlanConverter = DayPlanConverter(receiptFacade)
-        return DayPlanFacade(
+        return DayPlanFacadeImpl(
             GetDayPlanQuery(dayPlanDao, dayPlanConverter),
             GetDayPlansQuery(dayPlanDao, dayPlanConverter),
             AddDayPlanCommand(dayPlanDao, DayPlanFactory()),
@@ -23,7 +31,8 @@ class DayPlanConfiguration {
             AddReceiptToDayPlanCommand(dayPlanDao, receiptFacade),
             DeleteReceiptFromDayPlanCommand(dayPlanDao),
             DeleteDayPlanCommand(dayPlanDao),
-            ArchiveDayPlanCommand(dayPlanDao)
+            ArchiveDayPlanCommand(dayPlanDao),
+            deassignReceiptsFromDayPlansCommand
         )
     }
 

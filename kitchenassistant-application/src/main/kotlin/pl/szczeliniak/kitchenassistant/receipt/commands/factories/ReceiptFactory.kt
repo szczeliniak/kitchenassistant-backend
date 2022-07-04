@@ -4,10 +4,10 @@ import pl.szczeliniak.kitchenassistant.receipt.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.dto.NewReceiptDto
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
-import pl.szczeliniak.kitchenassistant.user.UserFacade
+import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 
 open class ReceiptFactory(
-    private val userFacade: UserFacade,
+    private val getUserByIdQuery: GetUserByIdQuery,
     private val stepFactory: StepFactory,
     private val categoryDao: CategoryDao,
     private val tagDao: TagDao,
@@ -19,7 +19,7 @@ open class ReceiptFactory(
 ) {
 
     open fun create(dto: NewReceiptDto): Receipt {
-        userFacade.getUser(dto.userId)
+        getUserByIdQuery.execute(dto.userId)
         return Receipt(0,
             userId = dto.userId,
             name = dto.name,

@@ -2,18 +2,20 @@ package pl.szczeliniak.kitchenassistant.receipt
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import pl.szczeliniak.kitchenassistant.dayplan.commands.DeassignReceiptsFromDayPlansCommand
 import pl.szczeliniak.kitchenassistant.receipt.commands.*
 import pl.szczeliniak.kitchenassistant.receipt.commands.factories.*
 import pl.szczeliniak.kitchenassistant.receipt.queries.*
-import pl.szczeliniak.kitchenassistant.user.UserFacade
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.DeassignReceiptFromShoppingListsCommand
+import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 
 @Configuration
 class ReceiptConfiguration {
 
     @Bean
     fun receiptFacade(
+        getUserByIdQuery: GetUserByIdQuery,
         receiptDao: ReceiptDao,
-        userFacade: UserFacade,
         categoryDao: CategoryDao,
         tagDao: TagDao,
         authorDao: AuthorDao,
@@ -21,7 +23,9 @@ class ReceiptConfiguration {
         ingredientDao: IngredientDao,
         stepDao: StepDao,
         ftpClient: FtpClient,
-        ingredientGroupDao: IngredientGroupDao
+        ingredientGroupDao: IngredientGroupDao,
+        deassignReceiptsFromDayPlansCommand: DeassignReceiptsFromDayPlansCommand,
+        deassignReceiptFromShoppingListsCommand: DeassignReceiptFromShoppingListsCommand
     ): ReceiptFacade {
         val receiptConverter = ReceiptConverter()
         val stepFactory = StepFactory()
@@ -31,7 +35,7 @@ class ReceiptConfiguration {
         val ingredientFactory = IngredientFactory()
         val ingredientGroupFactory = IngredientGroupFactory(ingredientFactory)
         val receiptFactory = ReceiptFactory(
-            userFacade,
+            getUserByIdQuery,
             stepFactory,
             categoryDao,
             tagDao,
@@ -42,12 +46,16 @@ class ReceiptConfiguration {
             ingredientGroupFactory
         )
         val photoFactory = PhotoFactory()
-        return ReceiptFacade(
+        return ReceiptFacadeImpl(
             GetReceiptQuery(receiptDao, receiptConverter),
             GetReceiptsQuery(receiptDao, receiptConverter),
             AddReceiptCommand(receiptDao, receiptFactory),
             AddCategoryCommand(categoryDao, categoryFactory),
-            DeleteReceiptCommand(receiptDao),
+            DeleteReceiptCommand(
+                receiptDao,
+                deassignReceiptsFromDayPlansCommand,
+                deassignReceiptFromShoppingListsCommand
+            ),
             UpdateReceiptCommand(receiptDao, categoryDao, tagDao, tagFactory, authorFactory, authorDao),
             AddIngredientCommand(receiptDao, ingredientDao, ingredientFactory),
             DeleteIngredientCommand(receiptDao),

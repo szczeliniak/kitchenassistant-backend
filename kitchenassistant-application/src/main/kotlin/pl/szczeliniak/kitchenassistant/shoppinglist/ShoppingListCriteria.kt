@@ -3,8 +3,9 @@ package pl.szczeliniak.kitchenassistant.shoppinglist
 import java.time.LocalDate
 
 data class ShoppingListCriteria(
-    val userId: Int?,
-    val archived: Boolean?,
-    val name: String?,
-    val date: LocalDate?
+    val userId: Int? = null,
+    val archived: Boolean? = null,
+    val name: String? = null,
+    val date: LocalDate? = null,
+    val receiptId: Int? = null
 )

@@ -14,15 +14,20 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.queries.ShoppingListConverte
 class ShoppingListConfiguration {
 
     @Bean
+    fun deassignReceiptFromShoppingListsCommand(shoppingListDao: ShoppingListDao): DeassignReceiptFromShoppingListsCommand =
+        DeassignReceiptFromShoppingListsCommand(shoppingListDao)
+
+    @Bean
     fun shoppingListFacade(
         shoppingListDao: ShoppingListDao,
         receiptFacade: ReceiptFacade,
-        shoppingListItemDao: ShoppingListItemDao
+        shoppingListItemDao: ShoppingListItemDao,
+        deassignReceiptFromShoppingListsCommand: DeassignReceiptFromShoppingListsCommand
     ): ShoppingListFacade {
         val shoppingListConverter = ShoppingListConverter(receiptFacade)
         val shoppingListItemFactory = ShoppingListItemFactory(receiptFacade)
         val shoppingListFactory = ShoppingListFactory(shoppingListItemFactory)
-        return ShoppingListFacade(
+        return ShoppingListFacadeImpl(
             GetShoppingListQuery(shoppingListDao, shoppingListConverter),
             GetShoppingListsQuery(shoppingListDao, shoppingListConverter),
             AddShoppingListCommand(shoppingListDao, shoppingListFactory),
@@ -32,7 +37,8 @@ class ShoppingListConfiguration {
             MarkItemAsCompletedCommand(shoppingListDao, shoppingListItemDao),
             MarkShoppingListAsArchivedCommand(shoppingListDao),
             DeleteShoppingListCommand(shoppingListDao),
-            DeleteShoppingListItemCommand(shoppingListDao, shoppingListItemDao)
+            DeleteShoppingListItemCommand(shoppingListDao, shoppingListItemDao),
+            deassignReceiptFromShoppingListsCommand
         )
     }
 
