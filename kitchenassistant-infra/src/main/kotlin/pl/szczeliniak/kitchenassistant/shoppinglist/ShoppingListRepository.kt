@@ -10,15 +10,27 @@ import javax.transaction.Transactional
 class ShoppingListRepository(@PersistenceContext private val entityManager: EntityManager) : ShoppingListDao {
 
     override fun findAll(criteria: ShoppingListCriteria, offset: Int?, limit: Int?): Set<ShoppingList> {
-        val query = "SELECT sl FROM ShoppingList sl WHERE sl.deleted = false" + prepareCriteria(criteria)
+        val query =
+            "SELECT sl FROM ShoppingList sl" + prepareJoin(criteria) + " WHERE sl.deleted = false" + prepareCriteria(
+                criteria
+            )
         val typedQuery = applyParameters(criteria, entityManager.createQuery(query, ShoppingList::class.java))
         offset?.let { typedQuery.firstResult = it }
         limit?.let { typedQuery.maxResults = it }
         return typedQuery.resultList.toSet()
     }
 
+    private fun prepareJoin(criteria: ShoppingListCriteria): String {
+        val builder = StringBuilder().append("")
+        criteria.receiptId?.let { builder.append(" JOIN sl.items i") }
+        return builder.toString()
+    }
+
     override fun count(criteria: ShoppingListCriteria): Long {
-        val query = "SELECT COUNT(sl) FROM ShoppingList sl WHERE sl.deleted = false" + prepareCriteria(criteria)
+        val query =
+            "SELECT COUNT(sl) FROM ShoppingList sl" + prepareJoin(criteria) + " WHERE sl.deleted = false" + prepareCriteria(
+                criteria
+            )
         return applyParameters(criteria, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
     }
 
@@ -52,18 +64,11 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
 
     private fun prepareCriteria(criteria: ShoppingListCriteria): String {
         val builder = StringBuilder().append("")
-        if (criteria.userId != null) {
-            builder.append(" AND sl.userId = :userId")
-        }
-        if (criteria.archived != null) {
-            builder.append(" AND sl.archived = :archived")
-        }
-        if (criteria.name != null) {
-            builder.append(" AND LOWER(sl.name) LIKE LOWER(:name)")
-        }
-        if (criteria.date != null) {
-            builder.append(" AND sl.date = :date")
-        }
+        criteria.userId?.let { builder.append(" AND sl.userId = :userId") }
+        criteria.archived?.let { builder.append(" AND sl.archived = :archived") }
+        criteria.name?.let { builder.append(" AND LOWER(sl.name) LIKE LOWER(:name)") }
+        criteria.date?.let { builder.append(" AND sl.date = :date") }
+        criteria.receiptId?.let { builder.append(" AND i.receiptId = :receiptId") }
         return builder.toString()
     }
 
@@ -72,18 +77,11 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
         typedQuery: TypedQuery<T>
     ): TypedQuery<T> {
         var query = typedQuery
-        if (criteria.userId != null) {
-            query = typedQuery.setParameter("userId", criteria.userId)
-        }
-        if (criteria.archived != null) {
-            query = typedQuery.setParameter("archived", criteria.archived)
-        }
-        if (criteria.date != null) {
-            query = typedQuery.setParameter("date", criteria.date)
-        }
-        if (criteria.name != null) {
-            query = typedQuery.setParameter("name", "%" + criteria.name + "%")
-        }
+        criteria.userId?.let { query = typedQuery.setParameter("userId", it) }
+        criteria.archived?.let { query = typedQuery.setParameter("archived", it) }
+        criteria.date?.let { query = typedQuery.setParameter("date", it) }
+        criteria.name?.let { query = typedQuery.setParameter("name", "%$it%") }
+        criteria.receiptId?.let { query = typedQuery.setParameter("receiptId", it) }
         return query
     }
 
