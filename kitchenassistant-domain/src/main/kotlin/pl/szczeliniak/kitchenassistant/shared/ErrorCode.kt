@@ -37,6 +37,7 @@ enum class ErrorCode(val message: String, val code: Int) {
     JWT_MALFORMED_TOKEN("Token is malformed", 400),
     JWT_GENERIC_ERROR("Unknown token error", 400),
     INGREDIENT_GROUP_NOT_FOUND("Ingredient group not found", 404),
-    RECEIPT_ID_IS_NOT_ASSIGNED_TO_DAY_PLAN("Receipt id is not assigned to day play", 404)
-
+    RECEIPT_ID_IS_NOT_ASSIGNED_TO_DAY_PLAN("Receipt id is not assigned to day play", 404),
+    DAY_PLAN_FOT_DATE_ALREADY_EXISTS("Day plan for provided date already exists", 400),
+    DAY_PLAN_PAST_DATE("Cannot create day plan for passed date", 400);
 }
