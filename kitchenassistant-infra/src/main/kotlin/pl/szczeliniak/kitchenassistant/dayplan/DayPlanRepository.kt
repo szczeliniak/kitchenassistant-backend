@@ -65,8 +65,11 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         if (criteria.archived != null) {
             builder.append(" AND dp.archived = :archived")
         }
-        if (criteria.date != null) {
-            builder.append(" AND dp.date = :date")
+        if (criteria.since != null) {
+            builder.append(" AND dp.date >= :since")
+        }
+        if (criteria.to != null) {
+            builder.append(" AND dp.date <= :to")
         }
         return builder.toString()
     }
@@ -82,8 +85,11 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         if (criteria.archived != null) {
             query = typedQuery.setParameter("archived", criteria.archived)
         }
-        if (criteria.date != null) {
-            query = typedQuery.setParameter("date", criteria.date)
+        if (criteria.since != null) {
+            query = typedQuery.setParameter("since", criteria.since)
+        }
+        if (criteria.to != null) {
+            query = typedQuery.setParameter("to", criteria.to)
         }
         return query
     }

@@ -8,6 +8,7 @@ import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import java.time.LocalDate
 import javax.validation.Valid
 
 @RestController
@@ -28,8 +29,10 @@ class DayPlanController(
         @RequestParam(required = false) archived: Boolean?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
+        @RequestParam(required = false) since: LocalDate?,
+        @RequestParam(required = false) to: LocalDate?,
     ): DayPlansResponse {
-        return dayPlanFacade.getDayPlans(page, limit, DayPlanCriteria(userId, archived))
+        return dayPlanFacade.getDayPlans(page, limit, DayPlanCriteria(userId, archived, since = since, to = to))
     }
 
     @PostMapping

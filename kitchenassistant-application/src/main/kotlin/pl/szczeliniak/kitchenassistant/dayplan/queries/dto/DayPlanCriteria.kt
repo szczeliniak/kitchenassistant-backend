@@ -6,5 +6,6 @@ data class DayPlanCriteria(
     val userId: Int? = null,
     val archived: Boolean? = null,
     val receiptId: Int? = null,
-    val date: LocalDate? = null
+    val since: LocalDate? = null,
+    val to: LocalDate? = null
 )

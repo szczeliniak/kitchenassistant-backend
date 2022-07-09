@@ -14,7 +14,7 @@ class AddDayPlanCommand(private val dayPlanDao: DayPlanDao, private val dayPlanF
     fun execute(dto: NewDayPlanDto): SuccessResponse {
         if (dto.date.isBefore(LocalDate.now())) {
             throw KitchenAssistantException(ErrorCode.DAY_PLAN_PAST_DATE)
-        } else if (dayPlanDao.findAll(DayPlanCriteria(date = dto.date)).isNotEmpty()) {
+        } else if (dayPlanDao.findAll(DayPlanCriteria(since = dto.date, to = dto.date)).isNotEmpty()) {
             throw KitchenAssistantException(ErrorCode.DAY_PLAN_FOT_DATE_ALREADY_EXISTS)
         }
         return SuccessResponse(dayPlanDao.save(dayPlanFactory.create(dto)).id)
