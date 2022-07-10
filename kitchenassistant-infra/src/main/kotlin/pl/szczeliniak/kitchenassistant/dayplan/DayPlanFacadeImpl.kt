@@ -19,8 +19,9 @@ open class DayPlanFacadeImpl(
     private val deleteReceiptFromDayPlanCommand: DeleteReceiptFromDayPlanCommand,
     private val deleteDayPlanCommand: DeleteDayPlanCommand,
     private val archiveDayPlanCommand: ArchiveDayPlanCommand,
-    private val deassignReceiptsFromDayPlansCommand: DeassignReceiptsFromDayPlansCommand
-): DayPlanFacade {
+    private val deassignReceiptsFromDayPlansCommand: DeassignReceiptsFromDayPlansCommand,
+    private val archiveDayPlansCommand: ArchiveDayPlansCommand
+) : DayPlanFacade {
 
     override fun getDayPlan(id: Int): DayPlanResponse {
         return getDayPlanQuery.execute(id)
@@ -56,6 +57,10 @@ open class DayPlanFacadeImpl(
 
     override fun deassignReceiptFromAllDayPlans(receiptId: Int): SuccessResponse {
         return deassignReceiptsFromDayPlansCommand.execute(receiptId)
+    }
+
+    override fun triggerArchiving() {
+        archiveDayPlansCommand.execute()
     }
 
 }

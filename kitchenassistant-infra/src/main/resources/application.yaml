@@ -28,3 +28,5 @@ application:
 scheduling:
   shoppinglist:
     archiving: '0 1 0 * * *'
+  dayplan:
+    archiving: '0 2 0 * * *'

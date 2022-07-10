@@ -32,7 +32,8 @@ class DayPlanConfiguration {
             DeleteReceiptFromDayPlanCommand(dayPlanDao),
             DeleteDayPlanCommand(dayPlanDao),
             ArchiveDayPlanCommand(dayPlanDao),
-            deassignReceiptsFromDayPlansCommand
+            deassignReceiptsFromDayPlansCommand,
+            ArchiveDayPlansCommand(dayPlanDao)
         )
     }
 

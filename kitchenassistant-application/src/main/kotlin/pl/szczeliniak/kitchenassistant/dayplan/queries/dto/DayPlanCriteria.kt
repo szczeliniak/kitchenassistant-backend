@@ -8,5 +8,6 @@ data class DayPlanCriteria(
     val receiptId: Int? = null,
     val since: LocalDate? = null,
     val to: LocalDate? = null,
-    val name: String? = null
+    val name: String? = null,
+    val automaticArchiving: Boolean? = null
 )

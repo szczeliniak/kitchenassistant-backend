@@ -59,21 +59,12 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
 
     private fun prepareCriteria(criteria: DayPlanCriteria): String {
         val builder = StringBuilder().append("")
-        if (criteria.userId != null) {
-            builder.append(" AND dp.userId = :userId")
-        }
-        if (criteria.archived != null) {
-            builder.append(" AND dp.archived = :archived")
-        }
-        if (criteria.since != null) {
-            builder.append(" AND dp.date >= :since")
-        }
-        if (criteria.to != null) {
-            builder.append(" AND dp.date <= :to")
-        }
-        if (criteria.name != null) {
-            builder.append(" AND LOWER(dp.name) LIKE LOWER(:name)")
-        }
+        criteria.userId?.let { builder.append(" AND dp.userId = :userId") }
+        criteria.archived?.let { builder.append(" AND dp.archived = :archived") }
+        criteria.since?.let { builder.append(" AND dp.date IS NOT NULL AND dp.date >= :since") }
+        criteria.to?.let { builder.append(" AND dp.date IS NOT NULL AND dp.date <= :to") }
+        criteria.name?.let { builder.append(" AND LOWER(dp.name) LIKE LOWER(:name)") }
+        criteria.automaticArchiving?.let { builder.append(" AND dp.automaticArchiving = :automaticArchiving") }
         return builder.toString()
     }
 
@@ -82,21 +73,12 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         typedQuery: TypedQuery<T>
     ): TypedQuery<T> {
         var query = typedQuery
-        if (criteria.userId != null) {
-            query = typedQuery.setParameter("userId", criteria.userId)
-        }
-        if (criteria.archived != null) {
-            query = typedQuery.setParameter("archived", criteria.archived)
-        }
-        if (criteria.since != null) {
-            query = typedQuery.setParameter("since", criteria.since)
-        }
-        if (criteria.to != null) {
-            query = typedQuery.setParameter("to", criteria.to)
-        }
-        if (criteria.name != null) {
-            query = typedQuery.setParameter("name", "%" + criteria.name + "%")
-        }
+        criteria.userId?.let { query = typedQuery.setParameter("userId", it) }
+        criteria.archived?.let { query = typedQuery.setParameter("archived", it) }
+        criteria.since?.let { query = typedQuery.setParameter("since", it) }
+        criteria.to?.let { query = typedQuery.setParameter("to", criteria.to) }
+        criteria.name?.let { query = typedQuery.setParameter("name", "%" + criteria.name + "%") }
+        criteria.automaticArchiving?.let { query = typedQuery.setParameter("automaticArchiving", it) }
         return query
     }
 

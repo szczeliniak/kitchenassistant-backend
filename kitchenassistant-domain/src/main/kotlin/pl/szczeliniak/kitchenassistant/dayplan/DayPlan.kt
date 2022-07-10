@@ -21,6 +21,7 @@ data class DayPlan(
     @CollectionTable(name = "day_plan_receipt_ids", joinColumns = [JoinColumn(name = "day_plan_id")])
     @Column(name = "receipt_id")
     var receiptIds: MutableSet<Int> = mutableSetOf(),
+    var automaticArchiving: Boolean = false,
     var deleted: Boolean = false,
     var archived: Boolean = false,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),

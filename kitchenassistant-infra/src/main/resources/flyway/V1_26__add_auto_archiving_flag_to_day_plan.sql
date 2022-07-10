@@ -1,0 +1,1 @@
+ALTER TABLE day_plans ADD COLUMN automatic_archiving BOOLEAN NOT NULL DEFAULT false;

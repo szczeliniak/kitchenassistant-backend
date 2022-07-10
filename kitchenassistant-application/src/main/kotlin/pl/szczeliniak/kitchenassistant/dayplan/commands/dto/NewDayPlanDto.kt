@@ -8,5 +8,6 @@ data class NewDayPlanDto(
     @field:Length(min = 1, max = 100) var name: String = "",
     @field:Length(min = 1, max = 1000) var description: String? = null,
     @field:Min(1) var userId: Int = 0,
-    var date: LocalDate? = null
+    var date: LocalDate? = null,
+    var automaticArchiving: Boolean = false
 )

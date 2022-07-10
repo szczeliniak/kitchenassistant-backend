@@ -18,5 +18,6 @@ interface DayPlanFacade {
     fun addReceiptToDayPlan(id: Int, receiptId: Int): SuccessResponse
     fun deleteReceiptFromDayPlan(id: Int, receiptId: Int): SuccessResponse
     fun deassignReceiptFromAllDayPlans(receiptId: Int): SuccessResponse
+    fun triggerArchiving()
 
 }
