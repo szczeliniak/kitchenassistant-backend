@@ -7,5 +7,6 @@ data class DayPlanDetailsDto(
     val name: String,
     val description: String?,
     val date: LocalDate?,
-    val receipts: List<SimpleReceiptDto>
+    val receipts: List<SimpleReceiptDto>,
+    val automaticArchiving: Boolean
 )

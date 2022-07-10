@@ -26,7 +26,8 @@ open class ShoppingListConverter(private val receiptFacade: ReceiptFacade) {
             shoppingList.name,
             shoppingList.description,
             shoppingList.date,
-            shoppingList.items.map { map(it) }.toSet()
+            shoppingList.items.map { map(it) }.toSet(),
+            shoppingList.automaticArchiving
         )
     }
 

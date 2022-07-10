@@ -7,5 +7,6 @@ data class ShoppingListDetailsDto(
     val name: String,
     val description: String?,
     val date: LocalDate?,
-    val items: Set<ShoppingListItemDto>
+    val items: Set<ShoppingListItemDto>,
+    val automaticArchiving: Boolean
 )

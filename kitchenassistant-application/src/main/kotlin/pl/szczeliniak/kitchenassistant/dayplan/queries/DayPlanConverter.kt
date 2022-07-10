@@ -23,7 +23,8 @@ open class DayPlanConverter(private val receiptFacade: ReceiptFacade) {
             dayPlan.name,
             dayPlan.description,
             dayPlan.date,
-            dayPlan.receiptIds.map { mapReceipt(receiptFacade.getReceipt(it)) }
+            dayPlan.receiptIds.map { mapReceipt(receiptFacade.getReceipt(it)) },
+            dayPlan.automaticArchiving
         )
     }
 

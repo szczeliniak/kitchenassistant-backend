@@ -13,6 +13,7 @@ class UpdateDayPlanCommand(private val dayPlanDao: DayPlanDao) {
         dayPlan.date = dto.date
         dayPlan.name = dto.name
         dayPlan.description = dto.description
+        dayPlan.automaticArchiving = dto.automaticArchiving
         return SuccessResponse(dayPlanDao.save(dayPlan).id)
     }
 
