@@ -4,6 +4,8 @@ import java.time.LocalDate
 
 data class DayPlanDetailsDto(
     val id: Int,
-    val date: LocalDate,
+    val name: String,
+    val description: String?,
+    val date: LocalDate?,
     val receipts: List<SimpleReceiptDto>
 )

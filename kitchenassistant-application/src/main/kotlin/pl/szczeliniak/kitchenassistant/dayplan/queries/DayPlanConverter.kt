@@ -12,6 +12,7 @@ open class DayPlanConverter(private val receiptFacade: ReceiptFacade) {
     open fun map(dayPlan: DayPlan): DayPlanDto {
         return DayPlanDto(
             dayPlan.id,
+            dayPlan.name,
             dayPlan.date
         )
     }
@@ -19,6 +20,8 @@ open class DayPlanConverter(private val receiptFacade: ReceiptFacade) {
     open fun mapDetails(dayPlan: DayPlan): DayPlanDetailsDto {
         return DayPlanDetailsDto(
             dayPlan.id,
+            dayPlan.name,
+            dayPlan.description,
             dayPlan.date,
             dayPlan.receiptIds.map { mapReceipt(receiptFacade.getReceipt(it)) }
         )
