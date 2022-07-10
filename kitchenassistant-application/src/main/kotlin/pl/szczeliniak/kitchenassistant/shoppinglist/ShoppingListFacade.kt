@@ -21,5 +21,6 @@ interface ShoppingListFacade {
     fun markShoppingListItemAsDone(id: Int, itemId: Int, isCompleted: Boolean): SuccessResponse
     fun deleteShoppingListItem(id: Int, itemId: Int): SuccessResponse
     fun deassignReceiptFromShoppingLists(receiptId: Int): SuccessResponse
+    fun triggerArchiving()
 
 }

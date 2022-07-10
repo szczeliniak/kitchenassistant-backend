@@ -6,5 +6,6 @@ import java.time.LocalDate
 data class UpdateShoppingListDto(
     @field:Length(min = 1, max = 100) var name: String = "",
     @field:Length(max = 1000) var description: String? = null,
-    var date: LocalDate? = null
+    var date: LocalDate? = null,
+    var automaticTermination: Boolean = false
 )

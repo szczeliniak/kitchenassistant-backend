@@ -21,6 +21,7 @@ data class ShoppingList(
     @JoinColumn(name = "shopping_list_id", nullable = false)
     @OrderBy("sequence ASC, id ASC")
     var items: MutableSet<ShoppingListItem> = mutableSetOf(),
+    var automaticArchiving: Boolean = false,
     var deleted: Boolean = false,
     var archived: Boolean = false,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),

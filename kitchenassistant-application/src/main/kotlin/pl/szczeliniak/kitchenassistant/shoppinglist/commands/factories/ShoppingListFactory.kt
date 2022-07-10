@@ -11,7 +11,8 @@ open class ShoppingListFactory(private val shoppingListItemFactory: ShoppingList
             name = dto.name,
             description = dto.description,
             date = dto.date,
-            items = dto.items.map { shoppingListItemFactory.create(it) }.toMutableSet()
+            items = dto.items.map { shoppingListItemFactory.create(it) }.toMutableSet(),
+            automaticArchiving = dto.automaticArchiving
         )
     }
 

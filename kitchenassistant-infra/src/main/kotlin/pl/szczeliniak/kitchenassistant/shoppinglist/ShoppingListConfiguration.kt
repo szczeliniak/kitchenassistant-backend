@@ -38,7 +38,8 @@ class ShoppingListConfiguration {
             MarkShoppingListAsArchivedCommand(shoppingListDao),
             DeleteShoppingListCommand(shoppingListDao),
             DeleteShoppingListItemCommand(shoppingListDao, shoppingListItemDao),
-            deassignReceiptFromShoppingListsCommand
+            deassignReceiptFromShoppingListsCommand,
+            ArchiveShoppingListsCommand(shoppingListDao)
         )
     }
 

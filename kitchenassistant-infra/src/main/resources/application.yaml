@@ -1,0 +1,30 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driverClassName: org.postgresql.Driver
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        order_by:
+          default_null_ordering: last
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    locations: classpath:flyway
+application:
+  name: Kitchen Assistant
+  description: Receipts and shopping list management API
+  version: 1.0.0
+  creator:
+    name: Marcin S
+    url: www.szczeliniak.pl
+    email: test@szczeliniak.pl
+scheduling:
+  shoppinglist:
+    archiving: '0 1 0 * * *'

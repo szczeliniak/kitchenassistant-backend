@@ -22,7 +22,8 @@ open class ShoppingListFacadeImpl(
     private val markShoppingListAsArchivedCommand: MarkShoppingListAsArchivedCommand,
     private val deleteShoppingListCommand: DeleteShoppingListCommand,
     private val deleteShoppingListItemCommand: DeleteShoppingListItemCommand,
-    private val deassignReceiptFromShoppingListsCommand: DeassignReceiptFromShoppingListsCommand
+    private val deassignReceiptFromShoppingListsCommand: DeassignReceiptFromShoppingListsCommand,
+    private val archiveShoppingListsCommand: ArchiveShoppingListsCommand
 ) : ShoppingListFacade {
 
     override fun getShoppingList(id: Int): ShoppingListResponse {
@@ -67,6 +68,10 @@ open class ShoppingListFacadeImpl(
 
     override fun deassignReceiptFromShoppingLists(receiptId: Int): SuccessResponse {
         return deassignReceiptFromShoppingListsCommand.execute(receiptId)
+    }
+
+    override fun triggerArchiving() {
+        archiveShoppingListsCommand.execute()
     }
 
 }

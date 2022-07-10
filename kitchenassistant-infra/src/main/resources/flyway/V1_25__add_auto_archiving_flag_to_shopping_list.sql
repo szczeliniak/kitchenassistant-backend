@@ -1,0 +1,1 @@
+ALTER TABLE shopping_lists ADD COLUMN automatic_archiving BOOLEAN NOT NULL DEFAULT false;

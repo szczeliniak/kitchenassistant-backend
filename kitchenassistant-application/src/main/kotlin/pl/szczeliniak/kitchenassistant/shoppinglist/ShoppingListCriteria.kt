@@ -7,5 +7,7 @@ data class ShoppingListCriteria(
     val archived: Boolean? = null,
     val name: String? = null,
     val date: LocalDate? = null,
-    val receiptId: Int? = null
+    val receiptId: Int? = null,
+    val automaticArchiving: Boolean? = null,
+    val maxDate: LocalDate? = null
 )

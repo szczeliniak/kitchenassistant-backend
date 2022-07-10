@@ -14,6 +14,7 @@ class UpdateShoppingListCommand(private val shoppingListDao: ShoppingListDao) {
         shoppingList.name = dto.name
         shoppingList.description = dto.description
         shoppingList.date = dto.date
+        shoppingList.automaticArchiving = dto.automaticTermination
         return SuccessResponse(shoppingListDao.save(shoppingList).id)
     }
 
