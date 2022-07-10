@@ -1,10 +1,11 @@
 package pl.szczeliniak.kitchenassistant.dayplan.queries
 
 import pl.szczeliniak.kitchenassistant.dayplan.DayPlan
-import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanDetailsDto
-import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanDto
-import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.SimpleReceiptDto
+import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.*
 import pl.szczeliniak.kitchenassistant.receipt.ReceiptFacade
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.IngredientDto
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.IngredientGroupDto
+import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDetailsDto
 import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
 
 open class DayPlanConverter(private val receiptFacade: ReceiptFacade) {
@@ -35,6 +36,18 @@ open class DayPlanConverter(private val receiptFacade: ReceiptFacade) {
             response.receipt.author,
             response.receipt.category?.name
         )
+    }
+
+    fun map(receiptDto: ReceiptDetailsDto): DayPlanReceiptDto {
+        return DayPlanReceiptDto(receiptDto.name, receiptDto.ingredientGroups.map { map(it) }, receiptDto.author)
+    }
+
+    private fun map(ingredientGroupDto: IngredientGroupDto): DayPlanIngredientGroupDto {
+        return DayPlanIngredientGroupDto(ingredientGroupDto.name, ingredientGroupDto.ingredients.map { map(it) })
+    }
+
+    private fun map(ingredientDto: IngredientDto): DayPlanIngredientDto {
+        return DayPlanIngredientDto(ingredientDto.name, ingredientDto.quantity)
     }
 
 }

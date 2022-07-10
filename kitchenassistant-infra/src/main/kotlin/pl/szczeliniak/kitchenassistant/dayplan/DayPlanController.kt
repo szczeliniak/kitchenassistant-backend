@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.NewDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.UpdateDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
+import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanReceiptsResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
@@ -68,6 +69,11 @@ class DayPlanController(
     @DeleteMapping("/{id}/receipts/{receiptId}")
     fun deleteReceiptFromDayPlan(@PathVariable id: Int, @PathVariable receiptId: Int): SuccessResponse {
         return dayPlanFacade.deleteReceiptFromDayPlan(id, receiptId)
+    }
+
+    @GetMapping("/{id}/receipts")
+    fun getReceiptByDayPlanId(@PathVariable id: Int): DayPlanReceiptsResponse {
+        return dayPlanFacade.getReceiptsByDayPlanId(id)
     }
 
 }

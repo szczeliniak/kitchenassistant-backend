@@ -8,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.PaginationUtils
 
 class GetReceiptsQuery(private val receiptDao: ReceiptDao, private val receiptConverter: ReceiptConverter) {
 
-    fun execute(page: Long?, limit: Int?, criteria: ReceiptCriteria): ReceiptsResponse {
+    fun execute(page: Long? = null, limit: Int? = null, criteria: ReceiptCriteria): ReceiptsResponse {
         val currentPage = PaginationUtils.calculatePageNumber(page)
         val currentLimit = PaginationUtils.calculateLimit(limit)
         val offset = PaginationUtils.calculateOffset(currentPage, currentLimit)

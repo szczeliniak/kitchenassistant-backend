@@ -13,6 +13,13 @@ import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 class ReceiptConfiguration {
 
     @Bean
+    fun receiptConverter() = ReceiptConverter()
+
+    @Bean
+    fun getReceiptQuery(receiptDao: ReceiptDao, receiptConverter: ReceiptConverter) =
+        GetReceiptQuery(receiptDao, receiptConverter)
+
+    @Bean
     fun receiptFacade(
         getUserByIdQuery: GetUserByIdQuery,
         receiptDao: ReceiptDao,
@@ -25,9 +32,10 @@ class ReceiptConfiguration {
         ftpClient: FtpClient,
         ingredientGroupDao: IngredientGroupDao,
         deassignReceiptsFromDayPlansCommand: DeassignReceiptsFromDayPlansCommand,
-        deassignReceiptFromShoppingListsCommand: DeassignReceiptFromShoppingListsCommand
+        deassignReceiptFromShoppingListsCommand: DeassignReceiptFromShoppingListsCommand,
+        receiptConverter: ReceiptConverter,
+        getReceiptQuery: GetReceiptQuery
     ): ReceiptFacade {
-        val receiptConverter = ReceiptConverter()
         val stepFactory = StepFactory()
         val tagFactory = TagFactory()
         val authorFactory = AuthorFactory()
@@ -47,7 +55,7 @@ class ReceiptConfiguration {
         )
         val photoFactory = PhotoFactory()
         return ReceiptFacadeImpl(
-            GetReceiptQuery(receiptDao, receiptConverter),
+            getReceiptQuery,
             GetReceiptsQuery(receiptDao, receiptConverter),
             AddReceiptCommand(receiptDao, receiptFactory),
             AddCategoryCommand(categoryDao, categoryFactory),

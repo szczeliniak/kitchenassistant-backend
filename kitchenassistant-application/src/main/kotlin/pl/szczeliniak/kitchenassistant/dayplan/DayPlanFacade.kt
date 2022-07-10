@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.dayplan
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.NewDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.UpdateDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
+import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanReceiptsResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
@@ -19,5 +20,6 @@ interface DayPlanFacade {
     fun deleteReceiptFromDayPlan(id: Int, receiptId: Int): SuccessResponse
     fun deassignReceiptFromAllDayPlans(receiptId: Int): SuccessResponse
     fun triggerArchiving()
+    fun getReceiptsByDayPlanId(id: Int): DayPlanReceiptsResponse
 
 }
