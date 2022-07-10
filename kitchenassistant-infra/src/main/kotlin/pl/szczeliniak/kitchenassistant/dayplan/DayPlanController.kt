@@ -31,8 +31,13 @@ class DayPlanController(
         @RequestParam(required = false) limit: Int?,
         @RequestParam(required = false) since: LocalDate?,
         @RequestParam(required = false) to: LocalDate?,
+        @RequestParam(required = false) name: String?
     ): DayPlansResponse {
-        return dayPlanFacade.getDayPlans(page, limit, DayPlanCriteria(userId, archived, since = since, to = to))
+        return dayPlanFacade.getDayPlans(
+            page,
+            limit,
+            DayPlanCriteria(userId, archived, since = since, to = to, name = name)
+        )
     }
 
     @PostMapping

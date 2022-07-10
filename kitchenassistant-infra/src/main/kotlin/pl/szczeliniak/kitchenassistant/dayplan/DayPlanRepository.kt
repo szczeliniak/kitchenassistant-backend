@@ -71,6 +71,9 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         if (criteria.to != null) {
             builder.append(" AND dp.date <= :to")
         }
+        if (criteria.name != null) {
+            builder.append(" AND LOWER(dp.name) LIKE LOWER(:name)")
+        }
         return builder.toString()
     }
 
@@ -90,6 +93,9 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         }
         if (criteria.to != null) {
             query = typedQuery.setParameter("to", criteria.to)
+        }
+        if (criteria.name != null) {
+            query = typedQuery.setParameter("name", "%" + criteria.name + "%")
         }
         return query
     }
