@@ -1,15 +1,15 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.queries
 
-import pl.szczeliniak.kitchenassistant.receipt.ReceiptFacade
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDetailsDto
+import pl.szczeliniak.kitchenassistant.recipe.RecipeFacade
+import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipeDetailsDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDetailsDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListItemDto
-import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.SimpleReceiptDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.SimpleRecipeDto
 
-open class ShoppingListConverter(private val receiptFacade: ReceiptFacade) {
+open class ShoppingListConverter(private val recipeFacade: RecipeFacade) {
 
     open fun map(shoppingList: ShoppingList): ShoppingListDto {
         return ShoppingListDto(
@@ -38,12 +38,12 @@ open class ShoppingListConverter(private val receiptFacade: ReceiptFacade) {
             shoppingListItem.quantity,
             shoppingListItem.sequence,
             shoppingListItem.completed,
-            shoppingListItem.receiptId?.let { map(receiptFacade.getReceipt(it).receipt) }
+            shoppingListItem.recipeId?.let { map(recipeFacade.getRecipe(it).recipe) }
         )
     }
 
-    fun map(receiptDto: ReceiptDetailsDto): SimpleReceiptDto {
-        return SimpleReceiptDto(receiptDto.id, receiptDto.name)
+    fun map(recipeDto: RecipeDetailsDto): SimpleRecipeDto {
+        return SimpleRecipeDto(recipeDto.id, recipeDto.name)
     }
 
 }

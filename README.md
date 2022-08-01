@@ -1,18 +1,18 @@
 # KitchenAssistant
 
-## Receipts storage and shopping list management API
+## Recipes storage and shopping list management API
 
 Application allows for
 
 * basic user registration with email and password
 * authenticate with JWT token
-* storing receipts
-* searching for receipts with criteria
-* adding receipt steps
-* adding receipt ingredients
-* adding photos for receipts and particular receipt steps
-* receipt tagging
-* splitting receipts into categories
+* storing recipes
+* searching for recipes with criteria
+* adding recipe steps
+* adding recipe ingredients
+* adding photos for recipes and particular recipe steps
+* recipe tagging
+* splitting recipes into categories
 * adding shopping lists
 * searching for shopping lists with criteria
 * marking shopping list items as completed

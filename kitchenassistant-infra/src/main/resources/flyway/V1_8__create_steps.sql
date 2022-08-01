@@ -7,9 +7,9 @@ CREATE TABLE steps
     description VARCHAR(255),
     sequence    INTEGER,
     deleted     BOOLEAN      NOT NULL,
-    receipt_id  INTEGER,
+    recipe_id  INTEGER,
     CONSTRAINT pk_step_id PRIMARY KEY (id),
-    CONSTRAINT fk_step_receipt_id FOREIGN KEY (receipt_id) REFERENCES receipts (id)
+    CONSTRAINT fk_step_recipe_id FOREIGN KEY (recipe_id) REFERENCES recipes (id)
 );
 
 CREATE SEQUENCE seq_step_id INCREMENT 1 START 1;

@@ -18,9 +18,9 @@ data class DayPlan(
     var userId: Int,
     var date: LocalDate?,
     @ElementCollection
-    @CollectionTable(name = "day_plan_receipt_ids", joinColumns = [JoinColumn(name = "day_plan_id")])
-    @Column(name = "receipt_id")
-    var receiptIds: MutableSet<Int> = mutableSetOf(),
+    @CollectionTable(name = "day_plan_recipe_ids", joinColumns = [JoinColumn(name = "day_plan_id")])
+    @Column(name = "recipe_id")
+    var recipeIds: MutableSet<Int> = mutableSetOf(),
     var automaticArchiving: Boolean = false,
     var deleted: Boolean = false,
     var archived: Boolean = false,

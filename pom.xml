@@ -8,7 +8,6 @@
         <module>kitchenassistant-domain</module>
         <module>kitchenassistant-application</module>
         <module>kitchenassistant-infra</module>
-        <module>kitchenassistant-api-tests</module>
     </modules>
 
     <groupId>pl.szczeliniak</groupId>
@@ -30,7 +29,6 @@
         <dependency.groovy>3.0.10</dependency.groovy>
         <dependency.jjwt>0.9.1</dependency.jjwt>
         <dependency.postgresql>42.3.3</dependency.postgresql>
-        <dependency.restassured>4.5.1</dependency.restassured>
         <dependency.lombok>1.18.20</dependency.lombok>
         <dependency.commons.net>3.8.0</dependency.commons.net>
         <dependency.hibernate.validator>6.2.3.Final</dependency.hibernate.validator>
@@ -166,11 +164,6 @@
                 <groupId>commons-net</groupId>
                 <artifactId>commons-net</artifactId>
                 <version>${dependency.commons.net}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.rest-assured</groupId>
-                <artifactId>rest-assured</artifactId>
-                <version>${dependency.restassured}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>

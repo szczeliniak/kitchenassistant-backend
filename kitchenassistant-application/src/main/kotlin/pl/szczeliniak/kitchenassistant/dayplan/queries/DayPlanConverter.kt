@@ -2,13 +2,13 @@ package pl.szczeliniak.kitchenassistant.dayplan.queries
 
 import pl.szczeliniak.kitchenassistant.dayplan.DayPlan
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.*
-import pl.szczeliniak.kitchenassistant.receipt.ReceiptFacade
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.IngredientDto
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.IngredientGroupDto
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptDetailsDto
-import pl.szczeliniak.kitchenassistant.receipt.queries.dto.ReceiptResponse
+import pl.szczeliniak.kitchenassistant.recipe.RecipeFacade
+import pl.szczeliniak.kitchenassistant.recipe.queries.dto.IngredientDto
+import pl.szczeliniak.kitchenassistant.recipe.queries.dto.IngredientGroupDto
+import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipeDetailsDto
+import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipeResponse
 
-open class DayPlanConverter(private val receiptFacade: ReceiptFacade) {
+open class DayPlanConverter(private val recipeFacade: RecipeFacade) {
 
     open fun map(dayPlan: DayPlan): DayPlanDto {
         return DayPlanDto(
@@ -24,22 +24,22 @@ open class DayPlanConverter(private val receiptFacade: ReceiptFacade) {
             dayPlan.name,
             dayPlan.description,
             dayPlan.date,
-            dayPlan.receiptIds.map { mapReceipt(receiptFacade.getReceipt(it)) },
+            dayPlan.recipeIds.map { mapRecipe(recipeFacade.getRecipe(it)) },
             dayPlan.automaticArchiving
         )
     }
 
-    private fun mapReceipt(response: ReceiptResponse): SimpleReceiptDto {
-        return SimpleReceiptDto(
-            response.receipt.id,
-            response.receipt.name,
-            response.receipt.author,
-            response.receipt.category?.name
+    private fun mapRecipe(response: RecipeResponse): SimpleRecipeDto {
+        return SimpleRecipeDto(
+            response.recipe.id,
+            response.recipe.name,
+            response.recipe.author,
+            response.recipe.category?.name
         )
     }
 
-    fun map(receiptDto: ReceiptDetailsDto): DayPlanReceiptDto {
-        return DayPlanReceiptDto(receiptDto.name, receiptDto.ingredientGroups.map { map(it) }, receiptDto.author)
+    fun map(recipeDto: RecipeDetailsDto): DayPlanRecipeDto {
+        return DayPlanRecipeDto(recipeDto.name, recipeDto.ingredientGroups.map { map(it) }, recipeDto.author)
     }
 
     private fun map(ingredientGroupDto: IngredientGroupDto): DayPlanIngredientGroupDto {

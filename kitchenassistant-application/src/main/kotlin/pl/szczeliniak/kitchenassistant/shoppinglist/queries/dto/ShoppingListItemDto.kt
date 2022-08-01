@@ -6,5 +6,5 @@ data class ShoppingListItemDto(
     val quantity: String?,
     val sequence: Int?,
     val completed: Boolean,
-    val receipt: SimpleReceiptDto?
+    val recipe: SimpleRecipeDto?
 )

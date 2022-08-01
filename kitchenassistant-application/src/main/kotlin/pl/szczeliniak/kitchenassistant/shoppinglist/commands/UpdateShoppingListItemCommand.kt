@@ -24,7 +24,7 @@ class UpdateShoppingListItemCommand(
         item.name = dto.name
         item.quantity = dto.quantity
         item.sequence = dto.sequence
-        item.receiptId = dto.receiptId
+        item.recipeId = dto.recipeId
 
         return SuccessResponse(shoppingListItemDao.save(item).id)
     }

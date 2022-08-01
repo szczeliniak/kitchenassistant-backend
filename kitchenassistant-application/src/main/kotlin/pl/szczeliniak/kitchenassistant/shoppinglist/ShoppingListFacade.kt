@@ -20,7 +20,7 @@ interface ShoppingListFacade {
     fun updateShoppingListItem(id: Int, itemId: Int, dto: UpdateShoppingListItemDto): SuccessResponse
     fun markShoppingListItemAsDone(id: Int, itemId: Int, isCompleted: Boolean): SuccessResponse
     fun deleteShoppingListItem(id: Int, itemId: Int): SuccessResponse
-    fun deassignReceiptFromShoppingLists(receiptId: Int): SuccessResponse
+    fun deassignRecipeFromShoppingLists(recipeId: Int): SuccessResponse
     fun triggerArchiving()
 
 }

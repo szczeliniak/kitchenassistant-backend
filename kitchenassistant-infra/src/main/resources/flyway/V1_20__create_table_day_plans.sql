@@ -11,8 +11,8 @@ CREATE TABLE day_plans
 CREATE SEQUENCE seq_day_plan_id INCREMENT 1 START 1;
 ALTER SEQUENCE seq_day_plan_id OWNED BY day_plans.id;
 
-CREATE TABLE day_plan_receipt_ids
+CREATE TABLE day_plan_recipe_ids
 (
     day_plan_id    INTEGER   NOT NULL,
-    receipt_id     INTEGER NOT NULL
+    recipe_id     INTEGER NOT NULL
 );

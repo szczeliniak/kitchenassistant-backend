@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.shoppinglist
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import pl.szczeliniak.kitchenassistant.receipt.ReceiptFacade
+import pl.szczeliniak.kitchenassistant.recipe.RecipeFacade
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.*
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListFactory
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListItemFactory
@@ -14,18 +14,18 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.queries.ShoppingListConverte
 class ShoppingListConfiguration {
 
     @Bean
-    fun deassignReceiptFromShoppingListsCommand(shoppingListDao: ShoppingListDao): DeassignReceiptFromShoppingListsCommand =
-        DeassignReceiptFromShoppingListsCommand(shoppingListDao)
+    fun deassignRecipeFromShoppingListsCommand(shoppingListDao: ShoppingListDao): DeassignRecipeFromShoppingListsCommand =
+        DeassignRecipeFromShoppingListsCommand(shoppingListDao)
 
     @Bean
     fun shoppingListFacade(
         shoppingListDao: ShoppingListDao,
-        receiptFacade: ReceiptFacade,
+        recipeFacade: RecipeFacade,
         shoppingListItemDao: ShoppingListItemDao,
-        deassignReceiptFromShoppingListsCommand: DeassignReceiptFromShoppingListsCommand
+        deassignRecipeFromShoppingListsCommand: DeassignRecipeFromShoppingListsCommand
     ): ShoppingListFacade {
-        val shoppingListConverter = ShoppingListConverter(receiptFacade)
-        val shoppingListItemFactory = ShoppingListItemFactory(receiptFacade)
+        val shoppingListConverter = ShoppingListConverter(recipeFacade)
+        val shoppingListItemFactory = ShoppingListItemFactory(recipeFacade)
         val shoppingListFactory = ShoppingListFactory(shoppingListItemFactory)
         return ShoppingListFacadeImpl(
             GetShoppingListQuery(shoppingListDao, shoppingListConverter),
@@ -38,7 +38,7 @@ class ShoppingListConfiguration {
             MarkShoppingListAsArchivedCommand(shoppingListDao),
             DeleteShoppingListCommand(shoppingListDao),
             DeleteShoppingListItemCommand(shoppingListDao, shoppingListItemDao),
-            deassignReceiptFromShoppingListsCommand,
+            deassignRecipeFromShoppingListsCommand,
             ArchiveShoppingListsCommand(shoppingListDao)
         )
     }

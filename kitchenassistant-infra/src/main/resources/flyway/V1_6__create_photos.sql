@@ -4,9 +4,9 @@ CREATE TABLE photos
     created_at  TIMESTAMP NOT NULL,
     modified_at TIMESTAMP NOT NULL,
     file_id     INTEGER   NOT NULL,
-    receipt_id  INTEGER,
+    recipe_id  INTEGER,
     CONSTRAINT pk_photo_id PRIMARY KEY (id),
-    CONSTRAINT fk_photo_receipt_id FOREIGN KEY (receipt_id) REFERENCES receipts (id),
+    CONSTRAINT fk_photo_recipe_id FOREIGN KEY (recipe_id) REFERENCES recipes (id),
     CONSTRAINT fk_photo_file_id FOREIGN KEY (file_id) REFERENCES files (id)
 );
 

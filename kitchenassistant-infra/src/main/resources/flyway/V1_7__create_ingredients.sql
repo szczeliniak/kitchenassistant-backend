@@ -6,9 +6,9 @@ CREATE TABLE ingredients
     name        VARCHAR(255) NOT NULL,
     quantity    VARCHAR(255) NOT NULL,
     deleted     BOOLEAN      NOT NULL,
-    receipt_id  INTEGER,
+    recipe_id  INTEGER,
     CONSTRAINT pk_ingredient_id PRIMARY KEY (id),
-    CONSTRAINT fk_ingredient_receipt_id FOREIGN KEY (receipt_id) REFERENCES receipts (id)
+    CONSTRAINT fk_ingredient_recipe_id FOREIGN KEY (recipe_id) REFERENCES recipes (id)
 );
 
 CREATE SEQUENCE seq_ingredient_id INCREMENT 1 START 1;

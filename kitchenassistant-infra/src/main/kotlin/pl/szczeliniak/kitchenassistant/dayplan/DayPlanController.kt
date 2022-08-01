@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.NewDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.UpdateDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
-import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanReceiptsResponse
+import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanRecipesResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
@@ -61,19 +61,19 @@ class DayPlanController(
         return dayPlanFacade.archiveDayPlan(id, archive)
     }
 
-    @PostMapping("/{id}/receipts/{receiptId}")
-    fun addReceiptToDayPlan(@PathVariable id: Int, @PathVariable receiptId: Int): SuccessResponse {
-        return dayPlanFacade.addReceiptToDayPlan(id, receiptId)
+    @PostMapping("/{id}/recipes/{recipeId}")
+    fun addRecipeToDayPlan(@PathVariable id: Int, @PathVariable recipeId: Int): SuccessResponse {
+        return dayPlanFacade.addRecipeToDayPlan(id, recipeId)
     }
 
-    @DeleteMapping("/{id}/receipts/{receiptId}")
-    fun deleteReceiptFromDayPlan(@PathVariable id: Int, @PathVariable receiptId: Int): SuccessResponse {
-        return dayPlanFacade.deleteReceiptFromDayPlan(id, receiptId)
+    @DeleteMapping("/{id}/recipes/{recipeId}")
+    fun deleteRecipeFromDayPlan(@PathVariable id: Int, @PathVariable recipeId: Int): SuccessResponse {
+        return dayPlanFacade.deleteRecipeFromDayPlan(id, recipeId)
     }
 
-    @GetMapping("/{id}/receipts")
-    fun getReceiptByDayPlanId(@PathVariable id: Int): DayPlanReceiptsResponse {
-        return dayPlanFacade.getReceiptsByDayPlanId(id)
+    @GetMapping("/{id}/recipes")
+    fun getRecipesByDayPlanId(@PathVariable id: Int): DayPlanRecipesResponse {
+        return dayPlanFacade.getRecipesByDayPlanId(id)
     }
 
 }

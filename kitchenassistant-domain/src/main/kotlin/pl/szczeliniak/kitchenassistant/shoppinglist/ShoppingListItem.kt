@@ -19,7 +19,7 @@ data class ShoppingListItem(
     var name: String,
     var quantity: String? = null,
     var sequence: Int? = null,
-    var receiptId: Int? = null,
+    var recipeId: Int? = null,
     var deleted: Boolean = false,
     var completed: Boolean = false,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),

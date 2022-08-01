@@ -19,7 +19,7 @@ spring:
     locations: classpath:flyway
 application:
   name: Kitchen Assistant
-  description: Receipts and shopping list management API
+  description: Recipes and shopping list management API
   version: 1.0.0
   creator:
     name: Marcin S

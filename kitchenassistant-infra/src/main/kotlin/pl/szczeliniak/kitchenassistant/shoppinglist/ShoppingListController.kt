@@ -32,14 +32,14 @@ class ShoppingListController(
         @RequestParam(required = false) archived: Boolean?,
         @RequestParam(required = false) @Length(max = 50) name: String?,
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) date: LocalDate?,
-        @RequestParam(required = false) receiptId: Int?,
+        @RequestParam(required = false) recipeId: Int?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
     ): ShoppingListsResponse {
         return shoppingListFacade.getShoppingLists(
             page,
             limit,
-            ShoppingListCriteria(userId, archived, name, date, receiptId)
+            ShoppingListCriteria(userId, archived, name, date, recipeId)
         )
     }
 
