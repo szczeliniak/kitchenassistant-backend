@@ -1,8 +1,10 @@
 package pl.szczeliniak.kitchenassistant
 
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.service.*
@@ -66,5 +68,12 @@ class SwaggerConfiguration(
         return listOf(SecurityReference("JWT", authorizationScopes))
     }
 
+    @Bean
+    @Primary
+    fun cleanMigrateStrategy(): FlywayMigrationStrategy =
+        FlywayMigrationStrategy { flyway ->
+            flyway?.repair()
+            flyway?.migrate()
+        }
 
 }
