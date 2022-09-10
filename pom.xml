@@ -28,7 +28,7 @@
         <dependency.spock>2.2-M1-groovy-3.0</dependency.spock>
         <dependency.groovy>3.0.10</dependency.groovy>
         <dependency.jjwt>0.9.1</dependency.jjwt>
-        <dependency.postgresql>42.3.3</dependency.postgresql>
+        <dependency.postgresql>42.4.1</dependency.postgresql>
         <dependency.lombok>1.18.20</dependency.lombok>
         <dependency.commons.net>3.8.0</dependency.commons.net>
         <dependency.hibernate.validator>6.2.3.Final</dependency.hibernate.validator>
