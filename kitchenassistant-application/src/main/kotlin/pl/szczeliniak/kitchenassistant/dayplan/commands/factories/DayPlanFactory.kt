@@ -9,7 +9,7 @@ open class DayPlanFactory {
         return DayPlan(
             userId = dto.userId,
             date = dto.date,
-            automaticArchiving = dto.automaticArchiving
+            automaticArchiving = false
         )
     }
 

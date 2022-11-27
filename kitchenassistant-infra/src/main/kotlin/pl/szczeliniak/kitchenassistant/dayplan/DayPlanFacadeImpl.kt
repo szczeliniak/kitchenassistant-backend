@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.dayplan
 
 import pl.szczeliniak.kitchenassistant.dayplan.commands.*
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanDto
+import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.UpdateDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlanQuery
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlansQuery
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
@@ -16,6 +17,7 @@ open class DayPlanFacadeImpl(
     private val deleteRecipeFromDayPlanCommand: DeleteRecipeFromDayPlanCommand,
     private val deleteDayPlanCommand: DeleteDayPlanCommand,
     private val archiveDayPlanCommand: ArchiveDayPlanCommand,
+    private val updateDayPlanCommand: UpdateDayPlanCommand,
     private val deassignRecipesFromDayPlansCommand: DeassignRecipesFromDayPlansCommand,
     private val archiveDayPlansCommand: ArchiveDayPlansCommand
 ) : DayPlanFacade {
@@ -34,6 +36,10 @@ open class DayPlanFacadeImpl(
 
     override fun archiveDayPlan(id: Int, archive: Boolean): SuccessResponse {
         return archiveDayPlanCommand.execute(id, archive)
+    }
+
+    override fun updateDayPlan(id: Int, request: UpdateDayPlanDto): SuccessResponse {
+        return updateDayPlanCommand.execute(id, request)
     }
 
     override fun addRecipeToDayPlan(recipeId: Int, request: AddRecipeToDayPlanDto): SuccessResponse {

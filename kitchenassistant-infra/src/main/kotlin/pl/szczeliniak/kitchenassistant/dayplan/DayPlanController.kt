@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.dayplan
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanDto
+import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.UpdateDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlansResponse
@@ -46,6 +47,11 @@ class DayPlanController(
     @PutMapping("/{id}/archive/{archive}")
     fun archiveDayPlan(@PathVariable id: Int, @PathVariable archive: Boolean): SuccessResponse {
         return dayPlanFacade.archiveDayPlan(id, archive)
+    }
+
+    @PutMapping("/{id}")
+    fun updateDayPlan(@PathVariable id: Int, @RequestBody request: UpdateDayPlanDto): SuccessResponse {
+        return dayPlanFacade.updateDayPlan(id, request)
     }
 
     @PostMapping("/recipes/{recipeId}")

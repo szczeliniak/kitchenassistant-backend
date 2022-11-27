@@ -32,6 +32,7 @@ class DayPlanConfiguration {
             DeleteRecipeFromDayPlanCommand(dayPlanDao),
             DeleteDayPlanCommand(dayPlanDao),
             ArchiveDayPlanCommand(dayPlanDao),
+            UpdateDayPlanCommand(dayPlanDao),
             deassignRecipesFromDayPlansCommand,
             ArchiveDayPlansCommand(dayPlanDao)
         )
