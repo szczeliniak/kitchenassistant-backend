@@ -2,15 +2,13 @@ package pl.szczeliniak.kitchenassistant.dayplan
 
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.NewDayPlanDto
-import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.UpdateDayPlanDto
+import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanRecipesResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import java.time.LocalDate
-import javax.validation.Valid
 
 @RestController
 @RequestMapping("/dayplans")
@@ -41,16 +39,6 @@ class DayPlanController(
         )
     }
 
-    @PostMapping
-    fun addDayPlan(@Valid @RequestBody dto: NewDayPlanDto): SuccessResponse {
-        return dayPlanFacade.addDayPlan(dto)
-    }
-
-    @PutMapping("/{id}")
-    fun updateDayPlan(@PathVariable id: Int, @Valid @RequestBody dto: UpdateDayPlanDto): SuccessResponse {
-        return dayPlanFacade.updateDayPlan(id, dto)
-    }
-
     @DeleteMapping("/{id}")
     fun deleteDayPlan(@PathVariable id: Int): SuccessResponse {
         return dayPlanFacade.deleteDayPlan(id)
@@ -61,9 +49,9 @@ class DayPlanController(
         return dayPlanFacade.archiveDayPlan(id, archive)
     }
 
-    @PostMapping("/{id}/recipes/{recipeId}")
-    fun addRecipeToDayPlan(@PathVariable id: Int, @PathVariable recipeId: Int): SuccessResponse {
-        return dayPlanFacade.addRecipeToDayPlan(id, recipeId)
+    @PostMapping("/recipes/{recipeId}")
+    fun addRecipeToDayPlan(@PathVariable recipeId: Int, @RequestBody request: AddRecipeToDayPlanDto): SuccessResponse {
+        return dayPlanFacade.addRecipeToDayPlan(recipeId, request)
     }
 
     @DeleteMapping("/{id}/recipes/{recipeId}")

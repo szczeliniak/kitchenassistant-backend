@@ -13,6 +13,9 @@ class DeleteRecipeFromDayPlanCommand(private val dayPlanDao: DayPlanDao) {
             throw KitchenAssistantException(ErrorCode.RECIPE_ID_IS_NOT_ASSIGNED_TO_DAY_PLAN)
         }
         dayPlan.recipeIds.remove(recipeId)
+        if (dayPlan.recipeIds.isEmpty()) {
+            dayPlan.deleted = true
+        }
         return SuccessResponse(dayPlanDao.save(dayPlan).id)
     }
 

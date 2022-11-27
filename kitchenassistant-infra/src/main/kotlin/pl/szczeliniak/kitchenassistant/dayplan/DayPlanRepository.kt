@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.dayplan
 
 import org.springframework.stereotype.Repository
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
+import java.time.LocalDate
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.persistence.TypedQuery
@@ -34,13 +35,13 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         return typedQuery.resultList.toMutableSet()
     }
 
-    override fun findById(id: Int): DayPlan? {
+    override fun findByDate(date: LocalDate): DayPlan? {
         return entityManager
             .createQuery(
-                "SELECT dp FROM DayPlan dp WHERE dp.id = :id AND dp.deleted = false",
+                "SELECT dp FROM DayPlan dp WHERE dp.date = :date AND dp.deleted = false",
                 DayPlan::class.java
             )
-            .setParameter("id", id)
+            .setParameter("date", date)
             .resultList
             .stream()
             .findFirst()
@@ -55,6 +56,19 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
                 Long::class.javaObjectType
             )
         ).singleResult
+    }
+
+    override fun findById(id: Int): DayPlan? {
+        return entityManager
+            .createQuery(
+                "SELECT dp FROM DayPlan dp WHERE dp.id = :id AND dp.deleted = false",
+                DayPlan::class.java
+            )
+            .setParameter("id", id)
+            .resultList
+            .stream()
+            .findFirst()
+            .orElse(null)
     }
 
     private fun prepareCriteria(criteria: DayPlanCriteria): String {

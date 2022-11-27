@@ -13,7 +13,6 @@ open class DayPlanConverter(private val recipeFacade: RecipeFacade) {
     open fun map(dayPlan: DayPlan): DayPlanDto {
         return DayPlanDto(
             dayPlan.id,
-            dayPlan.name,
             dayPlan.date
         )
     }
@@ -21,8 +20,6 @@ open class DayPlanConverter(private val recipeFacade: RecipeFacade) {
     open fun mapDetails(dayPlan: DayPlan): DayPlanDetailsDto {
         return DayPlanDetailsDto(
             dayPlan.id,
-            dayPlan.name,
-            dayPlan.description,
             dayPlan.date,
             dayPlan.recipeIds.map { mapRecipe(recipeFacade.getRecipe(it)) },
             dayPlan.automaticArchiving
@@ -39,7 +36,12 @@ open class DayPlanConverter(private val recipeFacade: RecipeFacade) {
     }
 
     fun map(recipeDto: RecipeDetailsDto): DayPlanRecipeDto {
-        return DayPlanRecipeDto(recipeDto.name, recipeDto.ingredientGroups.map { map(it) }, recipeDto.author)
+        return DayPlanRecipeDto(
+            recipeDto.id,
+            recipeDto.name,
+            recipeDto.ingredientGroups.map { map(it) },
+            recipeDto.author
+        )
     }
 
     private fun map(ingredientGroupDto: IngredientGroupDto): DayPlanIngredientGroupDto {

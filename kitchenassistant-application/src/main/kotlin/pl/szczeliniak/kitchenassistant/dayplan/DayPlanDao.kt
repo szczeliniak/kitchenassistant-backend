@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.dayplan
 
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
+import java.time.LocalDate
 
 interface DayPlanDao {
 
@@ -13,5 +14,7 @@ interface DayPlanDao {
     fun count(criteria: DayPlanCriteria): Long
 
     fun findById(id: Int): DayPlan?
+
+    fun findByDate(date: LocalDate): DayPlan?
 
 }

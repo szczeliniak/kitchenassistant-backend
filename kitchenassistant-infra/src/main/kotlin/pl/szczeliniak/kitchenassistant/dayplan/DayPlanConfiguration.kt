@@ -29,9 +29,7 @@ class DayPlanConfiguration {
         return DayPlanFacadeImpl(
             GetDayPlanQuery(dayPlanDao, dayPlanConverter),
             GetDayPlansQuery(dayPlanDao, dayPlanConverter),
-            AddDayPlanCommand(dayPlanDao, DayPlanFactory()),
-            UpdateDayPlanCommand(dayPlanDao),
-            AddRecipeToDayPlanCommand(dayPlanDao, recipeFacade),
+            AddRecipeToDayPlanCommand(dayPlanDao, recipeFacade, DayPlanFactory()),
             DeleteRecipeFromDayPlanCommand(dayPlanDao),
             DeleteDayPlanCommand(dayPlanDao),
             ArchiveDayPlanCommand(dayPlanDao),

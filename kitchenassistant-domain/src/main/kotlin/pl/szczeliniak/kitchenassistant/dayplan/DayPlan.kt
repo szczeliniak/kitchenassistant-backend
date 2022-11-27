@@ -13,10 +13,8 @@ data class DayPlan(
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "day_plan_id_generator")
     @SequenceGenerator(name = "day_plan_id_generator", sequenceName = "seq_day_plan_id", allocationSize = 1)
     var id: Int = 0,
-    var name: String,
-    var description: String?,
     var userId: Int,
-    var date: LocalDate?,
+    var date: LocalDate,
     @ElementCollection
     @CollectionTable(name = "day_plan_recipe_ids", joinColumns = [JoinColumn(name = "day_plan_id")])
     @Column(name = "recipe_id")
