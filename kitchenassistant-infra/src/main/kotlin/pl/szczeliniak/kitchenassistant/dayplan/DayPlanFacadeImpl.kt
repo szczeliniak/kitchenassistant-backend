@@ -4,9 +4,7 @@ import pl.szczeliniak.kitchenassistant.dayplan.commands.*
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlanQuery
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlansQuery
-import pl.szczeliniak.kitchenassistant.dayplan.queries.GetRecipesByDayPlanIdQuery
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
-import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanRecipesResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
@@ -19,8 +17,7 @@ open class DayPlanFacadeImpl(
     private val deleteDayPlanCommand: DeleteDayPlanCommand,
     private val archiveDayPlanCommand: ArchiveDayPlanCommand,
     private val deassignRecipesFromDayPlansCommand: DeassignRecipesFromDayPlansCommand,
-    private val archiveDayPlansCommand: ArchiveDayPlansCommand,
-    private val getRecipesByDayPlanIdQuery: GetRecipesByDayPlanIdQuery
+    private val archiveDayPlansCommand: ArchiveDayPlansCommand
 ) : DayPlanFacade {
 
     override fun getDayPlan(id: Int): DayPlanResponse {
@@ -53,10 +50,6 @@ open class DayPlanFacadeImpl(
 
     override fun triggerArchiving() {
         archiveDayPlansCommand.execute()
-    }
-
-    override fun getRecipesByDayPlanId(id: Int): DayPlanRecipesResponse {
-        return getRecipesByDayPlanIdQuery.execute(id)
     }
 
 }

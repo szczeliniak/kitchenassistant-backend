@@ -4,7 +4,6 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
-import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanRecipesResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
@@ -57,11 +56,6 @@ class DayPlanController(
     @DeleteMapping("/{id}/recipes/{recipeId}")
     fun deleteRecipeFromDayPlan(@PathVariable id: Int, @PathVariable recipeId: Int): SuccessResponse {
         return dayPlanFacade.deleteRecipeFromDayPlan(id, recipeId)
-    }
-
-    @GetMapping("/{id}/recipes")
-    fun getRecipesByDayPlanId(@PathVariable id: Int): DayPlanRecipesResponse {
-        return dayPlanFacade.getRecipesByDayPlanId(id)
     }
 
 }

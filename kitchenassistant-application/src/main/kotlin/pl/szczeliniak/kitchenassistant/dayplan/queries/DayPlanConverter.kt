@@ -5,7 +5,6 @@ import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.*
 import pl.szczeliniak.kitchenassistant.recipe.RecipeFacade
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.IngredientDto
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.IngredientGroupDto
-import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipeDetailsDto
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipeResponse
 
 open class DayPlanConverter(private val recipeFacade: RecipeFacade) {
@@ -31,16 +30,8 @@ open class DayPlanConverter(private val recipeFacade: RecipeFacade) {
             response.recipe.id,
             response.recipe.name,
             response.recipe.author,
-            response.recipe.category?.name
-        )
-    }
-
-    fun map(recipeDto: RecipeDetailsDto): DayPlanRecipeDto {
-        return DayPlanRecipeDto(
-            recipeDto.id,
-            recipeDto.name,
-            recipeDto.ingredientGroups.map { map(it) },
-            recipeDto.author
+            response.recipe.category?.name,
+            response.recipe.ingredientGroups.map { map(it) }
         )
     }
 

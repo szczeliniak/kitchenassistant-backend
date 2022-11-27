@@ -4,5 +4,6 @@ data class SimpleRecipeDto(
     val id: Int,
     val name: String,
     val author: String?,
-    val category: String?
+    val category: String?,
+    val ingredientGroups: List<DayPlanIngredientGroupDto>,
 )

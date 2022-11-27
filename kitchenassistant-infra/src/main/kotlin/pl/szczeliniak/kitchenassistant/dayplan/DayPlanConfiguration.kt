@@ -7,7 +7,6 @@ import pl.szczeliniak.kitchenassistant.dayplan.commands.factories.DayPlanFactory
 import pl.szczeliniak.kitchenassistant.dayplan.queries.DayPlanConverter
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlanQuery
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlansQuery
-import pl.szczeliniak.kitchenassistant.dayplan.queries.GetRecipesByDayPlanIdQuery
 import pl.szczeliniak.kitchenassistant.recipe.RecipeFacade
 import pl.szczeliniak.kitchenassistant.recipe.queries.GetRecipeQuery
 
@@ -34,8 +33,7 @@ class DayPlanConfiguration {
             DeleteDayPlanCommand(dayPlanDao),
             ArchiveDayPlanCommand(dayPlanDao),
             deassignRecipesFromDayPlansCommand,
-            ArchiveDayPlansCommand(dayPlanDao),
-            GetRecipesByDayPlanIdQuery(dayPlanDao, getRecipeQuery, dayPlanConverter)
+            ArchiveDayPlansCommand(dayPlanDao)
         )
     }
 
