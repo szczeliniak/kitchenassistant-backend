@@ -29,13 +29,12 @@ class DayPlanController(
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
         @RequestParam(required = false) since: LocalDate?,
-        @RequestParam(required = false) to: LocalDate?,
-        @RequestParam(required = false) name: String?
+        @RequestParam(required = false) to: LocalDate?
     ): DayPlansResponse {
         return dayPlanFacade.getDayPlans(
             page,
             limit,
-            DayPlanCriteria(userId, archived, since = since, to = to, name = name)
+            DayPlanCriteria(userId, archived, since = since, to = to)
         )
     }
 

@@ -77,7 +77,6 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         criteria.archived?.let { builder.append(" AND dp.archived = :archived") }
         criteria.since?.let { builder.append(" AND dp.date IS NOT NULL AND dp.date >= :since") }
         criteria.to?.let { builder.append(" AND dp.date IS NOT NULL AND dp.date <= :to") }
-        criteria.name?.let { builder.append(" AND LOWER(dp.name) LIKE LOWER(:name)") }
         criteria.automaticArchiving?.let { builder.append(" AND dp.automaticArchiving = :automaticArchiving") }
         return builder.toString()
     }
@@ -91,7 +90,6 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         criteria.archived?.let { query = typedQuery.setParameter("archived", it) }
         criteria.since?.let { query = typedQuery.setParameter("since", it) }
         criteria.to?.let { query = typedQuery.setParameter("to", criteria.to) }
-        criteria.name?.let { query = typedQuery.setParameter("name", "%" + criteria.name + "%") }
         criteria.automaticArchiving?.let { query = typedQuery.setParameter("automaticArchiving", it) }
         return query
     }
