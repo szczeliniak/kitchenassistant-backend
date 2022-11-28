@@ -12,7 +12,8 @@ open class DayPlanConverter(private val recipeFacade: RecipeFacade) {
     open fun map(dayPlan: DayPlan): DayPlanDto {
         return DayPlanDto(
             dayPlan.id,
-            dayPlan.date
+            dayPlan.date,
+            dayPlan.automaticArchiving
         )
     }
 

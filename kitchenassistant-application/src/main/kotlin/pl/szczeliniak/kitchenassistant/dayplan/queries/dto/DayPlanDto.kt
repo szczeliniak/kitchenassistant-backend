@@ -4,5 +4,6 @@ import java.time.LocalDate
 
 data class DayPlanDto(
     val id: Int,
-    val date: LocalDate
+    val date: LocalDate,
+    val automaticArchiving: Boolean
 )
