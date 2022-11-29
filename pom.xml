@@ -20,7 +20,7 @@
         <dependency.spring.boot>2.6.6</dependency.spring.boot>
         <dependency.jaxb>2.3.1</dependency.jaxb>
         <dependency.swaggerui>2.9.2</dependency.swaggerui>
-        <dependency.jackson.databind>2.13.2.2</dependency.jackson.databind>
+        <dependency.jackson.databind>2.13.4.1</dependency.jackson.databind>
         <dependency.jackson>2.13.2</dependency.jackson>
         <dependency.junit>5.9.0</dependency.junit>
         <dependency.mockito>4.8.0</dependency.mockito>
@@ -28,7 +28,7 @@
         <dependency.spock>2.3-groovy-3.0</dependency.spock>
         <dependency.groovy>3.0.10</dependency.groovy>
         <dependency.jjwt>0.9.1</dependency.jjwt>
-        <dependency.postgresql>42.4.1</dependency.postgresql>
+        <dependency.postgresql>42.4.3</dependency.postgresql>
         <dependency.lombok>1.18.20</dependency.lombok>
         <dependency.commons.net>3.8.0</dependency.commons.net>
         <dependency.hibernate.validator>6.2.3.Final</dependency.hibernate.validator>
