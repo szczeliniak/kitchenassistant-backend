@@ -22,35 +22,35 @@ open class DayPlanFacadeImpl(
     private val archiveDayPlansCommand: ArchiveDayPlansCommand
 ) : DayPlanFacade {
 
-    override fun getDayPlan(id: Int): DayPlanResponse {
+    override fun findById(id: Int): DayPlanResponse {
         return getDayPlanQuery.execute(id)
     }
 
-    override fun getDayPlans(page: Long?, limit: Int?, criteria: DayPlanCriteria): DayPlansResponse {
+    override fun findAll(page: Long?, limit: Int?, criteria: DayPlanCriteria): DayPlansResponse {
         return getDayPlansQuery.execute(page, limit, criteria)
     }
 
-    override fun deleteDayPlan(id: Int): SuccessResponse {
+    override fun delete(id: Int): SuccessResponse {
         return deleteDayPlanCommand.execute(id)
     }
 
-    override fun archiveDayPlan(id: Int, archive: Boolean): SuccessResponse {
+    override fun archive(id: Int, archive: Boolean): SuccessResponse {
         return archiveDayPlanCommand.execute(id, archive)
     }
 
-    override fun updateDayPlan(id: Int, request: UpdateDayPlanDto): SuccessResponse {
+    override fun update(id: Int, request: UpdateDayPlanDto): SuccessResponse {
         return updateDayPlanCommand.execute(id, request)
     }
 
-    override fun addRecipeToDayPlan(recipeId: Int, request: AddRecipeToDayPlanDto): SuccessResponse {
+    override fun addRecipe(recipeId: Int, request: AddRecipeToDayPlanDto): SuccessResponse {
         return addRecipeToDayPlanCommand.execute(recipeId, request)
     }
 
-    override fun deleteRecipeFromDayPlan(id: Int, recipeId: Int): SuccessResponse {
+    override fun deleteRecipe(id: Int, recipeId: Int): SuccessResponse {
         return deleteRecipeFromDayPlanCommand.execute(id, recipeId)
     }
 
-    override fun deassignRecipeFromAllDayPlans(recipeId: Int): SuccessResponse {
+    override fun deassignRecipes(recipeId: Int): SuccessResponse {
         return deassignRecipesFromDayPlansCommand.execute(recipeId)
     }
 

@@ -14,21 +14,21 @@ class UserController(
 ) {
 
     @GetMapping("/{id}")
-    fun getUser(@PathVariable id: Int): UserResponse {
-        return userFacade.getUser(id)
+    fun findById(@PathVariable id: Int): UserResponse {
+        return userFacade.findById(id)
     }
 
     @GetMapping
-    fun getUsers(
+    fun findAll(
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?
     ): UsersResponse {
-        return userFacade.getUsers(page, limit)
+        return userFacade.findAll(page, limit)
     }
 
     @PostMapping
-    fun addUser(@Valid @RequestBody dto: AddUserDto): SuccessResponse {
-        return userFacade.addUser(dto)
+    fun add(@Valid @RequestBody dto: AddUserDto): SuccessResponse {
+        return userFacade.add(dto)
     }
 
     @PostMapping("/login")

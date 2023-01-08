@@ -14,7 +14,7 @@ class AddRecipeToDayPlanCommand(
 
     fun execute(recipeId: Int, request: AddRecipeToDayPlanDto): SuccessResponse {
         val dayPlan = dayPlanDao.findByDate(request.date) ?: dayPlanFactory.create(request)
-        recipeFacade.getRecipe(recipeId)
+        recipeFacade.findById(recipeId)
         dayPlan.recipeIds.add(recipeId)
         return SuccessResponse(dayPlanDao.save(dayPlan).id)
     }

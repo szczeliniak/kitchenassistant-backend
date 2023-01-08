@@ -1,12 +1,12 @@
-package pl.szczeliniak.kitchenassistant.shared.dtos
+package pl.szczeliniak.kitchenassistant.shared
 
 class PaginationUtils {
 
     companion object {
 
-        private val DEFAULT_PAGE_NUMBER = 1L
-        private val DEFAULT_LIMIT = 50
-        private val MAX_LIMIT = 200
+        private const val DEFAULT_PAGE_NUMBER = 1L
+        private const val DEFAULT_LIMIT = 50
+        private const val MAX_LIMIT = 200
 
         fun calculatePageNumber(pageNumber: Long?): Long {
             return if (pageNumber != null && pageNumber > 0) pageNumber else DEFAULT_PAGE_NUMBER

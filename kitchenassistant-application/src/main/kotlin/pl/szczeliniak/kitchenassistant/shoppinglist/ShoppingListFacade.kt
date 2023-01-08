@@ -10,12 +10,12 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListsRes
 
 interface ShoppingListFacade {
 
-    fun getShoppingList(id: Int): ShoppingListResponse
-    fun getShoppingLists(page: Long?, limit: Int?, criteria: ShoppingListCriteria): ShoppingListsResponse
-    fun addShoppingList(dto: NewShoppingListDto): SuccessResponse
-    fun updateShoppingList(id: Int, dto: UpdateShoppingListDto): SuccessResponse
-    fun markShoppingListAsArchived(id: Int, isArchived: Boolean): SuccessResponse
-    fun deleteShoppingList(id: Int): SuccessResponse
+    fun findById(id: Int): ShoppingListResponse
+    fun findAll(page: Long?, limit: Int?, criteria: ShoppingListCriteria): ShoppingListsResponse
+    fun add(dto: NewShoppingListDto): SuccessResponse
+    fun update(id: Int, dto: UpdateShoppingListDto): SuccessResponse
+    fun archive(id: Int, isArchived: Boolean): SuccessResponse
+    fun delete(id: Int): SuccessResponse
     fun addShoppingListItem(id: Int, dto: NewShoppingListItemDto): SuccessResponse
     fun updateShoppingListItem(id: Int, itemId: Int, dto: UpdateShoppingListItemDto): SuccessResponse
     fun markShoppingListItemAsDone(id: Int, itemId: Int, isCompleted: Boolean): SuccessResponse

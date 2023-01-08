@@ -4,7 +4,7 @@ import pl.szczeliniak.kitchenassistant.recipe.RecipeCriteria
 import pl.szczeliniak.kitchenassistant.recipe.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipesResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
-import pl.szczeliniak.kitchenassistant.shared.dtos.PaginationUtils
+import pl.szczeliniak.kitchenassistant.shared.PaginationUtils
 
 class GetRecipesQuery(private val recipeDao: RecipeDao, private val recipeConverter: RecipeConverter) {
 

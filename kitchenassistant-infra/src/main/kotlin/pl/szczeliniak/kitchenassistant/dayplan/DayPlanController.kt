@@ -18,12 +18,12 @@ class DayPlanController(
 ) {
 
     @GetMapping("/{id}")
-    fun getDayPlan(@PathVariable id: Int): DayPlanResponse {
-        return dayPlanFacade.getDayPlan(id)
+    fun findById(@PathVariable id: Int): DayPlanResponse {
+        return dayPlanFacade.findById(id)
     }
 
     @GetMapping
-    fun getDayPlans(
+    fun findAll(
         @RequestParam(required = false) userId: Int?,
         @RequestParam(required = false) archived: Boolean?,
         @RequestParam(required = false) page: Long?,
@@ -31,7 +31,7 @@ class DayPlanController(
         @RequestParam(required = false) since: LocalDate?,
         @RequestParam(required = false) to: LocalDate?
     ): DayPlansResponse {
-        return dayPlanFacade.getDayPlans(
+        return dayPlanFacade.findAll(
             page,
             limit,
             DayPlanCriteria(userId, archived, since = since, to = to)
@@ -39,28 +39,28 @@ class DayPlanController(
     }
 
     @DeleteMapping("/{id}")
-    fun deleteDayPlan(@PathVariable id: Int): SuccessResponse {
-        return dayPlanFacade.deleteDayPlan(id)
+    fun delete(@PathVariable id: Int): SuccessResponse {
+        return dayPlanFacade.delete(id)
     }
 
     @PutMapping("/{id}/archive/{archive}")
-    fun archiveDayPlan(@PathVariable id: Int, @PathVariable archive: Boolean): SuccessResponse {
-        return dayPlanFacade.archiveDayPlan(id, archive)
+    fun archive(@PathVariable id: Int, @PathVariable archive: Boolean): SuccessResponse {
+        return dayPlanFacade.archive(id, archive)
     }
 
     @PutMapping("/{id}")
-    fun updateDayPlan(@PathVariable id: Int, @RequestBody request: UpdateDayPlanDto): SuccessResponse {
-        return dayPlanFacade.updateDayPlan(id, request)
+    fun update(@PathVariable id: Int, @RequestBody request: UpdateDayPlanDto): SuccessResponse {
+        return dayPlanFacade.update(id, request)
     }
 
     @PostMapping("/recipes/{recipeId}")
-    fun addRecipeToDayPlan(@PathVariable recipeId: Int, @RequestBody request: AddRecipeToDayPlanDto): SuccessResponse {
-        return dayPlanFacade.addRecipeToDayPlan(recipeId, request)
+    fun addRecipe(@PathVariable recipeId: Int, @RequestBody request: AddRecipeToDayPlanDto): SuccessResponse {
+        return dayPlanFacade.addRecipe(recipeId, request)
     }
 
     @DeleteMapping("/{id}/recipes/{recipeId}")
-    fun deleteRecipeFromDayPlan(@PathVariable id: Int, @PathVariable recipeId: Int): SuccessResponse {
-        return dayPlanFacade.deleteRecipeFromDayPlan(id, recipeId)
+    fun deleteRecipe(@PathVariable id: Int, @PathVariable recipeId: Int): SuccessResponse {
+        return dayPlanFacade.deleteRecipe(id, recipeId)
     }
 
 }

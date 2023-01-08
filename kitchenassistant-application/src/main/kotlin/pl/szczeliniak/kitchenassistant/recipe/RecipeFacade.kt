@@ -6,11 +6,11 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 
 interface RecipeFacade {
 
-    fun getRecipe(recipeId: Int): RecipeResponse
-    fun getRecipes(page: Long?, limit: Int?, criteria: RecipeCriteria): RecipesResponse
-    fun addRecipe(dto: NewRecipeDto): SuccessResponse
-    fun updateRecipe(recipeId: Int, dto: UpdateRecipeDto): SuccessResponse
-    fun deleteRecipe(recipeId: Int): SuccessResponse
+    fun findById(recipeId: Int): RecipeResponse
+    fun findAll(page: Long?, limit: Int?, criteria: RecipeCriteria): RecipesResponse
+    fun add(dto: NewRecipeDto): SuccessResponse
+    fun update(recipeId: Int, dto: UpdateRecipeDto): SuccessResponse
+    fun delete(recipeId: Int): SuccessResponse
     fun addStep(recipeId: Int, dto: NewStepDto): SuccessResponse
     fun updateStep(recipeId: Int, stepId: Int, dto: UpdateStepDto): SuccessResponse
     fun deleteStep(recipeId: Int, stepId: Int): SuccessResponse
@@ -31,8 +31,8 @@ interface RecipeFacade {
     fun updateCategory(categoryId: Int, request: UpdateCategoryDto): SuccessResponse
     fun getTags(criteria: TagCriteria): TagsResponse
     fun getAuthors(criteria: AuthorCriteria): AuthorsResponse
-    fun assignPhotosToRecipe(recipeId: Int, request: AssignPhotosToRecipeDto): SuccessResponse
-    fun markRecipeAsFavorite(recipeId: Int, isFavorite: Boolean): SuccessResponse
+    fun assignPhotos(recipeId: Int, request: AssignPhotosToRecipeDto): SuccessResponse
+    fun markAsFavorite(recipeId: Int, isFavorite: Boolean): SuccessResponse
     fun uploadPhoto(userId: Int, name: String, bytes: ByteArray): SuccessResponse
     fun downloadPhoto(photoId: Int): GetPhotoResponse
     fun deletePhoto(photoId: Int): SuccessResponse

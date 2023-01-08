@@ -33,23 +33,23 @@ open class RecipeFacadeImpl(
     private val deleteIngredientGroupCommand: DeleteIngredientGroupCommand
 ) : RecipeFacade {
 
-    override fun getRecipe(recipeId: Int): RecipeResponse {
+    override fun findById(recipeId: Int): RecipeResponse {
         return getRecipeQuery.execute(recipeId)
     }
 
-    override fun getRecipes(page: Long?, limit: Int?, criteria: RecipeCriteria): RecipesResponse {
+    override fun findAll(page: Long?, limit: Int?, criteria: RecipeCriteria): RecipesResponse {
         return getRecipesQuery.execute(page, limit, criteria)
     }
 
-    override fun addRecipe(dto: NewRecipeDto): SuccessResponse {
+    override fun add(dto: NewRecipeDto): SuccessResponse {
         return addRecipeCommand.execute(dto)
     }
 
-    override fun updateRecipe(recipeId: Int, dto: UpdateRecipeDto): SuccessResponse {
+    override fun update(recipeId: Int, dto: UpdateRecipeDto): SuccessResponse {
         return updateRecipeCommand.execute(recipeId, dto)
     }
 
-    override fun deleteRecipe(recipeId: Int): SuccessResponse {
+    override fun delete(recipeId: Int): SuccessResponse {
         return deleteRecipeCommand.execute(recipeId)
     }
 
@@ -114,11 +114,11 @@ open class RecipeFacadeImpl(
         return getAuthorsQuery.execute(criteria)
     }
 
-    override fun assignPhotosToRecipe(recipeId: Int, request: AssignPhotosToRecipeDto): SuccessResponse {
+    override fun assignPhotos(recipeId: Int, request: AssignPhotosToRecipeDto): SuccessResponse {
         return assignRecipePhotosCommand.execute(recipeId, request)
     }
 
-    override fun markRecipeAsFavorite(recipeId: Int, isFavorite: Boolean): SuccessResponse {
+    override fun markAsFavorite(recipeId: Int, isFavorite: Boolean): SuccessResponse {
         return markRecipeAsFavoriteCommand.execute(recipeId, isFavorite)
     }
 

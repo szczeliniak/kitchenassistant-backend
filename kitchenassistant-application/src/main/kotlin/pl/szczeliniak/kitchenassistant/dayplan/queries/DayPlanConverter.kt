@@ -21,7 +21,7 @@ open class DayPlanConverter(private val recipeFacade: RecipeFacade) {
         return DayPlanDetailsDto(
             dayPlan.id,
             dayPlan.date,
-            dayPlan.recipeIds.map { mapRecipe(recipeFacade.getRecipe(it)) },
+            dayPlan.recipeIds.map { mapRecipe(recipeFacade.findById(it)) },
             dayPlan.automaticArchiving
         )
     }

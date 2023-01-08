@@ -19,12 +19,12 @@ class RecipeController(
 ) {
 
     @GetMapping("/{recipeId}")
-    fun getRecipe(@PathVariable recipeId: Int): RecipeResponse {
-        return recipeFacade.getRecipe(recipeId)
+    fun findById(@PathVariable recipeId: Int): RecipeResponse {
+        return recipeFacade.findById(recipeId)
     }
 
     @GetMapping
-    fun getRecipes(
+    fun findAll(
         @RequestParam(required = false) userId: Int?,
         @RequestParam(required = false) categoryId: Int?,
         @RequestParam(required = false) @Length(max = 50) name: String?,
@@ -32,22 +32,22 @@ class RecipeController(
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
     ): RecipesResponse {
-        return recipeFacade.getRecipes(page, limit, RecipeCriteria(userId, categoryId, name, tag))
+        return recipeFacade.findAll(page, limit, RecipeCriteria(userId, categoryId, name, tag))
     }
 
     @PostMapping
-    fun addRecipe(@Valid @RequestBody dto: NewRecipeDto): SuccessResponse {
-        return recipeFacade.addRecipe(dto)
+    fun add(@Valid @RequestBody dto: NewRecipeDto): SuccessResponse {
+        return recipeFacade.add(dto)
     }
 
     @PutMapping("/{recipeId}")
-    fun updateRecipe(@PathVariable recipeId: Int, @Valid @RequestBody dto: UpdateRecipeDto): SuccessResponse {
-        return recipeFacade.updateRecipe(recipeId, dto)
+    fun update(@PathVariable recipeId: Int, @Valid @RequestBody dto: UpdateRecipeDto): SuccessResponse {
+        return recipeFacade.update(recipeId, dto)
     }
 
     @DeleteMapping("/{recipeId}")
-    fun deleteRecipe(@PathVariable recipeId: Int): SuccessResponse {
-        return recipeFacade.deleteRecipe(recipeId)
+    fun delete(@PathVariable recipeId: Int): SuccessResponse {
+        return recipeFacade.delete(recipeId)
     }
 
     @PostMapping("{recipeId}/steps")
@@ -150,16 +150,16 @@ class RecipeController(
     }
 
     @PutMapping("/{recipeId}/photos")
-    fun assignPhotosToRecipe(
+    fun assignPhotos(
         @PathVariable recipeId: Int,
         @Valid @RequestBody request: AssignPhotosToRecipeDto
     ): SuccessResponse {
-        return recipeFacade.assignPhotosToRecipe(recipeId, request)
+        return recipeFacade.assignPhotos(recipeId, request)
     }
 
     @PutMapping("/{recipeId}/favorite/{isFavorite}")
-    fun markRecipeAsFavorite(@PathVariable recipeId: Int, @PathVariable isFavorite: Boolean): SuccessResponse {
-        return recipeFacade.markRecipeAsFavorite(recipeId, isFavorite)
+    fun markAsFavorite(@PathVariable recipeId: Int, @PathVariable isFavorite: Boolean): SuccessResponse {
+        return recipeFacade.markAsFavorite(recipeId, isFavorite)
     }
 
     @PostMapping("/photos")

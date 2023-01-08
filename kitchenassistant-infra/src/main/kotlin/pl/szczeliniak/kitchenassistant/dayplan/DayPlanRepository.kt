@@ -26,7 +26,7 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         val typedQuery = applyParameters(
             criteria,
             entityManager.createQuery(
-                "SELECT dp FROM DayPlan dp WHERE dp.deleted = false" + prepareCriteria(criteria) + " ORDER BY dp.date DESC, dp.id ASC",
+                "SELECT dp FROM DayPlan dp WHERE dp.deleted = false" + prepareCriteria(criteria) + " ORDER BY dp.date ASC, dp.id ASC",
                 DayPlan::class.java
             )
         )

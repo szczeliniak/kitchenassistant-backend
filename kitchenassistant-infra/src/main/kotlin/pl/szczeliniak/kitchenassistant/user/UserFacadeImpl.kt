@@ -20,15 +20,15 @@ open class UserFacadeImpl(
     private val refreshTokenCommand: RefreshTokenCommand
 ) : UserFacade {
 
-    override fun getUser(id: Int): UserResponse {
+    override fun findById(id: Int): UserResponse {
         return getUserByIdQuery.execute(id)
     }
 
-    override fun getUsers(page: Long?, limit: Int?): UsersResponse {
+    override fun findAll(page: Long?, limit: Int?): UsersResponse {
         return getUsersQuery.execute(page, limit)
     }
 
-    override fun addUser(dto: AddUserDto): SuccessResponse {
+    override fun add(dto: AddUserDto): SuccessResponse {
         return addUserCommand.execute(dto)
     }
 
