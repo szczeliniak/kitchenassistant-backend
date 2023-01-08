@@ -22,7 +22,7 @@ internal class ShoppingListItemFactoryTest : JunitBaseClass() {
     @Test
     fun shouldCreateShoppingList() {
         val newShoppingListItemDto = newShoppingListItemDto()
-        whenever(recipeFacade.getRecipe(1)).thenReturn(recipeResponse())
+        whenever(recipeFacade.findById(1)).thenReturn(recipeResponse())
 
         val result = shoppingListItemFactory.create(newShoppingListItemDto)
 

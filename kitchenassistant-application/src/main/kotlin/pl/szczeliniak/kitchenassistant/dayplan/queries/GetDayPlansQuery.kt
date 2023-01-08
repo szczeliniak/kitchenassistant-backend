@@ -4,7 +4,7 @@ import pl.szczeliniak.kitchenassistant.dayplan.DayPlanDao
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
-import pl.szczeliniak.kitchenassistant.shared.dtos.PaginationUtils
+import pl.szczeliniak.kitchenassistant.shared.PaginationUtils
 
 class GetDayPlansQuery(private val dayPlanDao: DayPlanDao, private val dayPlanConverter: DayPlanConverter) {
 

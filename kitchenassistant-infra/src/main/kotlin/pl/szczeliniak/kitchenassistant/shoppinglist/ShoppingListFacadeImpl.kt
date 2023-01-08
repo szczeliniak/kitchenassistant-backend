@@ -26,27 +26,27 @@ open class ShoppingListFacadeImpl(
     private val archiveShoppingListsCommand: ArchiveShoppingListsCommand
 ) : ShoppingListFacade {
 
-    override fun getShoppingList(id: Int): ShoppingListResponse {
+    override fun findById(id: Int): ShoppingListResponse {
         return getShoppingListQuery.execute(id)
     }
 
-    override fun getShoppingLists(page: Long?, limit: Int?, criteria: ShoppingListCriteria): ShoppingListsResponse {
+    override fun findAll(page: Long?, limit: Int?, criteria: ShoppingListCriteria): ShoppingListsResponse {
         return getShoppingListsQuery.execute(page, limit, criteria)
     }
 
-    override fun addShoppingList(dto: NewShoppingListDto): SuccessResponse {
+    override fun add(dto: NewShoppingListDto): SuccessResponse {
         return addShoppingListCommand.execute(dto)
     }
 
-    override fun updateShoppingList(id: Int, dto: UpdateShoppingListDto): SuccessResponse {
+    override fun update(id: Int, dto: UpdateShoppingListDto): SuccessResponse {
         return updateShoppingListCommand.execute(id, dto)
     }
 
-    override fun markShoppingListAsArchived(id: Int, isArchived: Boolean): SuccessResponse {
+    override fun archive(id: Int, isArchived: Boolean): SuccessResponse {
         return markShoppingListAsArchivedCommand.execute(id, isArchived)
     }
 
-    override fun deleteShoppingList(id: Int): SuccessResponse {
+    override fun delete(id: Int): SuccessResponse {
         return deleteShoppingListCommand.execute(id)
     }
 

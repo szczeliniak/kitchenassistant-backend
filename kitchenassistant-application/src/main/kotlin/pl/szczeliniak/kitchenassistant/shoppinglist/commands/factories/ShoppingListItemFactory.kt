@@ -8,7 +8,7 @@ open class ShoppingListItemFactory(private val recipeFacade: RecipeFacade) {
 
     open fun create(dto: NewShoppingListItemDto): ShoppingListItem {
         dto.recipeId?.let {
-            recipeFacade.getRecipe(it)
+            recipeFacade.findById(it)
         }
 
         return ShoppingListItem(

@@ -22,12 +22,12 @@ class ShoppingListController(
 ) {
 
     @GetMapping("/{id}")
-    fun getShoppingList(@PathVariable id: Int): ShoppingListResponse {
-        return shoppingListFacade.getShoppingList(id)
+    fun findById(@PathVariable id: Int): ShoppingListResponse {
+        return shoppingListFacade.findById(id)
     }
 
     @GetMapping
-    fun getShoppingLists(
+    fun findAll(
         @RequestParam(required = false) userId: Int?,
         @RequestParam(required = false) archived: Boolean?,
         @RequestParam(required = false) @Length(max = 50) name: String?,
@@ -36,7 +36,7 @@ class ShoppingListController(
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
     ): ShoppingListsResponse {
-        return shoppingListFacade.getShoppingLists(
+        return shoppingListFacade.findAll(
             page,
             limit,
             ShoppingListCriteria(userId, archived, name, date, recipeId)
@@ -44,23 +44,23 @@ class ShoppingListController(
     }
 
     @PostMapping
-    fun addShoppingList(@Valid @RequestBody dto: NewShoppingListDto): SuccessResponse {
-        return shoppingListFacade.addShoppingList(dto)
+    fun add(@Valid @RequestBody dto: NewShoppingListDto): SuccessResponse {
+        return shoppingListFacade.add(dto)
     }
 
     @PutMapping("/{id}")
-    fun updateShoppingList(@PathVariable id: Int, @Valid @RequestBody dto: UpdateShoppingListDto): SuccessResponse {
-        return shoppingListFacade.updateShoppingList(id, dto)
+    fun update(@PathVariable id: Int, @Valid @RequestBody dto: UpdateShoppingListDto): SuccessResponse {
+        return shoppingListFacade.update(id, dto)
     }
 
     @PostMapping("/{id}/archived/{isArchived}")
-    fun markShoppingListAsArchived(@PathVariable id: Int, @PathVariable isArchived: Boolean): SuccessResponse {
-        return shoppingListFacade.markShoppingListAsArchived(id, isArchived)
+    fun archive(@PathVariable id: Int, @PathVariable isArchived: Boolean): SuccessResponse {
+        return shoppingListFacade.archive(id, isArchived)
     }
 
     @DeleteMapping("/{id}")
-    fun deleteShoppingList(@PathVariable id: Int): SuccessResponse {
-        return shoppingListFacade.deleteShoppingList(id)
+    fun delete(@PathVariable id: Int): SuccessResponse {
+        return shoppingListFacade.delete(id)
     }
 
     @PostMapping("/{id}/items")

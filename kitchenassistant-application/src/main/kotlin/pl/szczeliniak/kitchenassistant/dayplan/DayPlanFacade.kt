@@ -9,14 +9,14 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 
 interface DayPlanFacade {
 
-    fun getDayPlan(id: Int): DayPlanResponse
-    fun getDayPlans(page: Long?, limit: Int?, criteria: DayPlanCriteria): DayPlansResponse
-    fun deleteDayPlan(id: Int): SuccessResponse
-    fun archiveDayPlan(id: Int, archive: Boolean): SuccessResponse
-    fun updateDayPlan(id: Int, request: UpdateDayPlanDto): SuccessResponse
-    fun addRecipeToDayPlan(recipeId: Int, request: AddRecipeToDayPlanDto): SuccessResponse
-    fun deleteRecipeFromDayPlan(id: Int, recipeId: Int): SuccessResponse
-    fun deassignRecipeFromAllDayPlans(recipeId: Int): SuccessResponse
+    fun findById(id: Int): DayPlanResponse
+    fun findAll(page: Long?, limit: Int?, criteria: DayPlanCriteria): DayPlansResponse
+    fun delete(id: Int): SuccessResponse
+    fun archive(id: Int, archive: Boolean): SuccessResponse
+    fun update(id: Int, request: UpdateDayPlanDto): SuccessResponse
+    fun addRecipe(recipeId: Int, request: AddRecipeToDayPlanDto): SuccessResponse
+    fun deleteRecipe(id: Int, recipeId: Int): SuccessResponse
+    fun deassignRecipes(recipeId: Int): SuccessResponse
     fun triggerArchiving()
 
 }

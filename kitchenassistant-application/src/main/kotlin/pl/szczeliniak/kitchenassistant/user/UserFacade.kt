@@ -7,9 +7,9 @@ import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
 
 interface UserFacade {
 
-    fun getUser(id: Int): UserResponse
-    fun getUsers(page: Long?, limit: Int?): UsersResponse
-    fun addUser(dto: AddUserDto): SuccessResponse
+    fun findById(id: Int): UserResponse
+    fun findAll(page: Long?, limit: Int?): UsersResponse
+    fun add(dto: AddUserDto): SuccessResponse
     fun login(dto: LoginDto): LoginResponse
     fun login(dto: LoginWithFacebookDto): LoginResponse
     fun register(dto: RegisterDto): LoginResponse

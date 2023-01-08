@@ -38,7 +38,7 @@ open class ShoppingListConverter(private val recipeFacade: RecipeFacade) {
             shoppingListItem.quantity,
             shoppingListItem.sequence,
             shoppingListItem.completed,
-            shoppingListItem.recipeId?.let { map(recipeFacade.getRecipe(it).recipe) }
+            shoppingListItem.recipeId?.let { map(recipeFacade.findById(it).recipe) }
         )
     }
 

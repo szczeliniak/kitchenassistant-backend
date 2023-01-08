@@ -13,7 +13,7 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         val query =
             "SELECT DISTINCT r FROM Recipe r " + prepareJoin(criteria) + "WHERE r.deleted = false" + prepareCriteria(
                 criteria
-            ) + " ORDER BY r.favorite DESC NULLS LAST, r.id ASC"
+            ) + " ORDER BY r.id ASC"
         val typedQuery = applyParameters(criteria, entityManager.createQuery(query, Recipe::class.java))
         offset?.let { typedQuery.firstResult = it }
         limit?.let { typedQuery.maxResults = it }

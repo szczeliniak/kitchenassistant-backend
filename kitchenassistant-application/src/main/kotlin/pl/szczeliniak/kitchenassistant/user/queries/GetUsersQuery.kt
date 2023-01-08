@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.user.queries
 
 import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
-import pl.szczeliniak.kitchenassistant.shared.dtos.PaginationUtils
+import pl.szczeliniak.kitchenassistant.shared.PaginationUtils
 import pl.szczeliniak.kitchenassistant.user.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
