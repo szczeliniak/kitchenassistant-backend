@@ -16,7 +16,7 @@ class DeleteCategoryCommand(private val categoryDao: CategoryDao, private val re
         }
         category.deleted = true
 
-        val recipes = recipeDao.findAll(RecipeCriteria(category.userId, category.id))
+        val recipes = recipeDao.findAll(RecipeCriteria(false, category.userId, category.id))
         recipes.forEach { it.category = null }
         recipeDao.save(recipes)
 

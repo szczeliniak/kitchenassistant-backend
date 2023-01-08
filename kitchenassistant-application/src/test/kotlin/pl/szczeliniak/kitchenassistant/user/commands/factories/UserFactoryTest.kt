@@ -6,7 +6,7 @@ import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.user.PasswordEncoder
 import pl.szczeliniak.kitchenassistant.user.User
-import pl.szczeliniak.kitchenassistant.user.commands.dto.AddUserDto
+import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterDto
 
 internal class UserFactoryTest : JunitBaseClass() {
 
@@ -31,8 +31,8 @@ internal class UserFactoryTest : JunitBaseClass() {
         return User(0, "EMAIL", "ENC_PASS", "NAME")
     }
 
-    private fun dto(): AddUserDto {
-        return AddUserDto("EMAIL", "PASS", "NAME")
+    private fun dto(): RegisterDto {
+        return RegisterDto("EMAIL", "NAME", "PASS", "PASS")
     }
 
 }

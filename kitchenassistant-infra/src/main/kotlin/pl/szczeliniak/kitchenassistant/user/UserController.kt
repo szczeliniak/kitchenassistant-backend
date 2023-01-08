@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.user
 
 import org.springframework.web.bind.annotation.*
-import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.user.commands.dto.*
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
@@ -24,11 +23,6 @@ class UserController(
         @RequestParam(required = false) limit: Int?
     ): UsersResponse {
         return userFacade.findAll(page, limit)
-    }
-
-    @PostMapping
-    fun add(@Valid @RequestBody dto: AddUserDto): SuccessResponse {
-        return userFacade.add(dto)
     }
 
     @PostMapping("/login")

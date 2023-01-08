@@ -77,6 +77,9 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         if (criteria.tag != null) {
             builder.append(" AND LOWER(t.name) LIKE LOWER(:tag)")
         }
+        if (criteria.onlyFavorites) {
+            builder.append(" AND r.favorite = :favorite")
+        }
         return builder.toString()
     }
 
@@ -96,6 +99,9 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         }
         if (criteria.tag != null) {
             query = typedQuery.setParameter("tag", "%" + criteria.tag + "%")
+        }
+        if (criteria.onlyFavorites) {
+            query = typedQuery.setParameter("favorite", true)
         }
         return query
     }

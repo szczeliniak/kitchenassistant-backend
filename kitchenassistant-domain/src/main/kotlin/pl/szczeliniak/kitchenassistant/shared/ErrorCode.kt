@@ -19,6 +19,8 @@ enum class ErrorCode(val message: String, val code: Int) {
     DAY_PLAN_ALREADY_REMOVED("Day plan is already deleted!", 404),
     SHOPPING_LIST_ITEM_ALREADY_REMOVED("Shopping list item is already marked as deleted!", 404),
     USER_ALREADY_EXISTS("User with email already exists", 409),
+    DAY_PLAN_ALREADY_EXISTS("Day plan already exists", 409),
+    DAY_PLAN_DATE_TOO_OLD("Day plan cannot be set for past date", 409),
     RECIPE_NOT_FOUND("Recipe not found", 404),
     USER_NOT_FOUND("User not found", 404),
     PHOTO_NOT_FOUND("Photo not found", 404),
