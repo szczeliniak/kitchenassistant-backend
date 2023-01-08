@@ -38,7 +38,6 @@ class UserConfiguration {
             getUserByIdQuery,
             GetLoggedUserQuery(userDao, requestContext, userConverter),
             GetUsersQuery(userDao, userConverter),
-            AddUserCommand(userDao, userFactory),
             LoginCommand(userDao, passwordMatcher, tokenFactory),
             LoginWithFacebookCommand(userDao, tokenFactory, facebookConnector, userFactory),
             RegisterCommand(userFactory, tokenFactory, userDao),

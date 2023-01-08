@@ -31,8 +31,9 @@ class RecipeController(
         @RequestParam(required = false) @Length(max = 50) tag: String?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
+        @RequestParam(required = true, defaultValue = "false") onlyFavorites: Boolean
     ): RecipesResponse {
-        return recipeFacade.findAll(page, limit, RecipeCriteria(userId, categoryId, name, tag))
+        return recipeFacade.findAll(page, limit, RecipeCriteria(onlyFavorites, userId, categoryId, name, tag))
     }
 
     @PostMapping
