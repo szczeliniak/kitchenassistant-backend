@@ -7,7 +7,6 @@
     <modules>
         <module>kitchenassistant-domain</module>
         <module>kitchenassistant-application</module>
-        <module>kitchenassistant-infra</module>
     </modules>
 
     <groupId>pl.szczeliniak</groupId>
@@ -82,11 +81,6 @@
             <dependency>
                 <groupId>pl.szczeliniak</groupId>
                 <artifactId>kitchenassistant-domain</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>pl.szczeliniak</groupId>
-                <artifactId>kitchenassistant-application</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
