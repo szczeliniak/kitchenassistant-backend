@@ -50,7 +50,7 @@ class RegisterCommandSpec extends Specification {
     }
 
     private static RegisterDto registerDto() {
-        return new RegisterDto("EMAIL", "", "", "")
+        return new RegisterDto("EMAIL", "", "")
     }
 
     private static TokenFactory.Token token() {

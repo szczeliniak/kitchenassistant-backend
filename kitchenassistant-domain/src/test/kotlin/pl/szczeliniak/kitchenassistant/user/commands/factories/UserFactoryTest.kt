@@ -32,7 +32,7 @@ internal class UserFactoryTest : JunitBaseClass() {
     }
 
     private fun dto(): RegisterDto {
-        return RegisterDto("EMAIL", "NAME", "PASS", "PASS")
+        return RegisterDto("EMAIL", "NAME", "PASS")
     }
 
 }

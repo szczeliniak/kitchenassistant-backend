@@ -2,24 +2,20 @@ package pl.szczeliniak.kitchenassistant.user.commands
 
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
-import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
-import pl.szczeliniak.kitchenassistant.user.db.UserDao
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
 import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterDto
 import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
 import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory
+import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
+import pl.szczeliniak.kitchenassistant.user.db.UserDao
 
-class RegisterCommand(
-    private val userFactory: UserFactory,
-    private val tokenFactory: TokenFactory,
-    private val userDao: UserDao
+open class RegisterCommand(
+        private val userFactory: UserFactory,
+        private val tokenFactory: TokenFactory,
+        private val userDao: UserDao
 ) {
 
-    fun execute(dto: RegisterDto): LoginResponse {
-        if (dto.password != dto.passwordRepeated) {
-            throw KitchenAssistantException(ErrorCode.PASSWORDS_DO_NOT_MATCH)
-        }
-
+    open fun execute(dto: RegisterDto): LoginResponse {
         if (userDao.findAll(UserCriteria(dto.email), 0, 1).firstOrNull() != null) {
             throw KitchenAssistantException(ErrorCode.USER_ALREADY_EXISTS)
         }
