@@ -21,9 +21,9 @@
         <dependency.swaggerui>2.9.2</dependency.swaggerui>
         <dependency.jackson.databind>2.13.4.1</dependency.jackson.databind>
         <dependency.jackson>2.13.2</dependency.jackson>
-        <dependency.junit>5.9.0</dependency.junit>
-        <dependency.mockito>4.11.0</dependency.mockito>
-        <dependency.assertj>3.23.1</dependency.assertj>
+        <dependency.junit>5.9.2</dependency.junit>
+        <dependency.mockito>5.2.0</dependency.mockito>
+        <dependency.assertj>3.24.2</dependency.assertj>
         <dependency.spock>2.3-groovy-3.0</dependency.spock>
         <dependency.groovy>3.0.10</dependency.groovy>
         <dependency.jjwt>0.9.1</dependency.jjwt>
