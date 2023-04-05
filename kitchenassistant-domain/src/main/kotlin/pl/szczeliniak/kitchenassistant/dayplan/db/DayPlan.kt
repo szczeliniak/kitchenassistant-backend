@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.dayplan
+package pl.szczeliniak.kitchenassistant.dayplan.db
 
 import org.hibernate.annotations.Where
 import java.time.LocalDate

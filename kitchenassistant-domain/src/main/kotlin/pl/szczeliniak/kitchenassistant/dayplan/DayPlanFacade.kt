@@ -18,7 +18,6 @@ open class DayPlanFacade(
         private val deleteDayPlanCommand: DeleteDayPlanCommand,
         private val archiveDayPlanCommand: ArchiveDayPlanCommand,
         private val updateDayPlanCommand: UpdateDayPlanCommand,
-        private val deassignRecipesFromDayPlansCommand: DeassignRecipesFromDayPlansCommand,
         private val archiveDayPlansCommand: ArchiveDayPlansCommand
 ) {
 
@@ -48,10 +47,6 @@ open class DayPlanFacade(
 
     fun deleteRecipe(id: Int, recipeId: Int): SuccessResponse {
         return deleteRecipeFromDayPlanCommand.execute(id, recipeId)
-    }
-
-    fun deassignRecipes(recipeId: Int): SuccessResponse {
-        return deassignRecipesFromDayPlansCommand.execute(recipeId)
     }
 
     fun triggerArchiving() {

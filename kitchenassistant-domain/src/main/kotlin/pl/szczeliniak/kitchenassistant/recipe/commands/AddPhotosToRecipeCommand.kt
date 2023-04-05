@@ -7,7 +7,7 @@ import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 
-class AssignRecipePhotosCommand(
+class AddPhotosToRecipeCommand(
         private val recipeDao: RecipeDao,
         private val photoDao: PhotoDao
 ) {

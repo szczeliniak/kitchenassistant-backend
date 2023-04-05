@@ -14,13 +14,13 @@ import spock.lang.Subject
 
 import java.time.ZonedDateTime
 
-class AssignRecipePhotosCommandSpec extends Specification {
+class AddPhotosToRecipeCommandSpec extends Specification {
 
     def recipeDao = Mock(RecipeDao)
     def photoDao = Mock(PhotoDao)
 
     @Subject
-    def addRecipePhotosCommand = new AssignRecipePhotosCommand(recipeDao, photoDao)
+    def addRecipePhotosCommand = new AddPhotosToRecipeCommand(recipeDao, photoDao)
 
     def 'should add photo to recipe'() {
         given:

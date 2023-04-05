@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.dayplan.commands.factories
 
-import pl.szczeliniak.kitchenassistant.dayplan.DayPlan
+import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlan
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanDto
 
 open class DayPlanFactory {

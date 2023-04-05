@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.dayplan.commands
 
-import pl.szczeliniak.kitchenassistant.dayplan.DayPlanDao
+import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.UpdateDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode

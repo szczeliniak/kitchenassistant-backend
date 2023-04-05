@@ -23,7 +23,7 @@ open class ShoppingListFacade(
         private val markShoppingListAsArchivedCommand: MarkShoppingListAsArchivedCommand,
         private val deleteShoppingListCommand: DeleteShoppingListCommand,
         private val deleteShoppingListItemCommand: DeleteShoppingListItemCommand,
-        private val deassignRecipeFromShoppingListsCommand: DeassignRecipeFromShoppingListsCommand,
+        private val deleteRecipeFromShoppingListsCommand: DeleteRecipeFromShoppingListsCommand,
         private val archiveShoppingListsCommand: ArchiveShoppingListsCommand
 ) {
 
@@ -68,7 +68,7 @@ open class ShoppingListFacade(
     }
 
     fun deassignRecipeFromShoppingLists(recipeId: Int): SuccessResponse {
-        return deassignRecipeFromShoppingListsCommand.execute(recipeId)
+        return deleteRecipeFromShoppingListsCommand.execute(recipeId)
     }
 
     fun triggerArchiving() {

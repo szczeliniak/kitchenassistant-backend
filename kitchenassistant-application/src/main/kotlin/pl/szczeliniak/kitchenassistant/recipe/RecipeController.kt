@@ -19,7 +19,7 @@ import javax.validation.Valid
 @RequestMapping("/recipes")
 @Validated
 class RecipeController(
-    private val recipeFacade: RecipeFacade
+        private val recipeFacade: RecipeFacade
 ) {
 
     @GetMapping("/{recipeId}")
@@ -29,13 +29,13 @@ class RecipeController(
 
     @GetMapping
     fun findAll(
-        @RequestParam(required = false) userId: Int?,
-        @RequestParam(required = false) categoryId: Int?,
-        @RequestParam(required = false) @Length(max = 50) name: String?,
-        @RequestParam(required = false) @Length(max = 50) tag: String?,
-        @RequestParam(required = false) page: Long?,
-        @RequestParam(required = false) limit: Int?,
-        @RequestParam(required = true, defaultValue = "false") onlyFavorites: Boolean
+            @RequestParam(required = false) userId: Int?,
+            @RequestParam(required = false) categoryId: Int?,
+            @RequestParam(required = false) @Length(max = 50) name: String?,
+            @RequestParam(required = false) @Length(max = 50) tag: String?,
+            @RequestParam(required = false) page: Long?,
+            @RequestParam(required = false) limit: Int?,
+            @RequestParam(required = true, defaultValue = "false") onlyFavorites: Boolean
     ): RecipesResponse {
         return recipeFacade.findAll(page, limit, RecipeCriteria(onlyFavorites, userId, categoryId, name, tag))
     }
@@ -62,9 +62,9 @@ class RecipeController(
 
     @PutMapping("/{recipeId}/steps/{stepId}")
     fun updateStep(
-        @PathVariable recipeId: Int,
-        @PathVariable stepId: Int,
-        @Valid @RequestBody dto: UpdateStepDto
+            @PathVariable recipeId: Int,
+            @PathVariable stepId: Int,
+            @Valid @RequestBody dto: UpdateStepDto
     ): SuccessResponse {
         return recipeFacade.updateStep(recipeId, stepId, dto)
     }
@@ -76,44 +76,44 @@ class RecipeController(
 
     @PostMapping("/{recipeId}/ingredientGroups")
     fun addIngredientGroup(
-        @PathVariable recipeId: Int,
-        @Valid @RequestBody dto: NewIngredientGroupDto
+            @PathVariable recipeId: Int,
+            @Valid @RequestBody dto: NewIngredientGroupDto
     ): SuccessResponse {
         return recipeFacade.addIngredientGroup(recipeId, dto)
     }
 
     @DeleteMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}")
     fun deleteIngredientGroup(
-        @PathVariable recipeId: Int,
-        @PathVariable ingredientGroupId: Int
+            @PathVariable recipeId: Int,
+            @PathVariable ingredientGroupId: Int
     ): SuccessResponse {
         return recipeFacade.deleteIngredientGroup(recipeId, ingredientGroupId)
     }
 
     @PostMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients")
     fun addIngredient(
-        @PathVariable recipeId: Int,
-        @PathVariable ingredientGroupId: Int,
-        @Valid @RequestBody dto: NewIngredientDto
+            @PathVariable recipeId: Int,
+            @PathVariable ingredientGroupId: Int,
+            @Valid @RequestBody dto: NewIngredientDto
     ): SuccessResponse {
         return recipeFacade.addIngredient(recipeId, ingredientGroupId, dto)
     }
 
     @PutMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}")
     fun updateIngredient(
-        @PathVariable recipeId: Int,
-        @PathVariable ingredientGroupId: Int,
-        @PathVariable ingredientId: Int,
-        @Valid @RequestBody dto: UpdateIngredientDto
+            @PathVariable recipeId: Int,
+            @PathVariable ingredientGroupId: Int,
+            @PathVariable ingredientId: Int,
+            @Valid @RequestBody dto: UpdateIngredientDto
     ): SuccessResponse {
         return recipeFacade.updateIngredient(recipeId, ingredientGroupId, ingredientId, dto)
     }
 
     @DeleteMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}")
     fun deleteIngredient(
-        @PathVariable recipeId: Int,
-        @PathVariable ingredientGroupId: Int,
-        @PathVariable ingredientId: Int
+            @PathVariable recipeId: Int,
+            @PathVariable ingredientGroupId: Int,
+            @PathVariable ingredientId: Int
     ): SuccessResponse {
         return recipeFacade.deleteIngredient(recipeId, ingredientGroupId, ingredientId)
     }
@@ -130,16 +130,16 @@ class RecipeController(
 
     @GetMapping("/tags")
     fun getTags(
-        @RequestParam(required = false) userId: Int?,
-        @RequestParam(required = false) name: String?
+            @RequestParam(required = false) userId: Int?,
+            @RequestParam(required = false) name: String?
     ): TagsResponse {
         return recipeFacade.getTags(TagCriteria(name, userId))
     }
 
     @GetMapping("/authors")
     fun getAuthors(
-        @RequestParam(required = false) userId: Int?,
-        @RequestParam(required = false) name: String?
+            @RequestParam(required = false) userId: Int?,
+            @RequestParam(required = false) name: String?
     ): AuthorsResponse {
         return recipeFacade.getAuthors(AuthorCriteria(name, userId))
     }
@@ -155,11 +155,11 @@ class RecipeController(
     }
 
     @PutMapping("/{recipeId}/photos")
-    fun assignPhotos(
-        @PathVariable recipeId: Int,
-        @Valid @RequestBody request: AssignPhotosToRecipeDto
+    fun addPhotosToRecipe(
+            @PathVariable recipeId: Int,
+            @Valid @RequestBody request: AssignPhotosToRecipeDto
     ): SuccessResponse {
-        return recipeFacade.assignPhotos(recipeId, request)
+        return recipeFacade.addPhotosToRecipe(recipeId, request)
     }
 
     @PutMapping("/{recipeId}/favorite/{isFavorite}")
@@ -176,8 +176,8 @@ class RecipeController(
     fun downloadPhoto(@PathVariable photoId: Int): ResponseEntity<ByteArray> {
         val response = recipeFacade.downloadPhoto(photoId)
         return ResponseEntity.ok()
-            .contentType(MediaType.parseMediaType(response.mediaType.mimeType))
-            .body(response.body)
+                .contentType(MediaType.parseMediaType(response.mediaType.mimeType))
+                .body(response.body)
     }
 
     @DeleteMapping("/photos/{photoId}")

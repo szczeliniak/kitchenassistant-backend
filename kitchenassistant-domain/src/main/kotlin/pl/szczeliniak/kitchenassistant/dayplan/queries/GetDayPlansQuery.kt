@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.dayplan.queries
 
-import pl.szczeliniak.kitchenassistant.dayplan.DayPlanDao
+import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination

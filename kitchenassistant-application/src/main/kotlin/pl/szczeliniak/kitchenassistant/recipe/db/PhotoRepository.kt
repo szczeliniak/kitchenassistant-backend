@@ -24,15 +24,15 @@ class PhotoRepository(@PersistenceContext private val entityManager: EntityManag
 
     override fun findById(id: Int): Photo? {
         return entityManager
-            .createQuery(
-                "SELECT r FROM Photo r WHERE r.id = :id AND r.deleted = false",
-                Photo::class.java
-            )
-            .setParameter("id", id)
-            .resultList
-            .stream()
-            .findFirst()
-            .orElse(null)
+                .createQuery(
+                        "SELECT r FROM Photo r WHERE r.id = :id AND r.deleted = false",
+                        Photo::class.java
+                )
+                .setParameter("id", id)
+                .resultList
+                .stream()
+                .findFirst()
+                .orElse(null)
     }
 
 }

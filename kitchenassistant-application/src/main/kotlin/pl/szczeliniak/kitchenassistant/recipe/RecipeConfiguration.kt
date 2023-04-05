@@ -2,12 +2,12 @@ package pl.szczeliniak.kitchenassistant.recipe
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import pl.szczeliniak.kitchenassistant.dayplan.commands.DeassignRecipesFromDayPlansCommand
+import pl.szczeliniak.kitchenassistant.dayplan.commands.DeleteRecipesFromDayPlansCommand
 import pl.szczeliniak.kitchenassistant.recipe.commands.*
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.*
 import pl.szczeliniak.kitchenassistant.recipe.db.*
 import pl.szczeliniak.kitchenassistant.recipe.queries.*
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.DeassignRecipeFromShoppingListsCommand
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.DeleteRecipeFromShoppingListsCommand
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 
 @Configuration
@@ -32,8 +32,8 @@ class RecipeConfiguration {
             stepDao: StepDao,
             ftpClient: FtpClient,
             ingredientGroupDao: IngredientGroupDao,
-            deassignRecipesFromDayPlansCommand: DeassignRecipesFromDayPlansCommand,
-            deassignRecipeFromShoppingListsCommand: DeassignRecipeFromShoppingListsCommand,
+            deleteRecipesFromDayPlansCommand: DeleteRecipesFromDayPlansCommand,
+            deleteRecipeFromShoppingListsCommand: DeleteRecipeFromShoppingListsCommand,
             recipeConverter: RecipeConverter,
             getRecipeQuery: GetRecipeQuery
     ): RecipeFacade {
@@ -62,8 +62,8 @@ class RecipeConfiguration {
                 AddCategoryCommand(categoryDao, categoryFactory),
                 DeleteRecipeCommand(
                         recipeDao,
-                        deassignRecipesFromDayPlansCommand,
-                        deassignRecipeFromShoppingListsCommand
+                        deleteRecipesFromDayPlansCommand,
+                        deleteRecipeFromShoppingListsCommand
                 ),
                 UpdateRecipeCommand(recipeDao, categoryDao, tagDao, tagFactory, authorFactory, authorDao),
                 AddIngredientCommand(recipeDao, ingredientDao, ingredientFactory),
@@ -75,7 +75,7 @@ class RecipeConfiguration {
                 UpdateCategoryCommand(categoryDao),
                 UpdateStepCommand(recipeDao),
                 GetCategoriesQuery(categoryDao, recipeConverter),
-                AssignRecipePhotosCommand(recipeDao, photoDao),
+                AddPhotosToRecipeCommand(recipeDao, photoDao),
                 GetTagsQuery(tagDao),
                 MarkRecipeAsFavoriteCommand(recipeDao),
                 GetAuthorsQuery(authorDao),

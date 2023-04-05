@@ -24,29 +24,29 @@ class AuthorRepository(@PersistenceContext private val entityManager: EntityMana
 
     override fun findById(id: Int): Author? {
         return entityManager
-            .createQuery(
-                "SELECT r FROM Author r WHERE r.id = :id",
-                Author::class.java
-            )
-            .setParameter("id", id)
-            .resultList
-            .stream()
-            .findFirst()
-            .orElse(null)
+                .createQuery(
+                        "SELECT r FROM Author r WHERE r.id = :id",
+                        Author::class.java
+                )
+                .setParameter("id", id)
+                .resultList
+                .stream()
+                .findFirst()
+                .orElse(null)
     }
 
     override fun findByName(name: String, userId: Int): Author? {
         return entityManager
-            .createQuery(
-                "SELECT r FROM Author r WHERE r.name = :name AND r.userId = :userId",
-                Author::class.java
-            )
-            .setParameter("name", name)
-            .setParameter("userId", userId)
-            .resultList
-            .stream()
-            .findFirst()
-            .orElse(null)
+                .createQuery(
+                        "SELECT r FROM Author r WHERE r.name = :name AND r.userId = :userId",
+                        Author::class.java
+                )
+                .setParameter("name", name)
+                .setParameter("userId", userId)
+                .resultList
+                .stream()
+                .findFirst()
+                .orElse(null)
     }
 
     override fun findAll(criteria: AuthorCriteria): Set<Author> {

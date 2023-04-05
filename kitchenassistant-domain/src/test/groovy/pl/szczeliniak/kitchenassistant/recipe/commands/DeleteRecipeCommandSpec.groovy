@@ -1,12 +1,12 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-import pl.szczeliniak.kitchenassistant.dayplan.commands.DeassignRecipesFromDayPlansCommand
+import pl.szczeliniak.kitchenassistant.dayplan.commands.DeleteRecipesFromDayPlansCommand
 import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.DeassignRecipeFromShoppingListsCommand
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.DeleteRecipeFromShoppingListsCommand
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -15,8 +15,8 @@ import java.time.ZonedDateTime
 class DeleteRecipeCommandSpec extends Specification {
 
     def recipeDao = Mock(RecipeDao)
-    def deassignRecipeFromShoppingListsCommand = Mock(DeassignRecipeFromShoppingListsCommand)
-    def deassignRecipesFromDayPlansCommand = Mock(DeassignRecipesFromDayPlansCommand)
+    def deassignRecipeFromShoppingListsCommand = Mock(DeleteRecipeFromShoppingListsCommand)
+    def deassignRecipesFromDayPlansCommand = Mock(DeleteRecipesFromDayPlansCommand)
 
     @Subject
     def deleteRecipeCommand = new DeleteRecipeCommand(recipeDao, deassignRecipesFromDayPlansCommand, deassignRecipeFromShoppingListsCommand)

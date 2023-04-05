@@ -4,7 +4,7 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListCriteria
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 
-open class DeassignRecipeFromShoppingListsCommand(
+open class DeleteRecipeFromShoppingListsCommand(
     private val shoppingListDao: ShoppingListDao
 ) {
     open fun execute(recipeId: Int): SuccessResponse {

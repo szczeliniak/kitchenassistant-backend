@@ -1,8 +1,6 @@
 package pl.szczeliniak.kitchenassistant.dayplan.db
 
 import org.springframework.stereotype.Repository
-import pl.szczeliniak.kitchenassistant.dayplan.DayPlan
-import pl.szczeliniak.kitchenassistant.dayplan.DayPlanDao
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
 import java.time.LocalDate
 import javax.persistence.EntityManager

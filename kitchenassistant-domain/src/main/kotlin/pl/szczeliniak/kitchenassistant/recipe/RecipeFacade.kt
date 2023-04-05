@@ -26,7 +26,7 @@ open class RecipeFacade(
         private val updateCategoryCommand: UpdateCategoryCommand,
         private val updateStepCommand: UpdateStepCommand,
         private val getCategoriesQuery: GetCategoriesQuery,
-        private val assignRecipePhotosCommand: AssignRecipePhotosCommand,
+        private val addPhotosToRecipeCommand: AddPhotosToRecipeCommand,
         private val getTagsQuery: GetTagsQuery,
         private val markRecipeAsFavoriteCommand: MarkRecipeAsFavoriteCommand,
         private val getAuthorsQuery: GetAuthorsQuery,
@@ -118,8 +118,8 @@ open class RecipeFacade(
         return getAuthorsQuery.execute(criteria)
     }
 
-    fun assignPhotos(recipeId: Int, request: AssignPhotosToRecipeDto): SuccessResponse {
-        return assignRecipePhotosCommand.execute(recipeId, request)
+    fun addPhotosToRecipe(recipeId: Int, request: AssignPhotosToRecipeDto): SuccessResponse {
+        return addPhotosToRecipeCommand.execute(recipeId, request)
     }
 
     fun markAsFavorite(recipeId: Int, isFavorite: Boolean): SuccessResponse {

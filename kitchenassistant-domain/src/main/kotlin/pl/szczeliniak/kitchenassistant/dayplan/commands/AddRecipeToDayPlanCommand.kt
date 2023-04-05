@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.dayplan.commands
 
-import pl.szczeliniak.kitchenassistant.dayplan.DayPlanDao
+import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
 import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanDto
 import pl.szczeliniak.kitchenassistant.dayplan.commands.factories.DayPlanFactory
 import pl.szczeliniak.kitchenassistant.recipe.RecipeFacade
@@ -10,9 +10,9 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import java.time.LocalDate
 
 class AddRecipeToDayPlanCommand(
-    private val dayPlanDao: DayPlanDao,
-    private val recipeFacade: RecipeFacade,
-    private val dayPlanFactory: DayPlanFactory
+        private val dayPlanDao: DayPlanDao,
+        private val recipeFacade: RecipeFacade,
+        private val dayPlanFactory: DayPlanFactory
 ) {
 
     fun execute(recipeId: Int, request: AddRecipeToDayPlanDto): SuccessResponse {
