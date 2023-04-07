@@ -17,6 +17,9 @@ class RecipeConfiguration {
     fun recipeConverter() = RecipeConverter()
 
     @Bean
+    fun photoDao(photoRepository: PhotoRepository) = PhotoDaoImpl(photoRepository)
+
+    @Bean
     fun getRecipeQuery(recipeDao: RecipeDao, recipeConverter: RecipeConverter) =
             GetRecipeQuery(recipeDao, recipeConverter)
 
@@ -79,7 +82,8 @@ class RecipeConfiguration {
                 MarkRecipeAsFavoriteCommand(recipeDao),
                 GetAuthorsQuery(authorDao),
                 UploadPhotoCommand(ftpClient, photoDao, photoFactory),
-                DeletePhotoCommand(ftpClient, recipeDao, photoDao),
+                DeletePhotoCommand(recipeDao),
+                CleanupOrphanedPhotosCommand(ftpClient, photoDao),
                 DownloadPhotoQuery(ftpClient, recipeDao),
                 AddIngredientGroupCommand(recipeDao, ingredientGroupFactory, ingredientGroupDao),
                 DeleteIngredientGroupCommand(recipeDao)

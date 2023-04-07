@@ -20,6 +20,15 @@ open class RecipeFactory(
 
     open fun create(dto: NewRecipeDto): Recipe {
         getUserByIdQuery.execute(dto.userId)
+
+        val photo = dto.photoId?.let {
+            val p = photoDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
+            if(photoDao.isAssigned(p.id)) {
+                throw KitchenAssistantException(ErrorCode.PHOTO_ALREADY_ASSIGNED)
+            }
+            p
+        }
+
         return Recipe(0,
                 userId = dto.userId,
                 name = dto.name,
@@ -38,9 +47,7 @@ open class RecipeFactory(
                 description = dto.description,
                 ingredientGroups = dto.ingredientGroups.map { ingredientGroupFactory.create(it) }.toMutableSet(),
                 steps = dto.steps.map { stepFactory.create(it) }.toMutableSet(),
-                photo = dto.photoId?.let {
-                    photoDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
-                },
+                photo = photo,
                 tags = dto.tags.map { tagDao.findByName(it, dto.userId) ?: tagFactory.create(it, dto.userId) }
                         .toMutableSet()
         )

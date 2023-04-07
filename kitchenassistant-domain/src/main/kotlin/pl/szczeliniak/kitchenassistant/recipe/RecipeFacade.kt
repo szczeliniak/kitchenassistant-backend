@@ -31,6 +31,7 @@ open class RecipeFacade(
         private val getAuthorsQuery: GetAuthorsQuery,
         private val uploadPhotoCommand: UploadPhotoCommand,
         private val deletePhotoCommand: DeletePhotoCommand,
+        private val cleanupOrphanedPhotosCommand: CleanupOrphanedPhotosCommand,
         private val downloadPhotoQuery: DownloadPhotoQuery,
         private val addIngredientGroupCommand: AddIngredientGroupCommand,
         private val deleteIngredientGroupCommand: DeleteIngredientGroupCommand
@@ -131,6 +132,10 @@ open class RecipeFacade(
 
     fun deletePhoto(recipeId: Int): SuccessResponse {
         return deletePhotoCommand.execute(recipeId)
+    }
+
+    fun cleanupOrphanedPhotos() {
+        cleanupOrphanedPhotosCommand.execute()
     }
 
 }

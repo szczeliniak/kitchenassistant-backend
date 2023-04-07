@@ -48,6 +48,7 @@ class RecipeFactorySpec extends Specification {
         authorDao.findByName("RECIPE_AUTHOR", 4) >> null
         authorFactory.create("RECIPE_AUTHOR", 4) >> author
         authorDao.save(author) >> author
+        photoDao.isAssigned(99) >> false
 
         when:
         def result = recipeFactory.create(newRecipeDto(newIngredientGroupDto, newStepDto))

@@ -1,38 +1,20 @@
 package pl.szczeliniak.kitchenassistant.recipe.db
 
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
-import javax.persistence.EntityManager
-import javax.persistence.PersistenceContext
-import javax.transaction.Transactional
+import java.util.*
 
 @Repository
-class PhotoRepository(@PersistenceContext private val entityManager: EntityManager) : PhotoDao {
+interface PhotoRepository : JpaRepository<Photo, Int> {
 
-    @Transactional
-    override fun save(photo: Photo): Photo {
-        if (photo.id == 0) {
-            entityManager.persist(photo)
-        } else {
-            entityManager.merge(photo)
-        }
-        return photo
-    }
+    @Query("SELECT r FROM Photo r WHERE r.id = :id AND r.deleted = false")
+    override fun findById(id: Int): Optional<Photo>
 
-    override fun saveAll(photos: Set<Photo>) {
-        photos.forEach { save(it) }
-    }
+    @Query("SELECT p.* FROM photos p LEFT JOIN recipes_photos rp ON rp.photo_id = p.id WHERE rp.recipe_id IS NULL AND p.deleted = false", nativeQuery = true)
+    fun findOrphaned(): Set<Photo>
 
-    override fun findById(id: Int): Photo? {
-        return entityManager
-                .createQuery(
-                        "SELECT r FROM Photo r WHERE r.id = :id AND r.deleted = false",
-                        Photo::class.java
-                )
-                .setParameter("id", id)
-                .resultList
-                .stream()
-                .findFirst()
-                .orElse(null)
-    }
+    @Query("SELECT p.* FROM photos p INNER JOIN recipes_photos rp ON rp.photo_id = p.id WHERE p.deleted = false", nativeQuery = true)
+    fun findAssigned(): Set<Photo>
 
 }

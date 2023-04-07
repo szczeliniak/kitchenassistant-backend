@@ -4,8 +4,9 @@ interface PhotoDao {
 
     fun save(photo: Photo): Photo
 
-    fun saveAll(photos: Set<Photo>)
-
     fun findById(id: Int): Photo?
+
+    fun findOrphaned(): Set<Photo>
+    fun isAssigned(id: Int): Boolean
 
 }

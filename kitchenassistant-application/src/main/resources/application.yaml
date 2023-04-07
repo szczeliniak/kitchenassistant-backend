@@ -30,3 +30,7 @@ scheduling:
     archiving: '0 1 0 * * *'
   dayplan:
     archiving: '0 2 0 * * *'
+  recipe:
+    photo:
+      orphans:
+        cleanup: '0 3 0 * * *'

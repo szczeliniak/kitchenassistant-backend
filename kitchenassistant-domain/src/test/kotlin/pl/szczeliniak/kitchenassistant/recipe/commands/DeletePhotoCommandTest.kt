@@ -18,32 +18,22 @@ import java.util.*
 internal class DeletePhotoCommandTest : JunitBaseClass() {
 
     @Mock
-    private lateinit var ftpClient: FtpClient
-
-    @Mock
     private lateinit var recipeDao: RecipeDao
-
-    @Mock
-    private lateinit var photoDao: PhotoDao
 
     @InjectMocks
     private lateinit var deletePhotoCommand: DeletePhotoCommand
 
     @Test
     fun shouldDeletePhoto() {
-        val photo = photo()
         val recipe = recipe()
         whenever(recipeDao.findById(1)).thenReturn(recipe)
-        whenever(photoDao.findById(1)).thenReturn(photo)
-        whenever(photoDao.save(photo)).thenReturn(photo)
+        whenever(recipeDao.save(recipe)).thenReturn(recipe)
 
         val response = deletePhotoCommand.execute(1)
 
-        Mockito.verify(ftpClient).delete("NAME")
         Mockito.verify(recipeDao).save(recipe)
 
         Assertions.assertNull(recipe.photo)
-        Assertions.assertEquals(true, photo.deleted)
         Assertions.assertEquals(SuccessResponse(1), response)
     }
 
