@@ -10,7 +10,7 @@ security:
   jwt:
     secret: dupa
 ftp:
-  host: 192.168.99.100
+  host: localhost
   port: 21
   user: kitchenassistant
   password: kitchenassistant

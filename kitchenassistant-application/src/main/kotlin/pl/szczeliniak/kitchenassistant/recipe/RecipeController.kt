@@ -154,35 +154,27 @@ class RecipeController(
         return recipeFacade.updateCategory(categoryId, request)
     }
 
-    @PutMapping("/{recipeId}/photos")
-    fun addPhotosToRecipe(
-            @PathVariable recipeId: Int,
-            @Valid @RequestBody request: AssignPhotosToRecipeDto
-    ): SuccessResponse {
-        return recipeFacade.addPhotosToRecipe(recipeId, request)
-    }
-
     @PutMapping("/{recipeId}/favorite/{isFavorite}")
     fun markAsFavorite(@PathVariable recipeId: Int, @PathVariable isFavorite: Boolean): SuccessResponse {
         return recipeFacade.markAsFavorite(recipeId, isFavorite)
     }
 
-    @PostMapping("/photos")
+    @PostMapping("/photo")
     fun uploadPhoto(@RequestParam userId: Int, @RequestParam("file") file: MultipartFile): SuccessResponse {
         return recipeFacade.uploadPhoto(userId, file.originalFilename ?: file.name, file.bytes)
     }
 
-    @GetMapping("/photos/{photoId}")
-    fun downloadPhoto(@PathVariable photoId: Int): ResponseEntity<ByteArray> {
-        val response = recipeFacade.downloadPhoto(photoId)
+    @GetMapping("/{recipeId}/photo")
+    fun downloadPhoto(@PathVariable recipeId: Int): ResponseEntity<ByteArray> {
+        val response = recipeFacade.downloadPhoto(recipeId)
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(response.mediaType.mimeType))
                 .body(response.body)
     }
 
-    @DeleteMapping("/photos/{photoId}")
-    fun deletePhoto(@PathVariable photoId: Int): SuccessResponse {
-        return recipeFacade.deletePhoto(photoId)
+    @DeleteMapping("/{recipeId}/photo")
+    fun deletePhoto(@PathVariable recipeId: Int): SuccessResponse {
+        return recipeFacade.deletePhoto(recipeId)
     }
 
 }

@@ -56,7 +56,7 @@ class GetRecipeQuerySpec extends Specification {
                 null,
                 Collections.emptySet(),
                 Collections.emptySet(),
-                Collections.emptySet(),
+                null,
                 Collections.emptySet(),
                 false,
                 ZonedDateTime.now(),
@@ -64,7 +64,7 @@ class GetRecipeQuerySpec extends Specification {
     }
 
     private static RecipeDetailsDto recipeDetailsDto() {
-        return new RecipeDetailsDto(1, '', '', "", "", null, null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet())
+        return new RecipeDetailsDto(1, '', '', "", "", null, null, Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet())
     }
 
 }

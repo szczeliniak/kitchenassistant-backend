@@ -1,12 +1,11 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientGroupDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.factories.IngredientGroupFactory
 import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroup
 import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroupDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientGroupDto
-import pl.szczeliniak.kitchenassistant.recipe.commands.factories.IngredientGroupFactory
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
 import spock.lang.Subject
@@ -47,6 +46,6 @@ class AddIngredientGroupCommandSpec extends Specification {
     }
 
     private static Recipe recipe() {
-        return new Recipe(1, "", 1, "", null, "", false, null, new HashSet<IngredientGroup>(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(1, "", 1, "", null, "", false, null, new HashSet<IngredientGroup>(), Collections.emptySet(), null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 }

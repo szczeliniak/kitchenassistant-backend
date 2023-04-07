@@ -64,7 +64,7 @@ class UpdateIngredientCommandSpec extends Specification {
 
     private static Recipe recipe(Set<IngredientGroup> ingredientGroups) {
         return new Recipe(1, "", 1, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, ingredientGroups,
-                Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+                Collections.emptySet(), null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Ingredient ingredient() {

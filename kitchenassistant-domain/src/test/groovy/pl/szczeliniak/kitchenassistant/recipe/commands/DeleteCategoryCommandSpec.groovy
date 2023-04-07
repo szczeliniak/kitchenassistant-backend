@@ -70,7 +70,7 @@ class DeleteCategoryCommandSpec extends Specification {
     }
 
     private static Recipe recipe() {
-        return new Recipe(10, "", 1, "", null, null, false, category(false), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(10, "", 1, "", null, null, false, category(false), Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

@@ -15,10 +15,10 @@ import java.util.*
 
 @Component
 class FtpClientImpl(
-    @Value("\${ftp.host}") private val host: String,
-    @Value("\${ftp.port}") private val port: Int,
-    @Value("\${ftp.user}") private val user: String,
-    @Value("\${ftp.password}") private val password: String
+        @Value("\${ftp.host}") private val host: String,
+        @Value("\${ftp.port}") private val port: Int,
+        @Value("\${ftp.user}") private val user: String,
+        @Value("\${ftp.password}") private val password: String
 ) : FtpClient {
 
     companion object {
@@ -58,14 +58,14 @@ class FtpClientImpl(
 
     override fun download(name: String): ByteArray {
         logger.info("Downloading file with name: $name")
-        val client = open()
 
-        if (!exists(client, name)) {
-            throw KitchenAssistantException(ErrorCode.FTP_FILE_NOT_FOUND)
-        }
-
+        var client: FTPClient? = null
         val content: ByteArray
         try {
+            client = open()
+            if (!exists(client, name)) {
+                throw KitchenAssistantException(ErrorCode.FTP_FILE_NOT_FOUND)
+            }
             val byteArrayOutputStream = ByteArrayOutputStream()
             client.retrieveFile("$BASE_DIRECTORY/$name", byteArrayOutputStream)
             content = byteArrayOutputStream.toByteArray()
@@ -83,13 +83,13 @@ class FtpClientImpl(
 
     override fun delete(name: String) {
         logger.info("Deleting file with name: $name")
-        val client = open()
 
-        if (!exists(client, name)) {
-            throw KitchenAssistantException(ErrorCode.FTP_FILE_NOT_FOUND)
-        }
-
+        var client: FTPClient? = null
         try {
+            client = open()
+            if (!exists(client, name)) {
+                throw KitchenAssistantException(ErrorCode.FTP_FILE_NOT_FOUND)
+            }
             client.deleteFile("$BASE_DIRECTORY/$name")
         } catch (exception: IOException) {
             logger.error(exception.message ?: "Error while file delete", exception)
@@ -105,6 +105,7 @@ class FtpClientImpl(
         val ftpClient = FTPClient()
         ftpClient.connect(host, port)
         ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE)
+        ftpClient.enterLocalPassiveMode()
         ftpClient.login(user, password)
         if (!FTPReply.isPositiveCompletion(ftpClient.replyCode)) {
             close(ftpClient)
@@ -113,8 +114,8 @@ class FtpClientImpl(
         return ftpClient
     }
 
-    private fun close(client: FTPClient) {
-        if (client.isConnected) {
+    private fun close(client: FTPClient?) {
+        if (client != null && client.isConnected) {
             client.logout()
             client.disconnect()
         }

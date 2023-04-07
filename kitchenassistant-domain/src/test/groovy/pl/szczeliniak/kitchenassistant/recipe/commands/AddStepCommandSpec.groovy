@@ -48,7 +48,7 @@ class AddStepCommandSpec extends Specification {
     }
 
     private static Recipe recipe() {
-        return new Recipe(1, "", 0, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(), new HashSet<Step>(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(1, "", 0, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(), new HashSet<Step>(), null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

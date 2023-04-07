@@ -65,7 +65,7 @@ class DeleteRecipeCommandSpec extends Specification {
     }
 
     private static Recipe recipe(boolean deleted) {
-        return new Recipe(1, '', 2, '', new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), '', false, null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), deleted, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(1, '', 2, '', new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), '', false, null, Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), deleted, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

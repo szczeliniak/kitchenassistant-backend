@@ -31,7 +31,7 @@ class DeleteIngredientGroupCommandSpec extends Specification {
     }
 
     private static Recipe recipe(IngredientGroup ingredientGroup) {
-        return new Recipe(1, "", 1, "", null, "", false, null, Collections.singleton(ingredientGroup), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(1, "", 1, "", null, "", false, null, Collections.singleton(ingredientGroup), Collections.emptySet(), null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static IngredientGroup ingredientGroup() {

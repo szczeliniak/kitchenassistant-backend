@@ -21,29 +21,28 @@ open class RecipeFactory(
     open fun create(dto: NewRecipeDto): Recipe {
         getUserByIdQuery.execute(dto.userId)
         return Recipe(0,
-            userId = dto.userId,
-            name = dto.name,
-            author = dto.author?.let {
-                authorDao.findByName(it, dto.userId) ?: authorDao.save(
-                    authorFactory.create(
-                        it,
-                        dto.userId
+                userId = dto.userId,
+                name = dto.name,
+                author = dto.author?.let {
+                    authorDao.findByName(it, dto.userId) ?: authorDao.save(
+                            authorFactory.create(
+                                    it,
+                                    dto.userId
+                            )
                     )
-                )
-            },
-            source = dto.source,
-            category = dto.categoryId?.let {
-                categoryDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
-            },
-            description = dto.description,
-            ingredientGroups = dto.ingredientGroups.map { ingredientGroupFactory.create(it) }.toMutableSet(),
-            steps = dto.steps.map { stepFactory.create(it) }.toMutableSet(),
-            photos = dto.photos.map {
-                photoDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
-            }
-                .toMutableSet(),
-            tags = dto.tags.map { tagDao.findByName(it, dto.userId) ?: tagFactory.create(it, dto.userId) }
-                .toMutableSet()
+                },
+                source = dto.source,
+                category = dto.categoryId?.let {
+                    categoryDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
+                },
+                description = dto.description,
+                ingredientGroups = dto.ingredientGroups.map { ingredientGroupFactory.create(it) }.toMutableSet(),
+                steps = dto.steps.map { stepFactory.create(it) }.toMutableSet(),
+                photo = dto.photoId?.let {
+                    photoDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
+                },
+                tags = dto.tags.map { tagDao.findByName(it, dto.userId) ?: tagFactory.create(it, dto.userId) }
+                        .toMutableSet()
         )
     }
 

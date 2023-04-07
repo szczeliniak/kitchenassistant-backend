@@ -1,10 +1,10 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewRecipeDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.factories.RecipeFactory
 import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewRecipeDto
-import pl.szczeliniak.kitchenassistant.recipe.commands.factories.RecipeFactory
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
 import spock.lang.Subject
@@ -32,11 +32,11 @@ class AddRecipeCommandSpec extends Specification {
     }
 
     private static NewRecipeDto newRecipeDto() {
-        return new NewRecipeDto(1, "", null, "", "", "", Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet())
+        return new NewRecipeDto(1, "", null, "", "", "", null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet())
     }
 
     private static Recipe recipe() {
-        return new Recipe(1, "", 2, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(1, "", 2, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

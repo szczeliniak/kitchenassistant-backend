@@ -72,7 +72,7 @@ class UpdateRecipeCommandSpec extends Specification {
 
     private static Recipe recipe(Set<Tag> tags) {
         return new Recipe(1, "", 4, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, category(0), Collections.emptySet(),
-                Collections.emptySet(), Collections.emptySet(), tags, false, ZonedDateTime.now(), ZonedDateTime.now())
+                Collections.emptySet(), null, tags, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     static Category category(Integer id) {

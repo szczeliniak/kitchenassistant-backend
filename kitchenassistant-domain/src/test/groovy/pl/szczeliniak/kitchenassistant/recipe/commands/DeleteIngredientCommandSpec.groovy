@@ -1,11 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-
-import pl.szczeliniak.kitchenassistant.recipe.db.Author
-import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient
-import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroup
-import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
-import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
+import pl.szczeliniak.kitchenassistant.recipe.db.*
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
@@ -78,7 +73,7 @@ class DeleteIngredientCommandSpec extends Specification {
     }
 
     private static Recipe recipe(Set<IngredientGroup> ingredientGroups) {
-        return new Recipe(1, '', 2, '', new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), '', false, null, ingredientGroups, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(1, '', 2, '', new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), '', false, null, ingredientGroups, Collections.emptySet(), null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Ingredient ingredient(boolean deleted) {

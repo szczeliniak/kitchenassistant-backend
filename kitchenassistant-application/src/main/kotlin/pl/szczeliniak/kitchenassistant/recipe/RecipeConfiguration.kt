@@ -75,13 +75,12 @@ class RecipeConfiguration {
                 UpdateCategoryCommand(categoryDao),
                 UpdateStepCommand(recipeDao),
                 GetCategoriesQuery(categoryDao, recipeConverter),
-                AddPhotosToRecipeCommand(recipeDao, photoDao),
                 GetTagsQuery(tagDao),
                 MarkRecipeAsFavoriteCommand(recipeDao),
                 GetAuthorsQuery(authorDao),
                 UploadPhotoCommand(ftpClient, photoDao, photoFactory),
-                DeletePhotoCommand(ftpClient, photoDao),
-                DownloadPhotoQuery(ftpClient, photoDao),
+                DeletePhotoCommand(ftpClient, recipeDao, photoDao),
+                DownloadPhotoQuery(ftpClient, recipeDao),
                 AddIngredientGroupCommand(recipeDao, ingredientGroupFactory, ingredientGroupDao),
                 DeleteIngredientGroupCommand(recipeDao)
         )

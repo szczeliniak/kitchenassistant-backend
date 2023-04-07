@@ -4,17 +4,7 @@ import org.assertj.core.api.Assertions
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientGroupDto
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewRecipeDto
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewStepDto
-import pl.szczeliniak.kitchenassistant.recipe.db.Author
-import pl.szczeliniak.kitchenassistant.recipe.db.AuthorDao
-import pl.szczeliniak.kitchenassistant.recipe.db.Category
-import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
-import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroup
-import pl.szczeliniak.kitchenassistant.recipe.db.Photo
-import pl.szczeliniak.kitchenassistant.recipe.db.PhotoDao
-import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
-import pl.szczeliniak.kitchenassistant.recipe.db.Step
-import pl.szczeliniak.kitchenassistant.recipe.db.Tag
-import pl.szczeliniak.kitchenassistant.recipe.db.TagDao
+import pl.szczeliniak.kitchenassistant.recipe.db.*
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
@@ -65,14 +55,14 @@ class RecipeFactorySpec extends Specification {
         then:
         Assertions.assertThat(result).usingRecursiveComparison()
                 .ignoringFields("createdAt", "modifiedAt", "ingredientGroups.createdAt",
-                        "ingredientGroups.modifiedAt", "steps.createdAt", "steps.modifiedAt", "photos.createdAt", "photos.modifiedAt",
+                        "ingredientGroups.modifiedAt", "steps.createdAt", "steps.modifiedAt", "photo.createdAt", "photo.modifiedAt",
                         "tags.createdAt", "tags.modifiedAt", "author.createdAt", "author.modifiedAt")
                 .isEqualTo(recipe(category, Set.of(existingTag, newTag)))
     }
 
     private static NewRecipeDto newRecipeDto(NewIngredientGroupDto newIngredientGroupDto, NewStepDto newStepDto) {
         return new NewRecipeDto(4, "RECIPE_NAME", 2, "RECIPE_DESCRIPTION", "RECIPE_AUTHOR",
-                "RECIPE_SOURCE", Set.of(newIngredientGroupDto), Set.of(newStepDto), Set.of(99), Set.of("EXISTING_TAG", "NEW_TAG"))
+                "RECIPE_SOURCE", 99, Set.of(newIngredientGroupDto), Set.of(newStepDto), Set.of("EXISTING_TAG", "NEW_TAG"))
     }
 
     private static NewStepDto newStepDto() {
@@ -85,7 +75,7 @@ class RecipeFactorySpec extends Specification {
 
     private static Recipe recipe(Category category, Set<Tag> tags) {
         return new Recipe(0, "RECIPE_NAME", 4, "RECIPE_DESCRIPTION", new Author(2, "RECIPE_AUTHOR", 1, ZonedDateTime.now(), ZonedDateTime.now()),
-                "RECIPE_SOURCE", false, category, new HashSet(Arrays.asList(ingredientGroup())), new HashSet(Arrays.asList(step())), new HashSet(Arrays.asList(photo())), tags, false, ZonedDateTime.now(), ZonedDateTime.now())
+                "RECIPE_SOURCE", false, category, new HashSet(Arrays.asList(ingredientGroup())), new HashSet(Arrays.asList(step())), photo(), tags, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Photo photo() {

@@ -1,11 +1,10 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateStepDto
 import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Step
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateStepDto
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
 import spock.lang.Subject
@@ -42,7 +41,7 @@ class UpdateStepCommandSpec extends Specification {
 
     private static Recipe recipe(Set<Step> steps) {
         return new Recipe(1, "", 1, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(),
-                steps, Collections.emptySet(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+                steps, null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Step step() {
