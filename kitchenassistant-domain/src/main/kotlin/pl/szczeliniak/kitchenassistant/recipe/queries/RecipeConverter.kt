@@ -27,7 +27,7 @@ open class RecipeConverter {
                 recipe.category?.let { map(it) },
                 recipe.ingredientGroups.map { map(it) }.toSet(),
                 recipe.steps.map { map(it) }.toSet(),
-                recipe.photo?.let { map(it) },
+                recipe.photoName,
                 recipe.tags.map { it.name }.toSet()
         )
     }
@@ -46,10 +46,6 @@ open class RecipeConverter {
                 ingredient.name,
                 ingredient.quantity
         )
-    }
-
-    private fun map(photo: Photo): PhotoDto {
-        return PhotoDto(photo.id, photo.name)
     }
 
     private fun map(step: Step): StepDto {

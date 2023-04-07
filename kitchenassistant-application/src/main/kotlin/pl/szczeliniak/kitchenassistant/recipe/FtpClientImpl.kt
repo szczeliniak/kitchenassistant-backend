@@ -101,6 +101,26 @@ class FtpClientImpl(
         logger.info("Deleting file with name: $name finished successfully")
     }
 
+    override fun exists(name: String): Boolean {
+        logger.info("Checking if file with name: $name exists")
+
+        var client: FTPClient? = null
+        val result: Boolean
+        try {
+            client = open()
+            result = exists(client, name)
+        } catch (exception: IOException) {
+            logger.error(exception.message ?: "Error while checking if file with name: $name exists", exception)
+            throw KitchenAssistantException(ErrorCode.FTP_DELETE_ERROR)
+        } finally {
+            close(client)
+        }
+
+        logger.info("Checking if file with name: $name exists finished successfully. Result $result")
+
+        return result
+    }
+
     private fun open(): FTPClient {
         val ftpClient = FTPClient()
         ftpClient.connect(host, port)

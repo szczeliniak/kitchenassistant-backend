@@ -6,7 +6,6 @@ import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.recipe.FtpClient
 import pl.szczeliniak.kitchenassistant.recipe.SupportedMediaType
-import pl.szczeliniak.kitchenassistant.recipe.db.Photo
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.GetPhotoResponse
@@ -36,11 +35,7 @@ internal class DownloadPhotoCommandTest : JunitBaseClass() {
     }
 
     private fun recipe(): Recipe {
-        return Recipe(1, "", 1, null, null, null, false, null, Collections.emptySet(), Collections.emptySet(), photo(), Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
-    }
-
-    private fun photo(): Photo {
-        return Photo(1, "NAME.jpg", 4, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return Recipe(1, "", 1, null, null, null, false, null, Collections.emptySet(), Collections.emptySet(), "NAME.jpg", Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

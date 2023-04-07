@@ -10,6 +10,6 @@ data class RecipeDetailsDto(
         val category: CategoryDto?,
         val ingredientGroups: Set<IngredientGroupDto>,
         val steps: Set<StepDto>,
-        val photo: PhotoDto?,
+        val photoName: String?,
         val tags: Set<String>
 )

@@ -11,11 +11,11 @@ class DownloadPhotoQuery(private val ftpClient: FtpClient, private val recipeDao
 
     fun execute(recipeId: Int): GetPhotoResponse {
         val recipe = recipeDao.findById(recipeId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
-        val photo = recipe.photo ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
+        val photo = recipe.photoName ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
         return GetPhotoResponse(
-                SupportedMediaType.byFileName(photo.name)
+                SupportedMediaType.byFileName(photo)
                         ?: throw KitchenAssistantException(ErrorCode.UNSUPPORTED_MEDIA_TYPE),
-                ftpClient.download(photo.name)
+                ftpClient.download(photo)
         )
     }
 

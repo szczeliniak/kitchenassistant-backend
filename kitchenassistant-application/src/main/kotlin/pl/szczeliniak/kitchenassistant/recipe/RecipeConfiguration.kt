@@ -17,9 +17,6 @@ class RecipeConfiguration {
     fun recipeConverter() = RecipeConverter()
 
     @Bean
-    fun photoDao(photoRepository: PhotoRepository) = PhotoDaoImpl(photoRepository)
-
-    @Bean
     fun getRecipeQuery(recipeDao: RecipeDao, recipeConverter: RecipeConverter) =
             GetRecipeQuery(recipeDao, recipeConverter)
 
@@ -30,7 +27,6 @@ class RecipeConfiguration {
             categoryDao: CategoryDao,
             tagDao: TagDao,
             authorDao: AuthorDao,
-            photoDao: PhotoDao,
             ingredientDao: IngredientDao,
             stepDao: StepDao,
             ftpClient: FtpClient,
@@ -54,10 +50,8 @@ class RecipeConfiguration {
                 tagFactory,
                 authorDao,
                 authorFactory,
-                photoDao,
-                ingredientGroupFactory
+                ingredientGroupFactory, ftpClient
         )
-        val photoFactory = PhotoFactory()
         return RecipeFacade(
                 getRecipeQuery,
                 GetRecipesQuery(recipeDao, recipeConverter),
@@ -81,9 +75,8 @@ class RecipeConfiguration {
                 GetTagsQuery(tagDao),
                 MarkRecipeAsFavoriteCommand(recipeDao),
                 GetAuthorsQuery(authorDao),
-                UploadPhotoCommand(ftpClient, photoDao, photoFactory),
-                DeletePhotoCommand(recipeDao),
-                CleanupOrphanedPhotosCommand(ftpClient, photoDao),
+                UploadPhotoCommand(ftpClient),
+                DeletePhotoCommand(recipeDao, ftpClient),
                 DownloadPhotoQuery(ftpClient, recipeDao),
                 AddIngredientGroupCommand(recipeDao, ingredientGroupFactory, ingredientGroupDao),
                 DeleteIngredientGroupCommand(recipeDao)

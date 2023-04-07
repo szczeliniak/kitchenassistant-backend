@@ -31,13 +31,7 @@ class Recipe(
         @JoinColumn(name = "recipe_id", nullable = false)
         @OrderBy("sequence ASC, id ASC")
         var steps: MutableSet<Step> = mutableSetOf(),
-        @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-        @JoinTable(
-                name = "recipes_photos",
-                joinColumns = [JoinColumn(name = "recipe_id", referencedColumnName = "id", nullable = false)],
-                inverseJoinColumns = [JoinColumn(name = "photo_id", referencedColumnName = "id", nullable = false)]
-        )
-        var photo: Photo?,
+        var photoName: String?,
         @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
         @JoinTable(
                 name = "recipe_tags",

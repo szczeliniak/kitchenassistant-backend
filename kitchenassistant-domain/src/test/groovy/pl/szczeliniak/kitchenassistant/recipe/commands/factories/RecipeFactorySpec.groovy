@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands.factories
 
 import org.assertj.core.api.Assertions
+import pl.szczeliniak.kitchenassistant.recipe.FtpClient
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientGroupDto
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewRecipeDto
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewStepDto
@@ -22,11 +23,11 @@ class RecipeFactorySpec extends Specification {
     def tagFactory = Mock(TagFactory)
     def authorDao = Mock(AuthorDao)
     def authorFactory = Mock(AuthorFactory)
-    def photoDao = Mock(PhotoDao)
     def ingredientGroupFactory = Mock(IngredientGroupFactory)
+    def ftpClient = Mock(FtpClient)
 
     @Subject
-    def recipeFactory = new RecipeFactory(getUserByIdQuery, stepFactory, categoryDao, tagDao, tagFactory, authorDao, authorFactory, photoDao, ingredientGroupFactory)
+    def recipeFactory = new RecipeFactory(getUserByIdQuery, stepFactory, categoryDao, tagDao, tagFactory, authorDao, authorFactory, ingredientGroupFactory, ftpClient)
 
     def 'should create recipe'() {
         given:
@@ -38,7 +39,6 @@ class RecipeFactorySpec extends Specification {
         def author = author()
 
         getUserByIdQuery.execute(1) >> userResponse()
-        photoDao.findById(99) >> photo()
         ingredientGroupFactory.create(newIngredientGroupDto) >> ingredientGroup()
         stepFactory.create(newStepDto) >> step()
         categoryDao.findById(2) >> category
@@ -48,7 +48,7 @@ class RecipeFactorySpec extends Specification {
         authorDao.findByName("RECIPE_AUTHOR", 4) >> null
         authorFactory.create("RECIPE_AUTHOR", 4) >> author
         authorDao.save(author) >> author
-        photoDao.isAssigned(99) >> false
+        ftpClient.exists("PHOTO_NAME") >> true
 
         when:
         def result = recipeFactory.create(newRecipeDto(newIngredientGroupDto, newStepDto))
@@ -63,7 +63,7 @@ class RecipeFactorySpec extends Specification {
 
     private static NewRecipeDto newRecipeDto(NewIngredientGroupDto newIngredientGroupDto, NewStepDto newStepDto) {
         return new NewRecipeDto(4, "RECIPE_NAME", 2, "RECIPE_DESCRIPTION", "RECIPE_AUTHOR",
-                "RECIPE_SOURCE", 99, Set.of(newIngredientGroupDto), Set.of(newStepDto), Set.of("EXISTING_TAG", "NEW_TAG"))
+                "RECIPE_SOURCE", "PHOTO_NAME", Set.of(newIngredientGroupDto), Set.of(newStepDto), Set.of("EXISTING_TAG", "NEW_TAG"))
     }
 
     private static NewStepDto newStepDto() {
@@ -76,11 +76,7 @@ class RecipeFactorySpec extends Specification {
 
     private static Recipe recipe(Category category, Set<Tag> tags) {
         return new Recipe(0, "RECIPE_NAME", 4, "RECIPE_DESCRIPTION", new Author(2, "RECIPE_AUTHOR", 1, ZonedDateTime.now(), ZonedDateTime.now()),
-                "RECIPE_SOURCE", false, category, new HashSet(Arrays.asList(ingredientGroup())), new HashSet(Arrays.asList(step())), photo(), tags, false, ZonedDateTime.now(), ZonedDateTime.now())
-    }
-
-    private static Photo photo() {
-        return new Photo(99, "", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
+                "RECIPE_SOURCE", false, category, new HashSet(Arrays.asList(ingredientGroup())), new HashSet(Arrays.asList(step())), "PHOTO_NAME", tags, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Tag tag(Integer id, String name) {

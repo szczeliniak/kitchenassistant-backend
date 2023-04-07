@@ -38,5 +38,4 @@ enum class ErrorCode(val message: String, val code: Int) {
     JWT_GENERIC_ERROR("Unknown token error", 400),
     INGREDIENT_GROUP_NOT_FOUND("Ingredient group not found", 404),
     RECIPE_ID_IS_NOT_ASSIGNED_TO_DAY_PLAN("Recipe id is not assigned to day play", 404),
-    PHOTO_ALREADY_ASSIGNED("Photo already assigned", 400)
 }

@@ -1,7 +1,11 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands.factories
 
+import pl.szczeliniak.kitchenassistant.recipe.FtpClient
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewRecipeDto
-import pl.szczeliniak.kitchenassistant.recipe.db.*
+import pl.szczeliniak.kitchenassistant.recipe.db.AuthorDao
+import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
+import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
+import pl.szczeliniak.kitchenassistant.recipe.db.TagDao
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
@@ -14,19 +18,18 @@ open class RecipeFactory(
         private val tagFactory: TagFactory,
         private val authorDao: AuthorDao,
         private val authorFactory: AuthorFactory,
-        private val photoDao: PhotoDao,
-        private val ingredientGroupFactory: IngredientGroupFactory
+        private val ingredientGroupFactory: IngredientGroupFactory,
+        private val ftpClient: FtpClient
 ) {
 
     open fun create(dto: NewRecipeDto): Recipe {
         getUserByIdQuery.execute(dto.userId)
 
-        val photo = dto.photoId?.let {
-            val p = photoDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
-            if(photoDao.isAssigned(p.id)) {
-                throw KitchenAssistantException(ErrorCode.PHOTO_ALREADY_ASSIGNED)
+        val photo = dto.photoName?.let {
+            if(!ftpClient.exists(it)) {
+                throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
             }
-            p
+            it
         }
 
         return Recipe(0,
@@ -47,7 +50,7 @@ open class RecipeFactory(
                 description = dto.description,
                 ingredientGroups = dto.ingredientGroups.map { ingredientGroupFactory.create(it) }.toMutableSet(),
                 steps = dto.steps.map { stepFactory.create(it) }.toMutableSet(),
-                photo = photo,
+                photoName = photo,
                 tags = dto.tags.map { tagDao.findByName(it, dto.userId) ?: tagFactory.create(it, dto.userId) }
                         .toMutableSet()
         )

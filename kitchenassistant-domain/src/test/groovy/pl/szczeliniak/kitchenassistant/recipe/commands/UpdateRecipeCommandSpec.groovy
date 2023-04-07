@@ -1,18 +1,9 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateRecipeDto
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.AuthorFactory
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.TagFactory
-import pl.szczeliniak.kitchenassistant.recipe.db.Author
-import pl.szczeliniak.kitchenassistant.recipe.db.AuthorDao
-import pl.szczeliniak.kitchenassistant.recipe.db.Category
-import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
-import pl.szczeliniak.kitchenassistant.recipe.db.Photo
-import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
-import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
-import pl.szczeliniak.kitchenassistant.recipe.db.Tag
-import pl.szczeliniak.kitchenassistant.recipe.db.TagDao
+import pl.szczeliniak.kitchenassistant.recipe.db.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
 import spock.lang.Subject
@@ -83,10 +74,6 @@ class UpdateRecipeCommandSpec extends Specification {
 
     static Tag tag(Integer id, String name) {
         return new Tag(id, name, 4, ZonedDateTime.now(), ZonedDateTime.now())
-    }
-
-    static Photo photo(Integer id) {
-        return new Photo(id, "", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     static Author author() {

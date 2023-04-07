@@ -160,8 +160,8 @@ class RecipeController(
     }
 
     @PostMapping("/photo")
-    fun uploadPhoto(@RequestParam userId: Int, @RequestParam("file") file: MultipartFile): SuccessResponse {
-        return recipeFacade.uploadPhoto(userId, file.originalFilename ?: file.name, file.bytes)
+    fun uploadPhoto(@RequestParam("file") file: MultipartFile): UploadPhotoResponse {
+        return recipeFacade.uploadPhoto(file.originalFilename ?: file.name, file.bytes)
     }
 
     @GetMapping("/{recipeId}/photo")

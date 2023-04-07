@@ -8,4 +8,6 @@ interface FtpClient {
 
     fun delete(name: String)
 
+    fun exists(name: String): Boolean
+
 }
