@@ -6,5 +6,6 @@ data class RecipeDto(
     val author: String?,
     val favorite: Boolean?,
     val category: CategoryDto?,
-    val tags: Set<String>
+    val tags: Set<String>,
+    val photoName: String?
 )
