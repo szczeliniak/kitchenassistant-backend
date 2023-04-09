@@ -76,7 +76,7 @@ class RecipeFactorySpec extends Specification {
 
     private static Recipe recipe(Category category, Set<Tag> tags) {
         return new Recipe(0, "RECIPE_NAME", 4, "RECIPE_DESCRIPTION", new Author(2, "RECIPE_AUTHOR", 1, ZonedDateTime.now(), ZonedDateTime.now()),
-                "RECIPE_SOURCE", false, category, new HashSet(Arrays.asList(ingredientGroup())), new HashSet(Arrays.asList(step())), "PHOTO_NAME", tags, false, ZonedDateTime.now(), ZonedDateTime.now())
+                "RECIPE_SOURCE", false, category, new HashSet(Arrays.asList(ingredientGroup())), new HashSet(Arrays.asList(step())), "PHOTO_NAME", tags, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Tag tag(Integer id, String name) {
@@ -84,15 +84,15 @@ class RecipeFactorySpec extends Specification {
     }
 
     private static IngredientGroup ingredientGroup() {
-        return new IngredientGroup(3, "INGREDIENT_GROUP_NAME", Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new IngredientGroup(3, "INGREDIENT_GROUP_NAME", Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Step step() {
-        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Category category() {
-        return new Category(0, "", 0, 3, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Category(0, "", 0, 3, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Author author() {

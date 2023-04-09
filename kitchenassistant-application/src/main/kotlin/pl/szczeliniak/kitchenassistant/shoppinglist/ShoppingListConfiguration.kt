@@ -17,31 +17,30 @@ class ShoppingListConfiguration {
 
     @Bean
     fun deassignRecipeFromShoppingListsCommand(shoppingListDao: ShoppingListDao): DeleteRecipeFromShoppingListsCommand =
-            DeleteRecipeFromShoppingListsCommand(shoppingListDao)
+        DeleteRecipeFromShoppingListsCommand(shoppingListDao)
 
     @Bean
     fun shoppingListFacade(
-            shoppingListDao: ShoppingListDao,
-            recipeFacade: RecipeFacade,
-            shoppingListItemDao: ShoppingListItemDao,
-            deleteRecipeFromShoppingListsCommand: DeleteRecipeFromShoppingListsCommand
+        shoppingListDao: ShoppingListDao,
+        recipeFacade: RecipeFacade,
+        shoppingListItemDao: ShoppingListItemDao,
+        deleteRecipeFromShoppingListsCommand: DeleteRecipeFromShoppingListsCommand
     ): ShoppingListFacade {
         val shoppingListConverter = ShoppingListConverter(recipeFacade)
         val shoppingListItemFactory = ShoppingListItemFactory(recipeFacade)
         val shoppingListFactory = ShoppingListFactory(shoppingListItemFactory)
         return ShoppingListFacade(
-                GetShoppingListQuery(shoppingListDao, shoppingListConverter),
-                GetShoppingListsQuery(shoppingListDao, shoppingListConverter),
-                AddShoppingListCommand(shoppingListDao, shoppingListFactory),
-                UpdateShoppingListCommand(shoppingListDao),
-                AddShoppingListItemCommand(shoppingListDao, shoppingListItemDao, shoppingListItemFactory),
-                UpdateShoppingListItemCommand(shoppingListDao, shoppingListItemDao),
-                MarkItemAsCompletedCommand(shoppingListDao, shoppingListItemDao),
-                MarkShoppingListAsArchivedCommand(shoppingListDao),
-                DeleteShoppingListCommand(shoppingListDao),
-                DeleteShoppingListItemCommand(shoppingListDao, shoppingListItemDao),
-                deleteRecipeFromShoppingListsCommand,
-                ArchiveShoppingListsCommand(shoppingListDao)
+            GetShoppingListQuery(shoppingListDao, shoppingListConverter),
+            GetShoppingListsQuery(shoppingListDao, shoppingListConverter),
+            AddShoppingListCommand(shoppingListDao, shoppingListFactory),
+            UpdateShoppingListCommand(shoppingListDao),
+            AddShoppingListItemCommand(shoppingListDao, shoppingListItemDao, shoppingListItemFactory),
+            UpdateShoppingListItemCommand(shoppingListDao, shoppingListItemDao),
+            MarkItemAsCompletedCommand(shoppingListDao, shoppingListItemDao),
+            MarkShoppingListAsArchivedCommand(shoppingListDao),
+            DeleteShoppingListCommand(shoppingListDao),
+            DeleteShoppingListItemCommand(shoppingListDao),
+            ArchiveShoppingListsCommand(shoppingListDao)
         )
     }
 

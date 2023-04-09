@@ -39,7 +39,7 @@ internal class DeletePhotoCommandTest : JunitBaseClass() {
     }
 
     private fun recipe(): Recipe {
-        return Recipe(1, "", 1, null, null, null, false, null, Collections.emptySet(), Collections.emptySet(), "PHOTO_NAME", Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return Recipe(1, "", 1, null, null, null, false, null, Collections.emptySet(), Collections.emptySet(), "PHOTO_NAME", Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

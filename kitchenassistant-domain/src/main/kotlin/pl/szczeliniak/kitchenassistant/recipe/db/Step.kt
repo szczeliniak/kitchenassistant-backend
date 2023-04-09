@@ -1,12 +1,10 @@
 package pl.szczeliniak.kitchenassistant.recipe.db
 
-import org.hibernate.annotations.Where
 import java.time.ZonedDateTime
 import javax.persistence.*
 
 @Entity
 @Table(name = "steps")
-@Where(clause = "deleted = false")
 data class Step(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "step_id_generator")
@@ -15,7 +13,6 @@ data class Step(
     var name: String,
     var description: String? = null,
     var sequence: Int? = null,
-    var deleted: Boolean = false,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 )

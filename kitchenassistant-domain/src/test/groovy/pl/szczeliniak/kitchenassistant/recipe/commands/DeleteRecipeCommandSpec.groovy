@@ -1,10 +1,9 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-import pl.szczeliniak.kitchenassistant.dayplan.commands.DeleteRecipesFromDayPlansCommand
+import pl.szczeliniak.kitchenassistant.dayplan.commands.DeleteRecipeFromDayPlansCommand
 import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
-import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.DeleteRecipeFromShoppingListsCommand
 import spock.lang.Specification
@@ -16,56 +15,28 @@ class DeleteRecipeCommandSpec extends Specification {
 
     def recipeDao = Mock(RecipeDao)
     def deassignRecipeFromShoppingListsCommand = Mock(DeleteRecipeFromShoppingListsCommand)
-    def deassignRecipesFromDayPlansCommand = Mock(DeleteRecipesFromDayPlansCommand)
+    def deassignRecipesFromDayPlansCommand = Mock(DeleteRecipeFromDayPlansCommand)
 
     @Subject
     def deleteRecipeCommand = new DeleteRecipeCommand(recipeDao, deassignRecipesFromDayPlansCommand, deassignRecipeFromShoppingListsCommand)
 
     def 'should delete recipe'() {
         given:
-        def recipe = recipe(false)
+        def recipe = recipe()
         recipeDao.findById(1) >> recipe
-        recipeDao.save(recipe) >> recipe
 
         when:
         def result = deleteRecipeCommand.execute(1)
 
         then:
-        recipe.deleted
         result == new SuccessResponse(1)
         1 * deassignRecipeFromShoppingListsCommand.execute(1)
         1 * deassignRecipesFromDayPlansCommand.execute(1)
+        1 * recipeDao.delete(recipe)
     }
 
-    def 'should throw exception when recipe not found'() {
-        given:
-        recipeDao.findById(1) >> null
-
-        when:
-        deleteRecipeCommand.execute(1)
-
-        then:
-        def e = thrown(KitchenAssistantException)
-        e.message == "Recipe not found"
-    }
-
-    def 'should throw exception when recipe is already marked as deleted'() {
-        given:
-        def recipe = recipe(true)
-        recipeDao.findById(1) >> recipe
-        recipeDao.save(recipe) >> recipe
-
-        when:
-        deleteRecipeCommand.execute(1)
-
-        then:
-        def e = thrown(KitchenAssistantException)
-        e.message == "Recipe is already marked as deleted!"
-        e.message == "Recipe is already marked as deleted!"
-    }
-
-    private static Recipe recipe(boolean deleted) {
-        return new Recipe(1, '', 2, '', new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), '', false, null, Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), deleted, ZonedDateTime.now(), ZonedDateTime.now())
+    private static Recipe recipe() {
+        return new Recipe(1, '', 2, '', new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), '', false, null, Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

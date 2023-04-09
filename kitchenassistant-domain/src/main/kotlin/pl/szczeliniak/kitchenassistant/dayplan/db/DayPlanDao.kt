@@ -16,5 +16,6 @@ interface DayPlanDao {
     fun findById(id: Int): DayPlan?
 
     fun findByDate(date: LocalDate): DayPlan?
+    fun delete(dayPlan: DayPlan)
 
 }

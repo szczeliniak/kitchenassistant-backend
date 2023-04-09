@@ -39,15 +39,15 @@ class AddIngredientCommandSpec extends Specification {
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(3, "", "", false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Ingredient(3, "", "", ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Recipe recipe() {
-        return new Recipe(1, "", 0, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.singleton(ingredientGroup()), Collections.emptySet(), null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(1, "", 0, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.singleton(ingredientGroup()), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static IngredientGroup ingredientGroup() {
-        return new IngredientGroup(2, "GROUP_NAME", new HashSet<Ingredient>(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new IngredientGroup(2, "GROUP_NAME", new HashSet<Ingredient>(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

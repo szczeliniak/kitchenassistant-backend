@@ -50,7 +50,6 @@ class GetRecipesQuerySpec extends Specification {
                 Collections.emptySet(),
                 null,
                 Collections.emptySet(),
-                false,
                 ZonedDateTime.now(),
                 ZonedDateTime.now())
     }

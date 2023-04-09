@@ -1,14 +1,12 @@
 package pl.szczeliniak.kitchenassistant.recipe.db
 
-import org.hibernate.annotations.Where
 import java.time.ZonedDateTime
 import javax.persistence.*
 
 @Entity
-@Table(name = "ingredientGroups")
-@Where(clause = "deleted = false")
+@Table(name = "ingredient_groups")
 data class IngredientGroup(
-        @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingredient_group_id_generator")
     @SequenceGenerator(
         name = "ingredient_group_id_generator",
@@ -16,12 +14,11 @@ data class IngredientGroup(
         allocationSize = 1
     )
     var id: Int = 0,
-        var name: String,
-        @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    var name: String,
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "ingredient_group_id", nullable = false)
     @OrderBy("id ASC")
     var ingredients: MutableSet<Ingredient> = mutableSetOf(),
-        var deleted: Boolean = false,
-        var createdAt: ZonedDateTime = ZonedDateTime.now(),
-        var modifiedAt: ZonedDateTime = ZonedDateTime.now()
+    var createdAt: ZonedDateTime = ZonedDateTime.now(),
+    var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 )

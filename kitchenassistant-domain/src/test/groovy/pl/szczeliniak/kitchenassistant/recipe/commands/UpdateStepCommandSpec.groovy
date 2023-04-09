@@ -41,11 +41,11 @@ class UpdateStepCommandSpec extends Specification {
 
     private static Recipe recipe(Set<Step> steps) {
         return new Recipe(1, "", 1, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(),
-                steps, null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+                steps, null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Step step() {
-        return new Step(2, "", "", 0, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Step(2, "", "", 0, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

@@ -1,22 +1,20 @@
 package pl.szczeliniak.kitchenassistant.dayplan.commands
 
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
-import pl.szczeliniak.kitchenassistant.shared.ErrorCode
-import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 
 class DeleteRecipeFromDayPlanCommand(private val dayPlanDao: DayPlanDao) {
 
     fun execute(dayPlanId: Int, recipeId: Int): SuccessResponse {
-        val dayPlan = dayPlanDao.findById(dayPlanId) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
-        if (!dayPlan.recipeIds.contains(recipeId)) {
-            throw KitchenAssistantException(ErrorCode.RECIPE_ID_IS_NOT_ASSIGNED_TO_DAY_PLAN)
+        dayPlanDao.findById(dayPlanId)?.let { dayPlan ->
+            dayPlan.recipeIds.remove(recipeId)
+            if (dayPlan.recipeIds.isEmpty()) {
+                dayPlanDao.delete(dayPlan)
+            } else {
+                dayPlanDao.save(dayPlan)
+            }
         }
-        dayPlan.recipeIds.remove(recipeId)
-        if (dayPlan.recipeIds.isEmpty()) {
-            dayPlan.deleted = true
-        }
-        return SuccessResponse(dayPlanDao.save(dayPlan).id)
+        return SuccessResponse(dayPlanId)
     }
 
 }

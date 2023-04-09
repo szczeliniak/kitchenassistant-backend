@@ -11,7 +11,7 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
 
     override fun findAll(criteria: RecipeCriteria, offset: Int?, limit: Int?): Set<Recipe> {
         val query =
-            "SELECT DISTINCT r FROM Recipe r " + prepareJoin(criteria) + "WHERE r.deleted = false" + prepareCriteria(
+            "SELECT DISTINCT r FROM Recipe r " + prepareJoin(criteria) + "WHERE r.id IS NOT NULL" + prepareCriteria(
                 criteria
             ) + " ORDER BY r.id ASC"
         val typedQuery = applyParameters(criteria, entityManager.createQuery(query, Recipe::class.java))
@@ -30,16 +30,20 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
 
     override fun count(criteria: RecipeCriteria): Long {
         val query =
-            "SELECT DISTINCT COUNT(r) FROM Recipe r " + prepareJoin(criteria) + "WHERE r.deleted = false" + prepareCriteria(
+            "SELECT DISTINCT COUNT(r) FROM Recipe r " + prepareJoin(criteria) + "WHERE r.id IS NOT NULL" + prepareCriteria(
                 criteria
             )
         return applyParameters(criteria, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
     }
 
+    override fun delete(recipe: Recipe) {
+        entityManager.remove(recipe)
+    }
+
     override fun findById(id: Int): Recipe? {
         return entityManager
             .createQuery(
-                "SELECT r FROM Recipe r WHERE r.id = :id AND r.deleted = false",
+                "SELECT r FROM Recipe r WHERE r.id = :id",
                 Recipe::class.java
             )
             .setParameter("id", id)
@@ -84,8 +88,8 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
     }
 
     private fun <T> applyParameters(
-            criteria: RecipeCriteria,
-            typedQuery: TypedQuery<T>
+        criteria: RecipeCriteria,
+        typedQuery: TypedQuery<T>
     ): TypedQuery<T> {
         var query = typedQuery
         if (criteria.userId != null) {

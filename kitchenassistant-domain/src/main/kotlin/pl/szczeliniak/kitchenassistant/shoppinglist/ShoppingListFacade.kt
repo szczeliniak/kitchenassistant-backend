@@ -13,18 +13,17 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListResp
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListsResponse
 
 open class ShoppingListFacade(
-        private val getShoppingListQuery: GetShoppingListQuery,
-        private val getShoppingListsQuery: GetShoppingListsQuery,
-        private val addShoppingListCommand: AddShoppingListCommand,
-        private val updateShoppingListCommand: UpdateShoppingListCommand,
-        private val addShoppingListItemCommand: AddShoppingListItemCommand,
-        private val updateShoppingListItemCommand: UpdateShoppingListItemCommand,
-        private val markItemAsCompletedCommand: MarkItemAsCompletedCommand,
-        private val markShoppingListAsArchivedCommand: MarkShoppingListAsArchivedCommand,
-        private val deleteShoppingListCommand: DeleteShoppingListCommand,
-        private val deleteShoppingListItemCommand: DeleteShoppingListItemCommand,
-        private val deleteRecipeFromShoppingListsCommand: DeleteRecipeFromShoppingListsCommand,
-        private val archiveShoppingListsCommand: ArchiveShoppingListsCommand
+    private val getShoppingListQuery: GetShoppingListQuery,
+    private val getShoppingListsQuery: GetShoppingListsQuery,
+    private val addShoppingListCommand: AddShoppingListCommand,
+    private val updateShoppingListCommand: UpdateShoppingListCommand,
+    private val addShoppingListItemCommand: AddShoppingListItemCommand,
+    private val updateShoppingListItemCommand: UpdateShoppingListItemCommand,
+    private val markItemAsCompletedCommand: MarkItemAsCompletedCommand,
+    private val markShoppingListAsArchivedCommand: MarkShoppingListAsArchivedCommand,
+    private val deleteShoppingListCommand: DeleteShoppingListCommand,
+    private val deleteShoppingListItemCommand: DeleteShoppingListItemCommand,
+    private val archiveShoppingListsCommand: ArchiveShoppingListsCommand
 ) {
 
     fun findById(id: Int): ShoppingListResponse {
@@ -65,10 +64,6 @@ open class ShoppingListFacade(
 
     fun deleteShoppingListItem(id: Int, itemId: Int): SuccessResponse {
         return deleteShoppingListItemCommand.execute(id, itemId)
-    }
-
-    fun deassignRecipeFromShoppingLists(recipeId: Int): SuccessResponse {
-        return deleteRecipeFromShoppingListsCommand.execute(recipeId)
     }
 
     fun triggerArchiving() {

@@ -26,7 +26,7 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         val typedQuery = applyParameters(
             criteria,
             entityManager.createQuery(
-                "SELECT dp FROM DayPlan dp WHERE dp.deleted = false" + prepareCriteria(criteria) + " ORDER BY dp.date ASC, dp.id ASC",
+                "SELECT dp FROM DayPlan dp WHERE dp.id IS NOT NULL" + prepareCriteria(criteria) + " ORDER BY dp.date ASC, dp.id ASC",
                 DayPlan::class.java
             )
         )
@@ -38,7 +38,7 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
     override fun findByDate(date: LocalDate): DayPlan? {
         return entityManager
             .createQuery(
-                "SELECT dp FROM DayPlan dp WHERE dp.date = :date AND dp.deleted = false",
+                "SELECT dp FROM DayPlan dp WHERE dp.date = :date",
                 DayPlan::class.java
             )
             .setParameter("date", date)
@@ -48,11 +48,15 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
             .orElse(null)
     }
 
+    override fun delete(dayPlan: DayPlan) {
+        entityManager.remove(dayPlan)
+    }
+
     override fun count(criteria: DayPlanCriteria): Long {
         return applyParameters(
             criteria,
             entityManager.createQuery(
-                "SELECT DISTINCT COUNT(dp) FROM DayPlan dp WHERE dp.deleted = false" + prepareCriteria(criteria),
+                "SELECT DISTINCT COUNT(dp) FROM DayPlan dp" + prepareCriteria(criteria),
                 Long::class.javaObjectType
             )
         ).singleResult
@@ -61,7 +65,7 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
     override fun findById(id: Int): DayPlan? {
         return entityManager
             .createQuery(
-                "SELECT dp FROM DayPlan dp WHERE dp.id = :id AND dp.deleted = false",
+                "SELECT dp FROM DayPlan dp WHERE dp.id = :id",
                 DayPlan::class.java
             )
             .setParameter("id", id)

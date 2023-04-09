@@ -63,11 +63,11 @@ class UpdateRecipeCommandSpec extends Specification {
 
     private static Recipe recipe(Set<Tag> tags) {
         return new Recipe(1, "", 4, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, category(0), Collections.emptySet(),
-                Collections.emptySet(), null, tags, false, ZonedDateTime.now(), ZonedDateTime.now())
+                Collections.emptySet(), null, tags, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     static Category category(Integer id) {
-        return new Category(id, "", 3, 4, false,
+        return new Category(id, "", 3, 4,
                 ZonedDateTime.of(2000, 1, 1, 1, 1, 0, 0, ZoneId.systemDefault()),
                 ZonedDateTime.of(2000, 1, 1, 1, 2, 0, 0, ZoneId.systemDefault()))
     }

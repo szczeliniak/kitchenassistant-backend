@@ -1,12 +1,7 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateIngredientDto
-import pl.szczeliniak.kitchenassistant.recipe.db.Author
-import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient
-import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroup
-import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
-import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
+import pl.szczeliniak.kitchenassistant.recipe.db.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import spock.lang.Specification
 import spock.lang.Subject
@@ -64,15 +59,15 @@ class UpdateIngredientCommandSpec extends Specification {
 
     private static Recipe recipe(Set<IngredientGroup> ingredientGroups) {
         return new Recipe(1, "", 1, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, ingredientGroups,
-                Collections.emptySet(), null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+                Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(3, "", "", false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Ingredient(3, "", "", ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static IngredientGroup group(Integer id, Set<Ingredient> ingredients) {
-        return new IngredientGroup(id, "GROUP_NAME", ingredients, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new IngredientGroup(id, "GROUP_NAME", ingredients, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

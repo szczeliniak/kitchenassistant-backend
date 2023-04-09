@@ -18,8 +18,12 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
         return category
     }
 
+    override fun delete(category: Category) {
+        entityManager.remove(category)
+    }
+
     override fun findAll(criteria: CategoryCriteria): MutableSet<Category> {
-        var query = "SELECT c FROM Category c WHERE c.deleted = false"
+        var query = "SELECT c FROM Category c"
         if (criteria.userId != null) {
             query += " AND c.userId = :userId"
         }
@@ -36,15 +40,15 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
 
     override fun findById(id: Int): Category? {
         return entityManager
-                .createQuery(
-                        "SELECT r FROM Category r WHERE r.id = :id AND r.deleted = false",
-                        Category::class.java
-                )
-                .setParameter("id", id)
-                .resultList
-                .stream()
-                .findFirst()
-                .orElse(null)
+            .createQuery(
+                "SELECT r FROM Category r WHERE r.id = :id",
+                Category::class.java
+            )
+            .setParameter("id", id)
+            .resultList
+            .stream()
+            .findFirst()
+            .orElse(null)
     }
 
 }

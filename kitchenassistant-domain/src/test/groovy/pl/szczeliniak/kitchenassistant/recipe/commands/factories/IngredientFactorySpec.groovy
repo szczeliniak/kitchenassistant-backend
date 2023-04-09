@@ -1,8 +1,8 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands.factories
 
 import org.assertj.core.api.Assertions
-import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientDto
+import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -28,7 +28,7 @@ class IngredientFactorySpec extends Specification {
     }
 
     private static Ingredient ingredient() {
-        return new Ingredient(0, "NAME", "QUANTITY", false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Ingredient(0, "NAME", "QUANTITY", ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

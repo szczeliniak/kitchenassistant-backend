@@ -11,5 +11,6 @@ interface RecipeDao {
     fun save(recipes: Set<Recipe>)
 
     fun count(criteria: RecipeCriteria): Long
+    fun delete(recipe: Recipe)
 
 }

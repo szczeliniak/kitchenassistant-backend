@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.shoppinglist.commands
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
@@ -21,11 +22,10 @@ internal class DeleteShoppingListCommandTest : JunitBaseClass() {
         val shoppingList = shoppingList()
 
         whenever(shoppingListDao.findById(1)).thenReturn(shoppingList)
-        whenever(shoppingListDao.save(shoppingList)).thenReturn(shoppingList)
 
         val result = deleteShoppingListCommand.execute(1)
 
-        assertThat(shoppingList.deleted).isEqualTo(true)
+        Mockito.verify(shoppingListDao).delete(shoppingList)
         assertThat(result).isEqualTo(SuccessResponse(1))
     }
 

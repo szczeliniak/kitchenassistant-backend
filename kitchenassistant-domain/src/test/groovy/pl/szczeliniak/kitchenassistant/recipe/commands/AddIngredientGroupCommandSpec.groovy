@@ -42,10 +42,10 @@ class AddIngredientGroupCommandSpec extends Specification {
     }
 
     private static IngredientGroup ingredientGroup() {
-        return new IngredientGroup(2, "NAME", Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new IngredientGroup(2, "NAME", Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Recipe recipe() {
-        return new Recipe(1, "", 1, "", null, "", false, null, new HashSet<IngredientGroup>(), Collections.emptySet(), null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(1, "", 1, "", null, "", false, null, new HashSet<IngredientGroup>(), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 }

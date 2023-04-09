@@ -15,8 +15,8 @@ import pl.szczeliniak.kitchenassistant.recipe.queries.GetRecipeQuery
 class DayPlanConfiguration {
 
     @Bean
-    fun deleteRecipesFromDayPlansCommand(dayPlanDao: DayPlanDao): DeleteRecipesFromDayPlansCommand =
-            DeleteRecipesFromDayPlansCommand(dayPlanDao)
+    fun deleteRecipesFromDayPlansCommand(dayPlanDao: DayPlanDao): DeleteRecipeFromDayPlansCommand =
+            DeleteRecipeFromDayPlansCommand(dayPlanDao)
 
     @Bean
     fun dayPlanFacade(

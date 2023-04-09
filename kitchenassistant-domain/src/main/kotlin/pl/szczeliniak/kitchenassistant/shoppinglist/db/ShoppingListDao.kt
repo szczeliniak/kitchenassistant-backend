@@ -11,5 +11,6 @@ interface ShoppingListDao {
     fun save(shoppingList: ShoppingList): ShoppingList
 
     fun save(shoppingLists: Set<ShoppingList>)
+    fun delete(shoppingList: ShoppingList)
 
 }

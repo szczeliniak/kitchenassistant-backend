@@ -7,5 +7,6 @@ interface CategoryDao {
     fun findById(id: Int): Category?
 
     fun save(category: Category): Category
+    fun delete(category: Category)
 
 }

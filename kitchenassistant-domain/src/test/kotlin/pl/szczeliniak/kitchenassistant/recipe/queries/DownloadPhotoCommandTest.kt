@@ -35,7 +35,7 @@ internal class DownloadPhotoCommandTest : JunitBaseClass() {
     }
 
     private fun recipe(): Recipe {
-        return Recipe(1, "", 1, null, null, null, false, null, Collections.emptySet(), Collections.emptySet(), "NAME.jpg", Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return Recipe(1, "", 1, null, null, null, false, null, Collections.emptySet(), Collections.emptySet(), "NAME.jpg", Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

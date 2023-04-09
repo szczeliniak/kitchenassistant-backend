@@ -34,7 +34,7 @@ class GetCategoriesQuerySpec extends Specification {
     }
 
     private static Category category() {
-        return new Category(0, "NAME", 1, 2, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Category(0, "NAME", 1, 2, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static CategoryDto categoryDto() {

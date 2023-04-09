@@ -17,25 +17,24 @@ class DeleteIngredientGroupCommandSpec extends Specification {
 
     def 'should delete ingredient group'() {
         given:
-        def ingredientGroup = ingredientGroup()
-        def recipe = recipe(ingredientGroup)
+        def recipe = recipe()
         recipeDao.findById(1) >> recipe
-        recipeDao.save(recipe) >> recipe
 
         when:
         def result = deleteIngredientGroupCommand.execute(1, 2)
 
         then:
-        ingredientGroup.deleted
+        1 * recipeDao.save(recipe)
+        recipe.ingredientGroups.isEmpty()
         result == new SuccessResponse(2)
     }
 
-    private static Recipe recipe(IngredientGroup ingredientGroup) {
-        return new Recipe(1, "", 1, "", null, "", false, null, Collections.singleton(ingredientGroup), Collections.emptySet(), null, Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+    private static Recipe recipe() {
+        return new Recipe(1, "", 1, "", null, "", false, null, new HashSet<>(Collections.singleton(ingredientGroup())), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static IngredientGroup ingredientGroup() {
-        return new IngredientGroup(2, "NAME", Collections.emptySet(), false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new IngredientGroup(2, "NAME", Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

@@ -11,7 +11,7 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
 
     override fun findAll(criteria: ShoppingListCriteria, offset: Int?, limit: Int?): Set<ShoppingList> {
         val query =
-            "SELECT sl FROM ShoppingList sl" + prepareJoin(criteria) + " WHERE sl.deleted = false" + prepareCriteria(
+            "SELECT sl FROM ShoppingList sl" + prepareJoin(criteria) + " WHERE sl.id IS NOT NULL" + prepareCriteria(
                 criteria
             )
         val typedQuery = applyParameters(criteria, entityManager.createQuery(query, ShoppingList::class.java))
@@ -28,7 +28,7 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
 
     override fun count(criteria: ShoppingListCriteria): Long {
         val query =
-            "SELECT COUNT(sl) FROM ShoppingList sl" + prepareJoin(criteria) + " WHERE sl.deleted = false" + prepareCriteria(
+            "SELECT COUNT(sl) FROM ShoppingList sl" + prepareJoin(criteria) + " WHERE sl.id IS NOT NULL" + prepareCriteria(
                 criteria
             )
         return applyParameters(criteria, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
@@ -37,7 +37,7 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
     override fun findById(id: Int): ShoppingList? {
         return entityManager
             .createQuery(
-                "SELECT sl FROM ShoppingList sl WHERE sl.id = :id AND sl.deleted = false",
+                "SELECT sl FROM ShoppingList sl WHERE sl.id = :id",
                 ShoppingList::class.java
             )
             .setParameter("id", id)
@@ -62,6 +62,10 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
         shoppingLists.forEach { save(it) }
     }
 
+    override fun delete(shoppingList: ShoppingList) {
+        entityManager.remove(shoppingList)
+    }
+
     private fun prepareCriteria(criteria: ShoppingListCriteria): String {
         val builder = StringBuilder().append("")
         criteria.userId?.let { builder.append(" AND sl.userId = :userId") }
@@ -75,8 +79,8 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
     }
 
     private fun <T> applyParameters(
-            criteria: ShoppingListCriteria,
-            typedQuery: TypedQuery<T>
+        criteria: ShoppingListCriteria,
+        typedQuery: TypedQuery<T>
     ): TypedQuery<T> {
         var query = typedQuery
         criteria.userId?.let { query = typedQuery.setParameter("userId", it) }

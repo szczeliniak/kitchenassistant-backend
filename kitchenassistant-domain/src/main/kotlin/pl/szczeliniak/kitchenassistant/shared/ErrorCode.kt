@@ -11,13 +11,6 @@ enum class ErrorCode(val message: String, val code: Int) {
     FTP_FILE_CHECK_ERROR("Error while checking for file existence from FTP", 424),
     FTP_FILE_NOT_FOUND("File not found", 404),
     FTP_GENERIC_ERROR("Error on communication with FTP", 424),
-    CATEGORY_ALREADY_REMOVED("Category is already marked as deleted!", 404),
-    INGREDIENT_ALREADY_REMOVED("Ingredient is already marked as deleted!", 404),
-    STEP_ALREADY_REMOVED("Step is already marked as deleted!", 404),
-    RECIPE_ALREADY_REMOVED("Recipe is already marked as deleted!", 404),
-    SHOPPING_LIST_ALREADY_REMOVED("Shopping list is already marked as deleted!", 404),
-    DAY_PLAN_ALREADY_REMOVED("Day plan is already deleted!", 404),
-    SHOPPING_LIST_ITEM_ALREADY_REMOVED("Shopping list item is already marked as deleted!", 404),
     USER_ALREADY_EXISTS("User with email already exists", 409),
     DAY_PLAN_ALREADY_EXISTS("Day plan already exists", 409),
     DAY_PLAN_DATE_TOO_OLD("Day plan cannot be set for past date", 409),
@@ -36,6 +29,5 @@ enum class ErrorCode(val message: String, val code: Int) {
     JWT_EXPIRED_TOKEN("Token is expired", 400),
     JWT_MALFORMED_TOKEN("Token is malformed", 400),
     JWT_GENERIC_ERROR("Unknown token error", 400),
-    INGREDIENT_GROUP_NOT_FOUND("Ingredient group not found", 404),
-    RECIPE_ID_IS_NOT_ASSIGNED_TO_DAY_PLAN("Recipe id is not assigned to day play", 404),
+    INGREDIENT_GROUP_NOT_FOUND("Ingredient group not found", 404)
 }
