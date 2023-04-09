@@ -56,7 +56,7 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         return applyParameters(
             criteria,
             entityManager.createQuery(
-                "SELECT DISTINCT COUNT(dp) FROM DayPlan dp" + prepareCriteria(criteria),
+                "SELECT DISTINCT COUNT(dp) FROM DayPlan dp WHERE dp.id IS NOT NULL" + prepareCriteria(criteria),
                 Long::class.javaObjectType
             )
         ).singleResult

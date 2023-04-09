@@ -23,7 +23,7 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
     }
 
     override fun findAll(criteria: CategoryCriteria): MutableSet<Category> {
-        var query = "SELECT c FROM Category c"
+        var query = "SELECT c FROM Category c WHERE c.id IS NOT NULL"
         if (criteria.userId != null) {
             query += " AND c.userId = :userId"
         }
