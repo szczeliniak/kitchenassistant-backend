@@ -1,12 +1,11 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands.factories
 
 import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientDto
 
 open class IngredientFactory {
 
-    open fun create(dto: NewIngredientDto): Ingredient {
-        return Ingredient(0, dto.name, dto.quantity)
+    open fun create(name: String, quantity: String?): Ingredient {
+        return Ingredient(0, name, quantity)
     }
 
 }

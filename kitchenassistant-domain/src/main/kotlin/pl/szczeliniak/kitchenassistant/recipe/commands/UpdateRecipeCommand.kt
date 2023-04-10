@@ -9,12 +9,12 @@ import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 
 class UpdateRecipeCommand(
-        private val recipeDao: RecipeDao,
-        private val categoryDao: CategoryDao,
-        private val tagDao: TagDao,
-        private val tagFactory: TagFactory,
-        private val authorFactory: AuthorFactory,
-        private val authorDao: AuthorDao
+    private val recipeDao: RecipeDao,
+    private val categoryDao: CategoryDao,
+    private val tagDao: TagDao,
+    private val tagFactory: TagFactory,
+    private val authorFactory: AuthorFactory,
+    private val authorDao: AuthorDao
 ) {
 
     fun execute(id: Int, dto: UpdateRecipeDto): SuccessResponse {

@@ -14,11 +14,14 @@ import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 class RecipeConfiguration {
 
     @Bean
-    fun recipeConverter() = RecipeConverter()
+    fun ingredientGroupConverter() = IngredientGroupConverter()
+
+    @Bean
+    fun recipeConverter(ingredientGroupConverter: IngredientGroupConverter) = RecipeConverter(ingredientGroupConverter)
 
     @Bean
     fun getRecipeQuery(recipeDao: RecipeDao, recipeConverter: RecipeConverter) =
-            GetRecipeQuery(recipeDao, recipeConverter)
+        GetRecipeQuery(recipeDao, recipeConverter)
 
     @Bean
     fun recipeFacade(
@@ -34,7 +37,8 @@ class RecipeConfiguration {
         deleteRecipeFromDayPlansCommand: DeleteRecipeFromDayPlansCommand,
         deleteRecipeFromShoppingListsCommand: DeleteRecipeFromShoppingListsCommand,
         recipeConverter: RecipeConverter,
-        getRecipeQuery: GetRecipeQuery
+        getRecipeQuery: GetRecipeQuery,
+        ingredientGroupConverter: IngredientGroupConverter
     ): RecipeFacade {
         val stepFactory = StepFactory()
         val tagFactory = TagFactory()
@@ -43,43 +47,43 @@ class RecipeConfiguration {
         val ingredientFactory = IngredientFactory()
         val ingredientGroupFactory = IngredientGroupFactory(ingredientFactory)
         val recipeFactory = RecipeFactory(
-                getUserByIdQuery,
-                stepFactory,
-                categoryDao,
-                tagDao,
-                tagFactory,
-                authorDao,
-                authorFactory,
-                ingredientGroupFactory, ftpClient
+            getUserByIdQuery,
+            stepFactory,
+            categoryDao,
+            tagDao,
+            tagFactory,
+            authorDao,
+            authorFactory,
+            ingredientGroupFactory, ftpClient
         )
         return RecipeFacade(
-                getRecipeQuery,
-                GetRecipesQuery(recipeDao, recipeConverter),
-                AddRecipeCommand(recipeDao, recipeFactory),
-                AddCategoryCommand(categoryDao, categoryFactory),
-                DeleteRecipeCommand(
-                        recipeDao,
-                        deleteRecipeFromDayPlansCommand,
-                        deleteRecipeFromShoppingListsCommand
-                ),
-                UpdateRecipeCommand(recipeDao, categoryDao, tagDao, tagFactory, authorFactory, authorDao),
-                AddIngredientCommand(recipeDao, ingredientDao, ingredientFactory),
-                DeleteIngredientCommand(recipeDao),
-                UpdateIngredientCommand(recipeDao),
-                AddStepCommand(recipeDao, stepDao, stepFactory),
-                DeleteStepCommand(recipeDao),
-                DeleteCategoryCommand(categoryDao, recipeDao),
-                UpdateCategoryCommand(categoryDao),
-                UpdateStepCommand(recipeDao),
-                GetCategoriesQuery(categoryDao, recipeConverter),
-                GetTagsQuery(tagDao),
-                MarkRecipeAsFavoriteCommand(recipeDao),
-                GetAuthorsQuery(authorDao),
-                UploadPhotoCommand(ftpClient),
-                DeletePhotoCommand(recipeDao, ftpClient),
-                DownloadPhotoQuery(ftpClient, recipeDao),
-                AddIngredientGroupCommand(recipeDao, ingredientGroupFactory, ingredientGroupDao),
-                DeleteIngredientGroupCommand(recipeDao)
+            getRecipeQuery,
+            GetRecipesQuery(recipeDao, recipeConverter),
+            AddRecipeCommand(recipeDao, recipeFactory),
+            AddCategoryCommand(categoryDao, categoryFactory),
+            DeleteRecipeCommand(
+                recipeDao,
+                deleteRecipeFromDayPlansCommand,
+                deleteRecipeFromShoppingListsCommand
+            ),
+            UpdateRecipeCommand(recipeDao, categoryDao, tagDao, tagFactory, authorFactory, authorDao),
+            AddStepCommand(recipeDao, stepDao, stepFactory),
+            DeleteStepCommand(recipeDao),
+            DeleteCategoryCommand(categoryDao, recipeDao),
+            UpdateCategoryCommand(categoryDao),
+            UpdateStepCommand(recipeDao),
+            GetCategoriesQuery(categoryDao, recipeConverter),
+            GetTagsQuery(tagDao),
+            MarkRecipeAsFavoriteCommand(recipeDao),
+            GetAuthorsQuery(authorDao),
+            UploadPhotoCommand(ftpClient),
+            DeletePhotoCommand(recipeDao, ftpClient),
+            DownloadPhotoQuery(ftpClient, recipeDao),
+            AddIngredientGroupCommand(recipeDao, ingredientGroupFactory, ingredientGroupDao),
+            UpdateIngredientGroupCommand(recipeDao, ingredientGroupDao, ingredientDao, ingredientFactory),
+            DeleteIngredientGroupCommand(recipeDao, ingredientGroupDao, ingredientDao),
+            DeleteIngredientCommand(recipeDao, ingredientDao),
+            GetIngredientGroupQuery(recipeDao, ingredientGroupConverter)
         )
     }
 

@@ -1,8 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe.db
 
 import org.springframework.stereotype.Repository
-import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroup
-import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroupDao
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
@@ -18,6 +16,14 @@ class IngredientGroupRepository(@PersistenceContext private val entityManager: E
             entityManager.merge(ingredientGroup)
         }
         return ingredientGroup
+    }
+
+    @Transactional
+    override fun delete(ingredientGroup: IngredientGroup) {
+        entityManager
+            .createQuery("DELETE FROM IngredientGroup ig WHERE ig.id = :id")
+            .setParameter("id", ingredientGroup.id)
+            .executeUpdate()
     }
 
 }

@@ -11,29 +11,29 @@ import pl.szczeliniak.kitchenassistant.recipe.queries.dto.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 
 open class RecipeFacade(
-        private val getRecipeQuery: GetRecipeQuery,
-        private val getRecipesQuery: GetRecipesQuery,
-        private val addRecipeCommand: AddRecipeCommand,
-        private val addCategoryCommand: AddCategoryCommand,
-        private val deleteRecipeCommand: DeleteRecipeCommand,
-        private val updateRecipeCommand: UpdateRecipeCommand,
-        private val addIngredientCommand: AddIngredientCommand,
-        private val deleteIngredientCommand: DeleteIngredientCommand,
-        private val updateIngredientCommand: UpdateIngredientCommand,
-        private val addStepCommand: AddStepCommand,
-        private val deleteStepCommand: DeleteStepCommand,
-        private val deleteCategoryCommand: DeleteCategoryCommand,
-        private val updateCategoryCommand: UpdateCategoryCommand,
-        private val updateStepCommand: UpdateStepCommand,
-        private val getCategoriesQuery: GetCategoriesQuery,
-        private val getTagsQuery: GetTagsQuery,
-        private val markRecipeAsFavoriteCommand: MarkRecipeAsFavoriteCommand,
-        private val getAuthorsQuery: GetAuthorsQuery,
-        private val uploadPhotoCommand: UploadPhotoCommand,
-        private val deletePhotoCommand: DeletePhotoCommand,
-        private val downloadPhotoQuery: DownloadPhotoQuery,
-        private val addIngredientGroupCommand: AddIngredientGroupCommand,
-        private val deleteIngredientGroupCommand: DeleteIngredientGroupCommand
+    private val getRecipeQuery: GetRecipeQuery,
+    private val getRecipesQuery: GetRecipesQuery,
+    private val addRecipeCommand: AddRecipeCommand,
+    private val addCategoryCommand: AddCategoryCommand,
+    private val deleteRecipeCommand: DeleteRecipeCommand,
+    private val updateRecipeCommand: UpdateRecipeCommand,
+    private val addStepCommand: AddStepCommand,
+    private val deleteStepCommand: DeleteStepCommand,
+    private val deleteCategoryCommand: DeleteCategoryCommand,
+    private val updateCategoryCommand: UpdateCategoryCommand,
+    private val updateStepCommand: UpdateStepCommand,
+    private val getCategoriesQuery: GetCategoriesQuery,
+    private val getTagsQuery: GetTagsQuery,
+    private val markRecipeAsFavoriteCommand: MarkRecipeAsFavoriteCommand,
+    private val getAuthorsQuery: GetAuthorsQuery,
+    private val uploadPhotoCommand: UploadPhotoCommand,
+    private val deletePhotoCommand: DeletePhotoCommand,
+    private val downloadPhotoQuery: DownloadPhotoQuery,
+    private val addIngredientGroupCommand: AddIngredientGroupCommand,
+    private val updateIngredientGroupCommand: UpdateIngredientGroupCommand,
+    private val deleteIngredientGroupCommand: DeleteIngredientGroupCommand,
+    private val deleteIngredientCommand: DeleteIngredientCommand,
+    private val getIngredientGroupQuery: GetIngredientGroupQuery
 ) {
 
     open fun findById(recipeId: Int): RecipeResponse {
@@ -72,21 +72,17 @@ open class RecipeFacade(
         return addIngredientGroupCommand.execute(recipeId, dto)
     }
 
+    fun updateIngredientGroup(
+        recipeId: Int,
+        ingredientGroupId: Int,
+        request: UpdateIngredientGroupDto
+    ): SuccessResponse {
+        return updateIngredientGroupCommand.execute(recipeId, ingredientGroupId, request)
+
+    }
+
     fun deleteIngredientGroup(recipeId: Int, ingredientGroupId: Int): SuccessResponse {
         return deleteIngredientGroupCommand.execute(recipeId, ingredientGroupId)
-    }
-
-    fun addIngredient(recipeId: Int, ingredientGroupId: Int, dto: NewIngredientDto): SuccessResponse {
-        return addIngredientCommand.execute(recipeId, ingredientGroupId, dto)
-    }
-
-    fun updateIngredient(
-            recipeId: Int,
-            ingredientGroupId: Int,
-            ingredientId: Int,
-            dto: UpdateIngredientDto
-    ): SuccessResponse {
-        return updateIngredientCommand.execute(recipeId, ingredientGroupId, ingredientId, dto)
     }
 
     fun deleteIngredient(recipeId: Int, ingredientGroupId: Int, ingredientId: Int): SuccessResponse {
@@ -131,6 +127,10 @@ open class RecipeFacade(
 
     fun deletePhoto(recipeId: Int): SuccessResponse {
         return deletePhotoCommand.execute(recipeId)
+    }
+
+    fun getIngredientGroup(recipeId: Int, ingredientGroupId: Int): IngredientGroupResponse {
+        return getIngredientGroupQuery.execute(recipeId, ingredientGroupId)
     }
 
 }
