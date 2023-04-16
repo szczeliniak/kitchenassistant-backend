@@ -1,5 +1,6 @@
 package pl.szczeliniak.kitchenassistant.user
 
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.user.commands.dto.*
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
@@ -12,11 +13,13 @@ class UserController(
     private val userFacade: UserFacade
 ) {
 
+    @PreAuthorize("@authorizationService.isOwner(#id)")
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Int): UserResponse {
         return userFacade.findById(id)
     }
 
+    @PreAuthorize("@authorizationService.isAdmin()")
     @GetMapping
     fun findAll(
         @RequestParam(required = false) page: Long?,

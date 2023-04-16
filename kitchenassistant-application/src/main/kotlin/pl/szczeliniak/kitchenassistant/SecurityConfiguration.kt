@@ -6,9 +6,11 @@ import io.jsonwebtoken.JwtParser
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -18,15 +20,24 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
+import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
+import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
+import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
+import pl.szczeliniak.kitchenassistant.security.AuthorizationService
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
+import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Configuration
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true)
 class SecurityConfiguration(
         private val objectMapper: ObjectMapper,
         private val requestContext: RequestContext,
@@ -36,15 +47,15 @@ class SecurityConfiguration(
 
     companion object {
         val PATH_WITHOUT_AUTHORIZATION = listOf(
-            "/users/login/**",
-            "/users/register/**",
-            "/v2/api-docs",
-            "/configuration/ui",
-            "/swagger-resources/**",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**",
-            "/"
+                "/users/login/**",
+                "/users/register/**",
+                "/v2/api-docs",
+                "/configuration/ui",
+                "/swagger-resources/**",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/webjars/**",
+                "/"
         )
     }
 
@@ -53,12 +64,12 @@ class SecurityConfiguration(
             http.csrf().disable()
             http.cors()
             http.authorizeRequests().antMatchers(*PATH_WITHOUT_AUTHORIZATION.toTypedArray())
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
             http.addFilterBefore(
-                JwtAuthorizationFilter(),
-                BasicAuthenticationFilter::class.java
+                    JwtAuthorizationFilter(),
+                    BasicAuthenticationFilter::class.java
             )
             http.httpBasic().authenticationEntryPoint(authenticationEntryPoint())
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -82,9 +93,9 @@ class SecurityConfiguration(
         private var jwtParser: JwtParser = Jwts.parser().setSigningKey(secret)
 
         override fun doFilterInternal(
-            request: HttpServletRequest,
-            response: HttpServletResponse,
-            filterChain: FilterChain
+                request: HttpServletRequest,
+                response: HttpServletResponse,
+                filterChain: FilterChain
         ) {
             if (PATH_WITHOUT_AUTHORIZATION.none { AntPathMatcher().match(it, request.requestURI) }) {
                 try {
@@ -117,5 +128,12 @@ class SecurityConfiguration(
         }
 
     }
+
+    @Bean
+    fun authorizationService(requestContext: RequestContext,
+                             recipeDao: RecipeDao,
+                             categoryDao: CategoryDao,
+                             dayPlanDao: DayPlanDao,
+                             shoppingListDao: ShoppingListDao) = AuthorizationService(requestContext, recipeDao, categoryDao, dayPlanDao, shoppingListDao)
 
 }
