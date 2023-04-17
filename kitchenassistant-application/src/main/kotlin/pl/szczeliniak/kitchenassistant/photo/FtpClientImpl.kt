@@ -127,7 +127,7 @@ class FtpClientImpl(
         val ftpClient = FTPClient()
         ftpClient.connect(host, port)
         ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE)
-        ftpClient.enterLocalPassiveMode()
+        ftpClient.enterRemotePassiveMode()
         ftpClient.login(user, password)
         if (!FTPReply.isPositiveCompletion(ftpClient.replyCode)) {
             close(ftpClient)
