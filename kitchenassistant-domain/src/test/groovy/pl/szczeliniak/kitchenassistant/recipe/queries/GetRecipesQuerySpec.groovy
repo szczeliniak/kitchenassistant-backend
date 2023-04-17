@@ -22,7 +22,7 @@ class GetRecipesQuerySpec extends Specification {
 
     def "should return recipe"() {
         given:
-        def criteria = new RecipeCriteria(false, 1, 1, '', '')
+        def criteria = new RecipeCriteria(false, 1, 1, '', '', null)
         def recipe = recipe()
         def recipeDto = recipeDto()
         recipeDao.findAll(criteria, 40, 10) >> Collections.singletonList(recipe)

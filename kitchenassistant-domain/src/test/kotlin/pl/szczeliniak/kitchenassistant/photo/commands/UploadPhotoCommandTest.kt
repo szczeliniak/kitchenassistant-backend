@@ -1,11 +1,12 @@
-package pl.szczeliniak.kitchenassistant.recipe.commands
+package pl.szczeliniak.kitchenassistant.photo.commands
 
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
+import pl.szczeliniak.kitchenassistant.photo.commands.UploadPhotoCommand
 import pl.szczeliniak.kitchenassistant.recipe.FtpClient
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UploadPhotoResponse
+import pl.szczeliniak.kitchenassistant.photo.commands.dto.UploadPhotoResponse
 
 internal class UploadPhotoCommandTest : JunitBaseClass() {
 

@@ -1,0 +1,1 @@
+CREATE INDEX recipes_photo_name on recipes (photo_name);

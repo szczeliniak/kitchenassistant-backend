@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.recipe.queries.dto
+package pl.szczeliniak.kitchenassistant.photo.queries.dto
 
 import pl.szczeliniak.kitchenassistant.recipe.SupportedMediaType
 
@@ -11,9 +11,7 @@ data class GetPhotoResponse(val mediaType: SupportedMediaType, val body: ByteArr
         other as GetPhotoResponse
 
         if (mediaType != other.mediaType) return false
-        if (!body.contentEquals(other.body)) return false
-
-        return true
+        return body.contentEquals(other.body)
     }
 
     override fun hashCode(): Int {

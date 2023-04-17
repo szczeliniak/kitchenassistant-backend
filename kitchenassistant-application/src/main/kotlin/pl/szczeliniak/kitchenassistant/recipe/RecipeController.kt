@@ -1,12 +1,9 @@
 package pl.szczeliniak.kitchenassistant.recipe
 
 import org.hibernate.validator.constraints.Length
-import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.*
 import pl.szczeliniak.kitchenassistant.recipe.db.AuthorCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.CategoryCriteria
@@ -30,13 +27,13 @@ class RecipeController(private val recipeFacade: RecipeFacade) {
     @PreAuthorize("@authorizationService.isOwner(#userId)")
     @GetMapping
     fun findAll(
-        @RequestParam(required = false) userId: Int?,
-        @RequestParam(required = false) categoryId: Int?,
-        @RequestParam(required = false) @Length(max = 50) name: String?,
-        @RequestParam(required = false) @Length(max = 50) tag: String?,
-        @RequestParam(required = false) page: Long?,
-        @RequestParam(required = false) limit: Int?,
-        @RequestParam(required = true, defaultValue = "false") onlyFavorites: Boolean
+            @RequestParam(required = false) userId: Int?,
+            @RequestParam(required = false) categoryId: Int?,
+            @RequestParam(required = false) @Length(max = 50) name: String?,
+            @RequestParam(required = false) @Length(max = 50) tag: String?,
+            @RequestParam(required = false) page: Long?,
+            @RequestParam(required = false) limit: Int?,
+            @RequestParam(required = true, defaultValue = "false") onlyFavorites: Boolean
     ): RecipesResponse {
         return recipeFacade.findAll(page, limit, RecipeCriteria(onlyFavorites, userId, categoryId, name, tag))
     }
@@ -67,9 +64,9 @@ class RecipeController(private val recipeFacade: RecipeFacade) {
     @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @PutMapping("/{recipeId}/steps/{stepId}")
     fun updateStep(
-        @PathVariable recipeId: Int,
-        @PathVariable stepId: Int,
-        @Valid @RequestBody dto: UpdateStepDto
+            @PathVariable recipeId: Int,
+            @PathVariable stepId: Int,
+            @Valid @RequestBody dto: UpdateStepDto
     ): SuccessResponse {
         return recipeFacade.updateStep(recipeId, stepId, dto)
     }
@@ -83,8 +80,8 @@ class RecipeController(private val recipeFacade: RecipeFacade) {
     @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @PostMapping("/{recipeId}/ingredientGroups")
     fun addIngredientGroup(
-        @PathVariable recipeId: Int,
-        @Valid @RequestBody dto: NewIngredientGroupDto
+            @PathVariable recipeId: Int,
+            @Valid @RequestBody dto: NewIngredientGroupDto
     ): SuccessResponse {
         return recipeFacade.addIngredientGroup(recipeId, dto)
     }
@@ -92,8 +89,8 @@ class RecipeController(private val recipeFacade: RecipeFacade) {
     @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @DeleteMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}")
     fun deleteIngredientGroup(
-        @PathVariable recipeId: Int,
-        @PathVariable ingredientGroupId: Int
+            @PathVariable recipeId: Int,
+            @PathVariable ingredientGroupId: Int
     ): SuccessResponse {
         return recipeFacade.deleteIngredientGroup(recipeId, ingredientGroupId)
     }
@@ -101,9 +98,9 @@ class RecipeController(private val recipeFacade: RecipeFacade) {
     @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @PutMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}")
     fun updateIngredientGroup(
-        @PathVariable recipeId: Int,
-        @PathVariable ingredientGroupId: Int,
-        @Valid @RequestBody request: UpdateIngredientGroupDto
+            @PathVariable recipeId: Int,
+            @PathVariable ingredientGroupId: Int,
+            @Valid @RequestBody request: UpdateIngredientGroupDto
     ): SuccessResponse {
         return recipeFacade.updateIngredientGroup(recipeId, ingredientGroupId, request)
     }
@@ -111,8 +108,8 @@ class RecipeController(private val recipeFacade: RecipeFacade) {
     @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @GetMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}")
     fun getIngredientGroup(
-        @PathVariable recipeId: Int,
-        @PathVariable ingredientGroupId: Int
+            @PathVariable recipeId: Int,
+            @PathVariable ingredientGroupId: Int
     ): IngredientGroupResponse {
         return recipeFacade.getIngredientGroup(recipeId, ingredientGroupId)
     }
@@ -120,9 +117,9 @@ class RecipeController(private val recipeFacade: RecipeFacade) {
     @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @DeleteMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}")
     fun deleteIngredient(
-        @PathVariable recipeId: Int,
-        @PathVariable ingredientGroupId: Int,
-        @PathVariable ingredientId: Int
+            @PathVariable recipeId: Int,
+            @PathVariable ingredientGroupId: Int,
+            @PathVariable ingredientId: Int
     ): SuccessResponse {
         return recipeFacade.deleteIngredient(recipeId, ingredientGroupId, ingredientId)
     }
@@ -141,8 +138,8 @@ class RecipeController(private val recipeFacade: RecipeFacade) {
     @PreAuthorize("@authorizationService.isOwner(#userId)")
     @GetMapping("/tags")
     fun getTags(
-        @RequestParam(required = false) userId: Int?,
-        @RequestParam(required = false) name: String?
+            @RequestParam(required = false) userId: Int?,
+            @RequestParam(required = false) name: String?
     ): TagsResponse {
         return recipeFacade.getTags(TagCriteria(name, userId))
     }
@@ -150,8 +147,8 @@ class RecipeController(private val recipeFacade: RecipeFacade) {
     @PreAuthorize("@authorizationService.isOwner(#userId)")
     @GetMapping("/authors")
     fun getAuthors(
-        @RequestParam(required = false) userId: Int?,
-        @RequestParam(required = false) name: String?
+            @RequestParam(required = false) userId: Int?,
+            @RequestParam(required = false) name: String?
     ): AuthorsResponse {
         return recipeFacade.getAuthors(AuthorCriteria(name, userId))
     }
@@ -172,26 +169,6 @@ class RecipeController(private val recipeFacade: RecipeFacade) {
     @PutMapping("/{recipeId}/favorite/{isFavorite}")
     fun markAsFavorite(@PathVariable recipeId: Int, @PathVariable isFavorite: Boolean): SuccessResponse {
         return recipeFacade.markAsFavorite(recipeId, isFavorite)
-    }
-
-    @PostMapping("/photo")
-    fun uploadPhoto(@RequestParam("file") file: MultipartFile): UploadPhotoResponse {
-        return recipeFacade.uploadPhoto(file.originalFilename ?: file.name, file.bytes)
-    }
-
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
-    @GetMapping("/{recipeId}/photo")
-    fun downloadPhoto(@PathVariable recipeId: Int): ResponseEntity<ByteArray> {
-        val response = recipeFacade.downloadPhoto(recipeId)
-        return ResponseEntity.ok()
-            .contentType(MediaType.parseMediaType(response.mediaType.mimeType))
-            .body(response.body)
-    }
-
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
-    @DeleteMapping("/{recipeId}/photo")
-    fun deletePhoto(@PathVariable recipeId: Int): SuccessResponse {
-        return recipeFacade.deletePhoto(recipeId)
     }
 
 }

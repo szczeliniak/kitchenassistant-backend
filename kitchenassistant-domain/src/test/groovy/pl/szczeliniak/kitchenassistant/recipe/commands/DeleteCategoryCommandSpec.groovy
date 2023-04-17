@@ -21,7 +21,7 @@ class DeleteCategoryCommandSpec extends Specification {
         def recipe = recipe()
 
         categoryDao.findById(1) >> category
-        recipeDao.findAll(new RecipeCriteria(false, 3, 1, null, null), null, null) >> List.of(recipe)
+        recipeDao.findAll(new RecipeCriteria(false, 3, 1, null, null, null), null, null) >> List.of(recipe)
 
         when:
         def result = deleteCategoryCommand.execute(1)

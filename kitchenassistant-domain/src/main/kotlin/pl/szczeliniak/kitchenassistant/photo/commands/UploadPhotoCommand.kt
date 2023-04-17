@@ -1,7 +1,7 @@
-package pl.szczeliniak.kitchenassistant.recipe.commands
+package pl.szczeliniak.kitchenassistant.photo.commands
 
 import pl.szczeliniak.kitchenassistant.recipe.FtpClient
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UploadPhotoResponse
+import pl.szczeliniak.kitchenassistant.photo.commands.dto.UploadPhotoResponse
 
 class UploadPhotoCommand(
         private val ftpClient: FtpClient
