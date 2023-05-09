@@ -1,5 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
+import pl.szczeliniak.kitchenassistant.recipe.FtpClient
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateRecipeDto
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.AuthorFactory
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.TagFactory
@@ -19,9 +20,10 @@ class UpdateRecipeCommandSpec extends Specification {
     def tagFactory = Mock(TagFactory)
     def authorDao = Mock(AuthorDao)
     def authorFactory = Mock(AuthorFactory)
+    def ftpClient = Mock(FtpClient)
 
     @Subject
-    def updateRecipeCommand = new UpdateRecipeCommand(recipeDao, categoryDao, tagDao, tagFactory, authorFactory, authorDao)
+    def updateRecipeCommand = new UpdateRecipeCommand(recipeDao, categoryDao, tagDao, tagFactory, authorFactory, authorDao, ftpClient)
 
     def 'should update recipe'() {
         given:
@@ -43,6 +45,7 @@ class UpdateRecipeCommandSpec extends Specification {
         tagDao.save(newTag) >> newTag
         authorFactory.create("AUTHOR", 4) >> author
         authorDao.save(author) >> author
+        ftpClient.exists("PHOTO_NAME") >> true
 
         when:
         def result = updateRecipeCommand.execute(1, updateRecipeDto())
@@ -54,11 +57,12 @@ class UpdateRecipeCommandSpec extends Specification {
         recipe.source == "SOURCE"
         recipe.category == newCategory
         recipe.tags == Set.of(assignedTag, existingTag, newTag)
+        recipe.photoName == "PHOTO_NAME"
         result == new SuccessResponse(1)
     }
 
     private static UpdateRecipeDto updateRecipeDto() {
-        return new UpdateRecipeDto("NAME", 3, "DESC", "AUTHOR", "SOURCE", Set.of("ASSIGNED_TAG", "EXISTING_TAG", "NEW_TAG",))
+        return new UpdateRecipeDto("NAME", 3, "DESC", "AUTHOR", "SOURCE", Set.of("ASSIGNED_TAG", "EXISTING_TAG", "NEW_TAG"), "PHOTO_NAME")
     }
 
     private static Recipe recipe(Set<Tag> tags) {

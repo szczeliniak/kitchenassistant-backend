@@ -66,7 +66,7 @@ class RecipeConfiguration {
                         deleteRecipeFromDayPlansCommand,
                         deleteRecipeFromShoppingListsCommand
                 ),
-                UpdateRecipeCommand(recipeDao, categoryDao, tagDao, tagFactory, authorFactory, authorDao),
+                UpdateRecipeCommand(recipeDao, categoryDao, tagDao, tagFactory, authorFactory, authorDao, ftpClient),
                 AddStepCommand(recipeDao, stepDao, stepFactory),
                 DeleteStepCommand(recipeDao),
                 DeleteCategoryCommand(categoryDao, recipeDao),
