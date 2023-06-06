@@ -1,5 +1,6 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.db
 
+import pl.szczeliniak.kitchenassistant.user.db.User
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import javax.persistence.*
@@ -11,7 +12,9 @@ data class ShoppingList(
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shopping_list_id_generator")
     @SequenceGenerator(name = "shopping_list_id_generator", sequenceName = "seq_shopping_list_id", allocationSize = 1)
     var id: Int = 0,
-    var userId: Int,
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    var user: User,
     var name: String,
     var description: String? = null,
     var date: LocalDate? = null,

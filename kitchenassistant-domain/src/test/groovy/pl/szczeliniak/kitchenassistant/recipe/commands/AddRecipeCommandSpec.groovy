@@ -6,6 +6,7 @@ import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.user.db.User
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -28,7 +29,7 @@ class AddRecipeCommandSpec extends Specification {
         def result = addRecipeCommand.execute(dto)
 
         then:
-        result == new SuccessResponse(1)
+        result == new SuccessResponse(2)
     }
 
     private static NewRecipeDto newRecipeDto() {
@@ -36,7 +37,7 @@ class AddRecipeCommandSpec extends Specification {
     }
 
     private static Recipe recipe() {
-        return new Recipe(1, "", 2, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(2, "", new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now()), "", new Author(2, "", new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now()), ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

@@ -1,42 +1,73 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-import pl.szczeliniak.kitchenassistant.dayplan.commands.DeleteRecipeFromDayPlansCommand
+import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlan
+import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
+import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.DeleteRecipeFromShoppingListsCommand
+import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
+import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListCriteria
+import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
+import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItem
+import pl.szczeliniak.kitchenassistant.user.db.User
 import spock.lang.Specification
 import spock.lang.Subject
 
+import java.time.LocalDate
 import java.time.ZonedDateTime
 
 class DeleteRecipeCommandSpec extends Specification {
 
     def recipeDao = Mock(RecipeDao)
-    def deassignRecipeFromShoppingListsCommand = Mock(DeleteRecipeFromShoppingListsCommand)
-    def deassignRecipesFromDayPlansCommand = Mock(DeleteRecipeFromDayPlansCommand)
+    def shoppingListDao = Mock(ShoppingListDao)
+    def dayPlanDao = Mock(DayPlanDao)
 
     @Subject
-    def deleteRecipeCommand = new DeleteRecipeCommand(recipeDao, deassignRecipesFromDayPlansCommand, deassignRecipeFromShoppingListsCommand)
+    def deleteRecipeCommand = new DeleteRecipeCommand(recipeDao, dayPlanDao, shoppingListDao)
 
     def 'should delete recipe'() {
         given:
-        def recipe = recipe()
+        def user = user()
+        def recipe = recipe(user)
+        def dayPlan = dayPlan(user)
+        def shoppingListItem = shoppingListItem()
+        def shoppingList = shoppingList(shoppingListItem, user)
         recipeDao.findById(1) >> recipe
-
+        dayPlanDao.findAll(new DayPlanCriteria(null, null, 1, null, null, null), null, null) >> Set.of(dayPlan)
+        shoppingListDao.findAll(new ShoppingListCriteria(null, null, null, null, 1, null, null), null, null) >> Set.of(shoppingList)
         when:
         def result = deleteRecipeCommand.execute(1)
 
         then:
         result == new SuccessResponse(1)
-        1 * deassignRecipeFromShoppingListsCommand.execute(1)
-        1 * deassignRecipesFromDayPlansCommand.execute(1)
         1 * recipeDao.delete(recipe)
+        1 * dayPlanDao.save(dayPlan)
+        1 * shoppingListDao.save(Set.of(shoppingList))
+        shoppingListItem.recipeId == null
+        dayPlan.recipeIds.size() == 1
     }
 
-    private static Recipe recipe() {
-        return new Recipe(1, '', 2, '', new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), '', false, null, Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
+    private static Recipe recipe(User user) {
+        return new Recipe(1, '', user, '', new Author(2, "", user, ZonedDateTime.now(), ZonedDateTime.now()), '', false, null, Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
+    }
+
+    private static DayPlan dayPlan(User user) {
+        return new DayPlan(0, user, LocalDate.now(), new HashSet<Integer>(Arrays.asList(1, 2)), false, false, ZonedDateTime.now(), ZonedDateTime.now())
+    }
+
+    private static ShoppingListItem shoppingListItem() {
+        return new ShoppingListItem(0, "", "", 1, 1, false, ZonedDateTime.now(), ZonedDateTime.now())
+    }
+
+    private static ShoppingList shoppingList(ShoppingListItem shoppingListItem, User user) {
+        return new ShoppingList(0, user, "", "", LocalDate.now(), Set.of(shoppingListItem), false, false, ZonedDateTime.now(), ZonedDateTime.now())
+    }
+
+
+    private static User user() {
+        return new User(2, "", "", "", ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

@@ -38,7 +38,7 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
     override fun findByName(name: String, userId: Int): Tag? {
         return entityManager
             .createQuery(
-                "SELECT t FROM Tag t WHERE t.name = :name AND t.userId = :userId",
+                "SELECT t FROM Tag t WHERE t.name = :name AND t.user.id = :userId",
                 Tag::class.java
             )
             .setParameter("name", name)
@@ -55,7 +55,7 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
             query += " AND LOWER(t.name) LIKE (:name)"
         }
         if (criteria.userId != null) {
-            query += " AND t.userId = :userId"
+            query += " AND t.user.id = :userId"
         }
 
         var typedQuery = entityManager.createQuery(query, Tag::class.java)

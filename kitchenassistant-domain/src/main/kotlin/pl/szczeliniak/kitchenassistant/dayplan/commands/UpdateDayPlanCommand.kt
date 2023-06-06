@@ -12,7 +12,7 @@ class UpdateDayPlanCommand(private val dayPlanDao: DayPlanDao) {
     fun execute(dayPlanId: Int, request: UpdateDayPlanDto): SuccessResponse {
         val dayPlan = dayPlanDao.findById(dayPlanId) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
 
-        dayPlanDao.findAll(DayPlanCriteria(dayPlan.userId, null, null, request.date, request.date, null))
+        dayPlanDao.findAll(DayPlanCriteria(dayPlan.user.id, null, null, request.date, request.date, null))
                 .filter { dp -> dp.id != dayPlan.id}
                 .any { throw KitchenAssistantException(ErrorCode.DAY_PLAN_ALREADY_EXISTS) }
 

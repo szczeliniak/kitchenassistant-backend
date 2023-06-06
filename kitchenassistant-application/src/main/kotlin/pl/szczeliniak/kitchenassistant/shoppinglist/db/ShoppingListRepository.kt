@@ -68,7 +68,7 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
 
     private fun prepareCriteria(criteria: ShoppingListCriteria): String {
         val builder = StringBuilder().append("")
-        criteria.userId?.let { builder.append(" AND sl.userId = :userId") }
+        criteria.userId?.let { builder.append(" AND sl.user.id = :userId") }
         criteria.archived?.let { builder.append(" AND sl.archived = :archived") }
         criteria.name?.let { builder.append(" AND LOWER(sl.name) LIKE LOWER(:name)") }
         criteria.date?.let { builder.append(" AND sl.date = :date") }

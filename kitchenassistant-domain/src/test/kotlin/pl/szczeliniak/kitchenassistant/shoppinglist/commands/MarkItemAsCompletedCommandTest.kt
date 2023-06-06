@@ -10,6 +10,7 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItemDao
+import pl.szczeliniak.kitchenassistant.user.db.User
 
 internal class MarkItemAsCompletedCommandTest : JunitBaseClass() {
 
@@ -40,7 +41,7 @@ internal class MarkItemAsCompletedCommandTest : JunitBaseClass() {
 
     private fun shoppingList(shoppingListItem: ShoppingListItem): ShoppingList {
         return ShoppingList(
-            userId = 4,
+            user = User(id = 4, email = "", name = ""),
             name = "",
             items = mutableSetOf(shoppingListItem)
         )

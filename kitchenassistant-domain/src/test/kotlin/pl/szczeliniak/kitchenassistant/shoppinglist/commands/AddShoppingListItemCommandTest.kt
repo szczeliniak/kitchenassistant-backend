@@ -5,12 +5,13 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListItemFactory
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItemDao
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListItemFactory
+import pl.szczeliniak.kitchenassistant.user.db.User
 
 internal class AddShoppingListItemCommandTest : JunitBaseClass() {
 
@@ -55,7 +56,7 @@ internal class AddShoppingListItemCommandTest : JunitBaseClass() {
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
             id = 1,
-            userId = 0,
+            user = User(id = 0, email = "", name = ""),
             name = ""
         )
     }

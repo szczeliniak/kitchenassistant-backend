@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.recipe.commands
 
 import pl.szczeliniak.kitchenassistant.recipe.db.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.user.db.User
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -32,7 +33,7 @@ class DeleteIngredientGroupCommandSpec extends Specification {
     }
 
     private static Recipe recipe(IngredientGroup ingredientGroup) {
-        return new Recipe(1, "", 1, "", null, "", false, null, new HashSet<>(Collections.singleton(ingredientGroup)), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(1, "", new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now()), "", null, "", false, null, new HashSet<>(Collections.singleton(ingredientGroup)), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static IngredientGroup ingredientGroup(Ingredient ingredient) {

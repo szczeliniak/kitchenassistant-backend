@@ -1,5 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe.db
 
+import pl.szczeliniak.kitchenassistant.user.db.User
 import java.time.ZonedDateTime
 import javax.persistence.*
 
@@ -11,7 +12,9 @@ class Recipe(
     @SequenceGenerator(name = "recipe_id_generator", sequenceName = "seq_recipe_id", allocationSize = 1)
     var id: Int = 0,
     var name: String,
-    var userId: Int,
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    var user: User,
     var description: String? = null,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")

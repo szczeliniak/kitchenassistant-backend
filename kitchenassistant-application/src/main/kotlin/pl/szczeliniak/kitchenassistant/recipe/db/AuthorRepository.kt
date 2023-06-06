@@ -38,7 +38,7 @@ class AuthorRepository(@PersistenceContext private val entityManager: EntityMana
     override fun findByName(name: String, userId: Int): Author? {
         return entityManager
                 .createQuery(
-                        "SELECT r FROM Author r WHERE r.name = :name AND r.userId = :userId",
+                        "SELECT r FROM Author r WHERE r.name = :name AND r.user.id = :userId",
                         Author::class.java
                 )
                 .setParameter("name", name)
@@ -55,7 +55,7 @@ class AuthorRepository(@PersistenceContext private val entityManager: EntityMana
             query += " AND LOWER(r.name) LIKE (:name)"
         }
         if (criteria.userId != null) {
-            query += " AND r.userId = :userId"
+            query += " AND r.user.id = :userId"
         }
 
         var typedQuery = entityManager.createQuery(query, Author::class.java)

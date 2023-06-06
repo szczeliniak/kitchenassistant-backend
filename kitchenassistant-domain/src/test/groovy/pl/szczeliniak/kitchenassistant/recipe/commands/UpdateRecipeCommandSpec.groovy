@@ -6,6 +6,7 @@ import pl.szczeliniak.kitchenassistant.recipe.commands.factories.AuthorFactory
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.TagFactory
 import pl.szczeliniak.kitchenassistant.recipe.db.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.user.db.User
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -27,23 +28,24 @@ class UpdateRecipeCommandSpec extends Specification {
 
     def 'should update recipe'() {
         given:
-        def tagToRemove = tag(10, "TAG_TO_REMOVE")
-        def assignedTag = tag(11, "ASSIGNED_TAG")
-        def newTag = tag(12, "NEW_TAG")
-        def existingTag = tag(13, "EXISTING_TAG")
-        def recipe = recipe(new HashSet<Tag>(List.of(tagToRemove, assignedTag)))
-        def newCategory = category(3)
-        def author = author()
+        def user = user()
+        def tagToRemove = tag(10, "TAG_TO_REMOVE", user)
+        def assignedTag = tag(11, "ASSIGNED_TAG", user)
+        def newTag = tag(12, "NEW_TAG", user)
+        def existingTag = tag(13, "EXISTING_TAG", user)
+        def recipe = recipe(new HashSet<Tag>(List.of(tagToRemove, assignedTag)), user)
+        def newCategory = category(3, user)
+        def author = author(user)
 
         recipeDao.findById(1) >> recipe
         recipeDao.save(recipe) >> recipe
         categoryDao.findById(3) >> newCategory
         tagDao.findByName("EXISTING_TAG", 4) >> existingTag
         tagDao.findByName("NEW_TAG", 4) >> null
-        tagFactory.create("NEW_TAG", 4) >> newTag
+        tagFactory.create("NEW_TAG", user) >> newTag
         authorDao.findByName("AUTHOR", 4) >> null
         tagDao.save(newTag) >> newTag
-        authorFactory.create("AUTHOR", 4) >> author
+        authorFactory.create("AUTHOR", user) >> author
         authorDao.save(author) >> author
         ftpClient.exists("PHOTO_NAME") >> true
 
@@ -58,6 +60,7 @@ class UpdateRecipeCommandSpec extends Specification {
         recipe.category == newCategory
         recipe.tags == Set.of(assignedTag, existingTag, newTag)
         recipe.photoName == "PHOTO_NAME"
+        recipe.user == user
         result == new SuccessResponse(1)
     }
 
@@ -65,22 +68,26 @@ class UpdateRecipeCommandSpec extends Specification {
         return new UpdateRecipeDto("NAME", 3, "DESC", "AUTHOR", "SOURCE", Set.of("ASSIGNED_TAG", "EXISTING_TAG", "NEW_TAG"), "PHOTO_NAME")
     }
 
-    private static Recipe recipe(Set<Tag> tags) {
-        return new Recipe(1, "", 4, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, category(0), Collections.emptySet(),
+    private static Recipe recipe(Set<Tag> tags, User user) {
+        return new Recipe(1, "", user, "", new Author(2, "", user, ZonedDateTime.now(), ZonedDateTime.now()), "", false, category(0, user), Collections.emptySet(),
                 Collections.emptySet(), null, tags, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
-    static Category category(Integer id) {
-        return new Category(id, "", 3, 4,
+    private static Category category(Integer id, User user) {
+        return new Category(id, "", user, 4,
                 ZonedDateTime.of(2000, 1, 1, 1, 1, 0, 0, ZoneId.systemDefault()),
                 ZonedDateTime.of(2000, 1, 1, 1, 2, 0, 0, ZoneId.systemDefault()))
     }
 
-    static Tag tag(Integer id, String name) {
-        return new Tag(id, name, 4, ZonedDateTime.now(), ZonedDateTime.now())
+    private static Tag tag(Integer id, String name, User user) {
+        return new Tag(id, name, user, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
-    static Author author() {
-        return new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now())
+    private static Author author(User user) {
+        return new Author(2, "", user, ZonedDateTime.now(), ZonedDateTime.now())
+    }
+
+    private static User user() {
+        return new User(4, "", "", "", ZonedDateTime.now(), ZonedDateTime.now())
     }
 }

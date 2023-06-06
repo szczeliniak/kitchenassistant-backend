@@ -1,5 +1,6 @@
 package pl.szczeliniak.kitchenassistant.dayplan.db
 
+import pl.szczeliniak.kitchenassistant.user.db.User
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import javax.persistence.*
@@ -11,7 +12,9 @@ data class DayPlan(
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "day_plan_id_generator")
     @SequenceGenerator(name = "day_plan_id_generator", sequenceName = "seq_day_plan_id", allocationSize = 1)
     var id: Int = 0,
-    var userId: Int,
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    var user: User,
     var date: LocalDate,
     @ElementCollection
     @CollectionTable(name = "day_plan_recipe_ids", joinColumns = [JoinColumn(name = "day_plan_id")])

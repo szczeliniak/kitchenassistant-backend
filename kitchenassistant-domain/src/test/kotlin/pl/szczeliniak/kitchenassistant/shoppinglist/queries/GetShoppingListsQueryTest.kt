@@ -10,6 +10,7 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListCriteria
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListsResponse
+import pl.szczeliniak.kitchenassistant.user.db.User
 import java.time.LocalDate
 import java.time.Month
 import java.util.*
@@ -45,7 +46,7 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
 
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
-            userId = 1,
+            user = User(id = 1, email = "", name = ""),
             name = "",
             description = "",
             items = Collections.emptySet()

@@ -10,30 +10,28 @@ import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlanQuery
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlansQuery
 import pl.szczeliniak.kitchenassistant.recipe.RecipeFacade
 import pl.szczeliniak.kitchenassistant.recipe.queries.GetRecipeQuery
+import pl.szczeliniak.kitchenassistant.user.db.UserDao
 
 @Configuration
 class DayPlanConfiguration {
 
     @Bean
-    fun deleteRecipesFromDayPlansCommand(dayPlanDao: DayPlanDao): DeleteRecipeFromDayPlansCommand =
-            DeleteRecipeFromDayPlansCommand(dayPlanDao)
-
-    @Bean
     fun dayPlanFacade(
-            dayPlanDao: DayPlanDao,
-            recipeFacade: RecipeFacade,
-            getRecipeQuery: GetRecipeQuery
+        dayPlanDao: DayPlanDao,
+        recipeFacade: RecipeFacade,
+        getRecipeQuery: GetRecipeQuery,
+        userDao: UserDao
     ): DayPlanFacade {
         val dayPlanConverter = DayPlanConverter(recipeFacade)
         return DayPlanFacade(
-                GetDayPlanQuery(dayPlanDao, dayPlanConverter),
-                GetDayPlansQuery(dayPlanDao, dayPlanConverter),
-                AddRecipeToDayPlanCommand(dayPlanDao, recipeFacade, DayPlanFactory()),
-                DeleteRecipeFromDayPlanCommand(dayPlanDao),
-                DeleteDayPlanCommand(dayPlanDao),
-                ArchiveDayPlanCommand(dayPlanDao),
-                UpdateDayPlanCommand(dayPlanDao),
-                ArchiveDayPlansCommand(dayPlanDao)
+            GetDayPlanQuery(dayPlanDao, dayPlanConverter),
+            GetDayPlansQuery(dayPlanDao, dayPlanConverter),
+            AddRecipeToDayPlanCommand(dayPlanDao, recipeFacade, DayPlanFactory(userDao)),
+            DeleteRecipeFromDayPlanCommand(dayPlanDao),
+            DeleteDayPlanCommand(dayPlanDao),
+            ArchiveDayPlanCommand(dayPlanDao),
+            UpdateDayPlanCommand(dayPlanDao),
+            ArchiveDayPlansCommand(dayPlanDao)
         )
     }
 

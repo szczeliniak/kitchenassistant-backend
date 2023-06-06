@@ -4,6 +4,7 @@ import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewStepDto
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.StepFactory
 import pl.szczeliniak.kitchenassistant.recipe.db.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.user.db.User
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -43,7 +44,7 @@ class AddStepCommandSpec extends Specification {
     }
 
     private static Recipe recipe() {
-        return new Recipe(1, "", 0, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(), new HashSet<Step>(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(1, "", new User(0, "", "", "", ZonedDateTime.now(), ZonedDateTime.now()), "", new Author(2, "", new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now()), ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(), new HashSet<Step>(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

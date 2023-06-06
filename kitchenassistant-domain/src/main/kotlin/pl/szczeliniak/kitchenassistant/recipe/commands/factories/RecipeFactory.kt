@@ -8,51 +8,49 @@ import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.TagDao
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
-import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
+import pl.szczeliniak.kitchenassistant.user.db.UserDao
 
 open class RecipeFactory(
-        private val getUserByIdQuery: GetUserByIdQuery,
-        private val stepFactory: StepFactory,
-        private val categoryDao: CategoryDao,
-        private val tagDao: TagDao,
-        private val tagFactory: TagFactory,
-        private val authorDao: AuthorDao,
-        private val authorFactory: AuthorFactory,
-        private val ingredientGroupFactory: IngredientGroupFactory,
-        private val ftpClient: FtpClient
+    private val stepFactory: StepFactory,
+    private val categoryDao: CategoryDao,
+    private val tagDao: TagDao,
+    private val tagFactory: TagFactory,
+    private val authorDao: AuthorDao,
+    private val authorFactory: AuthorFactory,
+    private val ingredientGroupFactory: IngredientGroupFactory,
+    private val ftpClient: FtpClient,
+    private val userDao: UserDao
 ) {
 
     open fun create(dto: NewRecipeDto): Recipe {
-        getUserByIdQuery.execute(dto.userId)
-
         val photo = dto.photoName?.let {
-            if(!ftpClient.exists(it)) {
+            if (!ftpClient.exists(it)) {
                 throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
             }
             it
         }
 
         return Recipe(0,
-                userId = dto.userId,
-                name = dto.name,
-                author = dto.author?.let {
-                    authorDao.findByName(it, dto.userId) ?: authorDao.save(
-                            authorFactory.create(
-                                    it,
-                                    dto.userId
-                            )
+            user = userDao.findById(dto.userId) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND),
+            name = dto.name,
+            author = dto.author?.let {
+                authorDao.findByName(it, dto.userId) ?: authorDao.save(
+                    authorFactory.create(
+                        it,
+                        dto.userId
                     )
-                },
-                source = dto.source,
-                category = dto.categoryId?.let {
-                    categoryDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
-                },
-                description = dto.description,
-                ingredientGroups = dto.ingredientGroups.map { ingredientGroupFactory.create(it) }.toMutableSet(),
-                steps = dto.steps.map { stepFactory.create(it) }.toMutableSet(),
-                photoName = photo,
-                tags = dto.tags.map { tagDao.findByName(it, dto.userId) ?: tagFactory.create(it, dto.userId) }
-                        .toMutableSet()
+                )
+            },
+            source = dto.source,
+            category = dto.categoryId?.let {
+                categoryDao.findById(it) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
+            },
+            description = dto.description,
+            ingredientGroups = dto.ingredientGroups.map { ingredientGroupFactory.create(it) }.toMutableSet(),
+            steps = dto.steps.map { stepFactory.create(it) }.toMutableSet(),
+            photoName = photo,
+            tags = dto.tags.map { tagDao.findByName(it, dto.userId) ?: tagFactory.create(it, dto.userId) }
+                .toMutableSet()
         )
     }
 

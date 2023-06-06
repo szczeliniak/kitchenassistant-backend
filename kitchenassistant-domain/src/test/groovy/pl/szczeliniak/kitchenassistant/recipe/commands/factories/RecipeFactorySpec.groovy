@@ -6,7 +6,8 @@ import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientGroupDto
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewRecipeDto
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewStepDto
 import pl.szczeliniak.kitchenassistant.recipe.db.*
-import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
+import pl.szczeliniak.kitchenassistant.user.db.User
+import pl.szczeliniak.kitchenassistant.user.db.UserDao
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 import spock.lang.Specification
@@ -16,7 +17,6 @@ import java.time.ZonedDateTime
 
 class RecipeFactorySpec extends Specification {
 
-    def getUserByIdQuery = Mock(GetUserByIdQuery)
     def stepFactory = Mock(StepFactory)
     def categoryDao = Mock(CategoryDao)
     def tagDao = Mock(TagDao)
@@ -25,30 +25,32 @@ class RecipeFactorySpec extends Specification {
     def authorFactory = Mock(AuthorFactory)
     def ingredientGroupFactory = Mock(IngredientGroupFactory)
     def ftpClient = Mock(FtpClient)
+    def userDao = Mock(UserDao)
 
     @Subject
-    def recipeFactory = new RecipeFactory(getUserByIdQuery, stepFactory, categoryDao, tagDao, tagFactory, authorDao, authorFactory, ingredientGroupFactory, ftpClient)
+    def recipeFactory = new RecipeFactory(stepFactory, categoryDao, tagDao, tagFactory, authorDao, authorFactory, ingredientGroupFactory, ftpClient, userDao)
 
     def 'should create recipe'() {
         given:
         def newIngredientGroupDto = newIngredientGroupDto()
         def newStepDto = newStepDto()
-        def category = category()
-        def newTag = tag(30, "NEW_TAG")
-        def existingTag = tag(35, "EXISTING_TAG")
-        def author = author()
+        def user = user()
+        def category = category(user)
+        def newTag = tag(30, "NEW_TAG", user)
+        def existingTag = tag(35, "EXISTING_TAG", user)
+        def author = author(user)
 
-        getUserByIdQuery.execute(1) >> userResponse()
         ingredientGroupFactory.create(newIngredientGroupDto) >> ingredientGroup()
         stepFactory.create(newStepDto) >> step()
         categoryDao.findById(2) >> category
-        tagDao.findByName("EXISTING_TAG", 4) >> tag(35, "EXISTING_TAG")
+        tagDao.findByName("EXISTING_TAG", 4) >> tag(35, "EXISTING_TAG", user)
         tagDao.findByName("NEW_TAG", 4) >> null
         tagFactory.create("NEW_TAG", 4) >> newTag
         authorDao.findByName("RECIPE_AUTHOR", 4) >> null
         authorFactory.create("RECIPE_AUTHOR", 4) >> author
         authorDao.save(author) >> author
         ftpClient.exists("PHOTO_NAME") >> true
+        userDao.findById(4) >> user
 
         when:
         def result = recipeFactory.create(newRecipeDto(newIngredientGroupDto, newStepDto))
@@ -58,7 +60,7 @@ class RecipeFactorySpec extends Specification {
                 .ignoringFields("createdAt", "modifiedAt", "ingredientGroups.createdAt",
                         "ingredientGroups.modifiedAt", "steps.createdAt", "steps.modifiedAt", "photo.createdAt", "photo.modifiedAt",
                         "tags.createdAt", "tags.modifiedAt", "author.createdAt", "author.modifiedAt")
-                .isEqualTo(recipe(category, Set.of(existingTag, newTag)))
+                .isEqualTo(recipe(category, Set.of(existingTag, newTag), user))
     }
 
     private static NewRecipeDto newRecipeDto(NewIngredientGroupDto newIngredientGroupDto, NewStepDto newStepDto) {
@@ -74,13 +76,13 @@ class RecipeFactorySpec extends Specification {
         return new UserResponse(new UserDto(1, "", ""))
     }
 
-    private static Recipe recipe(Category category, Set<Tag> tags) {
-        return new Recipe(0, "RECIPE_NAME", 4, "RECIPE_DESCRIPTION", new Author(2, "RECIPE_AUTHOR", 1, ZonedDateTime.now(), ZonedDateTime.now()),
+    private static Recipe recipe(Category category, Set<Tag> tags, User user) {
+        return new Recipe(0, "RECIPE_NAME", user, "RECIPE_DESCRIPTION", new Author(2, "RECIPE_AUTHOR", user, ZonedDateTime.now(), ZonedDateTime.now()),
                 "RECIPE_SOURCE", false, category, new HashSet(Arrays.asList(ingredientGroup())), new HashSet(Arrays.asList(step())), "PHOTO_NAME", tags, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
-    private static Tag tag(Integer id, String name) {
-        return new Tag(id, name, 4, ZonedDateTime.now(), ZonedDateTime.now())
+    private static Tag tag(Integer id, String name, User user) {
+        return new Tag(id, name, user, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static IngredientGroup ingredientGroup() {
@@ -91,16 +93,20 @@ class RecipeFactorySpec extends Specification {
         return new Step(4, "STEP_NAME", "STEP_DESCRIPTION", 1, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
-    private static Category category() {
-        return new Category(0, "", 0, 3, ZonedDateTime.now(), ZonedDateTime.now())
+    private static Category category(User user) {
+        return new Category(0, "", user, 3, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
-    private static Author author() {
-        return new Author(2, "RECIPE_AUTHOR", 1, ZonedDateTime.now(), ZonedDateTime.now())
+    private static Author author(User user) {
+        return new Author(2, "RECIPE_AUTHOR", user, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static NewIngredientGroupDto newIngredientGroupDto() {
         return new NewIngredientGroupDto("GROUP_NAME", Collections.emptySet())
+    }
+
+    private static User user() {
+        return new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

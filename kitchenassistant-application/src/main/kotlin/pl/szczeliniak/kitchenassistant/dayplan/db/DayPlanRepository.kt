@@ -77,7 +77,7 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
 
     private fun prepareCriteria(criteria: DayPlanCriteria): String {
         val builder = StringBuilder().append("")
-        criteria.userId?.let { builder.append(" AND dp.userId = :userId") }
+        criteria.userId?.let { builder.append(" AND dp.user.id = :userId") }
         criteria.archived?.let { builder.append(" AND dp.archived = :archived") }
         criteria.since?.let { builder.append(" AND dp.date IS NOT NULL AND dp.date >= :since") }
         criteria.to?.let { builder.append(" AND dp.date IS NOT NULL AND dp.date <= :to") }

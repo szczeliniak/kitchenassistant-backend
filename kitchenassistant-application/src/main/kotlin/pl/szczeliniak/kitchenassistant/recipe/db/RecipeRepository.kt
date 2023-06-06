@@ -70,7 +70,7 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
     private fun prepareCriteria(criteria: RecipeCriteria): String {
         val builder = StringBuilder().append("")
         if (criteria.userId != null) {
-            builder.append(" AND r.userId = :userId")
+            builder.append(" AND r.user.id = :userId")
         }
         if (criteria.categoryId != null) {
             builder.append(" AND r.category.id = :categoryId")

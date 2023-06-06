@@ -6,13 +6,12 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
-import pl.szczeliniak.kitchenassistant.photo.commands.DeletePhotoCommand
 import pl.szczeliniak.kitchenassistant.photo.commands.dto.DeletePhotoResponse
 import pl.szczeliniak.kitchenassistant.recipe.FtpClient
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
-import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.user.db.User
 import java.time.ZonedDateTime
 import java.util.*
 
@@ -30,7 +29,9 @@ internal class DeletePhotoCommandTest : JunitBaseClass() {
     @Test
     fun shouldDeletePhoto() {
         val recipe = recipe()
-        whenever(recipeDao.findAll(RecipeCriteria(false, null, null, null, null, "PHOTO_NAME"), 0, 1000)).thenReturn(setOf(recipe))
+        whenever(recipeDao.findAll(RecipeCriteria(false, null, null, null, null, "PHOTO_NAME"), 0, 1000)).thenReturn(
+            setOf(recipe)
+        )
 
         val response = deletePhotoCommand.execute("PHOTO_NAME")
 
@@ -41,7 +42,22 @@ internal class DeletePhotoCommandTest : JunitBaseClass() {
     }
 
     private fun recipe(): Recipe {
-        return Recipe(1, "", 1, null, null, null, false, null, Collections.emptySet(), Collections.emptySet(), "PHOTO_NAME", Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
+        return Recipe(
+            1,
+            "",
+            User(id = 1, email = "", name = ""),
+            null,
+            null,
+            null,
+            false,
+            null,
+            Collections.emptySet(),
+            Collections.emptySet(),
+            "PHOTO_NAME",
+            Collections.emptySet(),
+            ZonedDateTime.now(),
+            ZonedDateTime.now()
+        )
     }
 
 }

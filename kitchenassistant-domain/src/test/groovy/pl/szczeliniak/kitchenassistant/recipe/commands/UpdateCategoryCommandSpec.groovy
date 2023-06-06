@@ -4,6 +4,7 @@ import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateCategoryDto
 import pl.szczeliniak.kitchenassistant.recipe.db.Category
 import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.user.db.User
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -35,7 +36,7 @@ class UpdateCategoryCommandSpec extends Specification {
     }
 
     private static Category category() {
-        return new Category(1, "", 1, 1, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Category(1, "", new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now()), 1, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

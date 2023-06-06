@@ -10,18 +10,18 @@ import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 
 class UpdateRecipeCommand(
-        private val recipeDao: RecipeDao,
-        private val categoryDao: CategoryDao,
-        private val tagDao: TagDao,
-        private val tagFactory: TagFactory,
-        private val authorFactory: AuthorFactory,
-        private val authorDao: AuthorDao,
-        private val ftpClient: FtpClient
+    private val recipeDao: RecipeDao,
+    private val categoryDao: CategoryDao,
+    private val tagDao: TagDao,
+    private val tagFactory: TagFactory,
+    private val authorFactory: AuthorFactory,
+    private val authorDao: AuthorDao,
+    private val ftpClient: FtpClient
 ) {
 
     fun execute(id: Int, dto: UpdateRecipeDto): SuccessResponse {
         val recipe =
-                recipeDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
+            recipeDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
 
         dto.photoName?.let {
             if (!ftpClient.exists(it)) {
@@ -34,17 +34,17 @@ class UpdateRecipeCommand(
         recipe.category = getCategory(recipe.category, dto.categoryId)
         recipe.source = dto.source
         recipe.author = dto.author?.let {
-            authorDao.findByName(it, recipe.userId) ?: authorDao.save(
-                    authorFactory.create(
-                            it,
-                            recipe.userId
-                    )
+            authorDao.findByName(it, recipe.user.id) ?: authorDao.save(
+                authorFactory.create(
+                    it,
+                    recipe.user
+                )
             )
         }
         recipe.photoName = dto.photoName
         recipe.tags = dto.tags.map {
-            recipe.tags.firstOrNull { tag -> it == tag.name } ?: tagDao.findByName(it, recipe.userId) ?: tagDao.save(
-                    tagFactory.create(it, recipe.userId)
+            recipe.tags.firstOrNull { tag -> it == tag.name } ?: tagDao.findByName(it, recipe.user.id) ?: tagDao.save(
+                tagFactory.create(it, recipe.user)
             )
         }.toMutableSet()
 

@@ -6,6 +6,7 @@ import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Step
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.user.db.User
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -40,7 +41,7 @@ class UpdateStepCommandSpec extends Specification {
     }
 
     private static Recipe recipe(Set<Step> steps) {
-        return new Recipe(1, "", 1, "", new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(),
+        return new Recipe(1, "", new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now()), "", new Author(2, "", new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now()), ZonedDateTime.now(), ZonedDateTime.now()), "", false, null, Collections.emptySet(),
                 steps, null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 

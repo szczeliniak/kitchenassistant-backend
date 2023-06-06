@@ -9,6 +9,7 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDetailsDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListResponse
+import pl.szczeliniak.kitchenassistant.user.db.User
 
 internal class GetShoppingListQueryTest : JunitBaseClass() {
 
@@ -48,7 +49,7 @@ internal class GetShoppingListQueryTest : JunitBaseClass() {
 
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
-            userId = 0,
+            user = User(id = 0, email = "", name = ""),
             name = ""
         )
     }

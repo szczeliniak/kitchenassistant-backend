@@ -6,6 +6,7 @@ import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipeDetailsDto
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipeResponse
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
+import pl.szczeliniak.kitchenassistant.user.db.User
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -21,7 +22,7 @@ class GetRecipeQuerySpec extends Specification {
 
     def "should return recipe"() {
         given:
-        def recipe = recipe()
+        def recipe = recipe(user())
         def recipeDetailsDto = recipeDetailsDto()
         recipeDao.findById(1) >> recipe
         recipeConverter.mapDetails(recipe) >> recipeDetailsDto
@@ -45,12 +46,12 @@ class GetRecipeQuerySpec extends Specification {
         e.message == "Recipe not found"
     }
 
-    private static Recipe recipe() {
+    private static Recipe recipe(User user) {
         return new Recipe(1,
                 '',
-                0,
+                user,
                 '',
-                new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()),
+                new Author(2, "", user, ZonedDateTime.now(), ZonedDateTime.now()),
                 '',
                 false,
                 null,
@@ -64,6 +65,10 @@ class GetRecipeQuerySpec extends Specification {
 
     private static RecipeDetailsDto recipeDetailsDto() {
         return new RecipeDetailsDto(1, '', '', "", "", null, null, Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet())
+    }
+
+    private static User user() {
+        return new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

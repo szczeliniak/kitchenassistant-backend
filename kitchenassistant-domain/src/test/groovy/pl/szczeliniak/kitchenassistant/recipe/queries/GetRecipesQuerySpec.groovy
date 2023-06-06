@@ -7,6 +7,7 @@ import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipeDto
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipesResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
+import pl.szczeliniak.kitchenassistant.user.db.User
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -23,7 +24,7 @@ class GetRecipesQuerySpec extends Specification {
     def "should return recipe"() {
         given:
         def criteria = new RecipeCriteria(false, 1, 1, '', '', null)
-        def recipe = recipe()
+        def recipe = recipe(user())
         def recipeDto = recipeDto()
         recipeDao.findAll(criteria, 40, 10) >> Collections.singletonList(recipe)
         recipeDao.count(criteria) >> 413
@@ -37,12 +38,12 @@ class GetRecipesQuerySpec extends Specification {
                 new Pagination(5, 10, 42))
     }
 
-    private static Recipe recipe() {
+    private static Recipe recipe(User user) {
         return new Recipe(1,
                 '',
-                0,
+                user,
                 '',
-                new Author(2, "", 1, ZonedDateTime.now(), ZonedDateTime.now()),
+                new Author(2, "", user, ZonedDateTime.now(), ZonedDateTime.now()),
                 '',
                 false,
                 null,
@@ -56,6 +57,10 @@ class GetRecipesQuerySpec extends Specification {
 
     private static RecipeDto recipeDto() {
         return new RecipeDto(1, '', "", false, null, Collections.emptySet(), null)
+    }
+
+    private static User user() {
+        return new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

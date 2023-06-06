@@ -5,6 +5,7 @@ import pl.szczeliniak.kitchenassistant.recipe.db.CategoryCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.CategoriesResponse
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.CategoryDto
+import pl.szczeliniak.kitchenassistant.user.db.User
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -34,7 +35,7 @@ class GetCategoriesQuerySpec extends Specification {
     }
 
     private static Category category() {
-        return new Category(0, "NAME", 1, 2, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Category(0, "NAME", new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now()), 2, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static CategoryDto categoryDto() {

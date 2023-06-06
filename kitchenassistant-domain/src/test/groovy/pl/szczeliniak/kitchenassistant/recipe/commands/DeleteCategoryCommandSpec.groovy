@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.recipe.commands
 
 import pl.szczeliniak.kitchenassistant.recipe.db.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.user.db.User
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -34,11 +35,11 @@ class DeleteCategoryCommandSpec extends Specification {
     }
 
     private static Category category() {
-        return new Category(1, '', 3, 2, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Category(1, '', new User(3, "", "", "", ZonedDateTime.now(), ZonedDateTime.now()), 2, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Recipe recipe() {
-        return new Recipe(10, "", 1, "", null, null, false, category(), Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
+        return new Recipe(10, "", new User(1, "", "", "", ZonedDateTime.now(), ZonedDateTime.now()), "", null, null, false, category(), Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

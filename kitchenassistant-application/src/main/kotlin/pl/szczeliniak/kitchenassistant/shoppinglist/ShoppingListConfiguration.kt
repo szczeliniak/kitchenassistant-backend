@@ -11,24 +11,21 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItemDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.GetShoppingListQuery
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.GetShoppingListsQuery
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.ShoppingListConverter
+import pl.szczeliniak.kitchenassistant.user.db.UserDao
 
 @Configuration
 class ShoppingListConfiguration {
-
-    @Bean
-    fun deassignRecipeFromShoppingListsCommand(shoppingListDao: ShoppingListDao): DeleteRecipeFromShoppingListsCommand =
-        DeleteRecipeFromShoppingListsCommand(shoppingListDao)
 
     @Bean
     fun shoppingListFacade(
         shoppingListDao: ShoppingListDao,
         recipeFacade: RecipeFacade,
         shoppingListItemDao: ShoppingListItemDao,
-        deleteRecipeFromShoppingListsCommand: DeleteRecipeFromShoppingListsCommand
+        userDao: UserDao
     ): ShoppingListFacade {
         val shoppingListConverter = ShoppingListConverter(recipeFacade)
         val shoppingListItemFactory = ShoppingListItemFactory(recipeFacade)
-        val shoppingListFactory = ShoppingListFactory(shoppingListItemFactory)
+        val shoppingListFactory = ShoppingListFactory(shoppingListItemFactory, userDao)
         return ShoppingListFacade(
             GetShoppingListQuery(shoppingListDao, shoppingListConverter),
             GetShoppingListsQuery(shoppingListDao, shoppingListConverter),

@@ -9,7 +9,7 @@ class DeleteCategoryCommand(private val categoryDao: CategoryDao, private val re
 
     fun execute(categoryId: Int): SuccessResponse {
         categoryDao.findById(categoryId)?.let {
-            val recipes = recipeDao.findAll(RecipeCriteria(false, it.userId, it.id))
+            val recipes = recipeDao.findAll(RecipeCriteria(false, it.user.id, it.id))
             recipes.forEach { recipe -> recipe.category = null }
             recipeDao.save(recipes)
             categoryDao.delete(it)

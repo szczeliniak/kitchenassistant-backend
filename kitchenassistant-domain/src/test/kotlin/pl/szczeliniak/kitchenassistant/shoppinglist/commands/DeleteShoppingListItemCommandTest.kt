@@ -9,6 +9,7 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItem
+import pl.szczeliniak.kitchenassistant.user.db.User
 
 internal class DeleteShoppingListItemCommandTest : JunitBaseClass() {
 
@@ -33,7 +34,7 @@ internal class DeleteShoppingListItemCommandTest : JunitBaseClass() {
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
             id = 1,
-            userId = 0,
+            user = User(id = 0, email = "", name = ""),
             name = "",
             items = mutableSetOf(shoppingListItem())
         )
