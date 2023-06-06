@@ -28,34 +28,35 @@ import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
-import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
+import pl.szczeliniak.kitchenassistant.user.db.UserDao
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Configuration
 @EnableGlobalMethodSecurity(
-        prePostEnabled = true,
-        securedEnabled = true,
-        jsr250Enabled = true)
+    prePostEnabled = true,
+    securedEnabled = true,
+    jsr250Enabled = true
+)
 class SecurityConfiguration(
-        private val objectMapper: ObjectMapper,
-        private val requestContext: RequestContext,
-        private val getUserByIdQuery: GetUserByIdQuery,
-        @Value("\${security.jwt.secret}") private val secret: String
+    private val objectMapper: ObjectMapper,
+    private val requestContext: RequestContext,
+    private val userDao: UserDao,
+    @Value("\${security.jwt.secret}") private val secret: String
 ) : WebSecurityConfigurerAdapter() {
 
     companion object {
         val PATH_WITHOUT_AUTHORIZATION = listOf(
-                "/users/login/**",
-                "/users/register/**",
-                "/v2/api-docs",
-                "/configuration/ui",
-                "/swagger-resources/**",
-                "/configuration/security",
-                "/swagger-ui.html",
-                "/webjars/**",
-                "/"
+            "/users/login/**",
+            "/users/register/**",
+            "/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/"
         )
     }
 
@@ -64,12 +65,12 @@ class SecurityConfiguration(
             http.csrf().disable()
             http.cors()
             http.authorizeRequests().antMatchers(*PATH_WITHOUT_AUTHORIZATION.toTypedArray())
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
+                .permitAll()
+                .anyRequest()
+                .authenticated()
             http.addFilterBefore(
-                    JwtAuthorizationFilter(),
-                    BasicAuthenticationFilter::class.java
+                JwtAuthorizationFilter(),
+                BasicAuthenticationFilter::class.java
             )
             http.httpBasic().authenticationEntryPoint(authenticationEntryPoint())
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -93,15 +94,15 @@ class SecurityConfiguration(
         private var jwtParser: JwtParser = Jwts.parser().setSigningKey(secret)
 
         override fun doFilterInternal(
-                request: HttpServletRequest,
-                response: HttpServletResponse,
-                filterChain: FilterChain
+            request: HttpServletRequest,
+            response: HttpServletResponse,
+            filterChain: FilterChain
         ) {
             if (PATH_WITHOUT_AUTHORIZATION.none { AntPathMatcher().match(it, request.requestURI) }) {
                 try {
                     request.getHeader("X-Token")?.let { token ->
                         val userId = parseToken(token)
-                        getUserByIdQuery.execute(userId)
+                        userDao.findById(userId) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
                         requestContext.userId(userId)
                         SecurityContextHolder.getContext().authentication = KitchenAssistantAuthentication(token)
                     } ?: kotlin.run {
@@ -130,10 +131,12 @@ class SecurityConfiguration(
     }
 
     @Bean
-    fun authorizationService(requestContext: RequestContext,
-                             recipeDao: RecipeDao,
-                             categoryDao: CategoryDao,
-                             dayPlanDao: DayPlanDao,
-                             shoppingListDao: ShoppingListDao) = AuthorizationService(requestContext, recipeDao, categoryDao, dayPlanDao, shoppingListDao)
+    fun authorizationService(
+        requestContext: RequestContext,
+        recipeDao: RecipeDao,
+        categoryDao: CategoryDao,
+        dayPlanDao: DayPlanDao,
+        shoppingListDao: ShoppingListDao
+    ) = AuthorizationService(requestContext, recipeDao, categoryDao, dayPlanDao, shoppingListDao)
 
 }

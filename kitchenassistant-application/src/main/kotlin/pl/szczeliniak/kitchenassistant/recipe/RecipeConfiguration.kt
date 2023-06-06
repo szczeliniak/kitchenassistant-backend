@@ -14,16 +14,6 @@ import pl.szczeliniak.kitchenassistant.user.db.UserDao
 class RecipeConfiguration {
 
     @Bean
-    fun ingredientGroupConverter() = IngredientGroupConverter()
-
-    @Bean
-    fun recipeConverter(ingredientGroupConverter: IngredientGroupConverter) = RecipeConverter(ingredientGroupConverter)
-
-    @Bean
-    fun getRecipeQuery(recipeDao: RecipeDao, recipeConverter: RecipeConverter) =
-        GetRecipeQuery(recipeDao, recipeConverter)
-
-    @Bean
     fun recipeFacade(
         recipeDao: RecipeDao,
         categoryDao: CategoryDao,
@@ -35,10 +25,7 @@ class RecipeConfiguration {
         dayPlanDao: DayPlanDao,
         shoppingListDao: ShoppingListDao,
         ftpClient: FtpClient,
-        ingredientGroupDao: IngredientGroupDao,
-        recipeConverter: RecipeConverter,
-        getRecipeQuery: GetRecipeQuery,
-        ingredientGroupConverter: IngredientGroupConverter
+        ingredientGroupDao: IngredientGroupDao
     ): RecipeFacade {
         val stepFactory = StepFactory()
         val tagFactory = TagFactory(userDao)
@@ -55,8 +42,10 @@ class RecipeConfiguration {
             authorFactory,
             ingredientGroupFactory, ftpClient, userDao
         )
+        val ingredientGroupConverter = IngredientGroupConverter()
+        val recipeConverter = RecipeConverter(ingredientGroupConverter)
         return RecipeFacade(
-            getRecipeQuery,
+            GetRecipeQuery(recipeDao, recipeConverter),
             GetRecipesQuery(recipeDao, recipeConverter),
             AddRecipeCommand(recipeDao, recipeFactory),
             AddCategoryCommand(categoryDao, categoryFactory),

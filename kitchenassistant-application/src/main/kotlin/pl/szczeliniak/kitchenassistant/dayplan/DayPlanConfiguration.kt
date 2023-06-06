@@ -19,7 +19,6 @@ class DayPlanConfiguration {
     fun dayPlanFacade(
         dayPlanDao: DayPlanDao,
         recipeDao: RecipeDao,
-        getRecipeQuery: GetRecipeQuery,
         userDao: UserDao
     ): DayPlanFacade {
         val dayPlanConverter = DayPlanConverter()

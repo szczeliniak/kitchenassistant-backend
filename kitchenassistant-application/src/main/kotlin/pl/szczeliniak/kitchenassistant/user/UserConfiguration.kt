@@ -17,32 +17,24 @@ import pl.szczeliniak.kitchenassistant.user.queries.UserConverter
 class UserConfiguration {
 
     @Bean
-    fun userConverter(): UserConverter = UserConverter()
-
-    @Bean
-    fun getUserByIdQuery(userDao: UserDao, userConverter: UserConverter): GetUserByIdQuery =
-            GetUserByIdQuery(userDao, userConverter)
-
-    @Bean
     fun userFacade(
-            userDao: UserDao,
-            requestContext: RequestContext,
-            passwordEncoder: PasswordEncoder,
-            passwordMatcher: PasswordMatcher,
-            tokenFactory: TokenFactory,
-            facebookConnector: FacebookConnector,
-            userConverter: UserConverter,
-            getUserByIdQuery: GetUserByIdQuery
+        userDao: UserDao,
+        requestContext: RequestContext,
+        passwordEncoder: PasswordEncoder,
+        passwordMatcher: PasswordMatcher,
+        tokenFactory: TokenFactory,
+        facebookConnector: FacebookConnector,
     ): UserFacade {
         val userFactory = UserFactory(passwordEncoder)
+        val userConverter = UserConverter()
         return UserFacade(
-                getUserByIdQuery,
-                GetLoggedUserQuery(userDao, requestContext, userConverter),
-                GetUsersQuery(userDao, userConverter),
-                LoginCommand(userDao, passwordMatcher, tokenFactory),
-                LoginWithFacebookCommand(userDao, tokenFactory, facebookConnector, userFactory),
-                RegisterCommand(userFactory, tokenFactory, userDao),
-                RefreshTokenCommand(tokenFactory, requestContext, userDao)
+            GetUserByIdQuery(userDao, userConverter),
+            GetLoggedUserQuery(userDao, requestContext, userConverter),
+            GetUsersQuery(userDao, userConverter),
+            LoginCommand(userDao, passwordMatcher, tokenFactory),
+            LoginWithFacebookCommand(userDao, tokenFactory, facebookConnector, userFactory),
+            RegisterCommand(userFactory, tokenFactory, userDao),
+            RefreshTokenCommand(tokenFactory, requestContext, userDao)
         )
     }
 
