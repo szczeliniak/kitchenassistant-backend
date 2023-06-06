@@ -1,5 +1,6 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.db
 
+import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import java.time.ZonedDateTime
 import javax.persistence.*
 
@@ -17,7 +18,9 @@ data class ShoppingListItem(
     var name: String,
     var quantity: String? = null,
     var sequence: Int? = null,
-    var recipeId: Int? = null,
+    @ManyToOne
+    @JoinColumn(name = "recipe_id", nullable = true)
+    var recipe: Recipe? = null,
     var completed: Boolean = false,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()

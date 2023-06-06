@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.shoppinglist
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import pl.szczeliniak.kitchenassistant.recipe.RecipeFacade
+import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.*
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListFactory
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListItemFactory
@@ -19,12 +19,12 @@ class ShoppingListConfiguration {
     @Bean
     fun shoppingListFacade(
         shoppingListDao: ShoppingListDao,
-        recipeFacade: RecipeFacade,
+        recipeDao: RecipeDao,
         shoppingListItemDao: ShoppingListItemDao,
         userDao: UserDao
     ): ShoppingListFacade {
-        val shoppingListConverter = ShoppingListConverter(recipeFacade)
-        val shoppingListItemFactory = ShoppingListItemFactory(recipeFacade)
+        val shoppingListConverter = ShoppingListConverter()
+        val shoppingListItemFactory = ShoppingListItemFactory(recipeDao)
         val shoppingListFactory = ShoppingListFactory(shoppingListItemFactory, userDao)
         return ShoppingListFacade(
             GetShoppingListQuery(shoppingListDao, shoppingListConverter),
@@ -32,7 +32,7 @@ class ShoppingListConfiguration {
             AddShoppingListCommand(shoppingListDao, shoppingListFactory),
             UpdateShoppingListCommand(shoppingListDao),
             AddShoppingListItemCommand(shoppingListDao, shoppingListItemDao, shoppingListItemFactory),
-            UpdateShoppingListItemCommand(shoppingListDao, shoppingListItemDao),
+            UpdateShoppingListItemCommand(shoppingListDao, shoppingListItemDao, recipeDao),
             MarkItemAsCompletedCommand(shoppingListDao, shoppingListItemDao),
             MarkShoppingListAsArchivedCommand(shoppingListDao),
             DeleteShoppingListCommand(shoppingListDao),

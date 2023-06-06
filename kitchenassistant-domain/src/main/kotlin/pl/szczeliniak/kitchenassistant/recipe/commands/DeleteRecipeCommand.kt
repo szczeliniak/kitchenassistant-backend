@@ -27,7 +27,7 @@ class DeleteRecipeCommand(
 
             val shoppingLists = shoppingListDao.findAll(ShoppingListCriteria(recipeId = it.id))
             shoppingLists.forEach { shoppingList ->
-                shoppingList.items.filter { item -> item.recipeId == it.id }.forEach { item -> item.recipeId = null }
+                shoppingList.items.filter { item -> item.recipe?.id == it.id }.forEach { item -> item.recipe = null }
             }
             shoppingListDao.save(shoppingLists)
 

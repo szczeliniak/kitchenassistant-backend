@@ -32,7 +32,7 @@ class DeleteRecipeCommandSpec extends Specification {
         def user = user()
         def recipe = recipe(1, user)
         def dayPlan = dayPlan(user)
-        def shoppingListItem = shoppingListItem()
+        def shoppingListItem = shoppingListItem(recipe)
         def shoppingList = shoppingList(shoppingListItem, user)
         recipeDao.findById(1) >> recipe
         dayPlanDao.findAll(new DayPlanCriteria(null, null, 1, null, null, null), null, null) >> Set.of(dayPlan)
@@ -45,7 +45,7 @@ class DeleteRecipeCommandSpec extends Specification {
         1 * recipeDao.delete(recipe)
         1 * dayPlanDao.save(dayPlan)
         1 * shoppingListDao.save(Set.of(shoppingList))
-        shoppingListItem.recipeId == null
+        shoppingListItem.recipe == null
         dayPlan.recipes.size() == 1
     }
 
@@ -57,8 +57,8 @@ class DeleteRecipeCommandSpec extends Specification {
         return new DayPlan(0, user, LocalDate.now(), new HashSet<Recipe>(Arrays.asList(recipe(1, user), recipe(2, user))), false, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
-    private static ShoppingListItem shoppingListItem() {
-        return new ShoppingListItem(0, "", "", 1, 1, false, ZonedDateTime.now(), ZonedDateTime.now())
+    private static ShoppingListItem shoppingListItem(Recipe recipe) {
+        return new ShoppingListItem(0, "", "", 1, recipe, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static ShoppingList shoppingList(ShoppingListItem shoppingListItem, User user) {

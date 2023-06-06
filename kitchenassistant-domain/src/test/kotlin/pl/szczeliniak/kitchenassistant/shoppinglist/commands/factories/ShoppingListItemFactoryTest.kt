@@ -4,17 +4,16 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
-import pl.szczeliniak.kitchenassistant.recipe.RecipeFacade
-import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipeDetailsDto
-import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipeResponse
-import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItem
+import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
+import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
-import java.util.*
+import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItem
+import pl.szczeliniak.kitchenassistant.user.db.User
 
 internal class ShoppingListItemFactoryTest : JunitBaseClass() {
 
     @Mock
-    private lateinit var recipeFacade: RecipeFacade
+    private lateinit var recipeDao: RecipeDao
 
     @InjectMocks
     private lateinit var shoppingListItemFactory: ShoppingListItemFactory
@@ -22,35 +21,27 @@ internal class ShoppingListItemFactoryTest : JunitBaseClass() {
     @Test
     fun shouldCreateShoppingList() {
         val newShoppingListItemDto = newShoppingListItemDto()
-        whenever(recipeFacade.findById(1)).thenReturn(recipeResponse())
+        val recipe = recipe()
+        whenever(recipeDao.findById(1)).thenReturn(recipe)
 
         val result = shoppingListItemFactory.create(newShoppingListItemDto)
 
         assertThat(result).usingRecursiveComparison()
             .ignoringFields("createdAt", "modifiedAt")
-            .isEqualTo(shoppingListItem())
+            .isEqualTo(shoppingListItem(recipe))
     }
 
-    private fun recipeResponse(): RecipeResponse {
-        return RecipeResponse(
-            RecipeDetailsDto(
-                0,
-                "",
-                null,
-                null,
-                null,
-                null,
-                null,
-                Collections.emptySet(),
-                Collections.emptySet(),
-                null,
-                Collections.emptySet()
-            )
+    private fun recipe(): Recipe {
+        return Recipe(id = 1, name = "", User(email = "", name = ""), photoName = null)
+    }
+
+    private fun shoppingListItem(recipe: Recipe): ShoppingListItem {
+        return ShoppingListItem(
+            name = "",
+            quantity = null,
+            sequence = null,
+            recipe = recipe
         )
-    }
-
-    private fun shoppingListItem(): ShoppingListItem {
-        return ShoppingListItem(name = "", quantity = null, sequence = null, recipeId = 1)
     }
 
     private fun newShoppingListItemDto(): NewShoppingListItemDto {

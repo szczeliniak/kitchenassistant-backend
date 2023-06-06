@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
+import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
+import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListItemDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
@@ -20,15 +22,20 @@ internal class UpdateShoppingListItemCommandTest : JunitBaseClass() {
     @Mock
     private lateinit var shoppingListItemDao: ShoppingListItemDao
 
+    @Mock
+    private lateinit var recipeDao: RecipeDao
+
     @InjectMocks
     private lateinit var updateShoppingListItemCommand: UpdateShoppingListItemCommand
 
     @Test
     fun shouldUpdateShoppingList() {
-        val shoppingListItem = shoppingListItem()
+        val recipe = recipe()
+        val shoppingListItem = shoppingListItem(recipe)
         val shoppingList = shoppingList(mutableSetOf(shoppingListItem))
 
         whenever(shoppingListDao.findById(1)).thenReturn(shoppingList)
+        whenever(recipeDao.findById(3)).thenReturn(recipe)
         whenever(shoppingListItemDao.save(shoppingListItem)).thenReturn(shoppingListItem)
 
         val result = updateShoppingListItemCommand.execute(1, 2, updateShoppingListItemDto())
@@ -39,12 +46,12 @@ internal class UpdateShoppingListItemCommandTest : JunitBaseClass() {
         assertThat(shoppingListItem.sequence).isEqualTo(1)
     }
 
-    private fun shoppingListItem(): ShoppingListItem {
-        return ShoppingListItem(2, "", "")
+    private fun shoppingListItem(recipe: Recipe): ShoppingListItem {
+        return ShoppingListItem(2, "", "", recipe = recipe)
     }
 
     private fun updateShoppingListItemDto(): UpdateShoppingListItemDto {
-        return UpdateShoppingListItemDto("NAME", "QUANTITY", 1)
+        return UpdateShoppingListItemDto("NAME", "QUANTITY", 1, 3)
     }
 
     private fun shoppingList(items: MutableSet<ShoppingListItem>): ShoppingList {
@@ -54,6 +61,10 @@ internal class UpdateShoppingListItemCommandTest : JunitBaseClass() {
             name = "",
             items = items
         )
+    }
+
+    private fun recipe(): Recipe {
+        return Recipe(id = 1, name = "", User(email = "", name = ""), photoName = null)
     }
 
 }

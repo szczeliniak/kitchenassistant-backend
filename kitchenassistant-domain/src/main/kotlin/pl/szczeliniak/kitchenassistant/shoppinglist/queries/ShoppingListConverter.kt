@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.shoppinglist.queries
 
-import pl.szczeliniak.kitchenassistant.recipe.RecipeFacade
-import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipeDetailsDto
+import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDetailsDto
@@ -9,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListItemDto
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.SimpleRecipeDto
 
-open class ShoppingListConverter(private val recipeFacade: RecipeFacade) {
+open class ShoppingListConverter {
 
     open fun map(shoppingList: ShoppingList): ShoppingListDto {
         return ShoppingListDto(
@@ -38,12 +37,12 @@ open class ShoppingListConverter(private val recipeFacade: RecipeFacade) {
             shoppingListItem.quantity,
             shoppingListItem.sequence,
             shoppingListItem.completed,
-            shoppingListItem.recipeId?.let { map(recipeFacade.findById(it).recipe) }
+            shoppingListItem.recipe?.let { map(it) }
         )
     }
 
-    fun map(recipeDto: RecipeDetailsDto): SimpleRecipeDto {
-        return SimpleRecipeDto(recipeDto.id, recipeDto.name)
+    fun map(recipe: Recipe): SimpleRecipeDto {
+        return SimpleRecipeDto(recipe.id, recipe.name)
     }
 
 }
