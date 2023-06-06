@@ -2,12 +2,11 @@ package pl.szczeliniak.kitchenassistant.dayplan.queries
 
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlan
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.*
-import pl.szczeliniak.kitchenassistant.recipe.RecipeFacade
-import pl.szczeliniak.kitchenassistant.recipe.queries.dto.IngredientDto
-import pl.szczeliniak.kitchenassistant.recipe.queries.dto.IngredientGroupDto
-import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipeResponse
+import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient
+import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroup
+import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 
-open class DayPlanConverter(private val recipeFacade: RecipeFacade) {
+open class DayPlanConverter {
 
     open fun map(dayPlan: DayPlan): DayPlanDto {
         return DayPlanDto(
@@ -21,27 +20,27 @@ open class DayPlanConverter(private val recipeFacade: RecipeFacade) {
         return DayPlanDetailsDto(
             dayPlan.id,
             dayPlan.date,
-            dayPlan.recipeIds.map { mapRecipe(recipeFacade.findById(it)) },
+            dayPlan.recipes.map { mapRecipe(it) },
             dayPlan.automaticArchiving
         )
     }
 
-    private fun mapRecipe(response: RecipeResponse): SimpleRecipeDto {
+    private fun mapRecipe(recipe: Recipe): SimpleRecipeDto {
         return SimpleRecipeDto(
-            response.recipe.id,
-            response.recipe.name,
-            response.recipe.author,
-            response.recipe.category?.name,
-            response.recipe.ingredientGroups.map { map(it) }
+            recipe.id,
+            recipe.name,
+            recipe.author?.name,
+            recipe.category?.name,
+            recipe.ingredientGroups.map { map(it) }
         )
     }
 
-    private fun map(ingredientGroupDto: IngredientGroupDto): DayPlanIngredientGroupDto {
-        return DayPlanIngredientGroupDto(ingredientGroupDto.name, ingredientGroupDto.ingredients.map { map(it) })
+    private fun map(ingredientGroup: IngredientGroup): DayPlanIngredientGroupDto {
+        return DayPlanIngredientGroupDto(ingredientGroup.name, ingredientGroup.ingredients.map { map(it) })
     }
 
-    private fun map(ingredientDto: IngredientDto): DayPlanIngredientDto {
-        return DayPlanIngredientDto(ingredientDto.name, ingredientDto.quantity)
+    private fun map(ingredient: Ingredient): DayPlanIngredientDto {
+        return DayPlanIngredientDto(ingredient.name, ingredient.quantity)
     }
 
 }

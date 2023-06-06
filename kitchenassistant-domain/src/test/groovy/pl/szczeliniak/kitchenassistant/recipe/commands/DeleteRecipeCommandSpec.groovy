@@ -30,7 +30,7 @@ class DeleteRecipeCommandSpec extends Specification {
     def 'should delete recipe'() {
         given:
         def user = user()
-        def recipe = recipe(user)
+        def recipe = recipe(1, user)
         def dayPlan = dayPlan(user)
         def shoppingListItem = shoppingListItem()
         def shoppingList = shoppingList(shoppingListItem, user)
@@ -46,15 +46,15 @@ class DeleteRecipeCommandSpec extends Specification {
         1 * dayPlanDao.save(dayPlan)
         1 * shoppingListDao.save(Set.of(shoppingList))
         shoppingListItem.recipeId == null
-        dayPlan.recipeIds.size() == 1
+        dayPlan.recipes.size() == 1
     }
 
-    private static Recipe recipe(User user) {
-        return new Recipe(1, '', user, '', new Author(2, "", user, ZonedDateTime.now(), ZonedDateTime.now()), '', false, null, Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
+    private static Recipe recipe(Integer id, User user) {
+        return new Recipe(id, '', user, '', new Author(2, "", user, ZonedDateTime.now(), ZonedDateTime.now()), '', false, null, Collections.emptySet(), Collections.emptySet(), null, Collections.emptySet(), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static DayPlan dayPlan(User user) {
-        return new DayPlan(0, user, LocalDate.now(), new HashSet<Integer>(Arrays.asList(1, 2)), false, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new DayPlan(0, user, LocalDate.now(), new HashSet<Recipe>(Arrays.asList(recipe(1, user), recipe(2, user))), false, false, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static ShoppingListItem shoppingListItem() {

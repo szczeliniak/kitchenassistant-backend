@@ -17,8 +17,8 @@ class DeleteRecipeCommand(
         recipeDao.findById(id)?.let {
             val dayPlans = dayPlanDao.findAll(DayPlanCriteria(recipeId = it.id))
             dayPlans.forEach { dayPlan ->
-                dayPlan.recipeIds.remove(it.id)
-                if (dayPlan.recipeIds.isEmpty()) {
+                dayPlan.recipes.removeIf { recipe -> recipe.id == it.id}
+                if (dayPlan.recipes.isEmpty()) {
                     dayPlanDao.delete(dayPlan)
                 } else {
                     dayPlanDao.save(dayPlan)

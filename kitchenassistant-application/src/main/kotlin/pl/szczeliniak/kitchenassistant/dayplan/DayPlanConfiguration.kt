@@ -8,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
 import pl.szczeliniak.kitchenassistant.dayplan.queries.DayPlanConverter
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlanQuery
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlansQuery
-import pl.szczeliniak.kitchenassistant.recipe.RecipeFacade
+import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.queries.GetRecipeQuery
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 
@@ -18,15 +18,15 @@ class DayPlanConfiguration {
     @Bean
     fun dayPlanFacade(
         dayPlanDao: DayPlanDao,
-        recipeFacade: RecipeFacade,
+        recipeDao: RecipeDao,
         getRecipeQuery: GetRecipeQuery,
         userDao: UserDao
     ): DayPlanFacade {
-        val dayPlanConverter = DayPlanConverter(recipeFacade)
+        val dayPlanConverter = DayPlanConverter()
         return DayPlanFacade(
             GetDayPlanQuery(dayPlanDao, dayPlanConverter),
             GetDayPlansQuery(dayPlanDao, dayPlanConverter),
-            AddRecipeToDayPlanCommand(dayPlanDao, recipeFacade, DayPlanFactory(userDao)),
+            AddRecipeToDayPlanCommand(dayPlanDao, recipeDao, DayPlanFactory(userDao)),
             DeleteRecipeFromDayPlanCommand(dayPlanDao),
             DeleteDayPlanCommand(dayPlanDao),
             ArchiveDayPlanCommand(dayPlanDao),

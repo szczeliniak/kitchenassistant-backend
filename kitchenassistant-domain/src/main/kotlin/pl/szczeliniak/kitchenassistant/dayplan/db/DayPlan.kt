@@ -1,5 +1,6 @@
 package pl.szczeliniak.kitchenassistant.dayplan.db
 
+import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.user.db.User
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -16,10 +17,13 @@ data class DayPlan(
     @JoinColumn(name = "user_id")
     var user: User,
     var date: LocalDate,
-    @ElementCollection
-    @CollectionTable(name = "day_plan_recipe_ids", joinColumns = [JoinColumn(name = "day_plan_id")])
-    @Column(name = "recipe_id")
-    var recipeIds: MutableSet<Int> = mutableSetOf(),
+    @ManyToMany
+    @JoinTable(
+        name = "day_plan_recipe_ids",
+        joinColumns = [JoinColumn(name = "day_plan_id")],
+        inverseJoinColumns = [JoinColumn(name = "recipe_id")]
+    )
+    var recipes: MutableSet<Recipe> = mutableSetOf(),
     var automaticArchiving: Boolean = false,
     var archived: Boolean = false,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),

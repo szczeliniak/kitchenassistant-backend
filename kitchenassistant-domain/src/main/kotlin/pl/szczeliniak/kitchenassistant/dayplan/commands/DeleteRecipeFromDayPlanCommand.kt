@@ -7,8 +7,8 @@ class DeleteRecipeFromDayPlanCommand(private val dayPlanDao: DayPlanDao) {
 
     fun execute(dayPlanId: Int, recipeId: Int): SuccessResponse {
         dayPlanDao.findById(dayPlanId)?.let { dayPlan ->
-            dayPlan.recipeIds.remove(recipeId)
-            if (dayPlan.recipeIds.isEmpty()) {
+            dayPlan.recipes.removeIf { it.id == recipeId }
+            if (dayPlan.recipes.isEmpty()) {
                 dayPlanDao.delete(dayPlan)
             } else {
                 dayPlanDao.save(dayPlan)
