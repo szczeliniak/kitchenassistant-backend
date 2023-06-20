@@ -25,7 +25,7 @@ class FtpClientImpl(
 
     companion object {
         private const val BASE_DIRECTORY = "/files"
-        private const val MAX_BYTES_SIZE = 1000000
+        private const val MAX_BYTES_SIZE = 5000000
         private val logger: Logger = LoggerFactory.getLogger(FtpClient::class.java)
     }
 
