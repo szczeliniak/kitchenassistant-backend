@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewRecipeDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewRecipeRequest
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.RecipeFactory
 import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
@@ -21,19 +21,19 @@ class AddRecipeCommandSpec extends Specification {
     def 'should save recipe'() {
         given:
         def recipe = recipe()
-        def dto = newRecipeDto()
-        recipeFactory.create(dto) >> recipe
+        def request = newRecipeRequest()
+        recipeFactory.create(request) >> recipe
         recipeDao.save(recipe) >> recipe
 
         when:
-        def result = addRecipeCommand.execute(dto)
+        def result = addRecipeCommand.execute(request)
 
         then:
         result == new SuccessResponse(2)
     }
 
-    private static NewRecipeDto newRecipeDto() {
-        return new NewRecipeDto(1, "", null, "", "", "", null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet())
+    private static NewRecipeRequest newRecipeRequest() {
+        return new NewRecipeRequest(1, "", null, "", "", "", null, Collections.emptySet(), Collections.emptySet(), Collections.emptySet())
     }
 
     private static Recipe recipe() {

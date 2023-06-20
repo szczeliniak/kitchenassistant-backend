@@ -5,7 +5,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListRequest
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListFactory
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
@@ -24,13 +24,13 @@ internal class AddShoppingListCommandTest : JunitBaseClass() {
 
     @Test
     fun shouldAddShoppingList() {
-        val newShoppingListDto = NewShoppingListDto()
+        val newShoppingListRequest = NewShoppingListRequest()
         val shoppingList = shoppingList()
 
-        whenever(shoppingListFactory.create(newShoppingListDto)).thenReturn(shoppingList)
+        whenever(shoppingListFactory.create(newShoppingListRequest)).thenReturn(shoppingList)
         whenever(shoppingListDao.save(shoppingList)).thenReturn(shoppingList)
 
-        val result = addShoppingListCommand.execute(newShoppingListDto)
+        val result = addShoppingListCommand.execute(newShoppingListRequest)
 
         assertThat(result).isEqualTo(SuccessResponse(1))
     }

@@ -2,14 +2,12 @@ package pl.szczeliniak.kitchenassistant.user.commands
 
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.PasswordMatcher
+import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginRequest
+import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
+import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
-import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginDto
-import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
-import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -31,7 +29,7 @@ class LoginCommandSpec extends Specification {
         tokenFactory.create(1) >> token()
 
         when:
-        def result = loginCommand.execute(dto())
+        def result = loginCommand.execute(loginRequest())
 
         then:
         result == new LoginResponse("TOKEN", 1, ZonedDateTime.of(2022, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault()))
@@ -41,7 +39,7 @@ class LoginCommandSpec extends Specification {
         given:
         userDao.findAll(new UserCriteria("MAIL"), 0, 1) >> Collections.emptySet()
         when:
-        loginCommand.execute(dto())
+        loginCommand.execute(loginRequest())
 
         then:
         thrown(KitchenAssistantException)
@@ -52,18 +50,14 @@ class LoginCommandSpec extends Specification {
         userDao.findAll(new UserCriteria("MAIL"), 0, 1) >> Collections.singleton(user())
         passwordMatcher.matches("ENC_PASS", "PASS") >> false
         when:
-        loginCommand.execute(dto())
+        loginCommand.execute(loginRequest())
 
         then:
         thrown(KitchenAssistantException)
     }
 
-    private static LoginDto dto() {
-        return new LoginDto("MAIL", "PASS")
-    }
-
-    private static UserResponse userResponse() {
-        return new UserResponse(new UserDto(1, "", ""))
+    private static LoginRequest loginRequest() {
+        return new LoginRequest("MAIL", "PASS")
     }
 
     private static User user() {

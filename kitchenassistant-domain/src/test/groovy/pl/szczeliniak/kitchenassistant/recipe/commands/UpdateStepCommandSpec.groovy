@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateStepDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateStepRequest
 import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
@@ -27,7 +27,7 @@ class UpdateStepCommandSpec extends Specification {
         recipeDao.save(recipe) >> recipe
 
         when:
-        def result = updateStepCommand.execute(1, 2, updateStepDto())
+        def result = updateStepCommand.execute(1, 2, updateStepRequest())
 
         then:
         step.name == "NAME"
@@ -36,8 +36,8 @@ class UpdateStepCommandSpec extends Specification {
         result == new SuccessResponse(2)
     }
 
-    private static UpdateStepDto updateStepDto() {
-        return new UpdateStepDto("NAME", "DESCRIPTION", 1)
+    private static UpdateStepRequest updateStepRequest() {
+        return new UpdateStepRequest("NAME", "DESCRIPTION", 1)
     }
 
     private static Recipe recipe(Set<Step> steps) {

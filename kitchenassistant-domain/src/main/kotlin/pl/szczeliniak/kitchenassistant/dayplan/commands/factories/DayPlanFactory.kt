@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.dayplan.commands.factories
 
-import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanDto
+import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlan
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
@@ -10,10 +10,10 @@ open class DayPlanFactory(
     private val userDao: UserDao
 ) {
 
-    open fun create(dto: AddRecipeToDayPlanDto): DayPlan {
+    open fun create(request: AddRecipeToDayPlanRequest): DayPlan {
         return DayPlan(
-            user = userDao.findById(dto.userId) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND),
-            date = dto.date,
+            user = userDao.findById(request.userId) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND),
+            date = request.date,
             automaticArchiving = false
         )
     }

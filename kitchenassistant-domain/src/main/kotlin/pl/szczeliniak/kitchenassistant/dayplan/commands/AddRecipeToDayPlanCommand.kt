@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.dayplan.commands
 
-import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanDto
+import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.commands.factories.DayPlanFactory
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
@@ -15,7 +15,7 @@ class AddRecipeToDayPlanCommand(
     private val dayPlanFactory: DayPlanFactory
 ) {
 
-    fun execute(request: AddRecipeToDayPlanDto): SuccessResponse {
+    fun execute(request: AddRecipeToDayPlanRequest): SuccessResponse {
         if (request.date < LocalDate.now()) {
             throw KitchenAssistantException(ErrorCode.DAY_PLAN_DATE_TOO_OLD)
         }

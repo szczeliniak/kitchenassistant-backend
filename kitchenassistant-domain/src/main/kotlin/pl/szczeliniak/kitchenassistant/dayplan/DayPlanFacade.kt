@@ -1,8 +1,8 @@
 package pl.szczeliniak.kitchenassistant.dayplan
 
 import pl.szczeliniak.kitchenassistant.dayplan.commands.*
-import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanDto
-import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.UpdateDayPlanDto
+import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanRequest
+import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.UpdateDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlanQuery
 import pl.szczeliniak.kitchenassistant.dayplan.queries.GetDayPlansQuery
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
@@ -37,11 +37,11 @@ open class DayPlanFacade(
         return archiveDayPlanCommand.execute(id, archive)
     }
 
-    fun update(id: Int, request: UpdateDayPlanDto): SuccessResponse {
+    fun update(id: Int, request: UpdateDayPlanRequest): SuccessResponse {
         return updateDayPlanCommand.execute(id, request)
     }
 
-    fun addRecipe(request: AddRecipeToDayPlanDto): SuccessResponse {
+    fun addRecipe(request: AddRecipeToDayPlanRequest): SuccessResponse {
         return addRecipeToDayPlanCommand.execute(request)
     }
 

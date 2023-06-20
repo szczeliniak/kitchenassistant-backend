@@ -41,38 +41,38 @@ open class RecipeFacade(
         return getRecipesQuery.execute(page, limit, criteria)
     }
 
-    fun add(dto: NewRecipeDto): SuccessResponse {
-        return addRecipeCommand.execute(dto)
+    fun add(request: NewRecipeRequest): SuccessResponse {
+        return addRecipeCommand.execute(request)
     }
 
-    fun update(recipeId: Int, dto: UpdateRecipeDto): SuccessResponse {
-        return updateRecipeCommand.execute(recipeId, dto)
+    fun update(recipeId: Int, request: UpdateRecipeRequest): SuccessResponse {
+        return updateRecipeCommand.execute(recipeId, request)
     }
 
     fun delete(recipeId: Int): SuccessResponse {
         return deleteRecipeCommand.execute(recipeId)
     }
 
-    fun addStep(recipeId: Int, dto: NewStepDto): SuccessResponse {
-        return addStepCommand.execute(recipeId, dto)
+    fun addStep(recipeId: Int, request: NewStepRequest): SuccessResponse {
+        return addStepCommand.execute(recipeId, request)
     }
 
-    fun updateStep(recipeId: Int, stepId: Int, dto: UpdateStepDto): SuccessResponse {
-        return updateStepCommand.execute(recipeId, stepId, dto)
+    fun updateStep(recipeId: Int, stepId: Int, request: UpdateStepRequest): SuccessResponse {
+        return updateStepCommand.execute(recipeId, stepId, request)
     }
 
     fun deleteStep(recipeId: Int, stepId: Int): SuccessResponse {
         return deleteStepCommand.execute(recipeId, stepId)
     }
 
-    fun addIngredientGroup(recipeId: Int, dto: NewIngredientGroupDto): SuccessResponse {
-        return addIngredientGroupCommand.execute(recipeId, dto)
+    fun addIngredientGroup(recipeId: Int, request: NewIngredientGroupRequest): SuccessResponse {
+        return addIngredientGroupCommand.execute(recipeId, request)
     }
 
     fun updateIngredientGroup(
             recipeId: Int,
             ingredientGroupId: Int,
-            request: UpdateIngredientGroupDto
+            request: UpdateIngredientGroupRequest
     ): SuccessResponse {
         return updateIngredientGroupCommand.execute(recipeId, ingredientGroupId, request)
 
@@ -86,8 +86,8 @@ open class RecipeFacade(
         return deleteIngredientCommand.execute(recipeId, ingredientGroupId, ingredientId)
     }
 
-    fun addCategory(dto: NewCategoryDto): SuccessResponse {
-        return addCategoryCommand.execute(dto)
+    fun addCategory(request: NewCategoryRequest): SuccessResponse {
+        return addCategoryCommand.execute(request)
     }
 
     fun getCategories(criteria: CategoryCriteria): CategoriesResponse {
@@ -98,7 +98,7 @@ open class RecipeFacade(
         return deleteCategoryCommand.execute(categoryId)
     }
 
-    fun updateCategory(categoryId: Int, request: UpdateCategoryDto): SuccessResponse {
+    fun updateCategory(categoryId: Int, request: UpdateCategoryRequest): SuccessResponse {
         return updateCategoryCommand.execute(categoryId, request)
     }
 

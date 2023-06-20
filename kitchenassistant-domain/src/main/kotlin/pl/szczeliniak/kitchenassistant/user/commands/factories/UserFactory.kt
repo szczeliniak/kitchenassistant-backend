@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.user.commands.factories
 
 import pl.szczeliniak.kitchenassistant.user.PasswordEncoder
 import pl.szczeliniak.kitchenassistant.user.db.User
-import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterDto
+import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterRequest
 
 open class UserFactory(private val passwordEncoder: PasswordEncoder) {
 
@@ -10,8 +10,8 @@ open class UserFactory(private val passwordEncoder: PasswordEncoder) {
         return User(0, email, password.let { passwordEncoder.encode(it) }, name)
     }
 
-    open fun create(dto: RegisterDto): User {
-        return create(dto.email, dto.password, dto.name)
+    open fun create(request: RegisterRequest): User {
+        return create(request.email, request.password, request.name)
     }
 
 }

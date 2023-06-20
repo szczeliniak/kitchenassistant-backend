@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateCategoryDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateCategoryRequest
 import pl.szczeliniak.kitchenassistant.recipe.db.Category
 import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
@@ -24,15 +24,15 @@ class UpdateCategoryCommandSpec extends Specification {
         categoryDao.save(category) >> category
 
         when:
-        def result = updateCategoryCommand.execute(1, updateCategoryDto())
+        def result = updateCategoryCommand.execute(1, updateCategoryRequest())
 
         then:
         category.name == "NAME"
         result == new SuccessResponse(1)
     }
 
-    private static UpdateCategoryDto updateCategoryDto() {
-        return new UpdateCategoryDto("NAME", 1)
+    private static UpdateCategoryRequest updateCategoryRequest() {
+        return new UpdateCategoryRequest("NAME", 1)
     }
 
     private static Category category() {

@@ -3,7 +3,7 @@ package pl.szczeliniak.kitchenassistant.user.commands
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
-import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginWithFacebookDto
+import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginWithFacebookRequest
 import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
 import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory
 import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
@@ -16,8 +16,8 @@ open class LoginWithFacebookCommand(
         private val userFactory: UserFactory,
 ) {
 
-    open fun execute(dto: LoginWithFacebookDto): LoginResponse {
-        val user = facebookConnector.login(dto.token)?.let {
+    open fun execute(request: LoginWithFacebookRequest): LoginResponse {
+        val user = facebookConnector.login(request.token)?.let {
             userDao.findAll(UserCriteria(it.email!!), 0, 1).firstOrNull() ?: userDao.save(
                     userFactory.create(
                             it.email,

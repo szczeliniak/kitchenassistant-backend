@@ -5,7 +5,7 @@ import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItemDao
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.factories.ShoppingListItemFactory
 
 class AddShoppingListItemCommand(
@@ -14,12 +14,12 @@ class AddShoppingListItemCommand(
         private val shoppingListItemFactory: ShoppingListItemFactory
 ) {
 
-    fun execute(shoppingListId: Int, dto: NewShoppingListItemDto): SuccessResponse {
+    fun execute(shoppingListId: Int, request: NewShoppingListItemRequest): SuccessResponse {
         val shoppingList =
             shoppingListDao.findById(shoppingListId)
                 ?: throw KitchenAssistantException(ErrorCode.SHOPPING_LIST_NOT_FOUND)
 
-        val item = shoppingListItemDao.save(shoppingListItemFactory.create(dto))
+        val item = shoppingListItemDao.save(shoppingListItemFactory.create(request))
         shoppingList.items.add(item)
         shoppingListDao.save(shoppingList)
         return SuccessResponse(item.id)

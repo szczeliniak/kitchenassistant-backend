@@ -7,7 +7,7 @@ import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListRequest
 import pl.szczeliniak.kitchenassistant.user.db.User
 import java.time.LocalDate
 
@@ -26,7 +26,7 @@ internal class UpdateShoppingListCommandTest : JunitBaseClass() {
         whenever(shoppingListDao.findById(1)).thenReturn(shoppingList)
         whenever(shoppingListDao.save(shoppingList)).thenReturn(shoppingList)
 
-        val result = updateShoppingListCommand.execute(1, updateShoppingListDto())
+        val result = updateShoppingListCommand.execute(1, updateShoppingListRequest())
 
         assertThat(result).isEqualTo(SuccessResponse(1))
         assertThat(shoppingList.name).isEqualTo("NAME")
@@ -34,8 +34,8 @@ internal class UpdateShoppingListCommandTest : JunitBaseClass() {
         assertThat(shoppingList.date).isEqualTo(LocalDate.of(2000, 1, 1))
     }
 
-    private fun updateShoppingListDto(): UpdateShoppingListDto {
-        return UpdateShoppingListDto("NAME", "DESCRIPTION", LocalDate.of(2000, 1, 1))
+    private fun updateShoppingListRequest(): UpdateShoppingListRequest {
+        return UpdateShoppingListRequest("NAME", "DESCRIPTION", LocalDate.of(2000, 1, 1))
     }
 
     private fun shoppingList(): ShoppingList {

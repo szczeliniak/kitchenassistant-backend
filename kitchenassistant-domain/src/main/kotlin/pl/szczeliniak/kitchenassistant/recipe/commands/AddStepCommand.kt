@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.recipe.commands
 
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.db.StepDao
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewStepDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewStepRequest
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.StepFactory
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
@@ -14,9 +14,9 @@ class AddStepCommand(
         private val stepFactory: StepFactory
 ) {
 
-    fun execute(recipeId: Int, dto: NewStepDto): SuccessResponse {
+    fun execute(recipeId: Int, request: NewStepRequest): SuccessResponse {
         val recipe = recipeDao.findById(recipeId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
-        val step = stepDao.save(stepFactory.create(dto))
+        val step = stepDao.save(stepFactory.create(request))
         recipe.steps.add(step)
         recipeDao.save(recipe)
         return SuccessResponse(step.id)

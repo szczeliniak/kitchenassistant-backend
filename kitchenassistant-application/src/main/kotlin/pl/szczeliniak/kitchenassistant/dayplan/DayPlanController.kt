@@ -2,14 +2,15 @@ package pl.szczeliniak.kitchenassistant.dayplan
 
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanDto
-import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.UpdateDayPlanDto
+import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanRequest
+import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.UpdateDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.security.AuthorizationService
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import java.time.LocalDate
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/dayplans")
@@ -55,13 +56,13 @@ class DayPlanController(
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Int, @RequestBody request: UpdateDayPlanDto): SuccessResponse {
+    fun update(@PathVariable id: Int, @Valid @RequestBody request: UpdateDayPlanRequest): SuccessResponse {
         authorizationService.checkIsOwnerOfDayPlan(id)
         return dayPlanFacade.update(id, request)
     }
 
     @PostMapping
-    fun addRecipe(@RequestBody request: AddRecipeToDayPlanDto): SuccessResponse {
+    fun addRecipe(@Valid @RequestBody request: AddRecipeToDayPlanRequest): SuccessResponse {
         authorizationService.checkIsOwnerOfRecipe(request.recipeId)
         return dayPlanFacade.addRecipe(request)
     }

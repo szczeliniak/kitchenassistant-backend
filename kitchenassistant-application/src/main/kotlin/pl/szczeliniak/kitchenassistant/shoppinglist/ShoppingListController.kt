@@ -6,10 +6,10 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.security.AuthorizationService
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListDto
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListDto
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListItemDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListRequest
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemRequest
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListRequest
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListCriteria
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.dto.ShoppingListsResponse
@@ -49,14 +49,14 @@ class ShoppingListController(
     }
 
     @PostMapping
-    fun add(@Valid @RequestBody dto: NewShoppingListDto): SuccessResponse {
-        return shoppingListFacade.add(dto)
+    fun add(@Valid @RequestBody request: NewShoppingListRequest): SuccessResponse {
+        return shoppingListFacade.add(request)
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Int, @Valid @RequestBody dto: UpdateShoppingListDto): SuccessResponse {
+    fun update(@PathVariable id: Int, @Valid @RequestBody request: UpdateShoppingListRequest): SuccessResponse {
         authorizationService.checkIsOwnerOfShoppingList(id)
-        return shoppingListFacade.update(id, dto)
+        return shoppingListFacade.update(id, request)
     }
 
     @PostMapping("/{id}/archived/{isArchived}")
@@ -72,19 +72,19 @@ class ShoppingListController(
     }
 
     @PostMapping("/{id}/items")
-    fun addShoppingListItem(@PathVariable id: Int, @Valid @RequestBody dto: NewShoppingListItemDto): SuccessResponse {
+    fun addShoppingListItem(@PathVariable id: Int, @Valid @RequestBody request: NewShoppingListItemRequest): SuccessResponse {
         authorizationService.checkIsOwnerOfShoppingList(id)
-        return shoppingListFacade.addShoppingListItem(id, dto)
+        return shoppingListFacade.addShoppingListItem(id, request)
     }
 
     @PutMapping("/{id}/items/{itemId}")
     fun updateShoppingListItem(
         @PathVariable id: Int,
         @PathVariable itemId: Int,
-        @Valid @RequestBody dto: UpdateShoppingListItemDto
+        @Valid @RequestBody request: UpdateShoppingListItemRequest
     ): SuccessResponse {
         authorizationService.checkIsOwnerOfShoppingList(id)
-        return shoppingListFacade.updateShoppingListItem(id, itemId, dto)
+        return shoppingListFacade.updateShoppingListItem(id, itemId, request)
     }
 
     @PostMapping("/{id}/items/{itemId}/completed/{isCompleted}")

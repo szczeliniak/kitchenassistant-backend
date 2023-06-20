@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands.factories
 
 import org.assertj.core.api.Assertions
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewCategoryDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewCategoryRequest
 import pl.szczeliniak.kitchenassistant.recipe.db.Category
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
@@ -21,7 +21,7 @@ class CategoryFactoryTest extends Specification {
         given:
         userDao.findById(1) >> user
         when:
-        def result = categoryFactory.create(newCategoryDto())
+        def result = categoryFactory.create(newCategoryRequest())
 
         then:
         Assertions.assertThat(result).usingRecursiveComparison()
@@ -33,8 +33,8 @@ class CategoryFactoryTest extends Specification {
         return new Category(0, "NAME", user, 3, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
-    private static NewCategoryDto newCategoryDto() {
-        return new NewCategoryDto("NAME", 1, 3)
+    private static NewCategoryRequest newCategoryRequest() {
+        return new NewCategoryRequest("NAME", 1, 3)
     }
 
     private static user() {

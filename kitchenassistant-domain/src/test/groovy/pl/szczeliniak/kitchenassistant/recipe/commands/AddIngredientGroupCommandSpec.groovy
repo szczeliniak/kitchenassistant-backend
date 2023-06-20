@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientGroupDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.IngredientGroupFactory
 import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroup
 import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroupDao
@@ -24,22 +24,22 @@ class AddIngredientGroupCommandSpec extends Specification {
 
     def 'should add ingredient group'() {
         given:
-        def newIngredientGroupDto = newIngredientGroupDto()
+        def newIngredientGroupRequest = newIngredientGroupRequest()
         def ingredientGroup = ingredientGroup()
         def recipe = recipe()
         recipeDao.findById(1) >> recipe
-        ingredientGroupFactory.create(newIngredientGroupDto) >> ingredientGroup
+        ingredientGroupFactory.create(newIngredientGroupRequest) >> ingredientGroup
         ingredientGroupDao.save(ingredientGroup) >> ingredientGroup
         recipeDao.save(recipe) >> recipe
         when:
-        def result = addIngredientGroupCommand.execute(1, newIngredientGroupDto)
+        def result = addIngredientGroupCommand.execute(1, newIngredientGroupRequest)
         then:
         result == new SuccessResponse(2)
         recipe.ingredientGroups.contains(ingredientGroup)
     }
 
-    private static NewIngredientGroupDto newIngredientGroupDto() {
-        return new NewIngredientGroupDto("GROUP", Collections.emptySet())
+    private static NewIngredientGroupRequest newIngredientGroupRequest() {
+        return new NewIngredientGroupRequest("GROUP", Collections.emptySet())
     }
 
     private static IngredientGroup ingredientGroup() {

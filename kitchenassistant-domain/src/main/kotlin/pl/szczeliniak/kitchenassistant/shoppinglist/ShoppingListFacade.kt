@@ -2,10 +2,10 @@ package pl.szczeliniak.kitchenassistant.shoppinglist
 
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.*
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListDto
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListDto
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListItemDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListRequest
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemRequest
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListRequest
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListCriteria
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.GetShoppingListQuery
 import pl.szczeliniak.kitchenassistant.shoppinglist.queries.GetShoppingListsQuery
@@ -34,12 +34,12 @@ open class ShoppingListFacade(
         return getShoppingListsQuery.execute(page, limit, criteria)
     }
 
-    fun add(dto: NewShoppingListDto): SuccessResponse {
-        return addShoppingListCommand.execute(dto)
+    fun add(request: NewShoppingListRequest): SuccessResponse {
+        return addShoppingListCommand.execute(request)
     }
 
-    fun update(id: Int, dto: UpdateShoppingListDto): SuccessResponse {
-        return updateShoppingListCommand.execute(id, dto)
+    fun update(id: Int, request: UpdateShoppingListRequest): SuccessResponse {
+        return updateShoppingListCommand.execute(id, request)
     }
 
     fun archive(id: Int, isArchived: Boolean): SuccessResponse {
@@ -50,12 +50,12 @@ open class ShoppingListFacade(
         return deleteShoppingListCommand.execute(id)
     }
 
-    fun addShoppingListItem(id: Int, dto: NewShoppingListItemDto): SuccessResponse {
-        return addShoppingListItemCommand.execute(id, dto)
+    fun addShoppingListItem(id: Int, request: NewShoppingListItemRequest): SuccessResponse {
+        return addShoppingListItemCommand.execute(id, request)
     }
 
-    fun updateShoppingListItem(id: Int, itemId: Int, dto: UpdateShoppingListItemDto): SuccessResponse {
-        return updateShoppingListItemCommand.execute(id, itemId, dto)
+    fun updateShoppingListItem(id: Int, itemId: Int, request: UpdateShoppingListItemRequest): SuccessResponse {
+        return updateShoppingListItemCommand.execute(id, itemId, request)
     }
 
     fun markShoppingListItemAsDone(id: Int, itemId: Int, isCompleted: Boolean): SuccessResponse {

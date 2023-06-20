@@ -66,18 +66,18 @@ internal class UserFacadeTest : JunitBaseClass() {
 
     @Test
     fun shouldLogin() {
-        val loginDto = LoginDto("email", "password")
+        val loginRequest = LoginRequest("email", "password")
         val loginResponse = LoginResponse("token", 1, ZonedDateTime.now())
-        whenever(loginCommand.execute(loginDto)).thenReturn(loginResponse)
+        whenever(loginCommand.execute(loginRequest)).thenReturn(loginResponse)
 
-        val result = userFacade.login(loginDto)
+        val result = userFacade.login(loginRequest)
 
         Assertions.assertEquals(loginResponse, result)
     }
 
     @Test
     fun shouldLoginWithFacebook() {
-        val loginDto = LoginWithFacebookDto("token")
+        val loginDto = LoginWithFacebookRequest("token")
         val loginResponse = LoginResponse("token", 1, ZonedDateTime.now())
         whenever(loginWithFacebookCommand.execute(loginDto)).thenReturn(loginResponse)
 
@@ -88,11 +88,11 @@ internal class UserFacadeTest : JunitBaseClass() {
 
     @Test
     fun shouldRegister() {
-        val registerDto = RegisterDto("email", "name", "password")
+        val registerRequest = RegisterRequest("email", "name", "password")
         val loginResponse = LoginResponse("token", 1, ZonedDateTime.now())
-        whenever(registerCommand.execute(registerDto)).thenReturn(loginResponse)
+        whenever(registerCommand.execute(registerRequest)).thenReturn(loginResponse)
 
-        val result = userFacade.register(registerDto)
+        val result = userFacade.register(registerRequest)
 
         Assertions.assertEquals(loginResponse, result)
     }

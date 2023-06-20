@@ -39,14 +39,14 @@ class RecipeController(private val recipeFacade: RecipeFacade, private val autho
     }
 
     @PostMapping
-    fun add(@Valid @RequestBody dto: NewRecipeDto): SuccessResponse {
-        return recipeFacade.add(dto)
+    fun add(@Valid @RequestBody request: NewRecipeRequest): SuccessResponse {
+        return recipeFacade.add(request)
     }
 
     @PutMapping("/{recipeId}")
-    fun update(@PathVariable recipeId: Int, @Valid @RequestBody dto: UpdateRecipeDto): SuccessResponse {
+    fun update(@PathVariable recipeId: Int, @Valid @RequestBody request: UpdateRecipeRequest): SuccessResponse {
         authorizationService.checkIsOwnerOfRecipe(recipeId)
-        return recipeFacade.update(recipeId, dto)
+        return recipeFacade.update(recipeId, request)
     }
 
     @DeleteMapping("/{recipeId}")
@@ -56,19 +56,19 @@ class RecipeController(private val recipeFacade: RecipeFacade, private val autho
     }
 
     @PostMapping("{recipeId}/steps")
-    fun addStep(@PathVariable recipeId: Int, @Valid @RequestBody dto: NewStepDto): SuccessResponse {
+    fun addStep(@PathVariable recipeId: Int, @Valid @RequestBody request: NewStepRequest): SuccessResponse {
         authorizationService.checkIsOwnerOfRecipe(recipeId)
-        return recipeFacade.addStep(recipeId, dto)
+        return recipeFacade.addStep(recipeId, request)
     }
 
     @PutMapping("/{recipeId}/steps/{stepId}")
     fun updateStep(
         @PathVariable recipeId: Int,
         @PathVariable stepId: Int,
-        @Valid @RequestBody dto: UpdateStepDto
+        @Valid @RequestBody request: UpdateStepRequest
     ): SuccessResponse {
         authorizationService.checkIsOwnerOfRecipe(recipeId)
-        return recipeFacade.updateStep(recipeId, stepId, dto)
+        return recipeFacade.updateStep(recipeId, stepId, request)
     }
 
     @DeleteMapping("/{recipeId}/steps/{stepId}")
@@ -80,10 +80,10 @@ class RecipeController(private val recipeFacade: RecipeFacade, private val autho
     @PostMapping("/{recipeId}/ingredientGroups")
     fun addIngredientGroup(
         @PathVariable recipeId: Int,
-        @Valid @RequestBody dto: NewIngredientGroupDto
+        @Valid @RequestBody request: NewIngredientGroupRequest
     ): SuccessResponse {
         authorizationService.checkIsOwnerOfRecipe(recipeId)
-        return recipeFacade.addIngredientGroup(recipeId, dto)
+        return recipeFacade.addIngredientGroup(recipeId, request)
     }
 
     @DeleteMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}")
@@ -99,7 +99,7 @@ class RecipeController(private val recipeFacade: RecipeFacade, private val autho
     fun updateIngredientGroup(
         @PathVariable recipeId: Int,
         @PathVariable ingredientGroupId: Int,
-        @Valid @RequestBody request: UpdateIngredientGroupDto
+        @Valid @RequestBody request: UpdateIngredientGroupRequest
     ): SuccessResponse {
         authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.updateIngredientGroup(recipeId, ingredientGroupId, request)
@@ -125,8 +125,8 @@ class RecipeController(private val recipeFacade: RecipeFacade, private val autho
     }
 
     @PostMapping("/categories")
-    fun addCategory(@Valid @RequestBody dto: NewCategoryDto): SuccessResponse {
-        return recipeFacade.addCategory(dto)
+    fun addCategory(@Valid @RequestBody request: NewCategoryRequest): SuccessResponse {
+        return recipeFacade.addCategory(request)
     }
 
     @GetMapping("/categories")
@@ -160,7 +160,7 @@ class RecipeController(private val recipeFacade: RecipeFacade, private val autho
     }
 
     @PutMapping("/categories/{categoryId}")
-    fun updateCategory(@PathVariable categoryId: Int, @Valid @RequestBody request: UpdateCategoryDto): SuccessResponse {
+    fun updateCategory(@PathVariable categoryId: Int, @Valid @RequestBody request: UpdateCategoryRequest): SuccessResponse {
         authorizationService.checkIsOwnerOfCategory(categoryId)
         return recipeFacade.updateCategory(categoryId, request)
     }

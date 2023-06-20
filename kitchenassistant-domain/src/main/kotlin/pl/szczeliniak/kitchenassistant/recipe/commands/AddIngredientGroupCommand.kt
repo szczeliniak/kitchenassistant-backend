@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.recipe.commands
 
 import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroupDao
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientGroupDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.IngredientGroupFactory
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
@@ -14,9 +14,9 @@ class AddIngredientGroupCommand(
         private val ingredientGroupDao: IngredientGroupDao
 ) {
 
-    fun execute(recipeId: Int, dto: NewIngredientGroupDto): SuccessResponse {
+    fun execute(recipeId: Int, request: NewIngredientGroupRequest): SuccessResponse {
         val recipe = recipeDao.findById(recipeId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
-        val ingredientGroup = ingredientGroupDao.save(ingredientGroupFactory.create(dto))
+        val ingredientGroup = ingredientGroupDao.save(ingredientGroupFactory.create(request))
         recipe.ingredientGroups.add(ingredientGroup)
         recipeDao.save(recipe)
         return SuccessResponse(ingredientGroup.id)

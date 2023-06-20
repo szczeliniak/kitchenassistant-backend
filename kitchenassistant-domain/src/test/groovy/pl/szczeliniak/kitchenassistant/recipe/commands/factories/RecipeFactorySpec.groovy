@@ -2,14 +2,12 @@ package pl.szczeliniak.kitchenassistant.recipe.commands.factories
 
 import org.assertj.core.api.Assertions
 import pl.szczeliniak.kitchenassistant.recipe.FtpClient
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientGroupDto
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewRecipeDto
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewStepDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewIngredientGroupRequest
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewRecipeRequest
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewStepRequest
 import pl.szczeliniak.kitchenassistant.recipe.db.*
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -32,16 +30,16 @@ class RecipeFactorySpec extends Specification {
 
     def 'should create recipe'() {
         given:
-        def newIngredientGroupDto = newIngredientGroupDto()
-        def newStepDto = newStepDto()
+        def newIngredientGroupRequest = newIngredientGroupRequest()
+        def newStepRequest = newStepRequest()
         def user = user()
         def category = category(user)
         def newTag = tag(30, "NEW_TAG", user)
         def existingTag = tag(35, "EXISTING_TAG", user)
         def author = author(user)
 
-        ingredientGroupFactory.create(newIngredientGroupDto) >> ingredientGroup()
-        stepFactory.create(newStepDto) >> step()
+        ingredientGroupFactory.create(newIngredientGroupRequest) >> ingredientGroup()
+        stepFactory.create(newStepRequest) >> step()
         categoryDao.findById(2) >> category
         tagDao.findByName("EXISTING_TAG", 4) >> tag(35, "EXISTING_TAG", user)
         tagDao.findByName("NEW_TAG", 4) >> null
@@ -53,7 +51,7 @@ class RecipeFactorySpec extends Specification {
         userDao.findById(4) >> user
 
         when:
-        def result = recipeFactory.create(newRecipeDto(newIngredientGroupDto, newStepDto))
+        def result = recipeFactory.create(newRecipeRequest(newIngredientGroupRequest, newStepRequest))
 
         then:
         Assertions.assertThat(result).usingRecursiveComparison()
@@ -63,17 +61,13 @@ class RecipeFactorySpec extends Specification {
                 .isEqualTo(recipe(category, Set.of(existingTag, newTag), user))
     }
 
-    private static NewRecipeDto newRecipeDto(NewIngredientGroupDto newIngredientGroupDto, NewStepDto newStepDto) {
-        return new NewRecipeDto(4, "RECIPE_NAME", 2, "RECIPE_DESCRIPTION", "RECIPE_AUTHOR",
+    private static NewRecipeRequest newRecipeRequest(NewIngredientGroupRequest newIngredientGroupDto, NewStepRequest newStepDto) {
+        return new NewRecipeRequest(4, "RECIPE_NAME", 2, "RECIPE_DESCRIPTION", "RECIPE_AUTHOR",
                 "RECIPE_SOURCE", "PHOTO_NAME", Set.of(newIngredientGroupDto), Set.of(newStepDto), Set.of("EXISTING_TAG", "NEW_TAG"))
     }
 
-    private static NewStepDto newStepDto() {
-        return new NewStepDto("", "", 0)
-    }
-
-    private static UserResponse userResponse() {
-        return new UserResponse(new UserDto(1, "", ""))
+    private static NewStepRequest newStepRequest() {
+        return new NewStepRequest("", "", 0)
     }
 
     private static Recipe recipe(Category category, Set<Tag> tags, User user) {
@@ -101,8 +95,8 @@ class RecipeFactorySpec extends Specification {
         return new Author(2, "RECIPE_AUTHOR", user, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
-    private static NewIngredientGroupDto newIngredientGroupDto() {
-        return new NewIngredientGroupDto("GROUP_NAME", Collections.emptySet())
+    private static NewIngredientGroupRequest newIngredientGroupRequest() {
+        return new NewIngredientGroupRequest("GROUP_NAME", Collections.emptySet())
     }
 
     private static User user() {

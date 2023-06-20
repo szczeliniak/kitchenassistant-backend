@@ -5,7 +5,7 @@ import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
-import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterDto
+import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterRequest
 import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
 import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory
 import spock.lang.Specification
@@ -27,12 +27,12 @@ class RegisterCommandSpec extends Specification {
         given:
         def user = user()
         userDao.findAll(new UserCriteria("EMAIL"), 0, 1) >> Collections.emptySet()
-        userFactory.create(registerDto()) >> user
+        userFactory.create(registerRequest()) >> user
         userDao.save(user) >> user
         tokenFactory.create(2137) >> token()
 
         when:
-        def result = registerCommand.execute(registerDto())
+        def result = registerCommand.execute(registerRequest())
 
         then:
         result == new LoginResponse("TOKEN", 2137, ZonedDateTime.of(2022, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault()))
@@ -43,14 +43,14 @@ class RegisterCommandSpec extends Specification {
         userDao.findAll(new UserCriteria("EMAIL"), 0, 1) >> Collections.singleton(user())
 
         when:
-        registerCommand.execute(registerDto())
+        registerCommand.execute(registerRequest())
 
         then:
         thrown(KitchenAssistantException)
     }
 
-    private static RegisterDto registerDto() {
-        return new RegisterDto("EMAIL", "", "")
+    private static RegisterRequest registerRequest() {
+        return new RegisterRequest("EMAIL", "", "")
     }
 
     private static TokenFactory.Token token() {

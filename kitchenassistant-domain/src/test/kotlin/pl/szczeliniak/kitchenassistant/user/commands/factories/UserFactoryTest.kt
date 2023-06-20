@@ -6,7 +6,7 @@ import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.user.PasswordEncoder
 import pl.szczeliniak.kitchenassistant.user.db.User
-import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterDto
+import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterRequest
 
 internal class UserFactoryTest : JunitBaseClass() {
 
@@ -20,7 +20,7 @@ internal class UserFactoryTest : JunitBaseClass() {
     fun shouldCreateUser() {
         whenever(passwordEncoder.encode("PASS")).thenReturn("ENC_PASS")
 
-        val user = userFactory.create(dto())
+        val user = userFactory.create(registerRequest())
 
         assertThat(user).usingRecursiveComparison()
             .ignoringFields("createdAt", "modifiedAt")
@@ -31,8 +31,8 @@ internal class UserFactoryTest : JunitBaseClass() {
         return User(0, "EMAIL", "ENC_PASS", "NAME")
     }
 
-    private fun dto(): RegisterDto {
-        return RegisterDto("EMAIL", "NAME", "PASS")
+    private fun registerRequest(): RegisterRequest {
+        return RegisterRequest("EMAIL", "NAME", "PASS")
     }
 
 }

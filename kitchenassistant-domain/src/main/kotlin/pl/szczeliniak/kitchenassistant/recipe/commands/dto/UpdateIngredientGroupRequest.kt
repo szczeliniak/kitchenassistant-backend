@@ -5,7 +5,7 @@ import javax.validation.Valid
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 
-data class UpdateIngredientGroupDto(
+data class UpdateIngredientGroupRequest(
     @field:Length(min = 1, max = 100) var name: String = "",
-    @Min(0) @Max(100) var ingredients: Set<@Valid UpdateIngredientDto> = setOf()
+    @Min(0) @Max(100) var ingredients: Set<@Valid UpdateIngredientRequest> = setOf()
 )

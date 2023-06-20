@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewCategoryDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.NewCategoryRequest
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.CategoryFactory
 import pl.szczeliniak.kitchenassistant.recipe.db.Category
 import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
@@ -21,21 +21,21 @@ class AddCategoryCommandSpec extends Specification {
 
     def 'should create category'() {
         given:
-        def dto = newCategoryDto()
+        def request = newCategoryRequest()
         def category = category()
-        categoryFactory.create(dto) >> category
+        categoryFactory.create(request) >> category
         categoryDao.save(category) >> category
 
         when:
-        def response = addCategoryCommand.execute(dto)
+        def response = addCategoryCommand.execute(request)
 
         then:
         response == new SuccessResponse(0)
 
     }
 
-    private static NewCategoryDto newCategoryDto() {
-        return new NewCategoryDto("NAME", 1, 2)
+    private static NewCategoryRequest newCategoryRequest() {
+        return new NewCategoryRequest("NAME", 1, 2)
     }
 
     private static Category category() {

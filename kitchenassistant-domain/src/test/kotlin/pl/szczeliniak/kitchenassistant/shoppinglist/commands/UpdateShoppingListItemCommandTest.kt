@@ -7,7 +7,7 @@ import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListItemDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItem
@@ -38,7 +38,7 @@ internal class UpdateShoppingListItemCommandTest : JunitBaseClass() {
         whenever(recipeDao.findById(3)).thenReturn(recipe)
         whenever(shoppingListItemDao.save(shoppingListItem)).thenReturn(shoppingListItem)
 
-        val result = updateShoppingListItemCommand.execute(1, 2, updateShoppingListItemDto())
+        val result = updateShoppingListItemCommand.execute(1, 2, updateShoppingListItemRequest())
 
         assertThat(result).isEqualTo(SuccessResponse(2))
         assertThat(shoppingListItem.name).isEqualTo("NAME")
@@ -50,8 +50,8 @@ internal class UpdateShoppingListItemCommandTest : JunitBaseClass() {
         return ShoppingListItem(2, "", "", recipe = recipe)
     }
 
-    private fun updateShoppingListItemDto(): UpdateShoppingListItemDto {
-        return UpdateShoppingListItemDto("NAME", "QUANTITY", 1, 3)
+    private fun updateShoppingListItemRequest(): UpdateShoppingListItemRequest {
+        return UpdateShoppingListItemRequest("NAME", "QUANTITY", 1, 3)
     }
 
     private fun shoppingList(items: MutableSet<ShoppingListItem>): ShoppingList {

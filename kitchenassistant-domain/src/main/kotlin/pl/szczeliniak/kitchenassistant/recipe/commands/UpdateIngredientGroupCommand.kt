@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateIngredientGroupDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.IngredientFactory
 import pl.szczeliniak.kitchenassistant.recipe.db.IngredientDao
 import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroupDao
@@ -14,7 +14,7 @@ class UpdateIngredientGroupCommand(
     private val ingredientFactory: IngredientFactory
 ) {
 
-    fun execute(recipeId: Int, ingredientGroupId: Int, request: UpdateIngredientGroupDto): SuccessResponse {
+    fun execute(recipeId: Int, ingredientGroupId: Int, request: UpdateIngredientGroupRequest): SuccessResponse {
 
         recipeDao.findById(recipeId)?.let { recipe ->
             recipe.ingredientGroups.firstOrNull { ingredientGroup -> ingredientGroup.id == ingredientGroupId }

@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
 import pl.szczeliniak.kitchenassistant.recipe.FtpClient
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateRecipeDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateRecipeRequest
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.AuthorFactory
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.TagFactory
 import pl.szczeliniak.kitchenassistant.recipe.db.*
@@ -19,21 +19,21 @@ class UpdateRecipeCommand(
     private val ftpClient: FtpClient
 ) {
 
-    fun execute(id: Int, dto: UpdateRecipeDto): SuccessResponse {
+    fun execute(id: Int, request: UpdateRecipeRequest): SuccessResponse {
         val recipe =
             recipeDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
 
-        dto.photoName?.let {
+        request.photoName?.let {
             if (!ftpClient.exists(it)) {
                 throw KitchenAssistantException(ErrorCode.FTP_FILE_NOT_FOUND)
             }
         }
 
-        recipe.name = dto.name
-        recipe.description = dto.description
-        recipe.category = getCategory(recipe.category, dto.categoryId)
-        recipe.source = dto.source
-        recipe.author = dto.author?.let {
+        recipe.name = request.name
+        recipe.description = request.description
+        recipe.category = getCategory(recipe.category, request.categoryId)
+        recipe.source = request.source
+        recipe.author = request.author?.let {
             authorDao.findByName(it, recipe.user.id) ?: authorDao.save(
                 authorFactory.create(
                     it,
@@ -41,8 +41,8 @@ class UpdateRecipeCommand(
                 )
             )
         }
-        recipe.photoName = dto.photoName
-        recipe.tags = dto.tags.map {
+        recipe.photoName = request.photoName
+        recipe.tags = request.tags.map {
             recipe.tags.firstOrNull { tag -> it == tag.name } ?: tagDao.findByName(it, recipe.user.id) ?: tagDao.save(
                 tagFactory.create(it, recipe.user)
             )

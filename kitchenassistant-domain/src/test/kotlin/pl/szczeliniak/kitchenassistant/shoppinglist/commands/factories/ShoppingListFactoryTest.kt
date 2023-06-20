@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListDto
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListRequest
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.user.db.User
@@ -26,15 +26,15 @@ internal class ShoppingListFactoryTest : JunitBaseClass() {
     @Test
     fun shouldCreateShoppingList() {
         val date = LocalDate.now()
-        val newShoppingListItemDto = NewShoppingListItemDto()
-        val newShoppingListDto =
-            NewShoppingListDto(1, "NAME", "DESCRIPTION", date, mutableSetOf(newShoppingListItemDto))
+        val newShoppingListItemRequest = NewShoppingListItemRequest()
+        val newShoppingListRequest =
+            NewShoppingListRequest(1, "NAME", "DESCRIPTION", date, mutableSetOf(newShoppingListItemRequest))
         val shoppingListItem = shoppingListItem()
         val user = user()
 
-        whenever(shoppingListItemFactory.create(newShoppingListItemDto)).thenReturn(shoppingListItem)
+        whenever(shoppingListItemFactory.create(newShoppingListItemRequest)).thenReturn(shoppingListItem)
         whenever(userDao.findById(1)).thenReturn(user)
-        val result = shoppingListFactory.create(newShoppingListDto)
+        val result = shoppingListFactory.create(newShoppingListRequest)
 
         assertThat(result).usingRecursiveComparison()
             .ignoringFields("createdAt", "modifiedAt")

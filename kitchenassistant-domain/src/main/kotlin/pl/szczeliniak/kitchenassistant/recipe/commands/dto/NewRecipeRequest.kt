@@ -6,7 +6,7 @@ import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
-data class NewRecipeDto(
+data class NewRecipeRequest(
         @field:Min(1) var userId: Int = 0,
         @field:Length(min = 1, max = 100) var name: String = "",
         var categoryId: Int? = null,
@@ -14,7 +14,7 @@ data class NewRecipeDto(
         @field:Length(max = 50) var author: String? = null,
         @field:Length(max = 100) var source: String? = null,
         @field:Length(max = 100) var photoName: String? = null,
-        @field:Size(min = 0, max = 30) var ingredientGroups: Set<@Valid NewIngredientGroupDto> = setOf(),
-        @field:Size(min = 0, max = 30) var steps: Set<@Valid NewStepDto> = setOf(),
+        @field:Size(min = 0, max = 30) var ingredientGroups: Set<@Valid NewIngredientGroupRequest> = setOf(),
+        @field:Size(min = 0, max = 30) var steps: Set<@Valid NewStepRequest> = setOf(),
         @field:Size(min = 0, max = 30) var tags: Set<@NotNull String> = setOf()
 )

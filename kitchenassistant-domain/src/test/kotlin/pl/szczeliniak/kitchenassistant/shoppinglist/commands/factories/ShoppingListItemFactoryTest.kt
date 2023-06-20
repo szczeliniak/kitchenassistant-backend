@@ -6,7 +6,7 @@ import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemDto
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.user.db.User
 
@@ -20,11 +20,10 @@ internal class ShoppingListItemFactoryTest : JunitBaseClass() {
 
     @Test
     fun shouldCreateShoppingList() {
-        val newShoppingListItemDto = newShoppingListItemDto()
         val recipe = recipe()
         whenever(recipeDao.findById(1)).thenReturn(recipe)
 
-        val result = shoppingListItemFactory.create(newShoppingListItemDto)
+        val result = shoppingListItemFactory.create(newShoppingListItemRequest())
 
         assertThat(result).usingRecursiveComparison()
             .ignoringFields("createdAt", "modifiedAt")
@@ -44,8 +43,8 @@ internal class ShoppingListItemFactoryTest : JunitBaseClass() {
         )
     }
 
-    private fun newShoppingListItemDto(): NewShoppingListItemDto {
-        val dto = NewShoppingListItemDto()
+    private fun newShoppingListItemRequest(): NewShoppingListItemRequest {
+        val dto = NewShoppingListItemRequest()
         dto.recipeId = 1
         return dto
     }

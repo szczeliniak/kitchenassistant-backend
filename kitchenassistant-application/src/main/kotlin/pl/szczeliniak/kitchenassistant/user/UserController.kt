@@ -30,18 +30,18 @@ class UserController(
     }
 
     @PostMapping("/login")
-    fun login(@Valid @RequestBody dto: LoginDto): LoginResponse {
-        return userFacade.login(dto)
+    fun login(@Valid @RequestBody request: LoginRequest): LoginResponse {
+        return userFacade.login(request)
     }
 
     @PostMapping("/login/facebook")
-    fun login(@Valid @RequestBody dto: LoginWithFacebookDto): LoginResponse {
-        return userFacade.login(dto)
+    fun login(@Valid @RequestBody request: LoginWithFacebookRequest): LoginResponse {
+        return userFacade.login(request)
     }
 
     @PostMapping("/register")
-    fun register(@Valid @RequestBody dto: RegisterDto): LoginResponse {
-        return userFacade.register(dto)
+    fun register(@Valid @RequestBody request: RegisterRequest): LoginResponse {
+        return userFacade.register(request)
     }
 
     @PostMapping("/refresh")

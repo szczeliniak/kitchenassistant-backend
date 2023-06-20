@@ -29,16 +29,16 @@ open class UserFacade(
         return getUsersQuery.execute(page, limit)
     }
 
-    fun login(dto: LoginDto): LoginResponse {
-        return loginCommand.execute(dto)
+    fun login(request: LoginRequest): LoginResponse {
+        return loginCommand.execute(request)
     }
 
-    fun login(dto: LoginWithFacebookDto): LoginResponse {
-        return loginWithFacebookCommand.execute(dto)
+    fun login(request: LoginWithFacebookRequest): LoginResponse {
+        return loginWithFacebookCommand.execute(request)
     }
 
-    fun register(dto: RegisterDto): LoginResponse {
-        return registerCommand.execute(dto)
+    fun register(request: RegisterRequest): LoginResponse {
+        return registerCommand.execute(request)
     }
 
     fun refresh(): RefreshTokenResponse {

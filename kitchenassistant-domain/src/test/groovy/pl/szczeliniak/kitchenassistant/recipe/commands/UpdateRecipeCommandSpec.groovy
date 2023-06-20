@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
 import pl.szczeliniak.kitchenassistant.recipe.FtpClient
-import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateRecipeDto
+import pl.szczeliniak.kitchenassistant.recipe.commands.dto.UpdateRecipeRequest
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.AuthorFactory
 import pl.szczeliniak.kitchenassistant.recipe.commands.factories.TagFactory
 import pl.szczeliniak.kitchenassistant.recipe.db.*
@@ -50,7 +50,7 @@ class UpdateRecipeCommandSpec extends Specification {
         ftpClient.exists("PHOTO_NAME") >> true
 
         when:
-        def result = updateRecipeCommand.execute(1, updateRecipeDto())
+        def result = updateRecipeCommand.execute(1, updateRecipeRequest())
 
         then:
         recipe.name == "NAME"
@@ -64,8 +64,8 @@ class UpdateRecipeCommandSpec extends Specification {
         result == new SuccessResponse(1)
     }
 
-    private static UpdateRecipeDto updateRecipeDto() {
-        return new UpdateRecipeDto("NAME", 3, "DESC", "AUTHOR", "SOURCE", Set.of("ASSIGNED_TAG", "EXISTING_TAG", "NEW_TAG"), "PHOTO_NAME")
+    private static UpdateRecipeRequest updateRecipeRequest() {
+        return new UpdateRecipeRequest("NAME", 3, "DESC", "AUTHOR", "SOURCE", Set.of("ASSIGNED_TAG", "EXISTING_TAG", "NEW_TAG"), "PHOTO_NAME")
     }
 
     private static Recipe recipe(Set<Tag> tags, User user) {
