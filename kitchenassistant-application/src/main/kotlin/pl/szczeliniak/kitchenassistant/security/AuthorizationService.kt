@@ -3,6 +3,8 @@ package pl.szczeliniak.kitchenassistant.security
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
 import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 
@@ -14,7 +16,13 @@ class AuthorizationService(
     private val shoppingListDao: ShoppingListDao
 ) {
 
-    fun isOwnerOfRecipe(recipeId: Int): Boolean {
+    fun checkIsOwnerOfRecipe(recipeId: Int) {
+        if (!isOwnerOfRecipe(recipeId)) {
+            throw KitchenAssistantException(ErrorCode.AUTHORIZATION_ERROR)
+        }
+    }
+
+    private fun isOwnerOfRecipe(recipeId: Int): Boolean {
         if (requestContext.userId() == null) {
             return false
         }
@@ -23,7 +31,13 @@ class AuthorizationService(
         } ?: false
     }
 
-    fun isOwnerOfCategory(categoryId: Int): Boolean {
+    fun checkIsOwnerOfCategory(categoryId: Int) {
+        if (!isOwnerOfCategory(categoryId)) {
+            throw KitchenAssistantException(ErrorCode.AUTHORIZATION_ERROR)
+        }
+    }
+
+    private fun isOwnerOfCategory(categoryId: Int): Boolean {
         if (requestContext.userId() == null) {
             return false
         }
@@ -32,14 +46,26 @@ class AuthorizationService(
         } ?: false
     }
 
-    fun isOwner(userId: Int?): Boolean {
+    fun checkIsOwner(userId: Int?) {
+        if (!isOwner(userId)) {
+            throw KitchenAssistantException(ErrorCode.AUTHORIZATION_ERROR)
+        }
+    }
+
+    private fun isOwner(userId: Int?): Boolean {
         if (userId == null) {
             return true
         }
         return requestContext.userId() == userId
     }
 
-    fun isOwnerOfDayPlan(dayPlanId: Int): Boolean {
+    fun checkIsOwnerOfDayPlan(dayPlanId: Int) {
+        if (!isOwnerOfDayPlan(dayPlanId)) {
+            throw KitchenAssistantException(ErrorCode.AUTHORIZATION_ERROR)
+        }
+    }
+
+    private fun isOwnerOfDayPlan(dayPlanId: Int): Boolean {
         if (requestContext.userId() == null) {
             return false
         }
@@ -48,7 +74,13 @@ class AuthorizationService(
         } ?: false
     }
 
-    fun isOwnerOfShoppingList(shoppingListId: Int): Boolean {
+    fun checkIsOwnerOfShoppingList(shoppingListId: Int) {
+        if (!isOwnerOfShoppingList(shoppingListId)) {
+            throw KitchenAssistantException(ErrorCode.AUTHORIZATION_ERROR)
+        }
+    }
+
+    private fun isOwnerOfShoppingList(shoppingListId: Int): Boolean {
         if (requestContext.userId() == null) {
             return false
         }
@@ -57,7 +89,13 @@ class AuthorizationService(
         } ?: false
     }
 
-    fun isAdmin(): Boolean {
+    fun checkIsAdmin() {
+        if (!isAdmin()) {
+            throw KitchenAssistantException(ErrorCode.AUTHORIZATION_ERROR)
+        }
+    }
+
+    private fun isAdmin(): Boolean {
         return true
     }
 

@@ -15,13 +15,15 @@ class AddRecipeToDayPlanCommand(
     private val dayPlanFactory: DayPlanFactory
 ) {
 
-    fun execute(recipeId: Int, request: AddRecipeToDayPlanDto): SuccessResponse {
+    fun execute(request: AddRecipeToDayPlanDto): SuccessResponse {
         if (request.date < LocalDate.now()) {
             throw KitchenAssistantException(ErrorCode.DAY_PLAN_DATE_TOO_OLD)
         }
 
         val dayPlan = dayPlanDao.findByDate(request.date) ?: dayPlanFactory.create(request)
-        dayPlan.recipes.add(recipeDao.findById(recipeId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND))
+        dayPlan.recipes.add(
+            recipeDao.findById(request.recipeId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
+        )
 
         return SuccessResponse(dayPlanDao.save(dayPlan).id)
     }

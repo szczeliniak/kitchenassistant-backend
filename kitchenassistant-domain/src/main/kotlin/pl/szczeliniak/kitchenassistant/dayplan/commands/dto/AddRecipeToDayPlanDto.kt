@@ -6,5 +6,6 @@ import javax.validation.constraints.NotNull
 
 data class AddRecipeToDayPlanDto(
     @field:Min(1) var userId: Int = 0,
-    @NotNull var date: LocalDate = LocalDate.now()
+    @NotNull var date: LocalDate = LocalDate.now(),
+    @NotNull var recipeId: Int = 0
 )

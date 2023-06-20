@@ -41,8 +41,8 @@ open class DayPlanFacade(
         return updateDayPlanCommand.execute(id, request)
     }
 
-    fun addRecipe(recipeId: Int, request: AddRecipeToDayPlanDto): SuccessResponse {
-        return addRecipeToDayPlanCommand.execute(recipeId, request)
+    fun addRecipe(request: AddRecipeToDayPlanDto): SuccessResponse {
+        return addRecipeToDayPlanCommand.execute(request)
     }
 
     fun deleteRecipe(id: Int, recipeId: Int): SuccessResponse {

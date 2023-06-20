@@ -17,7 +17,6 @@ enum class ErrorCode(val message: String, val code: Int) {
     RECIPE_NOT_FOUND("Recipe not found", 404),
     USER_NOT_FOUND("User not found", 404),
     PHOTO_NOT_FOUND("Photo not found", 404),
-    INGREDIENT_NOT_FOUND("Ingredient not found", 404),
     DAY_PLAN_NOT_FOUND("Day plan not found", 404),
     STEP_NOT_FOUND("Step not found", 404),
     CATEGORY_NOT_FOUND("Category not found", 404),
@@ -29,5 +28,6 @@ enum class ErrorCode(val message: String, val code: Int) {
     JWT_EXPIRED_TOKEN("Token is expired", 400),
     JWT_MALFORMED_TOKEN("Token is malformed", 400),
     JWT_GENERIC_ERROR("Unknown token error", 400),
-    INGREDIENT_GROUP_NOT_FOUND("Ingredient group not found", 404)
+    INGREDIENT_GROUP_NOT_FOUND("Ingredient group not found", 404),
+    AUTHORIZATION_ERROR("Cannot authorize user to access the resource", 401)
 }

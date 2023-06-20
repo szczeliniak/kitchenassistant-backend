@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe
 
 import org.hibernate.validator.constraints.Length
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import pl.szczeliniak.kitchenassistant.recipe.commands.dto.*
@@ -10,31 +9,32 @@ import pl.szczeliniak.kitchenassistant.recipe.db.CategoryCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.TagCriteria
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.*
+import pl.szczeliniak.kitchenassistant.security.AuthorizationService
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("/recipes")
 @Validated
-class RecipeController(private val recipeFacade: RecipeFacade) {
+class RecipeController(private val recipeFacade: RecipeFacade, private val authorizationService: AuthorizationService) {
 
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @GetMapping("/{recipeId}")
     fun findById(@PathVariable recipeId: Int): RecipeResponse {
+        authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.findById(recipeId)
     }
 
-    @PreAuthorize("@authorizationService.isOwner(#userId)")
     @GetMapping
     fun findAll(
-            @RequestParam(required = false) userId: Int?,
-            @RequestParam(required = false) categoryId: Int?,
-            @RequestParam(required = false) @Length(max = 50) name: String?,
-            @RequestParam(required = false) @Length(max = 50) tag: String?,
-            @RequestParam(required = false) page: Long?,
-            @RequestParam(required = false) limit: Int?,
-            @RequestParam(required = true, defaultValue = "false") onlyFavorites: Boolean
+        @RequestParam(required = false) userId: Int?,
+        @RequestParam(required = false) categoryId: Int?,
+        @RequestParam(required = false) @Length(max = 50) name: String?,
+        @RequestParam(required = false) @Length(max = 50) tag: String?,
+        @RequestParam(required = false) page: Long?,
+        @RequestParam(required = false) limit: Int?,
+        @RequestParam(required = true, defaultValue = "false") onlyFavorites: Boolean
     ): RecipesResponse {
+        authorizationService.checkIsOwner(userId)
         return recipeFacade.findAll(page, limit, RecipeCriteria(onlyFavorites, userId, categoryId, name, tag))
     }
 
@@ -43,84 +43,84 @@ class RecipeController(private val recipeFacade: RecipeFacade) {
         return recipeFacade.add(dto)
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @PutMapping("/{recipeId}")
     fun update(@PathVariable recipeId: Int, @Valid @RequestBody dto: UpdateRecipeDto): SuccessResponse {
+        authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.update(recipeId, dto)
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @DeleteMapping("/{recipeId}")
     fun delete(@PathVariable recipeId: Int): SuccessResponse {
+        authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.delete(recipeId)
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @PostMapping("{recipeId}/steps")
     fun addStep(@PathVariable recipeId: Int, @Valid @RequestBody dto: NewStepDto): SuccessResponse {
+        authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.addStep(recipeId, dto)
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @PutMapping("/{recipeId}/steps/{stepId}")
     fun updateStep(
-            @PathVariable recipeId: Int,
-            @PathVariable stepId: Int,
-            @Valid @RequestBody dto: UpdateStepDto
+        @PathVariable recipeId: Int,
+        @PathVariable stepId: Int,
+        @Valid @RequestBody dto: UpdateStepDto
     ): SuccessResponse {
+        authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.updateStep(recipeId, stepId, dto)
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @DeleteMapping("/{recipeId}/steps/{stepId}")
     fun deleteStep(@PathVariable recipeId: Int, @PathVariable stepId: Int): SuccessResponse {
+        authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.deleteStep(recipeId, stepId)
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @PostMapping("/{recipeId}/ingredientGroups")
     fun addIngredientGroup(
-            @PathVariable recipeId: Int,
-            @Valid @RequestBody dto: NewIngredientGroupDto
+        @PathVariable recipeId: Int,
+        @Valid @RequestBody dto: NewIngredientGroupDto
     ): SuccessResponse {
+        authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.addIngredientGroup(recipeId, dto)
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @DeleteMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}")
     fun deleteIngredientGroup(
-            @PathVariable recipeId: Int,
-            @PathVariable ingredientGroupId: Int
+        @PathVariable recipeId: Int,
+        @PathVariable ingredientGroupId: Int
     ): SuccessResponse {
+        authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.deleteIngredientGroup(recipeId, ingredientGroupId)
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @PutMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}")
     fun updateIngredientGroup(
-            @PathVariable recipeId: Int,
-            @PathVariable ingredientGroupId: Int,
-            @Valid @RequestBody request: UpdateIngredientGroupDto
+        @PathVariable recipeId: Int,
+        @PathVariable ingredientGroupId: Int,
+        @Valid @RequestBody request: UpdateIngredientGroupDto
     ): SuccessResponse {
+        authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.updateIngredientGroup(recipeId, ingredientGroupId, request)
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @GetMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}")
     fun getIngredientGroup(
-            @PathVariable recipeId: Int,
-            @PathVariable ingredientGroupId: Int
+        @PathVariable recipeId: Int,
+        @PathVariable ingredientGroupId: Int
     ): IngredientGroupResponse {
+        authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.getIngredientGroup(recipeId, ingredientGroupId)
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @DeleteMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}")
     fun deleteIngredient(
-            @PathVariable recipeId: Int,
-            @PathVariable ingredientGroupId: Int,
-            @PathVariable ingredientId: Int
+        @PathVariable recipeId: Int,
+        @PathVariable ingredientGroupId: Int,
+        @PathVariable ingredientId: Int
     ): SuccessResponse {
+        authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.deleteIngredient(recipeId, ingredientGroupId, ingredientId)
     }
 
@@ -129,45 +129,45 @@ class RecipeController(private val recipeFacade: RecipeFacade) {
         return recipeFacade.addCategory(dto)
     }
 
-    @PreAuthorize("@authorizationService.isOwner(#userId)")
     @GetMapping("/categories")
     fun getCategories(@RequestParam(required = false) userId: Int?): CategoriesResponse {
+        authorizationService.checkIsOwner(userId)
         return recipeFacade.getCategories(CategoryCriteria(userId))
     }
 
-    @PreAuthorize("@authorizationService.isOwner(#userId)")
     @GetMapping("/tags")
     fun getTags(
-            @RequestParam(required = false) userId: Int?,
-            @RequestParam(required = false) name: String?
+        @RequestParam(required = false) userId: Int?,
+        @RequestParam(required = false) name: String?
     ): TagsResponse {
+        authorizationService.checkIsOwner(userId)
         return recipeFacade.getTags(TagCriteria(name, userId))
     }
 
-    @PreAuthorize("@authorizationService.isOwner(#userId)")
     @GetMapping("/authors")
     fun getAuthors(
-            @RequestParam(required = false) userId: Int?,
-            @RequestParam(required = false) name: String?
+        @RequestParam(required = false) userId: Int?,
+        @RequestParam(required = false) name: String?
     ): AuthorsResponse {
+        authorizationService.checkIsOwner(userId)
         return recipeFacade.getAuthors(AuthorCriteria(name, userId))
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfCategory(#categoryId)")
     @DeleteMapping("/categories/{categoryId}")
     fun deleteCategory(@PathVariable categoryId: Int): SuccessResponse {
+        authorizationService.checkIsOwnerOfCategory(categoryId)
         return recipeFacade.deleteCategory(categoryId)
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfCategory(#categoryId)")
     @PutMapping("/categories/{categoryId}")
     fun updateCategory(@PathVariable categoryId: Int, @Valid @RequestBody request: UpdateCategoryDto): SuccessResponse {
+        authorizationService.checkIsOwnerOfCategory(categoryId)
         return recipeFacade.updateCategory(categoryId, request)
     }
 
-    @PreAuthorize("@authorizationService.isOwnerOfRecipe(#recipeId)")
     @PutMapping("/{recipeId}/favorite/{isFavorite}")
     fun markAsFavorite(@PathVariable recipeId: Int, @PathVariable isFavorite: Boolean): SuccessResponse {
+        authorizationService.checkIsOwnerOfRecipe(recipeId)
         return recipeFacade.markAsFavorite(recipeId, isFavorite)
     }
 

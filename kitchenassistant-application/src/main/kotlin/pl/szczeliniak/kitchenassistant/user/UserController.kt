@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.user
 
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import pl.szczeliniak.kitchenassistant.security.AuthorizationService
 import pl.szczeliniak.kitchenassistant.user.commands.dto.*
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
 import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
@@ -10,21 +10,22 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/users")
 class UserController(
-    private val userFacade: UserFacade
+    private val userFacade: UserFacade,
+    private val authorizationService: AuthorizationService
 ) {
 
-    @PreAuthorize("@authorizationService.isOwner(#id)")
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Int): UserResponse {
+        authorizationService.checkIsOwner(id)
         return userFacade.findById(id)
     }
 
-    @PreAuthorize("@authorizationService.isAdmin()")
     @GetMapping
     fun findAll(
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?
     ): UsersResponse {
+        authorizationService.checkIsAdmin()
         return userFacade.findAll(page, limit)
     }
 
