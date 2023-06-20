@@ -18,6 +18,7 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
         return category
     }
 
+    @Transactional
     override fun delete(category: Category) {
         entityManager.remove(category)
     }

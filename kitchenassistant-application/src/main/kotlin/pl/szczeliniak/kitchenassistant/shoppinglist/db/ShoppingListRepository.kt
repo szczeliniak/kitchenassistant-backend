@@ -62,6 +62,7 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
         shoppingLists.forEach { save(it) }
     }
 
+    @Transactional
     override fun delete(shoppingList: ShoppingList) {
         entityManager.remove(shoppingList)
     }

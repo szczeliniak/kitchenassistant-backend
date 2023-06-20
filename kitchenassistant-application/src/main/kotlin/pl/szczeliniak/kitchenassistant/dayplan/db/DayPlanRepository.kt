@@ -48,6 +48,7 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
             .orElse(null)
     }
 
+    @Transactional
     override fun delete(dayPlan: DayPlan) {
         entityManager.remove(dayPlan)
     }

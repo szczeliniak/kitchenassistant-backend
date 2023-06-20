@@ -36,6 +36,7 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         return applyParameters(criteria, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
     }
 
+    @Transactional
     override fun delete(recipe: Recipe) {
         entityManager.remove(recipe)
     }
