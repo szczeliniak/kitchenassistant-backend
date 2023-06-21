@@ -1,0 +1,1 @@
+ALTER TABLE steps ADD COLUMN photo_name VARCHAR(100);

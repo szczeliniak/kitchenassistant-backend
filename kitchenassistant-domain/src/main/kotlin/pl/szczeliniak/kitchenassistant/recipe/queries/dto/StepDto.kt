@@ -3,5 +3,6 @@ package pl.szczeliniak.kitchenassistant.recipe.queries.dto
 data class StepDto(
     val id: Int,
     val description: String?,
+    val photoName: String?,
     val sequence: Int?
 )

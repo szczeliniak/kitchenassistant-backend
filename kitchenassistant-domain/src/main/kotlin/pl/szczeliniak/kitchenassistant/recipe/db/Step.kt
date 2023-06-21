@@ -11,6 +11,7 @@ data class Step(
     @SequenceGenerator(name = "step_id_generator", sequenceName = "seq_step_id", allocationSize = 1)
     var id: Int = 0,
     var description: String? = null,
+    var photoName: String? = null,
     var sequence: Int? = null,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()

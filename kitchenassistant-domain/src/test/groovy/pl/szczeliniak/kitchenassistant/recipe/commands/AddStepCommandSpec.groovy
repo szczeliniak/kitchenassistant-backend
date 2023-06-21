@@ -36,11 +36,11 @@ class AddStepCommandSpec extends Specification {
     }
 
     private static NewStepRequest newStepRequest() {
-        return new NewStepRequest("", 0)
+        return new NewStepRequest("", "", 0)
     }
 
     private static Step step() {
-        return new Step(2,  "", 0, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Step(2, "", "", 0, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Recipe recipe() {

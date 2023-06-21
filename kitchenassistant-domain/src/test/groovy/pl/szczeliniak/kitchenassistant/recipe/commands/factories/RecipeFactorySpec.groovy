@@ -67,7 +67,7 @@ class RecipeFactorySpec extends Specification {
     }
 
     private static NewStepRequest newStepRequest() {
-        return new NewStepRequest("", 0)
+        return new NewStepRequest("", "", 0)
     }
 
     private static Recipe recipe(Category category, Set<Tag> tags, User user) {
@@ -84,7 +84,7 @@ class RecipeFactorySpec extends Specification {
     }
 
     private static Step step() {
-        return new Step(4, "STEP_DESCRIPTION", 1, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Step(4, "STEP_DESCRIPTION", "PHOTO_NAME", 1, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static Category category(User user) {

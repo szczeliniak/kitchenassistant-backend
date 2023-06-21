@@ -24,11 +24,11 @@ class StepFactorySpec extends Specification {
     }
 
     private static NewStepRequest newStepRequest() {
-        return new NewStepRequest("DESCRIPTION", 1)
+        return new NewStepRequest("DESCRIPTION", "PHOTO_NAME", 1)
     }
 
     private static Step step() {
-        return new Step(0, "DESCRIPTION", 1, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Step(0, "DESCRIPTION", "PHOTO_NAME", 1, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

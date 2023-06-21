@@ -50,6 +50,7 @@ open class RecipeConverter(private val ingredientGroupConverter: IngredientGroup
         return StepDto(
             step.id,
             step.description,
+            step.photoName,
             step.sequence
         )
     }

@@ -31,12 +31,13 @@ class UpdateStepCommandSpec extends Specification {
 
         then:
         step.description == "DESCRIPTION"
+        step.photoName == "PHOTO_NAME"
         step.sequence == 1
         result == new SuccessResponse(2)
     }
 
     private static UpdateStepRequest updateStepRequest() {
-        return new UpdateStepRequest("DESCRIPTION", 1)
+        return new UpdateStepRequest("DESCRIPTION", "PHOTO_NAME", 1)
     }
 
     private static Recipe recipe(Set<Step> steps) {
@@ -45,7 +46,7 @@ class UpdateStepCommandSpec extends Specification {
     }
 
     private static Step step() {
-        return new Step(2, "", 0, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Step(2, "", "", 0, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }
