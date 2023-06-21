@@ -1,0 +1,1 @@
+ALTER TABLE steps ALTER COLUMN description SET NOT NULL;
