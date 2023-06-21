@@ -49,7 +49,6 @@ open class RecipeConverter(private val ingredientGroupConverter: IngredientGroup
     private fun map(step: Step): StepDto {
         return StepDto(
             step.id,
-            step.name,
             step.description,
             step.sequence
         )

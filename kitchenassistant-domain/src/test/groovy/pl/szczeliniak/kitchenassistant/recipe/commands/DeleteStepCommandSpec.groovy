@@ -37,7 +37,7 @@ class DeleteStepCommandSpec extends Specification {
     }
 
     private static Step step() {
-        return new Step(3, '', '', 0, ZonedDateTime.now(), ZonedDateTime.now())
+        return new Step(3, '', 0, ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

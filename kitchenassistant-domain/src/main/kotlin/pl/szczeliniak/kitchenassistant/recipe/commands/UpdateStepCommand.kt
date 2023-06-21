@@ -14,7 +14,6 @@ class UpdateStepCommand(private val recipeDao: RecipeDao) {
         val step =
             recipe.steps.firstOrNull { it.id == stepId } ?: throw KitchenAssistantException(ErrorCode.STEP_NOT_FOUND)
 
-        step.name = request.name
         step.description = request.description
         step.sequence = request.sequence
 
