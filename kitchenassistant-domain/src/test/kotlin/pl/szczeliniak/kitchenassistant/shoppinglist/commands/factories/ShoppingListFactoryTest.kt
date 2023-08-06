@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListRequest
 import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListItemRequest
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.NewShoppingListRequest
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.user.db.User
@@ -50,7 +50,7 @@ internal class ShoppingListFactoryTest : JunitBaseClass() {
     }
 
     private fun user(): User {
-        return User(id = 1, email = "", name = "")
+        return User(id = 1, email = "")
     }
 
 }

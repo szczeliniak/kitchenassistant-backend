@@ -14,8 +14,8 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
-        <java.version>11</java.version>
-        <kotlin.version>1.7.20</kotlin.version>
+        <java.version>17</java.version>
+        <kotlin.version>1.8.22</kotlin.version>
         <dependency.spring.boot>2.6.6</dependency.spring.boot>
         <dependency.jaxb>2.3.1</dependency.jaxb>
         <dependency.swaggerui>2.9.2</dependency.swaggerui>
@@ -32,11 +32,12 @@
         <dependency.commons.net>3.8.0</dependency.commons.net>
         <dependency.hibernate.validator>6.2.3.Final</dependency.hibernate.validator>
         <dependency.hibernate.annotations>3.5.6-Final</dependency.hibernate.annotations>
+        <dependency.mapstruct>1.5.5.Final</dependency.mapstruct>
+        <dependency.flyway>8.5.12</dependency.flyway>
         <plugin.compiler>3.8.0</plugin.compiler>
         <plugin.surefire>3.0.0-M5</plugin.surefire>
         <plugin.gmavenplus>1.13.1</plugin.gmavenplus>
         <plugin.jar>3.2.2</plugin.jar>
-        <dependency.flyway>8.5.12</dependency.flyway>
     </properties>
 
     <dependencies>
@@ -180,6 +181,11 @@
                 <artifactId>hibernate-annotations</artifactId>
                 <version>${dependency.hibernate.annotations}</version>
             </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${dependency.mapstruct}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -187,48 +193,6 @@
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
         <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
         <plugins>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <version>${kotlin.version}</version>
-                <configuration>
-                    <args>
-                        <arg>-Xjsr305=strict</arg>
-                        <arg>-Xemit-jvm-type-annotations</arg>
-                    </args>
-                    <compilerPlugins>
-                        <plugin>spring</plugin>
-                        <plugin>jpa</plugin>
-                    </compilerPlugins>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <artifactId>kotlin-maven-allopen</artifactId>
-                        <version>${kotlin.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <artifactId>kotlin-maven-noarg</artifactId>
-                        <version>${kotlin.version}</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <goals>
-                            <goal>test-compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>

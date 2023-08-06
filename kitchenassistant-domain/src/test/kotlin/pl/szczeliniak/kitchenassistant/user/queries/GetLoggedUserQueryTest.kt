@@ -38,11 +38,11 @@ internal class GetLoggedUserQueryTest : JunitBaseClass() {
     }
 
     private fun userDto(): UserDto {
-        return UserDto(0, "", "")
+        return UserDto(0, "")
     }
 
     private fun user(): User {
-        return User(0, "", "", "")
+        return User(0, "", "")
     }
 
 }

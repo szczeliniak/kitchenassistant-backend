@@ -10,20 +10,16 @@ import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 
 open class LoginWithFacebookCommand(
-        private val userDao: UserDao,
-        private val tokenFactory: TokenFactory,
-        private val facebookConnector: FacebookConnector,
-        private val userFactory: UserFactory,
+    private val userDao: UserDao,
+    private val tokenFactory: TokenFactory,
+    private val facebookConnector: FacebookConnector,
+    private val userFactory: UserFactory,
 ) {
 
     open fun execute(request: LoginWithFacebookRequest): LoginResponse {
         val user = facebookConnector.login(request.token)?.let {
             userDao.findAll(UserCriteria(it.email!!), 0, 1).firstOrNull() ?: userDao.save(
-                    userFactory.create(
-                            it.email,
-                            "",
-                            it.name!!
-                    )
+                userFactory.create(it.email, "")
             )
         } ?: throw KitchenAssistantException(ErrorCode.CANNOT_LOGIN_WITH_FACEBOOK)
 

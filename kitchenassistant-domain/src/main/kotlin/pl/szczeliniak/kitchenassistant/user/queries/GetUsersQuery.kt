@@ -15,8 +15,8 @@ open class GetUsersQuery(private val userDao: UserDao, private val userConverter
         val criteria = UserCriteria()
         val totalNumberOfPages = PaginationUtils.calculateNumberOfPages(currentLimit, userDao.count(criteria))
         return UsersResponse(
-                userDao.findAll(criteria, offset, currentLimit).map { userConverter.map(it) }.toSet(),
-                Pagination(currentPage, currentLimit, totalNumberOfPages)
+            userDao.findAll(criteria, offset, currentLimit).map { userConverter.map(it) }.toSet(),
+            Pagination(currentPage, currentLimit, totalNumberOfPages)
         )
     }
 

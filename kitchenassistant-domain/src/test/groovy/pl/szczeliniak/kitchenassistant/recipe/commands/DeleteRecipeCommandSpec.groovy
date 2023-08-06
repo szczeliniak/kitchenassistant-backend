@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.recipe.commands
 
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlan
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
-import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
+import pl.szczeliniak.kitchenassistant.dayplan.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
@@ -35,7 +35,7 @@ class DeleteRecipeCommandSpec extends Specification {
         def shoppingListItem = shoppingListItem(recipe)
         def shoppingList = shoppingList(shoppingListItem, user)
         recipeDao.findById(1) >> recipe
-        dayPlanDao.findAll(new DayPlanCriteria(null, null, 1, null, null, null), null, null) >> Set.of(dayPlan)
+        dayPlanDao.findAll(new DayPlanCriteria(1, null, null), null, null, null) >> Set.of(dayPlan)
         shoppingListDao.findAll(new ShoppingListCriteria(null, null, null, null, 1, null, null), null, null) >> Set.of(shoppingList)
         when:
         def result = deleteRecipeCommand.execute(1)
@@ -54,7 +54,7 @@ class DeleteRecipeCommandSpec extends Specification {
     }
 
     private static DayPlan dayPlan(User user) {
-        return new DayPlan(0, user, LocalDate.now(), new HashSet<Recipe>(Arrays.asList(recipe(1, user), recipe(2, user))), false, false, ZonedDateTime.now(), ZonedDateTime.now())
+        return new DayPlan(0, user.id, LocalDate.now(), new HashSet<Recipe>(Arrays.asList(recipe(1, user), recipe(2, user))), ZonedDateTime.now(), ZonedDateTime.now())
     }
 
     private static ShoppingListItem shoppingListItem(Recipe recipe) {
@@ -67,7 +67,7 @@ class DeleteRecipeCommandSpec extends Specification {
 
 
     private static User user() {
-        return new User(2, "", "", "", ZonedDateTime.now(), ZonedDateTime.now())
+        return new User(2, "", "", ZonedDateTime.now(), ZonedDateTime.now())
     }
 
 }

@@ -42,4 +42,6 @@ class Recipe(
     var tags: MutableSet<Tag> = mutableSetOf(),
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
-)
+) {
+    constructor() : this(name = "", user = User(), photoName = null)
+}

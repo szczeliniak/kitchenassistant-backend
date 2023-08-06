@@ -49,7 +49,7 @@ internal class GetShoppingListQueryTest : JunitBaseClass() {
 
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
-            user = User(id = 0, email = "", name = ""),
+            user = User(id = 0, email = ""),
             name = ""
         )
     }

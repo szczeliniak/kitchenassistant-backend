@@ -31,7 +31,7 @@ internal class ShoppingListItemFactoryTest : JunitBaseClass() {
     }
 
     private fun recipe(): Recipe {
-        return Recipe(id = 1, name = "", User(email = "", name = ""), photoName = null)
+        return Recipe(id = 1, name = "", User(email = ""), photoName = null)
     }
 
     private fun shoppingListItem(recipe: Recipe): ShoppingListItem {

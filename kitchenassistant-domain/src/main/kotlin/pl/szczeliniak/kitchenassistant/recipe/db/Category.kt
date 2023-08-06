@@ -18,4 +18,6 @@ data class Category(
     var sequence: Int? = null,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
-)
+) {
+    constructor() : this(name = "", user = User())
+}

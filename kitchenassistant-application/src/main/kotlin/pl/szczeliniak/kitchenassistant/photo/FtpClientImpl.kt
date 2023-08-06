@@ -5,6 +5,7 @@ import org.apache.commons.net.ftp.FTPReply
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
 import pl.szczeliniak.kitchenassistant.recipe.FtpClient
 import pl.szczeliniak.kitchenassistant.recipe.SupportedMediaType
@@ -17,10 +18,11 @@ import java.util.*
 
 @Component
 class FtpClientImpl(
-        @Value("\${ftp.host}") private val host: String,
-        @Value("\${ftp.port}") private val port: Int,
-        @Value("\${ftp.user}") private val user: String,
-        @Value("\${ftp.password}") private val password: String
+    @Value("\${ftp.host}") private val host: String,
+    @Value("\${ftp.port}") private val port: Int,
+    @Value("\${ftp.user}") private val user: String,
+    @Value("\${ftp.password}") private val password: String,
+    private val environment: Environment
 ) : FtpClient {
 
     companion object {
@@ -127,7 +129,11 @@ class FtpClientImpl(
         val ftpClient = FTPClient()
         ftpClient.connect(host, port)
         ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE)
-        ftpClient.enterRemotePassiveMode()
+        if (environment.activeProfiles.contains("dev")) {
+            ftpClient.enterLocalPassiveMode()
+        } else {
+            ftpClient.enterRemotePassiveMode()
+        }
         ftpClient.login(user, password)
         if (!FTPReply.isPositiveCompletion(ftpClient.replyCode)) {
             close(ftpClient)
@@ -144,11 +150,19 @@ class FtpClientImpl(
     }
 
     private fun preparePhotoName(client: FTPClient, originalFileName: String): String {
-        var name = UUID.randomUUID().toString() + "_" + originalFileName
+        var name = UUID.randomUUID().toString() + getExtension(originalFileName)
         name = name.replace("\\s".toRegex(), "")
         return if (exists(client, name)) {
             preparePhotoName(client, originalFileName)
         } else name
+    }
+
+    private fun getExtension(originalFileName: String): String {
+        val split = originalFileName.split(".")
+        if (split.isEmpty()) {
+            return ""
+        }
+        return "." + split.last()
     }
 
     private fun exists(client: FTPClient, fileName: String): Boolean {

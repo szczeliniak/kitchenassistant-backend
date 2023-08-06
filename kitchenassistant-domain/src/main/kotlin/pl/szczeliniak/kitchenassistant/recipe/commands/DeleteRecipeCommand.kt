@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.recipe.commands
 
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
-import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
+import pl.szczeliniak.kitchenassistant.dayplan.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListCriteria
@@ -17,9 +17,9 @@ class DeleteRecipeCommand(
         recipeDao.findById(id)?.let {
             val dayPlans = dayPlanDao.findAll(DayPlanCriteria(recipeId = it.id))
             dayPlans.forEach { dayPlan ->
-                dayPlan.recipes.removeIf { recipe -> recipe.id == it.id}
+                dayPlan.recipes.removeIf { recipe -> recipe.id == it.id }
                 if (dayPlan.recipes.isEmpty()) {
-                    dayPlanDao.delete(dayPlan)
+                    dayPlanDao.delete(dayPlan.date)
                 } else {
                     dayPlanDao.save(dayPlan)
                 }

@@ -48,20 +48,25 @@ internal class UserFacadeTest : JunitBaseClass() {
 
     @Test
     fun shouldReturnUserById() {
-        whenever(getUserByIdQuery.execute(1)).thenReturn(UserResponse(UserDto(1, "email", "name")))
+        whenever(getUserByIdQuery.execute(1)).thenReturn(UserResponse(UserDto(1, "email")))
 
         val result = userFacade.findById(1)
 
-        Assertions.assertEquals(UserResponse(UserDto(1, "email", "name")), result)
+        Assertions.assertEquals(UserResponse(UserDto(1, "email")), result)
     }
 
     @Test
     fun shouldReturnUsers() {
-        whenever(getUsersQuery.execute(1L, 1)).thenReturn(UsersResponse(Sets.newLinkedHashSet(UserDto(1, "email", "name")), Pagination(1, 1, 1L)))
+        whenever(getUsersQuery.execute(1L, 1)).thenReturn(
+            UsersResponse(
+                Sets.newLinkedHashSet(UserDto(1, "email")),
+                Pagination(1, 1, 1L)
+            )
+        )
 
         val result = userFacade.findAll(1L, 1)
 
-        Assertions.assertEquals(UsersResponse(Sets.newLinkedHashSet(UserDto(1, "email", "name")), Pagination(1, 1, 1L)), result)
+        Assertions.assertEquals(UsersResponse(Sets.newLinkedHashSet(UserDto(1, "email")), Pagination(1, 1, 1L)), result)
     }
 
     @Test
@@ -88,7 +93,7 @@ internal class UserFacadeTest : JunitBaseClass() {
 
     @Test
     fun shouldRegister() {
-        val registerRequest = RegisterRequest("email", "name", "password")
+        val registerRequest = RegisterRequest("email", "password")
         val loginResponse = LoginResponse("token", 1, ZonedDateTime.now())
         whenever(registerCommand.execute(registerRequest)).thenReturn(loginResponse)
 
@@ -109,10 +114,10 @@ internal class UserFacadeTest : JunitBaseClass() {
 
     @Test
     fun shouldReturnLoggedUser() {
-        whenever(getLoggedUserQuery.execute()).thenReturn(UserResponse(UserDto(1, "email", "name")))
+        whenever(getLoggedUserQuery.execute()).thenReturn(UserResponse(UserDto(1, "email")))
 
         val result = userFacade.getLoggedUser()
 
-        Assertions.assertEquals(UserResponse(UserDto(1, "email", "name")), result)
+        Assertions.assertEquals(UserResponse(UserDto(1, "email")), result)
     }
 }

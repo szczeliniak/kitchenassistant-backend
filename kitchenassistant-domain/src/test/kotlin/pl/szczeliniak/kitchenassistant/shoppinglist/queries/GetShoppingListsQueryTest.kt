@@ -46,7 +46,7 @@ internal class GetShoppingListsQueryTest : JunitBaseClass() {
 
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
-            user = User(id = 1, email = "", name = ""),
+            user = User(id = 1, email = ""),
             name = "",
             description = "",
             items = Collections.emptySet()

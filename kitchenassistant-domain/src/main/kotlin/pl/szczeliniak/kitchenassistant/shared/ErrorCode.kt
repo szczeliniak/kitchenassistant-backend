@@ -29,5 +29,5 @@ enum class ErrorCode(val message: String, val code: Int) {
     JWT_MALFORMED_TOKEN("Token is malformed", 400),
     JWT_GENERIC_ERROR("Unknown token error", 400),
     INGREDIENT_GROUP_NOT_FOUND("Ingredient group not found", 404),
-    AUTHORIZATION_ERROR("Cannot authorize user to access the resource", 401)
+    RECIPE_ALREADY_ADDED_TO_DAY_PLAN("Recipe already added to day plan", 400),
 }

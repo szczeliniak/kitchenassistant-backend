@@ -1,9 +1,8 @@
-package pl.szczeliniak.kitchenassistant.dayplan.commands.dto
+package pl.szczeliniak.kitchenassistant.dayplan.dto.request
 
 import java.time.LocalDate
 import javax.validation.constraints.NotNull
 
 data class UpdateDayPlanRequest(
-    @NotNull var automaticArchiving: Boolean = false,
     @NotNull var date: LocalDate = LocalDate.now()
 )

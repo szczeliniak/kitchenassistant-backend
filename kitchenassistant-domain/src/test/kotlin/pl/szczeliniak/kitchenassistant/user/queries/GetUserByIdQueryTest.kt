@@ -43,11 +43,11 @@ internal class GetUserByIdQueryTest : JunitBaseClass() {
     }
 
     private fun userDto(): UserDto {
-        return UserDto(0, "", "")
+        return UserDto(0, "")
     }
 
     private fun user(): User {
-        return User(email = "", password = "", name = "")
+        return User(email = "", password = "")
     }
 
 }

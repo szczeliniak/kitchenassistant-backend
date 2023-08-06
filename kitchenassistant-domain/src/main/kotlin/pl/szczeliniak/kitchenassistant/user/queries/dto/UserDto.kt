@@ -2,6 +2,5 @@ package pl.szczeliniak.kitchenassistant.user.queries.dto
 
 data class UserDto(
     val id: Int,
-    val email: String,
-    val name: String
+    val email: String
 )

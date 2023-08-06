@@ -45,7 +45,7 @@ internal class DeletePhotoCommandTest : JunitBaseClass() {
         return Recipe(
             1,
             "",
-            User(id = 1, email = "", name = ""),
+            User(id = 1, email = ""),
             null,
             null,
             null,

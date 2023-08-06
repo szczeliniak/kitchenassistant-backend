@@ -3,8 +3,8 @@ package pl.szczeliniak.kitchenassistant.recipe.queries
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.queries.dto.RecipesResponse
-import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
 import pl.szczeliniak.kitchenassistant.shared.PaginationUtils
+import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
 
 class GetRecipesQuery(private val recipeDao: RecipeDao, private val recipeConverter: RecipeConverter) {
 

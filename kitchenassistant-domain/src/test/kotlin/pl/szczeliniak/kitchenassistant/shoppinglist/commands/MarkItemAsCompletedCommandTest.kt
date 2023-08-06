@@ -41,7 +41,7 @@ internal class MarkItemAsCompletedCommandTest : JunitBaseClass() {
 
     private fun shoppingList(shoppingListItem: ShoppingListItem): ShoppingList {
         return ShoppingList(
-            user = User(id = 4, email = "", name = ""),
+            user = User(id = 4, email = ""),
             name = "",
             items = mutableSetOf(shoppingListItem)
         )

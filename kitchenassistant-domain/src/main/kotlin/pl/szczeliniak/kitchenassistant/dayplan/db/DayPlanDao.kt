@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.dayplan.db
 
-import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
+import pl.szczeliniak.kitchenassistant.dayplan.dto.DayPlanCriteria
 import java.time.LocalDate
 
 interface DayPlanDao {
@@ -9,13 +9,12 @@ interface DayPlanDao {
 
     fun save(dayPlans: Set<DayPlan>)
 
-    fun findAll(criteria: DayPlanCriteria, offset: Int? = null, limit: Int? = null): Set<DayPlan>
+    fun findAll(criteria: DayPlanCriteria, offset: Int? = null, limit: Int? = null, userId: Int? = null): Set<DayPlan>
 
-    fun count(criteria: DayPlanCriteria): Long
+    fun count(criteria: DayPlanCriteria, userId: Int? = null): Long
 
-    fun findById(id: Int): DayPlan?
+    fun findByDate(date: LocalDate, userId: Int): DayPlan?
 
-    fun findByDate(date: LocalDate): DayPlan?
-    fun delete(dayPlan: DayPlan)
+    fun delete(date: LocalDate, userId: Int? = null): Boolean
 
 }

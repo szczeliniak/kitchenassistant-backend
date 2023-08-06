@@ -20,8 +20,10 @@ import javax.annotation.PostConstruct
 class JacksonConfiguration(private val objectMapper: ObjectMapper) {
 
     companion object {
-        private val ZONED_DATETIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")
-        private val LOCAL_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        const val DATE_FORMAT = "yyyy-MM-dd"
+        private const val DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ"
+        private val ZONED_DATETIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern(DATETIME_FORMAT)
+        private val LOCAL_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
     }
 
     @PostConstruct

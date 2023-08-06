@@ -12,7 +12,8 @@ data class User(
     var id: Int = 0,
     var email: String,
     var password: String? = null,
-    var name: String,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
-)
+) {
+    constructor() : this(email = "")
+}

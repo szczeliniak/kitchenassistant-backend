@@ -14,4 +14,6 @@ data class Ingredient(
     var quantity: String? = null,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
-)
+) {
+    constructor() : this(name = "")
+}

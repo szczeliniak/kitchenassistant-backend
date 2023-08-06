@@ -1,76 +1,74 @@
 package pl.szczeliniak.kitchenassistant.dayplan
 
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.AddRecipeToDayPlanRequest
-import pl.szczeliniak.kitchenassistant.dayplan.commands.dto.UpdateDayPlanRequest
-import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanCriteria
-import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlanResponse
-import pl.szczeliniak.kitchenassistant.dayplan.queries.dto.DayPlansResponse
-import pl.szczeliniak.kitchenassistant.security.AuthorizationService
+import pl.szczeliniak.kitchenassistant.JacksonConfiguration
+import pl.szczeliniak.kitchenassistant.dayplan.dto.DayPlanCriteria
+import pl.szczeliniak.kitchenassistant.dayplan.dto.request.AddRecipeToDayPlanRequest
+import pl.szczeliniak.kitchenassistant.dayplan.dto.request.UpdateDayPlanRequest
+import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlanResponse
+import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import java.time.LocalDate
+import javax.transaction.Transactional
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("/dayplans")
 @Validated
 class DayPlanController(
-    private val dayPlanFacade: DayPlanFacade,
-    private val authorizationService: AuthorizationService
+    private val dayPlanService: DayPlanService,
 ) {
 
-    @GetMapping("/{id}")
-    fun findById(@PathVariable id: Int): DayPlanResponse {
-        authorizationService.checkIsOwnerOfDayPlan(id)
-        return dayPlanFacade.findById(id)
+    @GetMapping("/{date}")
+    fun findByDate(@PathVariable @DateTimeFormat(pattern = JacksonConfiguration.DATE_FORMAT) date: LocalDate): DayPlanResponse {
+        return dayPlanService.findByDate(date)
     }
 
     @GetMapping
     fun findAll(
         @RequestParam(required = false) userId: Int?,
-        @RequestParam(required = false) archived: Boolean?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
         @RequestParam(required = false) since: LocalDate?,
         @RequestParam(required = false) to: LocalDate?
     ): DayPlansResponse {
-        authorizationService.checkIsOwner(userId)
-        return dayPlanFacade.findAll(
+        return dayPlanService.findAll(
             page,
             limit,
-            DayPlanCriteria(userId, archived, since = since, to = to)
+            DayPlanCriteria(since = since, to = to)
         )
     }
 
-    @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Int): SuccessResponse {
-        authorizationService.checkIsOwnerOfDayPlan(id)
-        return dayPlanFacade.delete(id)
+    @Transactional
+    @DeleteMapping("/{date}")
+    fun delete(@PathVariable @DateTimeFormat(pattern = JacksonConfiguration.DATE_FORMAT) date: LocalDate): SuccessResponse {
+        return dayPlanService.delete(date)
     }
 
-    @PutMapping("/{id}/archive/{archive}")
-    fun archive(@PathVariable id: Int, @PathVariable archive: Boolean): SuccessResponse {
-        authorizationService.checkIsOwnerOfDayPlan(id)
-        return dayPlanFacade.archive(id, archive)
+    @Transactional
+    @PutMapping("/{date}")
+    fun update(
+        @PathVariable @DateTimeFormat(pattern = JacksonConfiguration.DATE_FORMAT) date: LocalDate,
+        @Valid @RequestBody request: UpdateDayPlanRequest
+    ): SuccessResponse {
+        return dayPlanService.update(date, request)
     }
 
-    @PutMapping("/{id}")
-    fun update(@PathVariable id: Int, @Valid @RequestBody request: UpdateDayPlanRequest): SuccessResponse {
-        authorizationService.checkIsOwnerOfDayPlan(id)
-        return dayPlanFacade.update(id, request)
-    }
-
+    @Transactional
     @PostMapping
     fun addRecipe(@Valid @RequestBody request: AddRecipeToDayPlanRequest): SuccessResponse {
-        authorizationService.checkIsOwnerOfRecipe(request.recipeId)
-        return dayPlanFacade.addRecipe(request)
+        return dayPlanService.addRecipe(request)
     }
 
+    @Transactional
     @DeleteMapping("/{id}/recipes/{recipeId}")
-    fun deleteRecipe(@PathVariable id: Int, @PathVariable recipeId: Int): SuccessResponse {
-        authorizationService.checkIsOwnerOfDayPlan(id)
-        return dayPlanFacade.deleteRecipe(id, recipeId)
+    fun deleteRecipe(
+        @PathVariable @DateTimeFormat(pattern = JacksonConfiguration.DATE_FORMAT) date: LocalDate,
+        @PathVariable recipeId: Int
+    ): SuccessResponse {
+        return dayPlanService.deleteRecipe(date, recipeId)
     }
 
 }

@@ -6,7 +6,6 @@ import io.jsonwebtoken.JwtParser
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -19,14 +18,9 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
-import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
-import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
-import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
-import pl.szczeliniak.kitchenassistant.security.AuthorizationService
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
-import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
@@ -123,14 +117,5 @@ class SecurityConfiguration(
         }
 
     }
-
-    @Bean
-    fun authorizationService(
-        requestContext: RequestContext,
-        recipeDao: RecipeDao,
-        categoryDao: CategoryDao,
-        dayPlanDao: DayPlanDao,
-        shoppingListDao: ShoppingListDao
-    ) = AuthorizationService(requestContext, recipeDao, categoryDao, dayPlanDao, shoppingListDao)
 
 }

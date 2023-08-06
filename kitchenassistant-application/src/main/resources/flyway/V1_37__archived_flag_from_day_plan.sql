@@ -1,0 +1,1 @@
+ALTER TABLE day_plans DROP COLUMN automatic_archiving;

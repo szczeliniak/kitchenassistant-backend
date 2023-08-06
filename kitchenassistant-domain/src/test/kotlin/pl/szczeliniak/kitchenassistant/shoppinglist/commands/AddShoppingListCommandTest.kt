@@ -38,7 +38,7 @@ internal class AddShoppingListCommandTest : JunitBaseClass() {
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
             id = 1,
-            user = User(id = 0, email = "", name = ""),
+            user = User(id = 0, email = ""),
             name = ""
         )
     }

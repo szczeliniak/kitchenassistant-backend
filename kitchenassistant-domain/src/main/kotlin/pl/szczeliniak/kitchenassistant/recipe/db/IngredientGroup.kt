@@ -21,4 +21,6 @@ data class IngredientGroup(
     var ingredients: MutableSet<Ingredient> = mutableSetOf(),
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
-)
+) {
+    constructor() : this(name = "")
+}

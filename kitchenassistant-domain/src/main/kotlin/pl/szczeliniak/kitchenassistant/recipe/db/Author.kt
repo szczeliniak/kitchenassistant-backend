@@ -17,4 +17,6 @@ data class Author(
     var user: User,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
-)
+) {
+    constructor() : this(name = "", user = User())
+}

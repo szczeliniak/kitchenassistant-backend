@@ -3,6 +3,8 @@ package pl.szczeliniak.kitchenassistant
 import org.springframework.context.annotation.Scope
 import org.springframework.context.annotation.ScopedProxyMode
 import org.springframework.stereotype.Component
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import java.util.*
 
@@ -27,6 +29,10 @@ class RequestContextImpl : RequestContext {
 
     override fun requestId(): UUID? {
         return requestId
+    }
+
+    override fun requireUserId(): Int {
+        return this.userId ?: throw KitchenAssistantException(ErrorCode.MISSING_USER_ID)
     }
 
 }

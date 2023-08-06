@@ -5,9 +5,9 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
+import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListRequest
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
-import pl.szczeliniak.kitchenassistant.shoppinglist.commands.dto.UpdateShoppingListRequest
 import pl.szczeliniak.kitchenassistant.user.db.User
 import java.time.LocalDate
 
@@ -41,7 +41,7 @@ internal class UpdateShoppingListCommandTest : JunitBaseClass() {
     private fun shoppingList(): ShoppingList {
         return ShoppingList(
             id = 1,
-            user = User(id = 0, email = "", name = ""),
+            user = User(id = 0, email = ""),
             name = ""
         )
     }

@@ -1,11 +1,9 @@
-package pl.szczeliniak.kitchenassistant.dayplan.commands.dto
+package pl.szczeliniak.kitchenassistant.dayplan.dto.request
 
 import java.time.LocalDate
-import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 
 data class AddRecipeToDayPlanRequest(
-    @field:Min(1) var userId: Int = 0,
     @NotNull var date: LocalDate = LocalDate.now(),
     @NotNull var recipeId: Int = 0
 )

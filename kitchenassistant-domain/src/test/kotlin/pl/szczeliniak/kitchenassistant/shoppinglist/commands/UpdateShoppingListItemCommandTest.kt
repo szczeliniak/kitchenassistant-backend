@@ -57,14 +57,14 @@ internal class UpdateShoppingListItemCommandTest : JunitBaseClass() {
     private fun shoppingList(items: MutableSet<ShoppingListItem>): ShoppingList {
         return ShoppingList(
             id = 1,
-            user = User(id = 0, email = "", name = ""),
+            user = User(id = 0, email = ""),
             name = "",
             items = items
         )
     }
 
     private fun recipe(): Recipe {
-        return Recipe(id = 1, name = "", User(email = "", name = ""), photoName = null)
+        return Recipe(id = 1, name = "", User(email = ""), photoName = null)
     }
 
 }
