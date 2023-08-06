@@ -25,7 +25,7 @@ open class UserService(
     private val requestContext: RequestContext
 ) {
 
-    fun findById(id: Int): UserResponse {
+    open fun findById(id: Int): UserResponse {
         return UserResponse(
             userMapper.mapDetails(
                 userDao.findById(id) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
@@ -33,7 +33,7 @@ open class UserService(
         )
     }
 
-    fun findAll(page: Long?, limit: Int?): UsersResponse {
+    open fun findAll(page: Long?, limit: Int?): UsersResponse {
         val currentPage = PaginationUtils.calculatePageNumber(page)
         val currentLimit = PaginationUtils.calculateLimit(limit)
         val offset = PaginationUtils.calculateOffset(currentPage, currentLimit)
@@ -49,7 +49,7 @@ open class UserService(
         )
     }
 
-    fun login(request: LoginRequest): LoginResponse {
+    open fun login(request: LoginRequest): LoginResponse {
         val user = userDao.findAll(UserCriteria(request.email), 0, 1).firstOrNull() ?: throw KitchenAssistantException(
             ErrorCode.USER_NOT_FOUND
         )
@@ -61,7 +61,7 @@ open class UserService(
         return LoginResponse(token.token, user.id, token.validTo)
     }
 
-    fun login(request: LoginWithFacebookRequest): LoginResponse {
+    open fun login(request: LoginWithFacebookRequest): LoginResponse {
         val user = facebookConnector.login(request.token)?.let {
             userDao.findAll(UserCriteria(it.email!!), 0, 1).firstOrNull() ?: userDao.save(
                 userFactory.create(it.email, "")
@@ -72,7 +72,7 @@ open class UserService(
         return LoginResponse(token.token, user.id, token.validTo)
     }
 
-    fun register(request: RegisterRequest): LoginResponse {
+    open fun register(request: RegisterRequest): LoginResponse {
         if (userDao.findAll(UserCriteria(request.email), 0, 1).firstOrNull() != null) {
             throw KitchenAssistantException(ErrorCode.USER_ALREADY_EXISTS)
         }
@@ -82,15 +82,15 @@ open class UserService(
         return LoginResponse(token.token, user.id, token.validTo)
     }
 
-    fun refresh(): RefreshTokenResponse {
+    open fun refresh(): RefreshTokenResponse {
         val user =
-            userDao.findById(requestContext.userId() ?: throw KitchenAssistantException(ErrorCode.MISSING_USER_ID))
+            userDao.findById(requestContext.requireUserId())
                 ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
         val token = tokenFactory.create(user.id)
         return RefreshTokenResponse(token.token, token.validTo)
     }
 
-    fun getLoggedUser(): UserResponse {
+    open fun getLoggedUser(): UserResponse {
         return UserResponse(
             userMapper.mapDetails(
                 userDao.findById(

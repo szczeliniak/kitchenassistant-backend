@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.photo.commands
+package pl.szczeliniak.kitchenassistant.photo
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -6,8 +6,11 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
-import pl.szczeliniak.kitchenassistant.photo.commands.dto.DeletePhotoResponse
+import pl.szczeliniak.kitchenassistant.photo.dto.response.DeletePhotoResponse
+import pl.szczeliniak.kitchenassistant.photo.dto.response.GetPhotoResponse
+import pl.szczeliniak.kitchenassistant.photo.dto.response.UploadPhotoResponse
 import pl.szczeliniak.kitchenassistant.recipe.FtpClient
+import pl.szczeliniak.kitchenassistant.recipe.SupportedMediaType
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
@@ -15,7 +18,7 @@ import pl.szczeliniak.kitchenassistant.user.db.User
 import java.time.ZonedDateTime
 import java.util.*
 
-internal class DeletePhotoCommandTest : JunitBaseClass() {
+internal class PhotoServiceTest : JunitBaseClass() {
 
     @Mock
     private lateinit var recipeDao: RecipeDao
@@ -24,7 +27,7 @@ internal class DeletePhotoCommandTest : JunitBaseClass() {
     private lateinit var ftpClient: FtpClient
 
     @InjectMocks
-    private lateinit var deletePhotoCommand: DeletePhotoCommand
+    private lateinit var photoService: PhotoService
 
     @Test
     fun shouldDeletePhoto() {
@@ -33,12 +36,32 @@ internal class DeletePhotoCommandTest : JunitBaseClass() {
             setOf(recipe)
         )
 
-        val response = deletePhotoCommand.execute("PHOTO_NAME")
+        val response = photoService.delete("PHOTO_NAME")
 
         Mockito.verify(recipeDao).save(setOf(recipe))
         Mockito.verify(ftpClient).delete("PHOTO_NAME")
         Assertions.assertNull(recipe.photoName)
         Assertions.assertEquals(DeletePhotoResponse("PHOTO_NAME"), response)
+    }
+
+    @Test
+    fun shouldUploadPhoto() {
+        val bytes = ByteArray(10)
+        whenever(ftpClient.upload("PHOTO_NAME", bytes)).thenReturn("NAME")
+
+        val response = photoService.upload("PHOTO_NAME", bytes)
+
+        assertThat(response).isEqualTo(UploadPhotoResponse("NAME"))
+    }
+
+    @Test
+    fun shouldReturnPhoto() {
+        val bytes = ByteArray(10)
+        whenever(ftpClient.download("NAME.jpg")).thenReturn(bytes)
+
+        val result = photoService.download("NAME.jpg")
+
+        assertThat(result).isEqualTo(GetPhotoResponse(SupportedMediaType.JPG, bytes))
     }
 
     private fun recipe(): Recipe {

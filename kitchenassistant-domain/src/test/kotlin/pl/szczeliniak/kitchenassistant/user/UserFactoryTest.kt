@@ -1,13 +1,11 @@
-package pl.szczeliniak.kitchenassistant.user.commands.factories
+package pl.szczeliniak.kitchenassistant.user
 
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
-import pl.szczeliniak.kitchenassistant.user.PasswordEncoder
-import pl.szczeliniak.kitchenassistant.user.UserFactory
-import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
 import pl.szczeliniak.kitchenassistant.user.db.User
+import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
 
 internal class UserFactoryTest : JunitBaseClass() {
 

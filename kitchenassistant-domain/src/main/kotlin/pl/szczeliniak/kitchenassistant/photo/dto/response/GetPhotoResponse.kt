@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.photo.queries.dto
+package pl.szczeliniak.kitchenassistant.photo.dto.response
 
 import pl.szczeliniak.kitchenassistant.recipe.SupportedMediaType
 
