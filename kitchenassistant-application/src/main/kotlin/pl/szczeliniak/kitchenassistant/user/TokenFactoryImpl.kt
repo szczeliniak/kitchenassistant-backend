@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
 import java.time.ZonedDateTime
 import java.util.*
 

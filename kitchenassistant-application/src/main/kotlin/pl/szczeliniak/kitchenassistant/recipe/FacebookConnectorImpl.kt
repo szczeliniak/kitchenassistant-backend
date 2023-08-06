@@ -2,8 +2,8 @@ package pl.szczeliniak.kitchenassistant.recipe
 
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
-import pl.szczeliniak.kitchenassistant.user.commands.FacebookConnector
-import pl.szczeliniak.kitchenassistant.user.commands.dto.FacebookLoginResponse
+import pl.szczeliniak.kitchenassistant.user.FacebookConnector
+import pl.szczeliniak.kitchenassistant.user.dto.response.FacebookLoginResponse
 
 @Component
 class FacebookConnectorImpl(private val restTemplate: RestTemplate) : FacebookConnector {

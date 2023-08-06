@@ -7,8 +7,7 @@ import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
+import pl.szczeliniak.kitchenassistant.user.dto.response.UserResponse
 
 internal class GetLoggedUserQueryTest : JunitBaseClass() {
 

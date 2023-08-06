@@ -8,8 +8,7 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
+import pl.szczeliniak.kitchenassistant.user.dto.response.UsersResponse
 
 internal class GetUsersQueryTest : JunitBaseClass() {
 

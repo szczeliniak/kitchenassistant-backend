@@ -42,6 +42,7 @@ open class DayPlanService(
         return DayPlansResponse(
             Page(
                 currentPage,
+                currentLimit,
                 dayPlanDao.count(criteria, userId),
                 result.map { dayPlanMapper.map(it) })
         )

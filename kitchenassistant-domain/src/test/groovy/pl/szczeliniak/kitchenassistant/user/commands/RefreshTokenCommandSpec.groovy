@@ -3,8 +3,8 @@ package pl.szczeliniak.kitchenassistant.user.commands
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
-import pl.szczeliniak.kitchenassistant.user.commands.dto.RefreshTokenResponse
-import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
+import pl.szczeliniak.kitchenassistant.user.dto.response.RefreshTokenResponse
+import pl.szczeliniak.kitchenassistant.user.TokenFactory
 import spock.lang.Specification
 import spock.lang.Subject
 

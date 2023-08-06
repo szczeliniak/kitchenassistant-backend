@@ -1,20 +1,22 @@
 package pl.szczeliniak.kitchenassistant.user
 
 import org.springframework.web.bind.annotation.*
-import pl.szczeliniak.kitchenassistant.user.commands.dto.*
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
+import pl.szczeliniak.kitchenassistant.user.dto.request.*
+import pl.szczeliniak.kitchenassistant.user.dto.response.LoginResponse
+import pl.szczeliniak.kitchenassistant.user.dto.response.RefreshTokenResponse
+import pl.szczeliniak.kitchenassistant.user.dto.response.UserResponse
+import pl.szczeliniak.kitchenassistant.user.dto.response.UsersResponse
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("/users")
 class UserController(
-    private val userFacade: UserFacade
+    private val userService: UserService
 ) {
 
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Int): UserResponse {
-        return userFacade.findById(id)
+        return userService.findById(id)
     }
 
     @GetMapping
@@ -22,32 +24,32 @@ class UserController(
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?
     ): UsersResponse {
-        return userFacade.findAll(page, limit)
+        return userService.findAll(page, limit)
     }
 
     @PostMapping("/login")
     fun login(@Valid @RequestBody request: LoginRequest): LoginResponse {
-        return userFacade.login(request)
+        return userService.login(request)
     }
 
     @PostMapping("/login/facebook")
     fun login(@Valid @RequestBody request: LoginWithFacebookRequest): LoginResponse {
-        return userFacade.login(request)
+        return userService.login(request)
     }
 
     @PostMapping("/register")
     fun register(@Valid @RequestBody request: RegisterRequest): LoginResponse {
-        return userFacade.register(request)
+        return userService.register(request)
     }
 
     @PostMapping("/refresh")
     fun refresh(): RefreshTokenResponse {
-        return userFacade.refresh()
+        return userService.refresh()
     }
 
     @GetMapping("/me")
     fun getLoggedUser(): UserResponse {
-        return userFacade.getLoggedUser()
+        return userService.getLoggedUser()
     }
 
 }

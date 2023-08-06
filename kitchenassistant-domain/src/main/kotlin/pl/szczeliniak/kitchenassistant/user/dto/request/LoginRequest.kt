@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.user.commands.dto
+package pl.szczeliniak.kitchenassistant.user.dto.request
 
 import org.hibernate.validator.constraints.Length
 

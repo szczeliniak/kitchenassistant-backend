@@ -4,10 +4,10 @@ import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
-import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
-import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterRequest
-import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
-import pl.szczeliniak.kitchenassistant.user.commands.factories.UserFactory
+import pl.szczeliniak.kitchenassistant.user.dto.response.LoginResponse
+import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
+import pl.szczeliniak.kitchenassistant.user.TokenFactory
+import pl.szczeliniak.kitchenassistant.user.UserFactory
 import spock.lang.Specification
 import spock.lang.Subject
 

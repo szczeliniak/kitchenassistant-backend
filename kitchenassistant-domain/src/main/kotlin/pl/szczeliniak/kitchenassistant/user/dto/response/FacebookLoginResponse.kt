@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.user.commands.dto
+package pl.szczeliniak.kitchenassistant.user.dto.response
 
 data class FacebookLoginResponse(
     val id: String? = null,

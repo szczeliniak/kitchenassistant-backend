@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.user.commands.dto
+package pl.szczeliniak.kitchenassistant.user.dto.response
 
 import java.time.ZonedDateTime
 

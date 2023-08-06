@@ -7,23 +7,15 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.shared.dtos.Pagination
-import pl.szczeliniak.kitchenassistant.user.commands.LoginCommand
-import pl.szczeliniak.kitchenassistant.user.commands.LoginWithFacebookCommand
-import pl.szczeliniak.kitchenassistant.user.commands.RefreshTokenCommand
-import pl.szczeliniak.kitchenassistant.user.commands.RegisterCommand
 import pl.szczeliniak.kitchenassistant.user.commands.dto.*
-import pl.szczeliniak.kitchenassistant.user.queries.GetLoggedUserQuery
-import pl.szczeliniak.kitchenassistant.user.queries.GetUserByIdQuery
-import pl.szczeliniak.kitchenassistant.user.queries.GetUsersQuery
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UserDto
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UserResponse
-import pl.szczeliniak.kitchenassistant.user.queries.dto.UsersResponse
+import pl.szczeliniak.kitchenassistant.user.dto.request.*
+import pl.szczeliniak.kitchenassistant.user.dto.response.*
 import java.time.ZonedDateTime
 
-internal class UserFacadeTest : JunitBaseClass() {
+internal class UserServiceTest : JunitBaseClass() {
 
     @InjectMocks
-    private lateinit var userFacade: UserFacade
+    private lateinit var userService: UserService
 
     @Mock
     private lateinit var getUserByIdQuery: GetUserByIdQuery
@@ -50,7 +42,7 @@ internal class UserFacadeTest : JunitBaseClass() {
     fun shouldReturnUserById() {
         whenever(getUserByIdQuery.execute(1)).thenReturn(UserResponse(UserDto(1, "email")))
 
-        val result = userFacade.findById(1)
+        val result = userService.findById(1)
 
         Assertions.assertEquals(UserResponse(UserDto(1, "email")), result)
     }
@@ -64,7 +56,7 @@ internal class UserFacadeTest : JunitBaseClass() {
             )
         )
 
-        val result = userFacade.findAll(1L, 1)
+        val result = userService.findAll(1L, 1)
 
         Assertions.assertEquals(UsersResponse(Sets.newLinkedHashSet(UserDto(1, "email")), Pagination(1, 1, 1L)), result)
     }
@@ -75,7 +67,7 @@ internal class UserFacadeTest : JunitBaseClass() {
         val loginResponse = LoginResponse("token", 1, ZonedDateTime.now())
         whenever(loginCommand.execute(loginRequest)).thenReturn(loginResponse)
 
-        val result = userFacade.login(loginRequest)
+        val result = userService.login(loginRequest)
 
         Assertions.assertEquals(loginResponse, result)
     }
@@ -86,7 +78,7 @@ internal class UserFacadeTest : JunitBaseClass() {
         val loginResponse = LoginResponse("token", 1, ZonedDateTime.now())
         whenever(loginWithFacebookCommand.execute(loginDto)).thenReturn(loginResponse)
 
-        val result = userFacade.login(loginDto)
+        val result = userService.login(loginDto)
 
         Assertions.assertEquals(loginResponse, result)
     }
@@ -97,7 +89,7 @@ internal class UserFacadeTest : JunitBaseClass() {
         val loginResponse = LoginResponse("token", 1, ZonedDateTime.now())
         whenever(registerCommand.execute(registerRequest)).thenReturn(loginResponse)
 
-        val result = userFacade.register(registerRequest)
+        val result = userService.register(registerRequest)
 
         Assertions.assertEquals(loginResponse, result)
     }
@@ -107,7 +99,7 @@ internal class UserFacadeTest : JunitBaseClass() {
         val refreshTokenResponse = RefreshTokenResponse("token", ZonedDateTime.now())
         whenever(refreshTokenCommand.execute()).thenReturn(refreshTokenResponse)
 
-        val result = userFacade.refresh()
+        val result = userService.refresh()
 
         Assertions.assertEquals(refreshTokenResponse, result)
     }
@@ -116,7 +108,7 @@ internal class UserFacadeTest : JunitBaseClass() {
     fun shouldReturnLoggedUser() {
         whenever(getLoggedUserQuery.execute()).thenReturn(UserResponse(UserDto(1, "email")))
 
-        val result = userFacade.getLoggedUser()
+        val result = userService.getLoggedUser()
 
         Assertions.assertEquals(UserResponse(UserDto(1, "email")), result)
     }

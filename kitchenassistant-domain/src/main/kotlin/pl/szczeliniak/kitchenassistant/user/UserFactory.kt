@@ -1,7 +1,6 @@
-package pl.szczeliniak.kitchenassistant.user.commands.factories
+package pl.szczeliniak.kitchenassistant.user
 
-import pl.szczeliniak.kitchenassistant.user.PasswordEncoder
-import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterRequest
+import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
 import pl.szczeliniak.kitchenassistant.user.db.User
 
 open class UserFactory(private val passwordEncoder: PasswordEncoder) {

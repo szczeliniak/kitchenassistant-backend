@@ -2,9 +2,9 @@ package pl.szczeliniak.kitchenassistant.user.commands
 
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.user.PasswordMatcher
-import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginRequest
-import pl.szczeliniak.kitchenassistant.user.commands.dto.LoginResponse
-import pl.szczeliniak.kitchenassistant.user.commands.factories.TokenFactory
+import pl.szczeliniak.kitchenassistant.user.dto.request.LoginRequest
+import pl.szczeliniak.kitchenassistant.user.dto.response.LoginResponse
+import pl.szczeliniak.kitchenassistant.user.TokenFactory
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.db.UserDao

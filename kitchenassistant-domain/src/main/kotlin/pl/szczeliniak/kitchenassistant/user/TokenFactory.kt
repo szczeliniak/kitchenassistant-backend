@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.user.commands.factories
+package pl.szczeliniak.kitchenassistant.user
 
 import java.time.ZonedDateTime
 

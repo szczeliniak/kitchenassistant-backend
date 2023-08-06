@@ -5,7 +5,8 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.user.PasswordEncoder
-import pl.szczeliniak.kitchenassistant.user.commands.dto.RegisterRequest
+import pl.szczeliniak.kitchenassistant.user.UserFactory
+import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
 import pl.szczeliniak.kitchenassistant.user.db.User
 
 internal class UserFactoryTest : JunitBaseClass() {
