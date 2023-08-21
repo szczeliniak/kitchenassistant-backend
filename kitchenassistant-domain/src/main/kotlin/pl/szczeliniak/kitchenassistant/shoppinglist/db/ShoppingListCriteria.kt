@@ -8,6 +8,5 @@ data class ShoppingListCriteria(
     val name: String? = null,
     val date: LocalDate? = null,
     val recipeId: Int? = null,
-    val automaticArchiving: Boolean? = null,
     val maxDate: LocalDate? = null
 )

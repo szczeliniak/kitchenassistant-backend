@@ -74,7 +74,6 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
         criteria.name?.let { builder.append(" AND LOWER(sl.name) LIKE LOWER(:name)") }
         criteria.date?.let { builder.append(" AND sl.date = :date") }
         criteria.recipeId?.let { builder.append(" AND i.recipeId = :recipeId") }
-        criteria.automaticArchiving?.let { builder.append(" AND sl.automaticArchiving = :automaticArchiving") }
         criteria.maxDate?.let { builder.append(" AND sl.date IS NOT NULL AND sl.date <= :maxDate") }
         return builder.toString()
     }
@@ -89,7 +88,6 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
         criteria.date?.let { query = typedQuery.setParameter("date", it) }
         criteria.name?.let { query = typedQuery.setParameter("name", "%$it%") }
         criteria.recipeId?.let { query = typedQuery.setParameter("recipeId", it) }
-        criteria.automaticArchiving?.let { query = typedQuery.setParameter("automaticArchiving", it) }
         criteria.maxDate?.let { query = typedQuery.setParameter("maxDate", it) }
         return query
     }

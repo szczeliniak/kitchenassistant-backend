@@ -29,9 +29,4 @@ application:
     name: Marcin S
     url: www.szczeliniak.pl
     email: test@szczeliniak.pl
-scheduling:
-  shoppinglist:
-    archiving: '0 1 0 * * *'
-  dayplan:
-    archiving: '0 2 0 * * *'
 
