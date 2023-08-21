@@ -1,0 +1,10 @@
+package pl.szczeliniak.kitchenassistant.recipe.dto.request
+
+import org.hibernate.validator.constraints.Length
+import javax.validation.constraints.Min
+
+data class NewCategoryRequest(
+    @field:Length(min = 1, max = 100) var name: String = "",
+    @field:Min(1) var userId: Int = 0,
+    var sequence: Int? = null
+)
