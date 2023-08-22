@@ -4,20 +4,14 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
 import pl.szczeliniak.kitchenassistant.recipe.db.*
+import pl.szczeliniak.kitchenassistant.recipe.mapper.*
+import pl.szczeliniak.kitchenassistant.shared.FtpClient
+import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 
 @Configuration
 class RecipeConfiguration {
-
-    @Bean
-    fun recipeMapper() = RecipeMapperImpl()
-
-    @Bean
-    fun ingredientGroupMapper() = IngredientGroupMapperImpl()
-
-    @Bean
-    fun categoryMapper() = CategoryMapperImpl()
 
     @Bean
     fun recipeService(
@@ -32,9 +26,7 @@ class RecipeConfiguration {
         shoppingListDao: ShoppingListDao,
         ftpClient: FtpClient,
         ingredientGroupDao: IngredientGroupDao,
-        recipeMapper: RecipeMapper,
-        ingredientGroupMapper: IngredientGroupMapper,
-        categoryMapper: CategoryMapper
+        requestContext: RequestContext
     ): RecipeService {
         return RecipeService(
             recipeDao,
@@ -45,7 +37,8 @@ class RecipeConfiguration {
             shoppingListDao,
             categoryDao,
             userDao,
-            recipeMapper
+            RecipeMapperImpl(),
+            requestContext
         )
     }
 
@@ -56,22 +49,22 @@ class RecipeConfiguration {
     fun authorService(authorDao: AuthorDao) = AuthorService(authorDao)
 
     @Bean
-    fun stepService(recipeDao: RecipeDao, stepDao: StepDao) = StepService(recipeDao, stepDao)
+    fun stepService(recipeDao: RecipeDao, stepDao: StepDao, ftpClient: FtpClient) =
+        StepService(recipeDao, stepDao, ftpClient)
 
     @Bean
     fun ingredientGroupService(
         recipeDao: RecipeDao,
         ingredientGroupDao: IngredientGroupDao,
         ingredientDao: IngredientDao,
-        ingredientGroupMapper: IngredientGroupMapper
-    ) = IngredientGroupService(recipeDao, ingredientGroupDao, ingredientDao, ingredientGroupMapper)
+    ) = IngredientGroupService(recipeDao, ingredientGroupDao, ingredientDao, IngredientGroupMapperImpl())
 
     @Bean
     fun categoryService(
         recipeDao: RecipeDao,
         categoryDao: CategoryDao,
         userDao: UserDao,
-        categoryMapper: CategoryMapper
-    ) = CategoryService(recipeDao, categoryDao, userDao, categoryMapper)
+        requestContext: RequestContext
+    ) = CategoryService(recipeDao, categoryDao, userDao, CategoryMapperImpl(), requestContext)
 
 }

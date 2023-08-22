@@ -24,4 +24,6 @@ data class ShoppingListItem(
     var completed: Boolean = false,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
-)
+) {
+    constructor() : this(name = "")
+}

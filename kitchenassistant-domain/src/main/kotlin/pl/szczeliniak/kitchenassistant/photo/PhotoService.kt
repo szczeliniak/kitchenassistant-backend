@@ -3,11 +3,11 @@ package pl.szczeliniak.kitchenassistant.photo
 import pl.szczeliniak.kitchenassistant.photo.dto.response.DeletePhotoResponse
 import pl.szczeliniak.kitchenassistant.photo.dto.response.GetPhotoResponse
 import pl.szczeliniak.kitchenassistant.photo.dto.response.UploadPhotoResponse
-import pl.szczeliniak.kitchenassistant.recipe.FtpClient
 import pl.szczeliniak.kitchenassistant.recipe.SupportedMediaType
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.FtpClient
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 
 open class PhotoService(

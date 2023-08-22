@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import pl.szczeliniak.kitchenassistant.photo.dto.response.DeletePhotoResponse
 import pl.szczeliniak.kitchenassistant.photo.dto.response.UploadPhotoResponse
 import javax.transaction.Transactional
 
@@ -26,12 +25,6 @@ class PhotoController(private val photoService: PhotoService) {
         return ResponseEntity.ok()
             .contentType(MediaType.parseMediaType(response.mediaType.mimeType))
             .body(response.body)
-    }
-
-    @Transactional
-    @DeleteMapping("/{fileName}")
-    fun deletePhoto(@PathVariable fileName: String): DeletePhotoResponse {
-        return photoService.delete(fileName)
     }
 
 }

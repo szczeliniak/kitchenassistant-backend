@@ -7,9 +7,8 @@ import pl.szczeliniak.kitchenassistant.recipe.dto.request.NewRecipeRequest
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateRecipeRequest
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.RecipeResponse
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.RecipesResponse
-import pl.szczeliniak.kitchenassistant.shared.ErrorCode
-import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
-import pl.szczeliniak.kitchenassistant.shared.PaginationUtils
+import pl.szczeliniak.kitchenassistant.recipe.mapper.RecipeMapper
+import pl.szczeliniak.kitchenassistant.shared.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.Page
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListCriteria
@@ -28,6 +27,7 @@ open class RecipeService(
     private val categoryDao: CategoryDao,
     private val userDao: UserDao,
     private val recipeMapper: RecipeMapper,
+    private val requestContext: RequestContext
 ) {
 
     open fun findById(recipeId: Int): RecipeResponse {
@@ -64,11 +64,13 @@ open class RecipeService(
             it
         }
 
+        val userId = requestContext.requireUserId()
+
         return Recipe(0,
-            user = userDao.findById(request.userId) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND),
+            user = userDao.findById(userId) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND),
             name = request.name,
-            author = request.author?.let {
-                authorDao.findByName(it, request.userId) ?: authorDao.save(createAuthor(it, request.userId))
+            author = request.author?.trim()?.let {
+                authorDao.findByName(it, userId) ?: authorDao.save(createAuthor(it, userId))
             },
             source = request.source,
             category = request.categoryId?.let {
@@ -78,7 +80,8 @@ open class RecipeService(
             ingredientGroups = request.ingredientGroups.map { createIngredientGroup(it) }.toMutableSet(),
             steps = request.steps.map { createStep(it) }.toMutableSet(),
             photoName = photo,
-            tags = request.tags.map { tagDao.findByName(it, request.userId) ?: createTag(it, request.userId) }
+            tags = request.tags.map { it.trim() }
+                .map { tagDao.findByName(it, userId) ?: createTag(it, userId) }
                 .toMutableSet()
         )
     }
@@ -125,13 +128,13 @@ open class RecipeService(
         recipe.description = request.description
         recipe.category = getCategory(recipe.category, request.categoryId)
         recipe.source = request.source
-        recipe.author = request.author?.let {
+        recipe.author = request.author?.trim()?.let {
             authorDao.findByName(it, recipe.user.id) ?: authorDao.save(
                 createAuthor(it, recipe.user)
             )
         }
         recipe.photoName = request.photoName
-        recipe.tags = request.tags.map {
+        recipe.tags = request.tags.map { it.trim() }.map {
             recipe.tags.firstOrNull { tag -> it == tag.name } ?: tagDao.findByName(it, recipe.user.id) ?: tagDao.save(
                 createTag(it, recipe.user)
             )

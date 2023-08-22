@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.shoppinglist
+package pl.szczeliniak.kitchenassistant.shoppinglist.mapper
 
 import org.mapstruct.Mapper
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe

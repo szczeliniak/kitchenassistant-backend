@@ -9,7 +9,7 @@ data class RecipesResponse(
         val id: Int,
         val name: String,
         val author: String?,
-        val favorite: Boolean?,
+        val favorite: Boolean,
         val category: CategoryDto?,
         val tags: Set<String>,
         val photoName: String?

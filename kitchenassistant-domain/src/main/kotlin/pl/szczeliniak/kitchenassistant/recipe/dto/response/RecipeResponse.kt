@@ -9,7 +9,7 @@ data class RecipeResponse(
         val description: String?,
         val author: String?,
         val source: String?,
-        val favorite: Boolean?,
+        val favorite: Boolean,
         val category: CategoryDto?,
         val ingredientGroups: Set<IngredientGroupDto>,
         val steps: Set<StepDto>,

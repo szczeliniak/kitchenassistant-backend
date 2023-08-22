@@ -3,9 +3,9 @@ package pl.szczeliniak.kitchenassistant.dayplan.dto.response
 import java.time.LocalDate
 
 data class DayPlanResponse(
-    val dayPlan: DayPlanDetailsDto
+    val dayPlan: DayPlanDto
 ) {
-    data class DayPlanDetailsDto(
+    data class DayPlanDto(
         val date: LocalDate,
         val recipes: List<RecipeDto>
     ) {

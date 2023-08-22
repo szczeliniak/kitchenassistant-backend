@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 data class NewRecipeRequest(
-    @field:Min(1) var userId: Int = 0,
     @field:Length(min = 1, max = 100) var name: String = "",
     var categoryId: Int? = null,
     @field:Length(max = 1000) var description: String? = null,

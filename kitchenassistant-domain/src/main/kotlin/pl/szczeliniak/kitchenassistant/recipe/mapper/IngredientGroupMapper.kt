@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.recipe
+package pl.szczeliniak.kitchenassistant.recipe.mapper
 
 import org.mapstruct.Mapper
 import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient

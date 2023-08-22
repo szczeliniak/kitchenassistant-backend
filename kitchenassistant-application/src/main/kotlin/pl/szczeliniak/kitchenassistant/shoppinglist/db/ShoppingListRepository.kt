@@ -73,7 +73,7 @@ class ShoppingListRepository(@PersistenceContext private val entityManager: Enti
         criteria.archived?.let { builder.append(" AND sl.archived = :archived") }
         criteria.name?.let { builder.append(" AND LOWER(sl.name) LIKE LOWER(:name)") }
         criteria.date?.let { builder.append(" AND sl.date = :date") }
-        criteria.recipeId?.let { builder.append(" AND i.recipeId = :recipeId") }
+        criteria.recipeId?.let { builder.append(" AND i.recipe.id = :recipeId") }
         criteria.maxDate?.let { builder.append(" AND sl.date IS NOT NULL AND sl.date <= :maxDate") }
         return builder.toString()
     }

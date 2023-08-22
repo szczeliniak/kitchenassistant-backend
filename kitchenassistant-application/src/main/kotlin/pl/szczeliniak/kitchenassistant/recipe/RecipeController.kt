@@ -39,7 +39,7 @@ class RecipeController(
         @RequestParam(required = false) @Length(max = 50) tag: String?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
-        @RequestParam(required = true, defaultValue = "false") onlyFavorites: Boolean
+        @RequestParam(required = true, defaultValue = "false") onlyFavorites: Boolean?
     ): RecipesResponse {
         return recipeService.findAll(page, limit, RecipeCriteria(onlyFavorites, userId, categoryId, name, tag))
     }

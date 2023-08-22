@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.dayplan
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
+import pl.szczeliniak.kitchenassistant.dayplan.mapper.DayPlanMapperImpl
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 
@@ -10,10 +11,10 @@ import pl.szczeliniak.kitchenassistant.shared.RequestContext
 class DayPlanConfiguration {
 
     @Bean
-    fun dayPlanFacade(
+    fun dayPlanService(
         dayPlanDao: DayPlanDao,
         recipeDao: RecipeDao,
         requestContext: RequestContext
-    ): DayPlanService = DayPlanService(DayPlanMapperImpl(), dayPlanDao, recipeDao, requestContext)
+    ) = DayPlanService(DayPlanMapperImpl(), dayPlanDao, recipeDao, requestContext)
 
 }

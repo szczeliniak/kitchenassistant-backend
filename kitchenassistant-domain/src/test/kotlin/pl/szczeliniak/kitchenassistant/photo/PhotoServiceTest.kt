@@ -9,7 +9,7 @@ import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.photo.dto.response.DeletePhotoResponse
 import pl.szczeliniak.kitchenassistant.photo.dto.response.GetPhotoResponse
 import pl.szczeliniak.kitchenassistant.photo.dto.response.UploadPhotoResponse
-import pl.szczeliniak.kitchenassistant.recipe.FtpClient
+import pl.szczeliniak.kitchenassistant.shared.FtpClient
 import pl.szczeliniak.kitchenassistant.recipe.SupportedMediaType
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria

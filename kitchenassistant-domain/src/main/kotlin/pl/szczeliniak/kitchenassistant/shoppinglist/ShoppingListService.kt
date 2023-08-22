@@ -4,6 +4,7 @@ import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.PaginationUtils
+import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.shared.dtos.Page
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingList
@@ -14,13 +15,15 @@ import pl.szczeliniak.kitchenassistant.shoppinglist.dto.request.NewShoppingListR
 import pl.szczeliniak.kitchenassistant.shoppinglist.dto.request.UpdateShoppingListRequest
 import pl.szczeliniak.kitchenassistant.shoppinglist.dto.response.ShoppingListResponse
 import pl.szczeliniak.kitchenassistant.shoppinglist.dto.response.ShoppingListsResponse
+import pl.szczeliniak.kitchenassistant.shoppinglist.mapper.ShoppingListMapper
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 
 open class ShoppingListService(
     private val shoppingListMapper: ShoppingListMapper,
     private val shoppingListDao: ShoppingListDao,
     private val recipeDao: RecipeDao,
-    private val userDao: UserDao
+    private val userDao: UserDao,
+    private val requestContext: RequestContext
 ) {
 
     fun find(id: Int): ShoppingListResponse {
@@ -51,7 +54,8 @@ open class ShoppingListService(
 
     private fun createShoppingList(request: NewShoppingListRequest): ShoppingList {
         return ShoppingList(
-            user = userDao.findById(request.userId) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND),
+            user = userDao.findById(requestContext.requireUserId())
+                ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND),
             name = request.name,
             description = request.description,
             date = request.date,

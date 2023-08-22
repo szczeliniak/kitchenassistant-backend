@@ -1,8 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe.db
 
 import org.springframework.stereotype.Repository
-import pl.szczeliniak.kitchenassistant.recipe.db.Step
-import pl.szczeliniak.kitchenassistant.recipe.db.StepDao
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
@@ -18,6 +16,14 @@ class StepRepository(@PersistenceContext private val entityManager: EntityManage
             entityManager.merge(step)
         }
         return step
+    }
+
+    @Transactional
+    override fun delete(step: Step) {
+        entityManager
+            .createQuery("DELETE FROM Step s WHERE s.id = :id")
+            .setParameter("id", step.id)
+            .executeUpdate()
     }
 
 }

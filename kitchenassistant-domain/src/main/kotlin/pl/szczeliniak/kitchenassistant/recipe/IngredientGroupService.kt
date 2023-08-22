@@ -4,6 +4,7 @@ import pl.szczeliniak.kitchenassistant.recipe.db.*
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.NewIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.IngredientGroupResponse
+import pl.szczeliniak.kitchenassistant.recipe.mapper.IngredientGroupMapper
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse

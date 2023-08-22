@@ -4,4 +4,6 @@ interface StepDao {
 
     fun save(step: Step): Step
 
+    fun delete(step: Step)
+
 }

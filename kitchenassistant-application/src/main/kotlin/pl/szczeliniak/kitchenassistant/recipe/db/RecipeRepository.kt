@@ -11,9 +11,9 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
 
     override fun findAll(criteria: RecipeCriteria, offset: Int?, limit: Int?): Set<Recipe> {
         val query =
-                "SELECT DISTINCT r FROM Recipe r " + prepareJoin(criteria) + "WHERE r.id IS NOT NULL" + prepareCriteria(
-                        criteria
-                ) + " ORDER BY r.id ASC"
+            "SELECT DISTINCT r FROM Recipe r " + prepareJoin(criteria) + "WHERE r.id IS NOT NULL" + prepareCriteria(
+                criteria
+            ) + " ORDER BY r.id ASC"
         val typedQuery = applyParameters(criteria, entityManager.createQuery(query, Recipe::class.java))
         offset?.let { typedQuery.firstResult = it }
         limit?.let { typedQuery.maxResults = it }
@@ -30,9 +30,9 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
 
     override fun count(criteria: RecipeCriteria): Long {
         val query =
-                "SELECT DISTINCT COUNT(r) FROM Recipe r " + prepareJoin(criteria) + "WHERE r.id IS NOT NULL" + prepareCriteria(
-                        criteria
-                )
+            "SELECT DISTINCT COUNT(r) FROM Recipe r " + prepareJoin(criteria) + "WHERE r.id IS NOT NULL" + prepareCriteria(
+                criteria
+            )
         return applyParameters(criteria, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
     }
 
@@ -43,15 +43,15 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
 
     override fun findById(id: Int): Recipe? {
         return entityManager
-                .createQuery(
-                        "SELECT r FROM Recipe r WHERE r.id = :id",
-                        Recipe::class.java
-                )
-                .setParameter("id", id)
-                .resultList
-                .stream()
-                .findFirst()
-                .orElse(null)
+            .createQuery(
+                "SELECT r FROM Recipe r WHERE r.id = :id",
+                Recipe::class.java
+            )
+            .setParameter("id", id)
+            .resultList
+            .stream()
+            .findFirst()
+            .orElse(null)
     }
 
     @Transactional
@@ -82,7 +82,7 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         if (criteria.tag != null) {
             builder.append(" AND LOWER(t.name) LIKE LOWER(:tag)")
         }
-        if (criteria.onlyFavorites) {
+        if (criteria.onlyFavorites != null && criteria.onlyFavorites!!) {
             builder.append(" AND r.favorite = :favorite")
         }
         if (criteria.fileName != null) {
@@ -92,8 +92,8 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
     }
 
     private fun <T> applyParameters(
-            criteria: RecipeCriteria,
-            typedQuery: TypedQuery<T>
+        criteria: RecipeCriteria,
+        typedQuery: TypedQuery<T>
     ): TypedQuery<T> {
         var query = typedQuery
         if (criteria.userId != null) {
@@ -108,7 +108,7 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         if (criteria.tag != null) {
             query = typedQuery.setParameter("tag", "%" + criteria.tag + "%")
         }
-        if (criteria.onlyFavorites) {
+        if (criteria.onlyFavorites != null && criteria.onlyFavorites!!) {
             query = typedQuery.setParameter("favorite", true)
         }
         if (criteria.fileName != null) {

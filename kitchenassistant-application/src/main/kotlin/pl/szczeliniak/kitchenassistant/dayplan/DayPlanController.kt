@@ -63,7 +63,7 @@ class DayPlanController(
     }
 
     @Transactional
-    @DeleteMapping("/{id}/recipes/{recipeId}")
+    @DeleteMapping("/{date}/recipes/{recipeId}")
     fun deleteRecipe(
         @PathVariable @DateTimeFormat(pattern = JacksonConfiguration.DATE_FORMAT) date: LocalDate,
         @PathVariable recipeId: Int

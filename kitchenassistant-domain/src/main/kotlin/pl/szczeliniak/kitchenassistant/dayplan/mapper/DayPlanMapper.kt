@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.dayplan
+package pl.szczeliniak.kitchenassistant.dayplan.mapper
 
 import org.mapstruct.Mapper
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlan
@@ -11,9 +11,9 @@ abstract class DayPlanMapper {
 
     abstract fun map(dayPlan: DayPlan): DayPlansResponse.DayPlanDto
 
-    abstract fun mapDetails(dayPlan: DayPlan): DayPlanResponse.DayPlanDetailsDto
+    abstract fun mapDetails(dayPlan: DayPlan): DayPlanResponse.DayPlanDto
 
-    abstract fun map(recipe: Recipe): DayPlanResponse.DayPlanDetailsDto.RecipeDto
+    abstract fun map(recipe: Recipe): DayPlanResponse.DayPlanDto.RecipeDto
 
     fun toName(author: Author): String {
         return author.name
@@ -23,7 +23,7 @@ abstract class DayPlanMapper {
         return category?.name
     }
 
-    abstract fun map(ingredientGroup: IngredientGroup): DayPlanResponse.DayPlanDetailsDto.RecipeDto.IngredientGroupDto
+    abstract fun map(ingredientGroup: IngredientGroup): DayPlanResponse.DayPlanDto.RecipeDto.IngredientGroupDto
 
-    abstract fun map(ingredient: Ingredient): DayPlanResponse.DayPlanDetailsDto.RecipeDto.IngredientGroupDto.IngredientDto
+    abstract fun map(ingredient: Ingredient): DayPlanResponse.DayPlanDto.RecipeDto.IngredientGroupDto.IngredientDto
 }
