@@ -14,7 +14,7 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>11</java.version>
         <kotlin.version>1.8.22</kotlin.version>
         <dependency.spring.boot>2.6.6</dependency.spring.boot>
         <dependency.jaxb>2.3.1</dependency.jaxb>
