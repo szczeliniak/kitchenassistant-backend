@@ -7,7 +7,6 @@ import pl.szczeliniak.kitchenassistant.recipe.db.*
 import pl.szczeliniak.kitchenassistant.recipe.mapper.*
 import pl.szczeliniak.kitchenassistant.shared.FtpClient
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
-import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 
 @Configuration
@@ -23,7 +22,6 @@ class RecipeConfiguration {
         stepDao: StepDao,
         userDao: UserDao,
         dayPlanDao: DayPlanDao,
-        shoppingListDao: ShoppingListDao,
         ftpClient: FtpClient,
         ingredientGroupDao: IngredientGroupDao,
         requestContext: RequestContext
@@ -34,7 +32,6 @@ class RecipeConfiguration {
             authorDao,
             dayPlanDao,
             tagDao,
-            shoppingListDao,
             categoryDao,
             userDao,
             RecipeMapperImpl(),

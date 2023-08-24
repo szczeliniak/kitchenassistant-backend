@@ -11,8 +11,6 @@ import pl.szczeliniak.kitchenassistant.recipe.mapper.RecipeMapper
 import pl.szczeliniak.kitchenassistant.shared.*
 import pl.szczeliniak.kitchenassistant.shared.dtos.Page
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
-import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListCriteria
-import pl.szczeliniak.kitchenassistant.shoppinglist.db.ShoppingListDao
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 import javax.validation.Valid
@@ -23,7 +21,6 @@ open class RecipeService(
     private val authorDao: AuthorDao,
     private val dayPlanDao: DayPlanDao,
     private val tagDao: TagDao,
-    private val shoppingListDao: ShoppingListDao,
     private val categoryDao: CategoryDao,
     private val userDao: UserDao,
     private val recipeMapper: RecipeMapper,
@@ -158,13 +155,6 @@ open class RecipeService(
                     dayPlanDao.save(dayPlan)
                 }
             }
-
-            val shoppingLists = shoppingListDao.findAll(ShoppingListCriteria(recipeId = it.id))
-            shoppingLists.forEach { shoppingList ->
-                shoppingList.items.filter { item -> item.recipe?.id == it.id }.forEach { item -> item.recipe = null }
-            }
-            shoppingListDao.save(shoppingLists)
-
             recipeDao.delete(it)
         }
         return SuccessResponse(recipeId)

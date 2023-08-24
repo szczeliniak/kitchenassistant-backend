@@ -20,8 +20,6 @@ enum class ErrorCode(val message: String, val code: Int) {
     DAY_PLAN_NOT_FOUND("Day plan not found", 404),
     STEP_NOT_FOUND("Step not found", 404),
     CATEGORY_NOT_FOUND("Category not found", 404),
-    SHOPPING_LIST_NOT_FOUND("Shopping list not found", 404),
-    SHOPPING_LIST_ITEM_NOT_FOUND("Shopping list item not found", 404),
     CANNOT_LOGIN_WITH_FACEBOOK("Cannot login with Facebook", 400),
     MISSING_USER_ID("Missing user id", 400),
     JWT_MISSING_TOKEN("Token is missing", 400),
