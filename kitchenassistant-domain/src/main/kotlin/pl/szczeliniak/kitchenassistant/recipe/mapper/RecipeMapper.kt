@@ -12,11 +12,10 @@ abstract class RecipeMapper {
 
     abstract fun map(category: Category?): RecipesResponse.RecipeDto.CategoryDto?
 
-    fun toName(author: Author): String {
-        return author.name
+    fun toName(author: Author?): String? {
+        return author?.name
     }
-
-
+    
     fun toName(tag: Tag?): String? {
         return tag?.name
     }

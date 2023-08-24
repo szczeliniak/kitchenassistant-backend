@@ -40,11 +40,12 @@ open class DayPlanService(
         val currentLimit = PaginationUtils.calculateLimit(limit)
         val offset = PaginationUtils.calculateOffset(currentPage, currentLimit)
         val result = dayPlanDao.findAll(criteria, offset, limit, userId)
+        val totalNumberOfPages = PaginationUtils.calculateNumberOfPages(currentLimit, dayPlanDao.count(criteria, userId))
         return DayPlansResponse(
             Page(
                 currentPage,
                 currentLimit,
-                dayPlanDao.count(criteria, userId),
+                totalNumberOfPages,
                 result.map { dayPlanMapper.map(it) })
         )
     }

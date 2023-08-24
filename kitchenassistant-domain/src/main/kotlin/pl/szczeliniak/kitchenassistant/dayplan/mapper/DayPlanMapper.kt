@@ -15,8 +15,8 @@ abstract class DayPlanMapper {
 
     abstract fun map(recipe: Recipe): DayPlanResponse.DayPlanDto.RecipeDto
 
-    fun toName(author: Author): String {
-        return author.name
+    fun toName(author: Author?): String? {
+        return author?.name
     }
 
     fun toName(category: Category?): String? {
