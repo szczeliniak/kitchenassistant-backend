@@ -182,6 +182,11 @@
                 <artifactId>mapstruct</artifactId>
                 <version>${dependency.mapstruct}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-kotlin</artifactId>
+                <version>${dependency.jackson}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

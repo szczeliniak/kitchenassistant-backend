@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.springframework.context.annotation.Configuration
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -34,6 +35,7 @@ class JacksonConfiguration(private val objectMapper: ObjectMapper) {
         module.addSerializer(LocalDate::class.java, LocalDateSerializer())
         module.addDeserializer(LocalDate::class.java, LocalDateDeserializer())
         objectMapper.registerModule(module)
+        objectMapper.registerKotlinModule()
     }
 
     inner class ZonedDateTimeSerializer : StdSerializer<ZonedDateTime>(ZonedDateTime::class.java) {

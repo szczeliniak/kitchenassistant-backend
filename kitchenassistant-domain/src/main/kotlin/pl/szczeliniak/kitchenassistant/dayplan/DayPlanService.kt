@@ -1,13 +1,13 @@
 package pl.szczeliniak.kitchenassistant.dayplan
 
-import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlan
-import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
+import pl.szczeliniak.kitchenassistant.dayplan.db.*
 import pl.szczeliniak.kitchenassistant.dayplan.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.dayplan.dto.request.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.dto.request.UpdateDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.dayplan.mapper.DayPlanMapper
+import pl.szczeliniak.kitchenassistant.dayplan.mapper.RecipeSnapshotMapper
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
@@ -19,9 +19,14 @@ import java.time.LocalDate
 
 open class DayPlanService(
     private val dayPlanMapper: DayPlanMapper,
+    private val recipeSnapshotMapper: RecipeSnapshotMapper,
     private val dayPlanDao: DayPlanDao,
     private val recipeDao: RecipeDao,
-    private val requestContext: RequestContext
+    private val requestContext: RequestContext,
+    private val recipeSnapshotDao: RecipeSnapshotDao,
+    private val ingredientGroupSnapshotDao: IngredientGroupSnapshotDao,
+    private val stepSnapshotDao: StepSnapshotDao,
+    private val ingredientSnapshotDao: IngredientSnapshotDao
 ) {
 
     fun findByDate(date: LocalDate): DayPlanResponse {
@@ -40,7 +45,8 @@ open class DayPlanService(
         val currentLimit = PaginationUtils.calculateLimit(limit)
         val offset = PaginationUtils.calculateOffset(currentPage, currentLimit)
         val result = dayPlanDao.findAll(criteria, offset, limit, userId)
-        val totalNumberOfPages = PaginationUtils.calculateNumberOfPages(currentLimit, dayPlanDao.count(criteria, userId))
+        val totalNumberOfPages =
+            PaginationUtils.calculateNumberOfPages(currentLimit, dayPlanDao.count(criteria, userId))
         return DayPlansResponse(
             Page(
                 currentPage,
@@ -82,13 +88,26 @@ open class DayPlanService(
             dayPlanDao.findAll(DayPlanCriteria(null, request.date, request.date), userId = userId).firstOrNull()
                 ?: createDayPlan(request, userId)
 
-        if (dayPlan.recipes.map { it.id }.contains(request.recipeId)) {
+        if (dayPlan.recipes.map { it.recipe.id }.contains(request.recipeId)) {
             throw KitchenAssistantException(ErrorCode.RECIPE_ALREADY_ADDED_TO_DAY_PLAN)
         }
 
-        dayPlan.recipes.add(
+        val snapshot = recipeSnapshotMapper.map(
             recipeDao.findById(request.recipeId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
         )
+
+        snapshot.ingredientGroups.forEach { group ->
+            group.ingredients.forEach { ingredient ->
+                ingredientSnapshotDao.save(ingredient)
+            }
+            ingredientGroupSnapshotDao.save(group)
+        }
+
+        snapshot.steps.forEach {
+            stepSnapshotDao.save(it)
+        }
+
+        dayPlan.recipes.add(recipeSnapshotDao.save(snapshot))
 
         return SuccessResponse(dayPlanDao.save(dayPlan).id)
     }
