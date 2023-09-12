@@ -20,6 +20,7 @@ data class IngredientSnapshot(
     var ingredient: Ingredient,
     var name: String,
     var quantity: String? = null,
+    var checked: Boolean = false,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 ) {

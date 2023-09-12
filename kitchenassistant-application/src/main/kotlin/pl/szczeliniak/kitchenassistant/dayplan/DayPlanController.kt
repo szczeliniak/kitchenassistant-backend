@@ -21,9 +21,9 @@ class DayPlanController(
     private val dayPlanService: DayPlanService,
 ) {
 
-    @GetMapping("/{date}")
-    fun findByDate(@PathVariable @DateTimeFormat(pattern = JacksonConfiguration.DATE_FORMAT) date: LocalDate): DayPlanResponse {
-        return dayPlanService.findByDate(date)
+    @GetMapping("/{id}")
+    fun findById(@PathVariable id: Int): DayPlanResponse {
+        return dayPlanService.findById(id)
     }
 
     @GetMapping
@@ -42,18 +42,27 @@ class DayPlanController(
     }
 
     @Transactional
-    @DeleteMapping("/{date}")
-    fun delete(@PathVariable @DateTimeFormat(pattern = JacksonConfiguration.DATE_FORMAT) date: LocalDate): SuccessResponse {
-        return dayPlanService.delete(date)
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Int): SuccessResponse {
+        return dayPlanService.delete(id)
     }
 
     @Transactional
-    @PutMapping("/{date}")
-    fun update(
-        @PathVariable @DateTimeFormat(pattern = JacksonConfiguration.DATE_FORMAT) date: LocalDate,
-        @Valid @RequestBody request: UpdateDayPlanRequest
+    @PutMapping("/{id}")
+    fun update(@PathVariable id: Int, @Valid @RequestBody request: UpdateDayPlanRequest): SuccessResponse {
+        return dayPlanService.update(id, request)
+    }
+
+    @Transactional
+    @PutMapping("/{id}/{recipeId}/{ingredientGroupId}/{ingredientId}/{isChecked}")
+    fun check(
+        @PathVariable id: Int,
+        @PathVariable recipeId: Int,
+        @PathVariable ingredientGroupId: Int,
+        @PathVariable ingredientId: Int,
+        @PathVariable isChecked: Boolean
     ): SuccessResponse {
-        return dayPlanService.update(date, request)
+        return dayPlanService.check(id, recipeId, ingredientGroupId, ingredientId, isChecked)
     }
 
     @Transactional
@@ -63,12 +72,9 @@ class DayPlanController(
     }
 
     @Transactional
-    @DeleteMapping("/{date}/recipes/{recipeId}")
-    fun deleteRecipe(
-        @PathVariable @DateTimeFormat(pattern = JacksonConfiguration.DATE_FORMAT) date: LocalDate,
-        @PathVariable recipeId: Int
-    ): SuccessResponse {
-        return dayPlanService.deleteRecipe(date, recipeId)
+    @DeleteMapping("/{id}/recipes/{recipeId}")
+    fun deleteRecipe(@PathVariable id: Int, @PathVariable recipeId: Int): SuccessResponse {
+        return dayPlanService.deleteRecipe(id, recipeId)
     }
 
 }

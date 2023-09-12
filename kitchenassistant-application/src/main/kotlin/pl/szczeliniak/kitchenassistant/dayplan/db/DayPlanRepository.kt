@@ -40,10 +40,10 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
     }
 
     @Transactional
-    override fun delete(date: LocalDate, userId: Int?): Boolean {
-        var query = "DELETE FROM DayPlan dp WHERE dp.date = :date"
+    override fun delete(id: Int, userId: Int?): Boolean {
+        var query = "DELETE FROM DayPlan dp WHERE dp.id = :id"
         userId?.let { query += " AND dp.userId = :userId" }
-        var typedQuery = entityManager.createQuery(query).setParameter("date", date)
+        var typedQuery = entityManager.createQuery(query).setParameter("id", id)
         userId?.let { typedQuery = typedQuery.setParameter("userId", userId) }
         return typedQuery.executeUpdate() > 0
     }
@@ -59,6 +59,20 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
                 Long::class.javaObjectType
             ), userId
         ).singleResult
+    }
+
+    override fun findById(id: Int, userId: Int): DayPlan? {
+        return entityManager
+            .createQuery(
+                "SELECT dp FROM DayPlan dp WHERE dp.id = :id AND dp.userId = :userId",
+                DayPlan::class.java
+            )
+            .setParameter("id", id)
+            .setParameter("userId", userId)
+            .resultList
+            .stream()
+            .findFirst()
+            .orElse(null)
     }
 
     override fun findByDate(date: LocalDate, userId: Int): DayPlan? {

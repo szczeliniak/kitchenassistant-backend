@@ -6,6 +6,7 @@ data class DayPlanResponse(
     val dayPlan: DayPlanDto
 ) {
     data class DayPlanDto(
+        val id: Int,
         val date: LocalDate,
         val recipes: List<RecipeDto>
     ) {
@@ -17,12 +18,15 @@ data class DayPlanResponse(
             val ingredientGroups: List<IngredientGroupDto>,
         ) {
             data class IngredientGroupDto(
+                val id: Int,
                 val name: String,
                 val ingredients: List<IngredientDto>
             ) {
                 data class IngredientDto(
+                    val id: Int,
                     val name: String,
-                    val quantity: String?
+                    val quantity: String?,
+                    val checked: Boolean
                 )
             }
         }

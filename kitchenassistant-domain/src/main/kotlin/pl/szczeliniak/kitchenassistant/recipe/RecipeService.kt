@@ -150,7 +150,7 @@ open class RecipeService(
             dayPlans.forEach { dayPlan ->
                 dayPlan.recipes.removeIf { recipe -> recipe.id == it.id }
                 if (dayPlan.recipes.isEmpty()) {
-                    dayPlanDao.delete(dayPlan.date)
+                    dayPlanDao.delete(dayPlan.id)
                 } else {
                     dayPlanDao.save(dayPlan)
                 }

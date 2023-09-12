@@ -7,6 +7,7 @@ data class DayPlansResponse(
     val dayPlans: Page<DayPlanDto>
 ) {
     data class DayPlanDto(
+        val id: Int,
         val date: LocalDate
     )
 }

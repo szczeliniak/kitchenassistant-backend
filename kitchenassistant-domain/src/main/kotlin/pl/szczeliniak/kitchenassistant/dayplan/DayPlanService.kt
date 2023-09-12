@@ -16,6 +16,7 @@ import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.shared.dtos.Page
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import java.time.LocalDate
+import java.time.ZonedDateTime
 
 open class DayPlanService(
     private val dayPlanMapper: DayPlanMapper,
@@ -29,10 +30,10 @@ open class DayPlanService(
     private val ingredientSnapshotDao: IngredientSnapshotDao
 ) {
 
-    fun findByDate(date: LocalDate): DayPlanResponse {
+    fun findById(id: Int): DayPlanResponse {
         return DayPlanResponse(
             dayPlanMapper.mapDetails(
-                dayPlanDao.findByDate(date, requestContext.requireUserId())
+                dayPlanDao.findById(id, requestContext.requireUserId())
                     ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
             )
         )
@@ -56,16 +57,16 @@ open class DayPlanService(
         )
     }
 
-    fun delete(date: LocalDate): SuccessResponse {
+    fun delete(id: Int): SuccessResponse {
         val userId = requestContext.requireUserId()
         val dayPlan =
-            dayPlanDao.findByDate(date, userId) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
-        dayPlanDao.delete(date, userId)
+            dayPlanDao.findById(id, userId) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
+        dayPlanDao.delete(id, userId)
         return SuccessResponse(dayPlan.id)
     }
 
-    fun update(date: LocalDate, request: UpdateDayPlanRequest): SuccessResponse {
-        val dayPlan = dayPlanDao.findByDate(date, requestContext.requireUserId()) ?: throw KitchenAssistantException(
+    fun update(id: Int, request: UpdateDayPlanRequest): SuccessResponse {
+        val dayPlan = dayPlanDao.findById(id, requestContext.requireUserId()) ?: throw KitchenAssistantException(
             ErrorCode.DAY_PLAN_NOT_FOUND
         )
 
@@ -116,12 +117,12 @@ open class DayPlanService(
         return DayPlan(userId = userId, date = request.date)
     }
 
-    fun deleteRecipe(date: LocalDate, recipeId: Int): SuccessResponse {
+    fun deleteRecipe(id: Int, recipeId: Int): SuccessResponse {
         val userId = requestContext.requireUserId()
-        dayPlanDao.findByDate(date, userId)?.let { dayPlan ->
+        dayPlanDao.findById(id, userId)?.let { dayPlan ->
             dayPlan.recipes.removeIf { it.id == recipeId }
             if (dayPlan.recipes.isEmpty()) {
-                dayPlanDao.delete(dayPlan.date, userId)
+                dayPlanDao.delete(dayPlan.id, userId)
             } else {
                 dayPlanDao.save(dayPlan)
             }
@@ -129,6 +130,25 @@ open class DayPlanService(
         } ?: run {
             throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
         }
+    }
+
+    fun check(
+        id: Int,
+        recipeId: Int,
+        ingredientGroupId: Int,
+        ingredientId: Int,
+        checked: Boolean
+    ): SuccessResponse {
+        val dayPlan = dayPlanDao.findById(id, requestContext.requireUserId()) ?: throw KitchenAssistantException(
+            ErrorCode.DAY_PLAN_NOT_FOUND
+        )
+        val ingredient =
+            dayPlan.recipes.first { it.id == recipeId }.ingredientGroups.first { it.id == ingredientGroupId }.ingredients.first { it.id == ingredientId }
+        ingredient.checked = checked
+        ingredient.modifiedAt = ZonedDateTime.now()
+        ingredientSnapshotDao.save(ingredient)
+
+        return SuccessResponse(dayPlan.id)
     }
 
 }

@@ -13,8 +13,10 @@ interface DayPlanDao {
 
     fun count(criteria: DayPlanCriteria, userId: Int? = null): Long
 
+    fun findById(id: Int, userId: Int): DayPlan?
+
     fun findByDate(date: LocalDate, userId: Int): DayPlan?
 
-    fun delete(date: LocalDate, userId: Int? = null): Boolean
+    fun delete(id: Int, userId: Int? = null): Boolean
 
 }

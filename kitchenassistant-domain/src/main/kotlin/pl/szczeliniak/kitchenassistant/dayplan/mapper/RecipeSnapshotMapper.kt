@@ -30,6 +30,7 @@ abstract class RecipeSnapshotMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "modifiedAt", ignore = true)
     @Mapping(source = "ingredient", target = "ingredient")
+    @Mapping(target = "checked", expression = "java(false)")
     abstract fun map(ingredient: Ingredient): IngredientSnapshot
 
     @Mapping(target = "id", ignore = true)

@@ -1,0 +1,1 @@
+ALTER TABLE ingredient_snapshots ADD COLUMN checked BOOLEAN NOT NULL DEFAULT false;
