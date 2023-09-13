@@ -39,13 +39,13 @@ open class DayPlanService(
         )
     }
 
-    fun findAll(page: Long?, limit: Int?, criteria: DayPlanCriteria): DayPlansResponse {
+    fun findAll(page: Long?, limit: Int?, criteria: DayPlanCriteria, sort: Sort): DayPlansResponse {
         val userId = requestContext.requireUserId()
 
         val currentPage = PaginationUtils.calculatePageNumber(page)
         val currentLimit = PaginationUtils.calculateLimit(limit)
         val offset = PaginationUtils.calculateOffset(currentPage, currentLimit)
-        val result = dayPlanDao.findAll(criteria, offset, limit, userId)
+        val result = dayPlanDao.findAll(criteria, sort, offset, limit, userId)
         val totalNumberOfPages =
             PaginationUtils.calculateNumberOfPages(currentLimit, dayPlanDao.count(criteria, userId))
         return DayPlansResponse(

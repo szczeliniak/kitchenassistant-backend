@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.dayplan
 
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import pl.szczeliniak.kitchenassistant.dayplan.db.Sort
 import pl.szczeliniak.kitchenassistant.dayplan.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.dayplan.dto.request.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.dto.request.UpdateDayPlanRequest
@@ -29,12 +30,14 @@ class DayPlanController(
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
         @RequestParam(required = false) since: LocalDate?,
-        @RequestParam(required = false) to: LocalDate?
+        @RequestParam(required = false) to: LocalDate?,
+        @RequestParam(required = true, defaultValue = "ASC") sort: Sort
     ): DayPlansResponse {
         return dayPlanService.findAll(
             page,
             limit,
-            DayPlanCriteria(since = since, to = to)
+            DayPlanCriteria(since = since, to = to),
+            sort
         )
     }
 
@@ -51,7 +54,7 @@ class DayPlanController(
     }
 
     @Transactional
-    @PutMapping("/{id}/{recipeId}/{ingredientGroupId}/{ingredientId}/{isChecked}")
+    @PutMapping("/{id}/recipes/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}/{isChecked}")
     fun check(
         @PathVariable id: Int,
         @PathVariable recipeId: Int,

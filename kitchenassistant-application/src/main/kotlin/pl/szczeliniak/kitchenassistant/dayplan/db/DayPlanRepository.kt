@@ -22,14 +22,14 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         dayPlans.forEach { save(it) }
     }
 
-    override fun findAll(criteria: DayPlanCriteria, offset: Int?, limit: Int?, userId: Int?): Set<DayPlan> {
+    override fun findAll(criteria: DayPlanCriteria, sort: Sort, offset: Int?, limit: Int?, userId: Int?): Set<DayPlan> {
         val typedQuery = applyParameters(
             criteria,
             entityManager.createQuery(
                 "SELECT dp FROM DayPlan dp WHERE dp.id IS NOT NULL" + prepareCriteria(
                     criteria,
                     userId
-                ) + " ORDER BY dp.date ASC, dp.id ASC",
+                ) + " ORDER BY dp.date " + sort.name + ", dp.id " + sort.name,
                 DayPlan::class.java
             ), userId
         )
