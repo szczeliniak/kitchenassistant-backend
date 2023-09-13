@@ -25,6 +25,9 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         if (criteria.tag != null) {
             builder.append("JOIN r.tags t ")
         }
+        if (criteria.search != null) {
+            builder.append("JOIN r.author a ")
+        }
         return builder.toString()
     }
 
@@ -76,8 +79,8 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         if (criteria.categoryId != null) {
             builder.append(" AND r.category.id = :categoryId")
         }
-        if (criteria.name != null) {
-            builder.append(" AND LOWER(r.name) LIKE LOWER(:name)")
+        if (criteria.search != null) {
+            builder.append(" AND (LOWER(r.name) LIKE LOWER(:search) OR LOWER(a.name) LIKE LOWER(:search))")
         }
         if (criteria.tag != null) {
             builder.append(" AND LOWER(t.name) LIKE LOWER(:tag)")
@@ -102,8 +105,8 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         if (criteria.categoryId != null) {
             query = typedQuery.setParameter("categoryId", criteria.categoryId)
         }
-        if (criteria.name != null) {
-            query = typedQuery.setParameter("name", "%" + criteria.name + "%")
+        if (criteria.search != null) {
+            query = typedQuery.setParameter("search", "%" + criteria.search + "%")
         }
         if (criteria.tag != null) {
             query = typedQuery.setParameter("tag", "%" + criteria.tag + "%")

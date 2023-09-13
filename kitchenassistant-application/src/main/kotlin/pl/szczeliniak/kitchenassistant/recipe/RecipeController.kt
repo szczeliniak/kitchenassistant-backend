@@ -36,7 +36,7 @@ class RecipeController(
     @GetMapping
     fun findAll(
         @RequestParam(required = false) categoryId: Int?,
-        @RequestParam(required = false) @Length(max = 50) name: String?,
+        @RequestParam(required = false) @Length(max = 50) search: String?,
         @RequestParam(required = false) @Length(max = 50) tag: String?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
@@ -45,7 +45,7 @@ class RecipeController(
         return recipeService.findAll(
             page,
             limit,
-            RecipeCriteria(onlyFavorites, requestContext.requireUserId(), categoryId, name, tag)
+            RecipeCriteria(onlyFavorites, requestContext.requireUserId(), categoryId, search, tag)
         )
     }
 
