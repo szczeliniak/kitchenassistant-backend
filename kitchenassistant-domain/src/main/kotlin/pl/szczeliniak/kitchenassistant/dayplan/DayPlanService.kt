@@ -89,7 +89,7 @@ open class DayPlanService(
             dayPlanDao.findAll(DayPlanCriteria(null, request.date, request.date), userId = userId).firstOrNull()
                 ?: createDayPlan(request, userId)
 
-        if (dayPlan.recipes.map { it.recipe.id }.contains(request.recipeId)) {
+        if (dayPlan.recipes.map { it.originalRecipeId }.contains(request.recipeId)) {
             throw KitchenAssistantException(ErrorCode.RECIPE_ALREADY_ADDED_TO_DAY_PLAN)
         }
 

@@ -21,21 +21,21 @@ import javax.annotation.PostConstruct
 class JacksonConfiguration(private val objectMapper: ObjectMapper) {
 
     companion object {
-        const val DATE_FORMAT = "yyyy-MM-dd"
+        private const val DATE_FORMAT = "yyyy-MM-dd"
         private const val DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ"
-        private val ZONED_DATETIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern(DATETIME_FORMAT)
-        private val LOCAL_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
+        val ZONED_DATETIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern(DATETIME_FORMAT)
+        val LOCAL_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
     }
 
     @PostConstruct
     fun postConstruct() {
+        objectMapper.registerKotlinModule()
         val module = SimpleModule()
         module.addSerializer(ZonedDateTime::class.java, ZonedDateTimeSerializer())
         module.addDeserializer(ZonedDateTime::class.java, ZonedDateTimeDeserializer())
         module.addSerializer(LocalDate::class.java, LocalDateSerializer())
         module.addDeserializer(LocalDate::class.java, LocalDateDeserializer())
         objectMapper.registerModule(module)
-        objectMapper.registerKotlinModule()
     }
 
     inner class ZonedDateTimeSerializer : StdSerializer<ZonedDateTime>(ZonedDateTime::class.java) {

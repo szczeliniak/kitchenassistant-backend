@@ -1,6 +1,5 @@
 package pl.szczeliniak.kitchenassistant.dayplan.db
 
-import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient
 import java.time.ZonedDateTime
 import javax.persistence.*
 
@@ -15,14 +14,12 @@ data class IngredientSnapshot(
         allocationSize = 1
     )
     var id: Int = 0,
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ingredient_id")
-    var ingredient: Ingredient,
     var name: String,
     var quantity: String? = null,
+    var originalIngredientId: Int? = null,
     var checked: Boolean = false,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 ) {
-    constructor() : this(name = "", ingredient = Ingredient())
+    constructor() : this(name = "")
 }

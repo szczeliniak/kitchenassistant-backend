@@ -36,7 +36,7 @@ data class RecipeResponse(
 
         data class StepDto(
             val id: Int,
-            val description: String?,
+            val description: String,
             val photoName: String?,
             val sequence: Int?
         )

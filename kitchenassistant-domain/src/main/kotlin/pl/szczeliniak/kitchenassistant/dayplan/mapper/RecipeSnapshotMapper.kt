@@ -17,25 +17,25 @@ abstract class RecipeSnapshotMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "modifiedAt", ignore = true)
-    @Mapping(source = "recipe", target = "recipe")
+    @Mapping(source = "recipe.id", target = "originalRecipeId")
     abstract fun map(recipe: Recipe): RecipeSnapshot
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "modifiedAt", ignore = true)
-    @Mapping(source = "ingredientGroup", target = "ingredientGroup")
+    @Mapping(source = "ingredientGroup.id", target = "originalIngredientGroupId")
     abstract fun map(ingredientGroup: IngredientGroup): IngredientGroupSnapshot
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "modifiedAt", ignore = true)
-    @Mapping(source = "ingredient", target = "ingredient")
+    @Mapping(source = "ingredient.id", target = "originalIngredientId")
     @Mapping(target = "checked", expression = "java(false)")
     abstract fun map(ingredient: Ingredient): IngredientSnapshot
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "modifiedAt", ignore = true)
-    @Mapping(source = "step", target = "step")
+    @Mapping(source = "step.id", target = "originalStepId")
     abstract fun map(step: Step): StepSnapshot
 }

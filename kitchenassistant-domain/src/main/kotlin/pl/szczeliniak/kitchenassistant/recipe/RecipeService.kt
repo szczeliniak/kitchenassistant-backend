@@ -155,6 +155,7 @@ open class RecipeService(
                     dayPlanDao.save(dayPlan)
                 }
             }
+            it.tags.clear()
             recipeDao.delete(it)
         }
         return SuccessResponse(recipeId)

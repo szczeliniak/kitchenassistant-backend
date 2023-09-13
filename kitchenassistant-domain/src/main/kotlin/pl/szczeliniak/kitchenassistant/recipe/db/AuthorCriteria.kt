@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe.db
 
 data class AuthorCriteria(
-    val name: String?,
+    val name: String? = null,
     val userId: Int?
 )

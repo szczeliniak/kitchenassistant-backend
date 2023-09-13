@@ -1,6 +1,5 @@
 package pl.szczeliniak.kitchenassistant.dayplan.db
 
-import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroup
 import java.time.ZonedDateTime
 import javax.persistence.*
 
@@ -15,10 +14,8 @@ data class IngredientGroupSnapshot(
         allocationSize = 1
     )
     var id: Int = 0,
+    var originalIngredientGroupId: Int? = null,
     var name: String,
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ingredient_group_id")
-    var ingredientGroup: IngredientGroup,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "ingredient_group_snapshot_id", nullable = false)
     @OrderBy("id ASC")
@@ -26,5 +23,5 @@ data class IngredientGroupSnapshot(
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 ) {
-    constructor() : this(name = "", ingredientGroup = IngredientGroup())
+    constructor() : this(name = "")
 }

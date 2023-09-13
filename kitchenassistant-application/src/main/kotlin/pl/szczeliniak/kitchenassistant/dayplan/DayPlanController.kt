@@ -1,9 +1,7 @@
 package pl.szczeliniak.kitchenassistant.dayplan
 
-import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import pl.szczeliniak.kitchenassistant.JacksonConfiguration
 import pl.szczeliniak.kitchenassistant.dayplan.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.dayplan.dto.request.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.dto.request.UpdateDayPlanRequest
@@ -28,7 +26,6 @@ class DayPlanController(
 
     @GetMapping
     fun findAll(
-        @RequestParam(required = false) userId: Int?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
         @RequestParam(required = false) since: LocalDate?,

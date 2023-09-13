@@ -2,7 +2,6 @@ package pl.szczeliniak.kitchenassistant.dayplan.db
 
 import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.Category
-import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import java.time.ZonedDateTime
 import javax.persistence.*
 
@@ -18,13 +17,11 @@ class RecipeSnapshot(
     )
     var id: Int = 0,
     var name: String,
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "recipe_id")
-    var recipe: Recipe,
     var description: String? = null,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     var author: Author? = null,
+    var originalRecipeId: Int? = null,
     var source: String? = null,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -41,5 +38,5 @@ class RecipeSnapshot(
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 ) {
-    constructor() : this(name = "", photoName = null, recipe = Recipe())
+    constructor() : this(name = "", photoName = null)
 }

@@ -10,6 +10,7 @@ import pl.szczeliniak.kitchenassistant.recipe.db.TagCriteria
 import pl.szczeliniak.kitchenassistant.recipe.dto.*
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.*
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.*
+import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import javax.transaction.Transactional
 import javax.validation.Valid
@@ -23,7 +24,8 @@ class RecipeController(
     private val categoryService: CategoryService,
     private val ingredientGroupService: IngredientGroupService,
     private val tagService: TagService,
-    private val stepService: StepService
+    private val stepService: StepService,
+    private val requestContext: RequestContext
 ) {
 
     @GetMapping("/{recipeId}")
@@ -33,7 +35,6 @@ class RecipeController(
 
     @GetMapping
     fun findAll(
-        @RequestParam(required = false) userId: Int?,
         @RequestParam(required = false) categoryId: Int?,
         @RequestParam(required = false) @Length(max = 50) name: String?,
         @RequestParam(required = false) @Length(max = 50) tag: String?,
@@ -41,7 +42,11 @@ class RecipeController(
         @RequestParam(required = false) limit: Int?,
         @RequestParam(required = true, defaultValue = "false") onlyFavorites: Boolean?
     ): RecipesResponse {
-        return recipeService.findAll(page, limit, RecipeCriteria(onlyFavorites, userId, categoryId, name, tag))
+        return recipeService.findAll(
+            page,
+            limit,
+            RecipeCriteria(onlyFavorites, requestContext.requireUserId(), categoryId, name, tag)
+        )
     }
 
     @Transactional
@@ -137,24 +142,18 @@ class RecipeController(
     }
 
     @GetMapping("/categories")
-    fun getCategories(@RequestParam(required = false) userId: Int?): CategoriesResponse {
-        return categoryService.getAll(CategoryCriteria(userId))
+    fun getCategories(): CategoriesResponse {
+        return categoryService.getAll(CategoryCriteria(requestContext.requireUserId()))
     }
 
     @GetMapping("/tags")
-    fun getTags(
-        @RequestParam(required = false) userId: Int?,
-        @RequestParam(required = false) name: String?
-    ): TagsResponse {
-        return tagService.getAll(TagCriteria(name, userId))
+    fun getTags(): TagsResponse {
+        return tagService.getAll(TagCriteria(userId = requestContext.requireUserId()))
     }
 
     @GetMapping("/authors")
-    fun getAuthors(
-        @RequestParam(required = false) userId: Int?,
-        @RequestParam(required = false) name: String?
-    ): AuthorsResponse {
-        return authorService.getAll(AuthorCriteria(name, userId))
+    fun getAuthors(): AuthorsResponse {
+        return authorService.getAll(AuthorCriteria(userId = requestContext.requireUserId()))
     }
 
     @Transactional
