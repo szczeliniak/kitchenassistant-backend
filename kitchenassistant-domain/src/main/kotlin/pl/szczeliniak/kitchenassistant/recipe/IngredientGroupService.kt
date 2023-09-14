@@ -77,15 +77,14 @@ open class IngredientGroupService(
     }
 
     fun delete(recipeId: Int, ingredientGroupId: Int): SuccessResponse {
-        recipeDao.findById(recipeId)?.let { recipe ->
+        val recipe = recipeDao.findById(recipeId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
+        val ingredientGroup =
             recipe.ingredientGroups.firstOrNull { ingredientGroup -> ingredientGroup.id == ingredientGroupId }
-                ?.let { ingredientGroup ->
-                    ingredientGroup.ingredients.forEach { ingredient ->
-                        ingredientDao.delete(ingredient)
-                    }
-                    ingredientGroupDao.delete(ingredientGroup)
-                }
+                ?: throw KitchenAssistantException(ErrorCode.INGREDIENT_GROUP_NOT_FOUND)
+        ingredientGroup.ingredients.forEach { ingredient ->
+            ingredientDao.delete(ingredient)
         }
+        ingredientGroupDao.delete(ingredientGroup)
         return SuccessResponse(ingredientGroupId)
     }
 
