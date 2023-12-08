@@ -21,10 +21,9 @@ class TokenFactoryImpl(
         val expiration = ZonedDateTime.now().plusDays(TOKEN_VALIDITY_DAYS)
         return TokenFactory.Token(
             jwtBuilder().setSubject(userId.toString())
-                .setPayload(email)
                 .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
                 .setExpiration(Date.from(expiration.toInstant()))
-                .compact(), expiration
+                .compact(), email, expiration
         )
     }
 
