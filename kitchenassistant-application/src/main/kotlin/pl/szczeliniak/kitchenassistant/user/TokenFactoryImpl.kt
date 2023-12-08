@@ -17,10 +17,11 @@ class TokenFactoryImpl(
         private const val TOKEN_VALIDITY_DAYS = 14L
     }
 
-    override fun create(userId: Int): TokenFactory.Token {
+    override fun create(userId: Int, email: String): TokenFactory.Token {
         val expiration = ZonedDateTime.now().plusDays(TOKEN_VALIDITY_DAYS)
         return TokenFactory.Token(
             jwtBuilder().setSubject(userId.toString())
+                .setPayload(email)
                 .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
                 .setExpiration(Date.from(expiration.toInstant()))
                 .compact(), expiration

@@ -4,7 +4,7 @@ import java.time.ZonedDateTime
 
 interface TokenFactory {
 
-    fun create(userId: Int): Token
+    fun create(userId: Int, email: String): Token
 
     class Token(val token: String, val validTo: ZonedDateTime)
 

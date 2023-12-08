@@ -57,7 +57,7 @@ open class UserService(
         if (user.password?.let { !passwordMatcher.matches(it, request.password) } == true) {
             throw KitchenAssistantException(ErrorCode.PASSWORDS_DO_NOT_MATCH)
         }
-        val token = tokenFactory.create(user.id)
+        val token = tokenFactory.create(user.id, user.email)
         return LoginResponse(token.token, user.id, token.validTo)
     }
 
@@ -68,7 +68,7 @@ open class UserService(
             )
         } ?: throw KitchenAssistantException(ErrorCode.CANNOT_LOGIN_WITH_FACEBOOK)
 
-        val token = tokenFactory.create(user.id)
+        val token = tokenFactory.create(user.id, user.email)
         return LoginResponse(token.token, user.id, token.validTo)
     }
 
@@ -78,7 +78,7 @@ open class UserService(
         }
 
         val user = userDao.save(userFactory.create(request))
-        val token = tokenFactory.create(user.id)
+        val token = tokenFactory.create(user.id, user.email)
         return LoginResponse(token.token, user.id, token.validTo)
     }
 
@@ -86,7 +86,7 @@ open class UserService(
         val user =
             userDao.findById(requestContext.requireUserId())
                 ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
-        val token = tokenFactory.create(user.id)
+        val token = tokenFactory.create(user.id, user.email)
         return RefreshTokenResponse(token.token, token.validTo)
     }
 
