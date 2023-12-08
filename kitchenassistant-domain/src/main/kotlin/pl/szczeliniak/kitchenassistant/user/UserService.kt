@@ -58,7 +58,7 @@ open class UserService(
             throw KitchenAssistantException(ErrorCode.PASSWORDS_DO_NOT_MATCH)
         }
         val token = tokenFactory.create(user.id, user.email)
-        return LoginResponse(token.token, user.id, token.validTo)
+        return LoginResponse(token.token, user.id, user.email, token.validTo)
     }
 
     open fun login(request: LoginWithFacebookRequest): LoginResponse {
@@ -69,7 +69,7 @@ open class UserService(
         } ?: throw KitchenAssistantException(ErrorCode.CANNOT_LOGIN_WITH_FACEBOOK)
 
         val token = tokenFactory.create(user.id, user.email)
-        return LoginResponse(token.token, user.id, token.validTo)
+        return LoginResponse(token.token, user.id, user.email, token.validTo)
     }
 
     open fun register(request: RegisterRequest): LoginResponse {
@@ -79,7 +79,7 @@ open class UserService(
 
         val user = userDao.save(userFactory.create(request))
         val token = tokenFactory.create(user.id, user.email)
-        return LoginResponse(token.token, user.id, token.validTo)
+        return LoginResponse(token.token, user.id, user.email, token.validTo)
     }
 
     open fun refresh(): RefreshTokenResponse {

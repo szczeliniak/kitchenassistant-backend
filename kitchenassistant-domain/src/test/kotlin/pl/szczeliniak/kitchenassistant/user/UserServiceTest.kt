@@ -95,7 +95,7 @@ internal class UserServiceTest : JunitBaseClass() {
 
         val result = userService.register(request)
 
-        assertThat(result).isEqualTo(LoginResponse("token", 1, tokenValidity))
+        assertThat(result).isEqualTo(LoginResponse("token", 1, "email", tokenValidity))
     }
 
     @Test
@@ -142,7 +142,7 @@ internal class UserServiceTest : JunitBaseClass() {
 
         val result = userService.login(LoginRequest("email", "password"))
 
-        assertThat(result).isEqualTo(LoginResponse("token", 1, tokenValidity))
+        assertThat(result).isEqualTo(LoginResponse("token", 1, "email", tokenValidity))
     }
 
     @Test
