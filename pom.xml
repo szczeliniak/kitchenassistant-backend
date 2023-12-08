@@ -21,7 +21,7 @@
         <dependency.spring.boot>2.6.6</dependency.spring.boot>
         <dependency.jaxb>2.3.1</dependency.jaxb>
         <dependency.swaggerui>2.9.2</dependency.swaggerui>
-        <dependency.jackson.databind>2.13.4.1</dependency.jackson.databind>
+        <dependency.jackson.databind>2.16.0</dependency.jackson.databind>
         <dependency.jackson>2.13.2</dependency.jackson>
         <dependency.junit>5.9.2</dependency.junit>
         <dependency.mockito>5.2.0</dependency.mockito>
@@ -31,7 +31,7 @@
         <dependency.jjwt>0.9.1</dependency.jjwt>
         <dependency.postgresql>42.4.3</dependency.postgresql>
         <dependency.lombok>1.18.20</dependency.lombok>
-        <dependency.commons.net>3.8.0</dependency.commons.net>
+        <dependency.commons.net>3.10.0</dependency.commons.net>
         <dependency.hibernate.validator>6.2.3.Final</dependency.hibernate.validator>
         <dependency.hibernate.annotations>3.5.6-Final</dependency.hibernate.annotations>
         <dependency.mapstruct>1.5.5.Final</dependency.mapstruct>
