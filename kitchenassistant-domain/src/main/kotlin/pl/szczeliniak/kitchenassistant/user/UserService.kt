@@ -87,7 +87,7 @@ open class UserService(
             userDao.findById(requestContext.requireUserId())
                 ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
         val token = tokenFactory.create(user.id, user.email)
-        return RefreshTokenResponse(token.token, token.validTo)
+        return RefreshTokenResponse(token.token, token.email, token.validTo)
     }
 
     open fun getLoggedUser(): UserResponse {

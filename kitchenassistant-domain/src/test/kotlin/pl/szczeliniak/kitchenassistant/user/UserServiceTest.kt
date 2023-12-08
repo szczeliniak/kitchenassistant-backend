@@ -91,7 +91,7 @@ internal class UserServiceTest : JunitBaseClass() {
         whenever(userDao.findAll(UserCriteria("email"), 0, 1)).thenReturn(emptySet())
         whenever(userFactory.create(request)).thenReturn(user)
         whenever(userDao.save(user)).thenReturn(user(1))
-        whenever(tokenFactory.create(1)).thenReturn(TokenFactory.Token("token", tokenValidity))
+        whenever(tokenFactory.create(1, "email")).thenReturn(TokenFactory.Token("token", "email", tokenValidity))
 
         val result = userService.register(request)
 
@@ -114,11 +114,11 @@ internal class UserServiceTest : JunitBaseClass() {
         val tokenValidity = ZonedDateTime.now()
         whenever(requestContext.requireUserId()).thenReturn(1)
         whenever(userDao.findById(1)).thenReturn(user)
-        whenever(tokenFactory.create(1)).thenReturn(TokenFactory.Token("token", tokenValidity))
+        whenever(tokenFactory.create(1, "email")).thenReturn(TokenFactory.Token("token", "email", tokenValidity))
 
         val result = userService.refresh()
 
-        assertThat(result).isEqualTo(RefreshTokenResponse("token", tokenValidity))
+        assertThat(result).isEqualTo(RefreshTokenResponse("token", "email", tokenValidity))
     }
 
     @Test
@@ -138,7 +138,7 @@ internal class UserServiceTest : JunitBaseClass() {
 
         whenever(userDao.findAll(UserCriteria("email"), 0, 1)).thenReturn(setOf(user))
         whenever(passwordMatcher.matches("pass", "password")).thenReturn(true)
-        whenever(tokenFactory.create(1)).thenReturn(TokenFactory.Token("token", tokenValidity))
+        whenever(tokenFactory.create(1, "email")).thenReturn(TokenFactory.Token("token", "email", tokenValidity))
 
         val result = userService.login(LoginRequest("email", "password"))
 
@@ -178,7 +178,7 @@ internal class UserServiceTest : JunitBaseClass() {
     }
 
     private fun user(id: Int = 0): User {
-        return User(id, "", "pass")
+        return User(id, "email", "pass")
     }
 
 }
