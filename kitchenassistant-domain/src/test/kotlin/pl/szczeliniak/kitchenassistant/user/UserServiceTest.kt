@@ -11,12 +11,11 @@ import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 import pl.szczeliniak.kitchenassistant.user.dto.request.LoginRequest
+import pl.szczeliniak.kitchenassistant.user.dto.request.LoginWithFacebookRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
-import pl.szczeliniak.kitchenassistant.user.dto.response.LoginResponse
-import pl.szczeliniak.kitchenassistant.user.dto.response.RefreshTokenResponse
-import pl.szczeliniak.kitchenassistant.user.dto.response.UserResponse
-import pl.szczeliniak.kitchenassistant.user.dto.response.UsersResponse
+import pl.szczeliniak.kitchenassistant.user.dto.response.*
 import java.time.ZonedDateTime
+import java.util.*
 
 internal class UserServiceTest : JunitBaseClass() {
 
@@ -167,6 +166,48 @@ internal class UserServiceTest : JunitBaseClass() {
         )
             .hasMessage("Passwords do not match")
 
+    }
+
+    @Test
+    fun shouldLoginWithFacebookWhenUserAlreadyExists() {
+        val tokenValidity = ZonedDateTime.now()
+
+        whenever(facebookConnector.login("token")).thenReturn(facebookLoginResponse())
+        whenever(userDao.findAll(UserCriteria("email"), 0, 1)).thenReturn(setOf(user(1)))
+        whenever(tokenFactory.create(1, "email")).thenReturn(TokenFactory.Token("token", "email", tokenValidity))
+
+        val result = userService.login(LoginWithFacebookRequest("token"))
+
+        assertThat(result).isEqualTo(LoginResponse("token", 1, "email", tokenValidity))
+    }
+
+    @Test
+    fun shouldLoginWithFacebookWhenUserDoesNotExist() {
+        val user = user(1)
+        val tokenValidity = ZonedDateTime.now()
+
+        whenever(facebookConnector.login("token")).thenReturn(facebookLoginResponse())
+        whenever(userDao.findAll(UserCriteria("email"), 0, 1)).thenReturn(Collections.emptySet())
+        whenever(userFactory.create("email", "")).thenReturn(user)
+        whenever(userDao.save(user)).thenReturn(user)
+        whenever(tokenFactory.create(1, "email")).thenReturn(TokenFactory.Token("token", "email", tokenValidity))
+
+        val result = userService.login(LoginWithFacebookRequest("token"))
+
+        assertThat(result).isEqualTo(LoginResponse("token", 1, "email", tokenValidity))
+    }
+
+    @Test
+    fun shouldThrowExceptionWhenFacebookReturnsNull() {
+        whenever(facebookConnector.login("token")).thenReturn(null)
+
+        assertThatThrownBy { userService.login(LoginWithFacebookRequest("token")) }
+            .isInstanceOf(KitchenAssistantException::class.java)
+            .hasMessage("Cannot login with Facebook")
+    }
+
+    private fun facebookLoginResponse(): FacebookLoginResponse {
+        return FacebookLoginResponse("id", "name", "email")
     }
 
     private fun userDetailsDto(): UserResponse.UserDto {
