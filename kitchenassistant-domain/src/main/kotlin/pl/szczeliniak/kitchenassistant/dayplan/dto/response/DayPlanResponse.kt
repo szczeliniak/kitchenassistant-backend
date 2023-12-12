@@ -15,6 +15,7 @@ data class DayPlanResponse(
             val name: String,
             val author: String?,
             val category: String?,
+            val originalRecipeId: Int?,
             val ingredientGroups: List<IngredientGroupDto>,
         ) {
             data class IngredientGroupDto(
