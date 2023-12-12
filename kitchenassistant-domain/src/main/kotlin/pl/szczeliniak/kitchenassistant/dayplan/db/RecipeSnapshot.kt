@@ -18,14 +18,8 @@ class RecipeSnapshot(
     var id: Int = 0,
     var name: String,
     var description: String? = null,
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
-    var author: Author? = null,
     var originalRecipeId: Int? = null,
     var source: String? = null,
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    var category: Category? = null,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_snapshot_id", nullable = false)
     @OrderBy("id ASC")
