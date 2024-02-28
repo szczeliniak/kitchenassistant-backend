@@ -1,10 +1,7 @@
 package pl.szczeliniak.kitchenassistant
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.jsonwebtoken.ExpiredJwtException
-import io.jsonwebtoken.JwtParser
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.MalformedJwtException
+import io.jsonwebtoken.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
@@ -21,6 +18,9 @@ import org.springframework.web.filter.OncePerRequestFilter
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
+import pl.szczeliniak.kitchenassistant.shared.TokenType
+import pl.szczeliniak.kitchenassistant.user.TokenFactoryImpl.Companion.CLAIM_KEY_ID
+import pl.szczeliniak.kitchenassistant.user.TokenFactoryImpl.Companion.CLAIM_KEY_TOKEN_TYPE
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
@@ -35,7 +35,8 @@ class SecurityConfiguration(
 ) : WebSecurityConfigurerAdapter() {
 
     companion object {
-        val PATH_WITHOUT_AUTHORIZATION = listOf(
+        const val AUTH_HEADER = "Authorization"
+        val PATHS_WITHOUT_AUTHORIZATION = listOf(
             "/users/login/**",
             "/users/register/**",
             "/v2/api-docs",
@@ -52,7 +53,7 @@ class SecurityConfiguration(
         http?.let {
             http.csrf().disable()
             http.cors()
-            http.authorizeRequests().antMatchers(*PATH_WITHOUT_AUTHORIZATION.toTypedArray())
+            http.authorizeRequests().antMatchers(*PATHS_WITHOUT_AUTHORIZATION.toTypedArray())
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -86,12 +87,15 @@ class SecurityConfiguration(
             response: HttpServletResponse,
             filterChain: FilterChain
         ) {
-            if (PATH_WITHOUT_AUTHORIZATION.none { AntPathMatcher().match(it, request.requestURI) }) {
+            if (PATHS_WITHOUT_AUTHORIZATION.none { AntPathMatcher().match(it, request.requestURI) }) {
                 try {
-                    request.getHeader("X-Token")?.let { token ->
-                        val userId = parseToken(token)
+                    request.getHeader(AUTH_HEADER)?.let { token ->
+                        val claims = parseToken(token)
+                        val userId = claims[CLAIM_KEY_ID] as Int
+                        val type = TokenType.valueOf((claims[CLAIM_KEY_TOKEN_TYPE] as String))
                         userDao.findById(userId) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
                         requestContext.userId(userId)
+                        requestContext.tokenType(type)
                         SecurityContextHolder.getContext().authentication = KitchenAssistantAuthentication(token)
                     } ?: kotlin.run {
                         throw KitchenAssistantException(ErrorCode.JWT_MISSING_TOKEN)
@@ -104,9 +108,9 @@ class SecurityConfiguration(
             filterChain.doFilter(request, response)
         }
 
-        private fun parseToken(token: String): Int {
+        private fun parseToken(token: String): Claims {
             try {
-                return jwtParser.parseClaimsJws(token).body.subject.toInt()
+                return jwtParser.parseClaimsJws(token).body
             } catch (e: ExpiredJwtException) {
                 throw KitchenAssistantException(ErrorCode.JWT_EXPIRED_TOKEN)
             } catch (e: MalformedJwtException) {

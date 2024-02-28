@@ -1,11 +1,9 @@
 package pl.szczeliniak.kitchenassistant.user
 
-import java.time.ZonedDateTime
+import pl.szczeliniak.kitchenassistant.shared.TokenType
 
 interface TokenFactory {
 
-    fun create(userId: Int, email: String): Token
-
-    class Token(val token: String, val email: String, val validTo: ZonedDateTime)
+    fun create(userId: Int, email: String, tokenType: TokenType): String
 
 }

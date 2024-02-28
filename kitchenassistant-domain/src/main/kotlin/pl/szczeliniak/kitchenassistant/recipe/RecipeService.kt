@@ -61,7 +61,7 @@ open class RecipeService(
             it
         }
 
-        val userId = requestContext.requireUserId()
+        val userId = requestContext.userId()
 
         return Recipe(0,
             user = userDao.findById(userId) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND),

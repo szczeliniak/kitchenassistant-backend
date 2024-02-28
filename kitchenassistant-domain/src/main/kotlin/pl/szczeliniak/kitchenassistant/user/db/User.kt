@@ -10,10 +10,8 @@ data class User(
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_generator")
     @SequenceGenerator(name = "user_id_generator", sequenceName = "seq_user_id", allocationSize = 1)
     var id: Int = 0,
-    var email: String,
-    var password: String? = null,
+    var email: String = "",
+    var password: String = "",
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
-) {
-    constructor() : this(email = "")
-}
+)

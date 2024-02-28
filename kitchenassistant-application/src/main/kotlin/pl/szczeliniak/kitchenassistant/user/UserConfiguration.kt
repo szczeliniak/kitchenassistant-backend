@@ -18,13 +18,12 @@ class UserConfiguration {
         facebookConnector: FacebookConnector
     ): UserService {
         return UserService(
-            UserMapperImpl(),
             userDao,
             matcher(passwordEncoder),
             tokenFactory,
             facebookConnector,
-            UserFactory(encoder(passwordEncoder)),
-            requestContext
+            requestContext,
+            encoder(passwordEncoder)
         )
     }
 

@@ -7,7 +7,6 @@ import pl.szczeliniak.kitchenassistant.recipe.db.AuthorCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.CategoryCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.TagCriteria
-import pl.szczeliniak.kitchenassistant.recipe.dto.*
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.*
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.*
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
@@ -45,7 +44,7 @@ class RecipeController(
         return recipeService.findAll(
             page,
             limit,
-            RecipeCriteria(onlyFavorites, requestContext.requireUserId(), categoryId, search, tag)
+            RecipeCriteria(onlyFavorites, requestContext.userId(), categoryId, search, tag)
         )
     }
 
@@ -143,17 +142,17 @@ class RecipeController(
 
     @GetMapping("/categories")
     fun getCategories(): CategoriesResponse {
-        return categoryService.getAll(CategoryCriteria(requestContext.requireUserId()))
+        return categoryService.getAll(CategoryCriteria(requestContext.userId()))
     }
 
     @GetMapping("/tags")
     fun getTags(): TagsResponse {
-        return tagService.getAll(TagCriteria(userId = requestContext.requireUserId()))
+        return tagService.getAll(TagCriteria(userId = requestContext.userId()))
     }
 
     @GetMapping("/authors")
     fun getAuthors(): AuthorsResponse {
-        return authorService.getAll(AuthorCriteria(userId = requestContext.requireUserId()))
+        return authorService.getAll(AuthorCriteria(userId = requestContext.userId()))
     }
 
     @Transactional

@@ -1,11 +1,13 @@
 package pl.szczeliniak.kitchenassistant.user
 
-import org.springframework.web.bind.annotation.*
-import pl.szczeliniak.kitchenassistant.user.dto.request.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+import pl.szczeliniak.kitchenassistant.user.dto.request.LoginRequest
+import pl.szczeliniak.kitchenassistant.user.dto.request.LoginWithFacebookRequest
+import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
 import pl.szczeliniak.kitchenassistant.user.dto.response.LoginResponse
-import pl.szczeliniak.kitchenassistant.user.dto.response.RefreshTokenResponse
-import pl.szczeliniak.kitchenassistant.user.dto.response.UserResponse
-import pl.szczeliniak.kitchenassistant.user.dto.response.UsersResponse
 import javax.transaction.Transactional
 import javax.validation.Valid
 
@@ -14,19 +16,6 @@ import javax.validation.Valid
 class UserController(
     private val userService: UserService
 ) {
-
-    @GetMapping("/{id}")
-    fun findById(@PathVariable id: Int): UserResponse {
-        return userService.findById(id)
-    }
-
-    @GetMapping
-    fun findAll(
-        @RequestParam(required = false) page: Long?,
-        @RequestParam(required = false) limit: Int?
-    ): UsersResponse {
-        return userService.findAll(page, limit)
-    }
 
     @Transactional
     @PostMapping("/login")
@@ -48,13 +37,8 @@ class UserController(
 
     @Transactional
     @PostMapping("/refresh")
-    fun refresh(): RefreshTokenResponse {
+    fun refresh(): LoginResponse {
         return userService.refresh()
-    }
-
-    @GetMapping("/me")
-    fun getLoggedUser(): UserResponse {
-        return userService.getLoggedUser()
     }
 
 }

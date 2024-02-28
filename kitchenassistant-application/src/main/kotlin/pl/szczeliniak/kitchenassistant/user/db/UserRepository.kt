@@ -9,12 +9,12 @@ import javax.transaction.Transactional
 @Repository
 class UserRepository(@PersistenceContext private val entityManager: EntityManager) : UserDao {
 
-    override fun findAll(criteria: UserCriteria, offset: Int, limit: Int): Set<User> {
+    override fun findAll(criteria: UserCriteria, offset: Int, limit: Int): List<User> {
         val query = "SELECT u FROM User u" + prepareCriteria(criteria)
         val typedQuery = applyParameters(criteria, entityManager.createQuery(query, User::class.java))
         typedQuery.firstResult = offset
         typedQuery.maxResults = limit
-        return typedQuery.resultList.toSet()
+        return typedQuery.resultList
     }
 
     override fun count(criteria: UserCriteria): Long {
@@ -51,8 +51,8 @@ class UserRepository(@PersistenceContext private val entityManager: EntityManage
     }
 
     private fun <T> applyParameters(
-            criteria: UserCriteria,
-            typedQuery: TypedQuery<T>
+        criteria: UserCriteria,
+        typedQuery: TypedQuery<T>
     ): TypedQuery<T> {
         var query = typedQuery
         if (criteria.email != null) {

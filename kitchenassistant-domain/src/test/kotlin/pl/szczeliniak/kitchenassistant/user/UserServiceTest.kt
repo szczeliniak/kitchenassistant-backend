@@ -1,205 +1,149 @@
 package pl.szczeliniak.kitchenassistant.user
 
+import io.mockk.every
+import io.mockk.mockk
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
-import pl.szczeliniak.kitchenassistant.shared.dtos.Page
+import pl.szczeliniak.kitchenassistant.shared.TokenType
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 import pl.szczeliniak.kitchenassistant.user.dto.request.LoginRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.LoginWithFacebookRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
-import pl.szczeliniak.kitchenassistant.user.dto.response.*
-import java.time.ZonedDateTime
-import java.util.*
+import pl.szczeliniak.kitchenassistant.user.dto.response.FacebookLoginResponse
+import pl.szczeliniak.kitchenassistant.user.dto.response.LoginResponse
 
-internal class UserServiceTest : JunitBaseClass() {
+class UserServiceTest {
 
-    @InjectMocks
-    private lateinit var userService: UserService
+    private val requestContext: RequestContext = mockk();
+    private val userDao: UserDao = mockk();
+    private val passwordEncoder: PasswordEncoder = mockk();
+    private val tokenFactory: TokenFactory = mockk();
+    private val passwordMatcher: PasswordMatcher = mockk();
+    private val facebookConnector: FacebookConnector = mockk();
 
-    @Mock
-    private lateinit var requestContext: RequestContext
-
-    @Mock
-    private lateinit var userDao: UserDao
-
-    @Mock
-    private lateinit var userMapper: UserMapper
-
-    @Mock
-    private lateinit var userFactory: UserFactory
-
-    @Mock
-    private lateinit var tokenFactory: TokenFactory
-
-    @Mock
-    private lateinit var passwordMatcher: PasswordMatcher
-
-    @Mock
-    private lateinit var facebookConnector: FacebookConnector
-
-    @Test
-    fun shouldReturnUser() {
-        val user = user()
-        val userDto = userDetailsDto()
-        whenever(userDao.findById(1)).thenReturn(user)
-        whenever(userMapper.mapDetails(user)).thenReturn(userDto)
-
-        val result = userService.findById(1)
-
-        assertThat(result).isEqualTo(UserResponse(userDto))
-    }
-
-    @Test
-    fun shouldReturnUsers() {
-        val user = user()
-        val userDto = userDto()
-        val criteria = UserCriteria()
-        whenever(userDao.findAll(criteria, 100, 25)).thenReturn(setOf(user))
-        whenever(userDao.count(criteria)).thenReturn(280)
-        whenever(userMapper.map(user)).thenReturn(userDto)
-
-        val result = userService.findAll(5, 25)
-
-        assertThat(result).isEqualTo(UsersResponse(Page(5, 25, 12, setOf(userDto))))
-    }
-
-    @Test
-    fun shouldReturnLoggedUser() {
-        val user = user()
-        val userDto = userDetailsDto()
-        whenever(requestContext.userId()).thenReturn(1)
-        whenever(userDao.findById(1)).thenReturn(user)
-        whenever(userMapper.mapDetails(user)).thenReturn(userDto)
-
-        val result = userService.getLoggedUser()
-
-        assertThat(result).isEqualTo(UserResponse(userDto))
-    }
+    private var userService: UserService = UserService(userDao, passwordMatcher, tokenFactory, facebookConnector, requestContext, passwordEncoder)
 
     @Test
     fun shouldRegister() {
-        val user = user()
         val request = RegisterRequest("email", "password")
-        val tokenValidity = ZonedDateTime.now()
-        whenever(userDao.findAll(UserCriteria("email"), 0, 1)).thenReturn(emptySet())
-        whenever(userFactory.create(request)).thenReturn(user)
-        whenever(userDao.save(user)).thenReturn(user(1))
-        whenever(tokenFactory.create(1, "email")).thenReturn(TokenFactory.Token("token", "email", tokenValidity))
+        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns emptyList()
+        every { passwordEncoder.encode("password") } returns "encodedPassword"
+        every { userDao.save(any()) } returns user(1)
+        every { tokenFactory.create(1, "email", TokenType.ACCESS) } returns "accessToken"
+        every { tokenFactory.create(1, "email", TokenType.REFRESH) } returns "refreshToken"
 
         val result = userService.register(request)
 
-        assertThat(result).isEqualTo(LoginResponse("token", 1, "email", tokenValidity))
+        assertThat(result).isEqualTo(LoginResponse("accessToken", "refreshToken"))
     }
 
     @Test
     fun shouldThrowExceptionWhenRegisterAndUserExists() {
-        whenever(userDao.findAll(UserCriteria("email"), 0, 1)).thenReturn(setOf(user()))
+        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns listOf(user())
 
-        assertThatThrownBy { userService.register(RegisterRequest("email", "password")) }.isInstanceOf(
-            KitchenAssistantException::class.java
-        ).hasMessage("User with email already exists")
-
+        assertThatThrownBy { userService.register(RegisterRequest("email", "password")) }
+            .isInstanceOf(KitchenAssistantException::class.java)
+            .hasMessage("User with email already exists")
     }
 
     @Test
     fun shouldRefreshToken() {
-        val user = user(1)
-        val tokenValidity = ZonedDateTime.now()
-        whenever(requestContext.requireUserId()).thenReturn(1)
-        whenever(userDao.findById(1)).thenReturn(user)
-        whenever(tokenFactory.create(1, "email")).thenReturn(TokenFactory.Token("token", "email", tokenValidity))
+        every { requestContext.tokenType() } returns TokenType.REFRESH
+        every { requestContext.userId() } returns 1
+        every { userDao.findById(1) } returns user(1)
+        every { tokenFactory.create(1, "email", TokenType.ACCESS) } returns "accessToken"
+        every { tokenFactory.create(1, "email", TokenType.REFRESH) } returns "refreshToken"
 
         val result = userService.refresh()
 
-        assertThat(result).isEqualTo(RefreshTokenResponse("token", "email", tokenValidity))
+        assertThat(result).isEqualTo(LoginResponse("accessToken", "refreshToken"))
     }
 
     @Test
     fun shouldThrowExceptionWhenRefreshAndUserNotFound() {
-        whenever(requestContext.requireUserId()).thenReturn(1)
-        whenever(userDao.findById(1)).thenReturn(null)
+        every { requestContext.userId() } returns 1
+        every { userDao.findById(1) } returns null
+        every { requestContext.tokenType() } returns TokenType.REFRESH
 
-        assertThatThrownBy { userService.refresh() }.isInstanceOf(KitchenAssistantException::class.java)
+        assertThatThrownBy { userService.refresh() }
+            .isInstanceOf(KitchenAssistantException::class.java)
             .hasMessage("User not found")
+    }
 
+    @Test
+    fun shouldThrowExceptionWhenRefreshAndTokenIsWrong() {
+        every { requestContext.tokenType() } returns TokenType.ACCESS
+
+        assertThatThrownBy { userService.refresh() }
+            .isInstanceOf(KitchenAssistantException::class.java)
+            .hasMessage("Wrong token type")
     }
 
     @Test
     fun shouldLogin() {
-        val user = user(1)
-        val tokenValidity = ZonedDateTime.now()
-
-        whenever(userDao.findAll(UserCriteria("email"), 0, 1)).thenReturn(setOf(user))
-        whenever(passwordMatcher.matches("pass", "password")).thenReturn(true)
-        whenever(tokenFactory.create(1, "email")).thenReturn(TokenFactory.Token("token", "email", tokenValidity))
+        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns listOf(user(1))
+        every { passwordMatcher.matches("pass", "password") } returns true
+        every { tokenFactory.create(1, "email", TokenType.ACCESS) } returns "accessToken"
+        every { tokenFactory.create(1, "email", TokenType.REFRESH) } returns "refreshToken"
 
         val result = userService.login(LoginRequest("email", "password"))
 
-        assertThat(result).isEqualTo(LoginResponse("token", 1, "email", tokenValidity))
+        assertThat(result).isEqualTo(LoginResponse("accessToken", "refreshToken"))
     }
 
     @Test
     fun shouldThrowExceptionWhenLoginAndUserNotFound() {
-        whenever(userDao.findAll(UserCriteria("email"), 0, 1)).thenReturn(emptySet())
+        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns emptyList()
 
-        assertThatThrownBy { userService.login(LoginRequest("email", "password")) }.isInstanceOf(
-            KitchenAssistantException::class.java
-        )
+        assertThatThrownBy { userService.login(LoginRequest("email", "password")) }
+            .isInstanceOf(KitchenAssistantException::class.java)
             .hasMessage("User not found")
-
     }
 
     @Test
     fun shouldThrowExceptionWhenLoginAndPasswordsDoNotMatch() {
-        val user = user(1)
-        whenever(userDao.findAll(UserCriteria("email"), 0, 1)).thenReturn(setOf(user))
-        whenever(passwordMatcher.matches("pass", "password")).thenReturn(false)
+        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns listOf(user(1))
+        every { passwordMatcher.matches("pass", "password") } returns false
 
-        assertThatThrownBy { userService.login(LoginRequest("email", "password")) }.isInstanceOf(
-            KitchenAssistantException::class.java
-        )
+        assertThatThrownBy { userService.login(LoginRequest("email", "password")) }
+            .isInstanceOf(KitchenAssistantException::class.java)
             .hasMessage("Passwords do not match")
-
     }
 
     @Test
     fun shouldLoginWithFacebookWhenUserAlreadyExists() {
-        val tokenValidity = ZonedDateTime.now()
-
-        whenever(facebookConnector.login("token")).thenReturn(facebookLoginResponse())
-        whenever(userDao.findAll(UserCriteria("email"), 0, 1)).thenReturn(setOf(user(1)))
-        whenever(tokenFactory.create(1, "email")).thenReturn(TokenFactory.Token("token", "email", tokenValidity))
+        every { facebookConnector.login("token") } returns facebookLoginResponse()
+        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns listOf(user(1))
+        every { tokenFactory.create(1, "email", TokenType.ACCESS) } returns "accessToken"
+        every { tokenFactory.create(1, "email", TokenType.REFRESH) } returns "refreshToken"
 
         val result = userService.login(LoginWithFacebookRequest("token"))
 
-        assertThat(result).isEqualTo(LoginResponse("token", 1, "email", tokenValidity))
+        assertThat(result).isEqualTo(LoginResponse("accessToken", "refreshToken"))
     }
 
     @Test
     fun shouldLoginWithFacebookWhenUserDoesNotExist() {
-        val user = user(1)
-        val tokenValidity = ZonedDateTime.now()
-
-        whenever(facebookConnector.login("token")).thenReturn(facebookLoginResponse())
-        whenever(userDao.findAll(UserCriteria("email"), 0, 1)).thenReturn(Collections.emptySet())
-        whenever(userFactory.create("email", "")).thenReturn(user)
-        whenever(userDao.save(user)).thenReturn(user)
-        whenever(tokenFactory.create(1, "email")).thenReturn(TokenFactory.Token("token", "email", tokenValidity))
+        every { facebookConnector.login("token") } returns facebookLoginResponse()
+        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns emptyList()
+        every { passwordEncoder.encode("") } returns "encodedPassword"
+        every { userDao.save(any()) } returns user(1)
+        every { tokenFactory.create(1, "email", TokenType.ACCESS) } returns "accessToken"
+        every { tokenFactory.create(1, "email", TokenType.REFRESH) } returns "refreshToken"
 
         val result = userService.login(LoginWithFacebookRequest("token"))
 
-        assertThat(result).isEqualTo(LoginResponse("token", 1, "email", tokenValidity))
+        assertThat(result).isEqualTo(LoginResponse("accessToken", "refreshToken"))
     }
 
     @Test
     fun shouldThrowExceptionWhenFacebookReturnsNull() {
-        whenever(facebookConnector.login("token")).thenReturn(null)
+        every { facebookConnector.login("token") } returns null
 
         assertThatThrownBy { userService.login(LoginWithFacebookRequest("token")) }
             .isInstanceOf(KitchenAssistantException::class.java)
@@ -208,14 +152,6 @@ internal class UserServiceTest : JunitBaseClass() {
 
     private fun facebookLoginResponse(): FacebookLoginResponse {
         return FacebookLoginResponse("id", "name", "email")
-    }
-
-    private fun userDetailsDto(): UserResponse.UserDto {
-        return UserResponse.UserDto(0, "")
-    }
-
-    private fun userDto(): UsersResponse.UserDto {
-        return UsersResponse.UserDto(0, "")
     }
 
     private fun user(id: Int = 0): User {

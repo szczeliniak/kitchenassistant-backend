@@ -31,7 +31,7 @@ class SwaggerConfiguration(
 ) {
 
     @Bean
-    open fun api(): Docket {
+    fun api(): Docket {
         return Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
             .securityContexts(listOf(securityContext()))
             .securitySchemes(listOf(apiKey()))
@@ -54,11 +54,12 @@ class SwaggerConfiguration(
     }
 
     private fun apiKey(): ApiKey {
-        return ApiKey("JWT", "X-Token", "header")
+        return ApiKey("JWT", SecurityConfiguration.AUTH_HEADER, "header")
     }
 
     private fun securityContext(): SecurityContext? {
-        return SecurityContext.builder().securityReferences(defaultAuth()).build()
+        return SecurityContext.builder().securityReferences(defaultAuth())
+            .forPaths { path -> path?.let { SecurityConfiguration.PATHS_WITHOUT_AUTHORIZATION.none { ant -> PathSelectors.ant(ant).apply(it) } } ?: false }.build()
     }
 
     private fun defaultAuth(): List<SecurityReference> {

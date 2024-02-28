@@ -1,7 +1,7 @@
 spring:
   autoconfigure.exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
   datasource:
-    url: jdbc:postgresql://localhost:5432/kitchenassistant
+    url: jdbc:postgresql://130.61.97.249:5433/kitchenassistant
     username: kitchenassistant
     password: localdb
   jpa:
@@ -10,7 +10,7 @@ security:
   jwt:
     secret: dupa
 ftp:
-  host: localhost
-  port: 21
+  host: 130.61.97.249
+  port: 5000
   user: kitchenassistant
   password: kitchenassistant

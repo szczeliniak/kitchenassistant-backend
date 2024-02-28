@@ -1,53 +1,49 @@
 package pl.szczeliniak.kitchenassistant.photo
 
-import org.junit.jupiter.api.Assertions
+import io.mockk.every
+import io.mockk.justRun
+import io.mockk.mockk
+import io.mockk.verify
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito
-import pl.szczeliniak.kitchenassistant.JunitBaseClass
 import pl.szczeliniak.kitchenassistant.photo.dto.response.DeletePhotoResponse
 import pl.szczeliniak.kitchenassistant.photo.dto.response.GetPhotoResponse
 import pl.szczeliniak.kitchenassistant.photo.dto.response.UploadPhotoResponse
-import pl.szczeliniak.kitchenassistant.shared.FtpClient
 import pl.szczeliniak.kitchenassistant.recipe.SupportedMediaType
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
+import pl.szczeliniak.kitchenassistant.shared.FtpClient
 import pl.szczeliniak.kitchenassistant.user.db.User
 import java.time.ZonedDateTime
 import java.util.*
 
-internal class PhotoServiceTest : JunitBaseClass() {
+internal class PhotoServiceTest {
 
-    @Mock
-    private lateinit var recipeDao: RecipeDao
-
-    @Mock
-    private lateinit var ftpClient: FtpClient
-
-    @InjectMocks
-    private lateinit var photoService: PhotoService
+    private val recipeDao: RecipeDao = mockk();
+    private val ftpClient: FtpClient = mockk();
+    private val photoService: PhotoService = PhotoService(ftpClient, recipeDao)
 
     @Test
     fun shouldDeletePhoto() {
         val recipe = recipe()
-        whenever(recipeDao.findAll(RecipeCriteria(false, null, null, null, null, "PHOTO_NAME"), 0, 1000)).thenReturn(
-            setOf(recipe)
-        )
-
+        every { recipeDao.findAll(RecipeCriteria(false, null, null, null, null, "PHOTO_NAME"), 0, 1000) } returns setOf(recipe)
+        justRun { recipeDao.save(setOf(recipe)) }
+        justRun { ftpClient.delete("PHOTO_NAME") }
         val response = photoService.delete("PHOTO_NAME")
 
-        Mockito.verify(recipeDao).save(setOf(recipe))
-        Mockito.verify(ftpClient).delete("PHOTO_NAME")
-        Assertions.assertNull(recipe.photoName)
-        Assertions.assertEquals(DeletePhotoResponse("PHOTO_NAME"), response)
+        verify(exactly = 1) { recipeDao.save(setOf(recipe)) }
+        verify(exactly = 1) { ftpClient.delete("PHOTO_NAME") }
+
+        assertThat(recipe.photoName).isNull();
+        assertThat(response).isEqualTo(DeletePhotoResponse("PHOTO_NAME"))
     }
+
 
     @Test
     fun shouldUploadPhoto() {
         val bytes = ByteArray(10)
-        whenever(ftpClient.upload("PHOTO_NAME", bytes)).thenReturn("NAME")
+        every { ftpClient.upload("PHOTO_NAME", bytes) } returns "NAME"
 
         val response = photoService.upload("PHOTO_NAME", bytes)
 
@@ -57,7 +53,7 @@ internal class PhotoServiceTest : JunitBaseClass() {
     @Test
     fun shouldReturnPhoto() {
         val bytes = ByteArray(10)
-        whenever(ftpClient.download("NAME.jpg")).thenReturn(bytes)
+        every { ftpClient.download("NAME.jpg") } returns bytes;
 
         val result = photoService.download("NAME.jpg")
 

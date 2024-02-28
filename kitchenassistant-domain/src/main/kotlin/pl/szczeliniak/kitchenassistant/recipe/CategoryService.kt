@@ -27,7 +27,7 @@ open class CategoryService(
         return Category(
             0,
             request.name,
-            userDao.findById(requestContext.requireUserId())
+            userDao.findById(requestContext.userId())
                 ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND),
             request.sequence
         )
