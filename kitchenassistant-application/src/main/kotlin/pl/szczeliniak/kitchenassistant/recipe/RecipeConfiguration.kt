@@ -3,9 +3,16 @@ package pl.szczeliniak.kitchenassistant.recipe
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
-import pl.szczeliniak.kitchenassistant.recipe.db.*
-import pl.szczeliniak.kitchenassistant.recipe.mapper.*
-import pl.szczeliniak.kitchenassistant.shared.FtpClient
+import pl.szczeliniak.kitchenassistant.recipe.db.AuthorDao
+import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
+import pl.szczeliniak.kitchenassistant.recipe.db.IngredientDao
+import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroupDao
+import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
+import pl.szczeliniak.kitchenassistant.recipe.db.StepDao
+import pl.szczeliniak.kitchenassistant.recipe.db.TagDao
+import pl.szczeliniak.kitchenassistant.recipe.mapper.CategoryMapperImpl
+import pl.szczeliniak.kitchenassistant.recipe.mapper.IngredientGroupMapperImpl
+import pl.szczeliniak.kitchenassistant.recipe.mapper.RecipeMapperImpl
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 
@@ -22,13 +29,11 @@ class RecipeConfiguration {
         stepDao: StepDao,
         userDao: UserDao,
         dayPlanDao: DayPlanDao,
-        ftpClient: FtpClient,
         ingredientGroupDao: IngredientGroupDao,
         requestContext: RequestContext
     ): RecipeService {
         return RecipeService(
             recipeDao,
-            ftpClient,
             authorDao,
             dayPlanDao,
             tagDao,
@@ -46,8 +51,8 @@ class RecipeConfiguration {
     fun authorService(authorDao: AuthorDao) = AuthorService(authorDao)
 
     @Bean
-    fun stepService(recipeDao: RecipeDao, stepDao: StepDao, ftpClient: FtpClient) =
-        StepService(recipeDao, stepDao, ftpClient)
+    fun stepService(recipeDao: RecipeDao, stepDao: StepDao) =
+        StepService(recipeDao, stepDao)
 
     @Bean
     fun ingredientGroupService(

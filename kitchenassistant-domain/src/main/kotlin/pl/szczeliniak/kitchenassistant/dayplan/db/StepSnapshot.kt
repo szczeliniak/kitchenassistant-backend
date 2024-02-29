@@ -1,7 +1,12 @@
 package pl.szczeliniak.kitchenassistant.dayplan.db
 
 import java.time.ZonedDateTime
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.SequenceGenerator
+import javax.persistence.Table
 
 @Entity
 @Table(name = "step_snapshots")
@@ -12,7 +17,6 @@ data class StepSnapshot(
     var id: Int = 0,
     var description: String,
     var originalStepId: Int? = null,
-    var photoName: String? = null,
     var sequence: Int? = null,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()

@@ -13,7 +13,6 @@ data class RecipeResponse(
         val category: CategoryDto?,
         val ingredientGroups: Set<IngredientGroupDto>,
         val steps: Set<StepDto>,
-        val photoName: String?,
         val tags: Set<String>
     ) {
         data class IngredientGroupDto(
@@ -37,7 +36,6 @@ data class RecipeResponse(
         data class StepDto(
             val id: Int,
             val description: String,
-            val photoName: String?,
             val sequence: Int?
         )
     }

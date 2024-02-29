@@ -1,9 +1,17 @@
 package pl.szczeliniak.kitchenassistant.dayplan.db
 
-import pl.szczeliniak.kitchenassistant.recipe.db.Author
-import pl.szczeliniak.kitchenassistant.recipe.db.Category
 import java.time.ZonedDateTime
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.OneToMany
+import javax.persistence.OrderBy
+import javax.persistence.SequenceGenerator
+import javax.persistence.Table
 
 @Entity
 @Table(name = "recipe_snapshots")
@@ -28,9 +36,8 @@ class RecipeSnapshot(
     @JoinColumn(name = "recipe_snapshot_id", nullable = false)
     @OrderBy("sequence ASC, id ASC")
     var steps: MutableSet<StepSnapshot> = mutableSetOf(),
-    var photoName: String?,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 ) {
-    constructor() : this(name = "", photoName = null)
+    constructor() : this(name = "")
 }

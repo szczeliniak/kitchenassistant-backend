@@ -9,8 +9,3 @@ spring:
 security:
   jwt:
     secret: dupa
-ftp:
-  host: 130.61.97.249
-  port: 5000
-  user: kitchenassistant
-  password: kitchenassistant

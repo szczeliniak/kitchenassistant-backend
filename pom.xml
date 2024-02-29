@@ -18,7 +18,7 @@
 		<kotlin.version>1.8.22</kotlin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<dependency.spring.boot>2.6.6</dependency.spring.boot>
+		<dependency.spring.boot>2.7.18</dependency.spring.boot>
 		<dependency.jaxb>2.3.1</dependency.jaxb>
 		<dependency.swaggerui>2.9.2</dependency.swaggerui>
 		<dependency.jackson.databind>2.16.0</dependency.jackson.databind>
@@ -27,7 +27,7 @@
 		<dependency.spock>2.3-groovy-3.0</dependency.spock>
 		<dependency.groovy>3.0.10</dependency.groovy>
 		<dependency.jjwt>0.9.1</dependency.jjwt>
-		<dependency.postgresql>42.4.3</dependency.postgresql>
+		<dependency.postgresql>42.7.0</dependency.postgresql>
 		<dependency.lombok>1.18.20</dependency.lombok>
 		<dependency.commons.net>3.10.0</dependency.commons.net>
 		<dependency.hibernate.validator>6.2.3.Final</dependency.hibernate.validator>

@@ -88,9 +88,6 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         if (criteria.onlyFavorites != null && criteria.onlyFavorites!!) {
             builder.append(" AND r.favorite = :favorite")
         }
-        if (criteria.fileName != null) {
-            builder.append(" AND r.photoName = :photoName")
-        }
         return builder.toString()
     }
 
@@ -113,9 +110,6 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         }
         if (criteria.onlyFavorites != null && criteria.onlyFavorites!!) {
             query = typedQuery.setParameter("favorite", true)
-        }
-        if (criteria.fileName != null) {
-            query = typedQuery.setParameter("photoName", criteria.fileName)
         }
         return query
     }

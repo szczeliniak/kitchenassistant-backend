@@ -2,13 +2,27 @@ package pl.szczeliniak.kitchenassistant.recipe
 
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
 import pl.szczeliniak.kitchenassistant.dayplan.dto.DayPlanCriteria
-import pl.szczeliniak.kitchenassistant.recipe.db.*
+import pl.szczeliniak.kitchenassistant.recipe.db.Author
+import pl.szczeliniak.kitchenassistant.recipe.db.AuthorDao
+import pl.szczeliniak.kitchenassistant.recipe.db.Category
+import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
+import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient
+import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroup
+import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
+import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria
+import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
+import pl.szczeliniak.kitchenassistant.recipe.db.Step
+import pl.szczeliniak.kitchenassistant.recipe.db.Tag
+import pl.szczeliniak.kitchenassistant.recipe.db.TagDao
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.NewRecipeRequest
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateRecipeRequest
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.RecipeResponse
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.RecipesResponse
 import pl.szczeliniak.kitchenassistant.recipe.mapper.RecipeMapper
-import pl.szczeliniak.kitchenassistant.shared.*
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
+import pl.szczeliniak.kitchenassistant.shared.PaginationUtils
+import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.shared.dtos.Page
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.user.db.User
@@ -17,7 +31,6 @@ import javax.validation.Valid
 
 open class RecipeService(
     private val recipeDao: RecipeDao,
-    private val ftpClient: FtpClient,
     private val authorDao: AuthorDao,
     private val dayPlanDao: DayPlanDao,
     private val tagDao: TagDao,
@@ -54,15 +67,7 @@ open class RecipeService(
     }
 
     private fun createRecipe(request: NewRecipeRequest): Recipe {
-        val photo = request.photoName?.let {
-            if (!ftpClient.exists(it)) {
-                throw KitchenAssistantException(ErrorCode.PHOTO_NOT_FOUND)
-            }
-            it
-        }
-
         val userId = requestContext.userId()
-
         return Recipe(0,
             user = userDao.findById(userId) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND),
             name = request.name,
@@ -76,7 +81,6 @@ open class RecipeService(
             description = request.description,
             ingredientGroups = request.ingredientGroups.map { createIngredientGroup(it) }.toMutableSet(),
             steps = request.steps.map { createStep(it) }.toMutableSet(),
-            photoName = photo,
             tags = request.tags.map { it.trim() }
                 .map { tagDao.findByName(it, userId) ?: createTag(it, userId) }
                 .toMutableSet()
@@ -92,7 +96,7 @@ open class RecipeService(
     }
 
     private fun createStep(request: @Valid NewRecipeRequest.NewStepRequest): Step {
-        return Step(0, request.description, request.photoName, request.sequence)
+        return Step(0, request.description, request.sequence)
     }
 
     private fun createIngredientGroup(request: NewRecipeRequest.NewIngredientGroupRequest): IngredientGroup {
@@ -115,12 +119,6 @@ open class RecipeService(
         val recipe =
             recipeDao.findById(recipeId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
 
-        request.photoName?.let {
-            if (!ftpClient.exists(it)) {
-                throw KitchenAssistantException(ErrorCode.FTP_FILE_NOT_FOUND)
-            }
-        }
-
         recipe.name = request.name
         recipe.description = request.description
         recipe.category = getCategory(recipe.category, request.categoryId)
@@ -130,7 +128,6 @@ open class RecipeService(
                 createAuthor(it, recipe.user)
             )
         }
-        recipe.photoName = request.photoName
         recipe.tags = request.tags.map { it.trim() }.map {
             recipe.tags.firstOrNull { tag -> it == tag.name } ?: tagDao.findByName(it, recipe.user.id) ?: tagDao.save(
                 createTag(it, recipe.user)

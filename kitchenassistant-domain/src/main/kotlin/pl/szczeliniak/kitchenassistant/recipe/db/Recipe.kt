@@ -32,7 +32,6 @@ class Recipe(
     @JoinColumn(name = "recipe_id", nullable = false)
     @OrderBy("sequence ASC, id ASC")
     var steps: MutableSet<Step> = mutableSetOf(),
-    var photoName: String?,
     @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinTable(
         name = "recipe_tags",
@@ -43,5 +42,5 @@ class Recipe(
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 ) {
-    constructor() : this(name = "", user = User(), photoName = null)
+    constructor() : this(name = "", user = User())
 }
