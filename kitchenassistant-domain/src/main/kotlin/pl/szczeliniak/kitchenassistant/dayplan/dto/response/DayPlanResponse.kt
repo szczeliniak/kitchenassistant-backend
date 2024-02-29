@@ -3,33 +3,35 @@ package pl.szczeliniak.kitchenassistant.dayplan.dto.response
 import java.time.LocalDate
 
 data class DayPlanResponse(
-    val dayPlan: DayPlanDto
+    val dayPlan: DayPlan
 ) {
-    data class DayPlanDto(
-        val id: Int,
+    data class DayPlan(
         val date: LocalDate,
-        val recipes: List<RecipeDto>
+        val recipes: List<Recipe>
     ) {
-        data class RecipeDto(
-            val id: Int,
+        data class Recipe(
             val name: String,
             val author: String?,
             val category: String?,
             val originalRecipeId: Int?,
-            val ingredientGroups: List<IngredientGroupDto>,
+            val ingredientGroups: List<IngredientGroup>,
+            val steps: List<Step>
         ) {
-            data class IngredientGroupDto(
-                val id: Int,
+            data class IngredientGroup(
                 val name: String,
-                val ingredients: List<IngredientDto>
+                val ingredients: List<Ingredient>
             ) {
-                data class IngredientDto(
-                    val id: Int,
+                data class Ingredient(
                     val name: String,
                     val quantity: String?,
                     val checked: Boolean
                 )
             }
+
+            data class Step(
+                val description: String,
+                val sequence: Int?
+            )
         }
     }
 }

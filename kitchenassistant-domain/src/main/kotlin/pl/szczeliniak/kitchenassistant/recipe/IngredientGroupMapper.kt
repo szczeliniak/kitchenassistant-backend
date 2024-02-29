@@ -8,8 +8,8 @@ import pl.szczeliniak.kitchenassistant.recipe.dto.response.IngredientGroupRespon
 @Mapper
 abstract class IngredientGroupMapper {
 
-    abstract fun map(ingredientGroup: IngredientGroup): IngredientGroupResponse.IngredientGroupDto
+    abstract fun map(ingredientGroup: IngredientGroup): IngredientGroupResponse.IngredientGroup
 
-    abstract fun map(ingredient: Ingredient): IngredientGroupResponse.IngredientGroupDto.IngredientDto
+    abstract fun map(ingredient: Ingredient): IngredientGroupResponse.IngredientGroup.Ingredient
 
 }

@@ -10,8 +10,6 @@ import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroupDao
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.db.StepDao
 import pl.szczeliniak.kitchenassistant.recipe.db.TagDao
-import pl.szczeliniak.kitchenassistant.recipe.mapper.CategoryMapperImpl
-import pl.szczeliniak.kitchenassistant.recipe.mapper.RecipeMapperImpl
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 

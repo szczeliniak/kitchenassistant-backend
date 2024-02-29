@@ -1,0 +1,1 @@
+ALTER TABLE recipe_snapshots ALTER COLUMN original_recipe_id SET NOT NULL;

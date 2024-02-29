@@ -7,6 +7,6 @@ import pl.szczeliniak.kitchenassistant.recipe.dto.response.CategoriesResponse
 @Mapper
 abstract class CategoryMapper {
 
-    abstract fun map(category: Category): CategoriesResponse.CategoryDto
+    abstract fun map(category: Category): CategoriesResponse.Category
 
 }

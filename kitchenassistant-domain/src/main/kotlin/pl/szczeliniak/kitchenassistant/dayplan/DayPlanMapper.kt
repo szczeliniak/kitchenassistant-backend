@@ -1,33 +1,28 @@
 package pl.szczeliniak.kitchenassistant.dayplan
 
 import org.mapstruct.Mapper
+import org.mapstruct.Mapping
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlan
 import pl.szczeliniak.kitchenassistant.dayplan.db.IngredientGroupSnapshot
 import pl.szczeliniak.kitchenassistant.dayplan.db.IngredientSnapshot
 import pl.szczeliniak.kitchenassistant.dayplan.db.RecipeSnapshot
+import pl.szczeliniak.kitchenassistant.dayplan.db.StepSnapshot
 import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlansResponse
-import pl.szczeliniak.kitchenassistant.recipe.db.Author
-import pl.szczeliniak.kitchenassistant.recipe.db.Category
 
 @Mapper
 abstract class DayPlanMapper {
 
-    abstract fun map(dayPlan: DayPlan): DayPlansResponse.DayPlanDto
+    abstract fun map(dayPlan: DayPlan): DayPlansResponse.DayPlan
 
-    abstract fun mapDetails(dayPlan: DayPlan): DayPlanResponse.DayPlanDto
+    @Mapping(source = "recipes", target = "recipes")
+    abstract fun mapDetails(dayPlan: DayPlan, recipes: List<DayPlanResponse.DayPlan.Recipe>): DayPlanResponse.DayPlan
 
-    abstract fun map(recipe: RecipeSnapshot): DayPlanResponse.DayPlanDto.RecipeDto
+    abstract fun map(recipe: RecipeSnapshot, author: String?, category: String?): DayPlanResponse.DayPlan.Recipe
 
-    fun toName(author: Author?): String? {
-        return author?.name
-    }
+    abstract fun map(ingredientGroup: IngredientGroupSnapshot): DayPlanResponse.DayPlan.Recipe.IngredientGroup
 
-    fun toName(category: Category?): String? {
-        return category?.name
-    }
+    abstract fun map(ingredient: IngredientSnapshot): DayPlanResponse.DayPlan.Recipe.IngredientGroup.Ingredient
 
-    abstract fun map(ingredientGroup: IngredientGroupSnapshot): DayPlanResponse.DayPlanDto.RecipeDto.IngredientGroupDto
-
-    abstract fun map(ingredient: IngredientSnapshot): DayPlanResponse.DayPlanDto.RecipeDto.IngredientGroupDto.IngredientDto
+    abstract fun map(step: StepSnapshot): DayPlanResponse.DayPlan.Recipe.Step
 }

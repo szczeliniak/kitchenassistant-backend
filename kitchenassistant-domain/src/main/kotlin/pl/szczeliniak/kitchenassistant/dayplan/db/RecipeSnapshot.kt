@@ -26,7 +26,7 @@ class RecipeSnapshot(
     var id: Int = 0,
     var name: String,
     var description: String? = null,
-    var originalRecipeId: Int? = null,
+    var originalRecipeId: Int,
     var source: String? = null,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_snapshot_id", nullable = false)
@@ -39,5 +39,5 @@ class RecipeSnapshot(
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 ) {
-    constructor() : this(name = "")
+    constructor() : this(name = "", originalRecipeId = 0)
 }

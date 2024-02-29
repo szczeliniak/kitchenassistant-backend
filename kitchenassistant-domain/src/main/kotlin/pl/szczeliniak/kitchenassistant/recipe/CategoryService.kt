@@ -14,6 +14,7 @@ import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.shared.TokenType
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
+import java.time.ZonedDateTime
 
 open class CategoryService(
     private val recipeDao: RecipeDao,
@@ -60,6 +61,7 @@ open class CategoryService(
         val category = categoryDao.findById(categoryId, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
         category.name = request.name
         category.sequence = request.sequence
+        category.modifiedAt = ZonedDateTime.now()
         return SuccessResponse(categoryDao.save(category).id)
     }
 

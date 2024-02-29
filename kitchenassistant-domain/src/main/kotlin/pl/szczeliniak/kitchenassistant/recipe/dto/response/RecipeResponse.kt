@@ -1,39 +1,38 @@
 package pl.szczeliniak.kitchenassistant.recipe.dto.response
 
 data class RecipeResponse(
-    val recipe: RecipeDto
+    val recipe: Recipe
 ) {
-    data class RecipeDto(
+    data class Recipe(
         val id: Int,
         val name: String,
         val description: String?,
         val author: String?,
         val source: String?,
         val favorite: Boolean,
-        val category: CategoryDto?,
-        val ingredientGroups: Set<IngredientGroupDto>,
-        val steps: Set<StepDto>,
+        val category: Category?,
+        val ingredientGroups: Set<IngredientGroup>,
+        val steps: Set<Step>,
         val tags: Set<String>
     ) {
-        data class IngredientGroupDto(
+        data class IngredientGroup(
             val id: Int,
             val name: String,
-            val ingredients: Set<IngredientDto>
+            val ingredients: Set<Ingredient>
         ) {
-            data class IngredientDto(
+            data class Ingredient(
                 val id: Int,
                 val name: String,
                 val quantity: String?
             )
         }
 
-        data class CategoryDto(
+        data class Category(
             val id: Int,
-            val name: String,
-            var sequence: Int?
+            val name: String
         )
 
-        data class StepDto(
+        data class Step(
             val id: Int,
             val description: String,
             val sequence: Int?

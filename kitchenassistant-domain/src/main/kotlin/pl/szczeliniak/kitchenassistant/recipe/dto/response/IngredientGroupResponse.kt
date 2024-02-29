@@ -1,14 +1,14 @@
 package pl.szczeliniak.kitchenassistant.recipe.dto.response
 
 data class IngredientGroupResponse(
-    val ingredientGroup: IngredientGroupDto
+    val ingredientGroup: IngredientGroup
 ) {
-    data class IngredientGroupDto(
+    data class IngredientGroup(
         val id: Int,
         val name: String,
-        val ingredients: Set<IngredientDto>
+        val ingredients: Set<Ingredient>
     ) {
-        data class IngredientDto(
+        data class Ingredient(
             val id: Int,
             val name: String,
             val quantity: String?

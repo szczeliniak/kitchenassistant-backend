@@ -1,9 +1,9 @@
 package pl.szczeliniak.kitchenassistant.recipe.dto.response
 
 data class CategoriesResponse(
-    val categories: Set<CategoryDto>
+    val categories: Set<Category>
 ) {
-    data class CategoryDto(
+    data class Category(
         val id: Int,
         val name: String,
         var sequence: Int?

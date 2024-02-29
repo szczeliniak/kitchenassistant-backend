@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.dayplan.dto
+package pl.szczeliniak.kitchenassistant.dayplan.db
 
 import java.time.LocalDate
 

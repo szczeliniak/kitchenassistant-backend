@@ -1,9 +1,16 @@
 package pl.szczeliniak.kitchenassistant.dayplan
 
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import pl.szczeliniak.kitchenassistant.dayplan.db.Sort
-import pl.szczeliniak.kitchenassistant.dayplan.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.dayplan.dto.request.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.dto.request.UpdateDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlanResponse
@@ -20,49 +27,45 @@ class DayPlanController(
     private val dayPlanService: DayPlanService,
 ) {
 
-    @GetMapping("/{id}")
-    fun findById(@PathVariable id: Int): DayPlanResponse {
-        return dayPlanService.findById(id)
+    @GetMapping("/{date}")
+    fun findByDate(@PathVariable date: LocalDate): DayPlanResponse {
+        return dayPlanService.findByDate(date)
     }
 
     @GetMapping
     fun findAll(
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
+        @RequestParam(required = false) recipeId: Int?,
         @RequestParam(required = false) since: LocalDate?,
         @RequestParam(required = false) to: LocalDate?,
         @RequestParam(required = true, defaultValue = "ASC") sort: Sort
     ): DayPlansResponse {
-        return dayPlanService.findAll(
-            page,
-            limit,
-            DayPlanCriteria(since = since, to = to),
-            sort
-        )
+        return dayPlanService.findAll(page, limit, sort, recipeId, since, to)
     }
 
     @Transactional
-    @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Int): SuccessResponse {
-        return dayPlanService.delete(id)
+    @DeleteMapping("/{date}")
+    fun delete(@PathVariable date: LocalDate): SuccessResponse {
+        return dayPlanService.delete(date)
     }
 
     @Transactional
-    @PutMapping("/{id}")
-    fun update(@PathVariable id: Int, @Valid @RequestBody request: UpdateDayPlanRequest): SuccessResponse {
-        return dayPlanService.update(id, request)
+    @PutMapping("/{date}")
+    fun update(@PathVariable date: LocalDate, @Valid @RequestBody request: UpdateDayPlanRequest): SuccessResponse {
+        return dayPlanService.update(date, request)
     }
 
     @Transactional
-    @PutMapping("/{id}/recipes/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}/{isChecked}")
-    fun check(
-        @PathVariable id: Int,
+    @PutMapping("/{date}/recipes/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}/{isChecked}")
+    fun checkIngredient(
+        @PathVariable date: LocalDate,
         @PathVariable recipeId: Int,
         @PathVariable ingredientGroupId: Int,
         @PathVariable ingredientId: Int,
         @PathVariable isChecked: Boolean
     ): SuccessResponse {
-        return dayPlanService.check(id, recipeId, ingredientGroupId, ingredientId, isChecked)
+        return dayPlanService.checkIngredient(date, recipeId, ingredientGroupId, ingredientId, isChecked)
     }
 
     @Transactional
@@ -72,9 +75,9 @@ class DayPlanController(
     }
 
     @Transactional
-    @DeleteMapping("/{id}/recipes/{recipeId}")
-    fun deleteRecipe(@PathVariable id: Int, @PathVariable recipeId: Int): SuccessResponse {
-        return dayPlanService.deleteRecipe(id, recipeId)
+    @DeleteMapping("/{date}/recipes/{recipeId}")
+    fun deleteRecipe(@PathVariable date: LocalDate, @PathVariable recipeId: Int): SuccessResponse {
+        return dayPlanService.deleteRecipe(date, recipeId)
     }
 
 }

@@ -30,12 +30,12 @@ class UserServiceTest {
 
     @Test
     fun shouldRegister() {
-        val request = RegisterRequest("email", "password")
-        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns emptyList()
+        val request = RegisterRequest("test@test.pl", "password")
+        every { userDao.findAll(UserCriteria("test@test.pl"), 0, 1) } returns emptyList()
         every { passwordEncoder.encode("password") } returns "encodedPassword"
         every { userDao.save(any()) } returns user(1)
-        every { tokenFactory.create(1, "email", TokenType.ACCESS) } returns "accessToken"
-        every { tokenFactory.create(1, "email", TokenType.REFRESH) } returns "refreshToken"
+        every { tokenFactory.create(1, "test@test.pl", TokenType.ACCESS) } returns "accessToken"
+        every { tokenFactory.create(1, "test@test.pl", TokenType.REFRESH) } returns "refreshToken"
 
         val result = userService.register(request)
 
@@ -44,9 +44,9 @@ class UserServiceTest {
 
     @Test
     fun shouldThrowExceptionWhenRegisterAndUserExists() {
-        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns listOf(user())
+        every { userDao.findAll(UserCriteria("test@test.pl"), 0, 1) } returns listOf(user())
 
-        assertThatThrownBy { userService.register(RegisterRequest("email", "password")) }
+        assertThatThrownBy { userService.register(RegisterRequest("test@test.pl", "password")) }
             .isInstanceOf(KitchenAssistantException::class.java)
             .hasMessage("User with email already exists")
     }
@@ -56,8 +56,8 @@ class UserServiceTest {
         every { requestContext.tokenType() } returns TokenType.REFRESH
         every { requestContext.userId() } returns 1
         every { userDao.findById(1) } returns user(1)
-        every { tokenFactory.create(1, "email", TokenType.ACCESS) } returns "accessToken"
-        every { tokenFactory.create(1, "email", TokenType.REFRESH) } returns "refreshToken"
+        every { tokenFactory.create(1, "test@test.pl", TokenType.ACCESS) } returns "accessToken"
+        every { tokenFactory.create(1, "test@test.pl", TokenType.REFRESH) } returns "refreshToken"
 
         val result = userService.refresh()
 
@@ -86,31 +86,31 @@ class UserServiceTest {
 
     @Test
     fun shouldLogin() {
-        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns listOf(user(1))
+        every { userDao.findAll(UserCriteria("test@test.pl"), 0, 1) } returns listOf(user(1))
         every { passwordMatcher.matches("pass", "password") } returns true
-        every { tokenFactory.create(1, "email", TokenType.ACCESS) } returns "accessToken"
-        every { tokenFactory.create(1, "email", TokenType.REFRESH) } returns "refreshToken"
+        every { tokenFactory.create(1, "test@test.pl", TokenType.ACCESS) } returns "accessToken"
+        every { tokenFactory.create(1, "test@test.pl", TokenType.REFRESH) } returns "refreshToken"
 
-        val result = userService.login(LoginRequest("email", "password"))
+        val result = userService.login(LoginRequest("test@test.pl", "password"))
 
         assertThat(result).isEqualTo(LoginResponse("accessToken", "refreshToken"))
     }
 
     @Test
     fun shouldThrowExceptionWhenLoginAndUserNotFound() {
-        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns emptyList()
+        every { userDao.findAll(UserCriteria("test@test.pl"), 0, 1) } returns emptyList()
 
-        assertThatThrownBy { userService.login(LoginRequest("email", "password")) }
+        assertThatThrownBy { userService.login(LoginRequest("test@test.pl", "password")) }
             .isInstanceOf(KitchenAssistantException::class.java)
             .hasMessage("User not found")
     }
 
     @Test
     fun shouldThrowExceptionWhenLoginAndPasswordsDoNotMatch() {
-        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns listOf(user(1))
+        every { userDao.findAll(UserCriteria("test@test.pl"), 0, 1) } returns listOf(user(1))
         every { passwordMatcher.matches("pass", "password") } returns false
 
-        assertThatThrownBy { userService.login(LoginRequest("email", "password")) }
+        assertThatThrownBy { userService.login(LoginRequest("test@test.pl", "password")) }
             .isInstanceOf(KitchenAssistantException::class.java)
             .hasMessage("Passwords do not match")
     }
@@ -118,9 +118,9 @@ class UserServiceTest {
     @Test
     fun shouldLoginWithFacebookWhenUserAlreadyExists() {
         every { facebookConnector.login("token") } returns facebookLoginResponse()
-        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns listOf(user(1))
-        every { tokenFactory.create(1, "email", TokenType.ACCESS) } returns "accessToken"
-        every { tokenFactory.create(1, "email", TokenType.REFRESH) } returns "refreshToken"
+        every { userDao.findAll(UserCriteria("test@test.pl"), 0, 1) } returns listOf(user(1))
+        every { tokenFactory.create(1, "test@test.pl", TokenType.ACCESS) } returns "accessToken"
+        every { tokenFactory.create(1, "test@test.pl", TokenType.REFRESH) } returns "refreshToken"
 
         val result = userService.login(LoginWithFacebookRequest("token"))
 
@@ -130,11 +130,11 @@ class UserServiceTest {
     @Test
     fun shouldLoginWithFacebookWhenUserDoesNotExist() {
         every { facebookConnector.login("token") } returns facebookLoginResponse()
-        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns emptyList()
+        every { userDao.findAll(UserCriteria("test@test.pl"), 0, 1) } returns emptyList()
         every { passwordEncoder.encode("") } returns "encodedPassword"
         every { userDao.save(any()) } returns user(1)
-        every { tokenFactory.create(1, "email", TokenType.ACCESS) } returns "accessToken"
-        every { tokenFactory.create(1, "email", TokenType.REFRESH) } returns "refreshToken"
+        every { tokenFactory.create(1, "test@test.pl", TokenType.ACCESS) } returns "accessToken"
+        every { tokenFactory.create(1, "test@test.pl", TokenType.REFRESH) } returns "refreshToken"
 
         val result = userService.login(LoginWithFacebookRequest("token"))
 
@@ -151,11 +151,11 @@ class UserServiceTest {
     }
 
     private fun facebookLoginResponse(): FacebookLoginResponse {
-        return FacebookLoginResponse("id", "name", "email")
+        return FacebookLoginResponse("id", "name", "test@test.pl")
     }
 
     private fun user(id: Int = 0): User {
-        return User(id, "email", "pass")
+        return User(id, "test@test.pl", "pass")
     }
 
 }

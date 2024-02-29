@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.recipe
 
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
-import pl.szczeliniak.kitchenassistant.dayplan.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.AuthorDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Category
@@ -28,6 +27,7 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.Page
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
+import java.time.ZonedDateTime
 
 open class RecipeService(
     private val recipeDao: RecipeDao,
@@ -134,7 +134,7 @@ open class RecipeService(
                 createTag(it, recipe.user)
             )
         }.toMutableSet()
-
+        recipe.modifiedAt = ZonedDateTime.now()
         return SuccessResponse(recipeDao.save(recipe).id)
     }
 
@@ -144,19 +144,8 @@ open class RecipeService(
 
     fun delete(recipeId: Int): SuccessResponse {
         requireTokenType(TokenType.ACCESS)
-        recipeDao.findById(recipeId, requestContext.userId())?.let {
-            val dayPlans = dayPlanDao.findAll(DayPlanCriteria(recipeId = it.id))
-            dayPlans.forEach { dayPlan ->
-                dayPlan.recipes.removeIf { recipe -> recipe.id == it.id }
-                if (dayPlan.recipes.isEmpty()) {
-                    dayPlanDao.delete(dayPlan.id)
-                } else {
-                    dayPlanDao.save(dayPlan)
-                }
-            }
-            it.tags.clear()
-            recipeDao.delete(it)
-        }
+        val recipe = recipeDao.findById(recipeId, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
+        recipeDao.delete(recipe)
         return SuccessResponse(recipeId)
     }
 
@@ -164,6 +153,7 @@ open class RecipeService(
         requireTokenType(TokenType.ACCESS)
         val recipe = recipeDao.findById(recipeId, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
         recipe.favorite = isFavorite
+        recipe.modifiedAt = ZonedDateTime.now()
         return SuccessResponse(recipeDao.save(recipe).id)
     }
 
