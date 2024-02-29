@@ -22,13 +22,14 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
         TODO("Not yet implemented")
     }
 
-    override fun findById(id: Int): Tag? {
+    override fun findById(id: Int, userId: Int): Tag? {
         return entityManager
             .createQuery(
-                "SELECT t FROM Tag t WHERE t.id = :id",
+                "SELECT t FROM Tag t WHERE t.id = :id AND t.user.id = :userId",
                 Tag::class.java
             )
             .setParameter("id", id)
+            .setParameter("userId", userId)
             .resultList
             .stream()
             .findFirst()
@@ -49,23 +50,15 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
             .orElse(null)
     }
 
-    override fun findAll(criteria: TagCriteria): Set<Tag> {
-        var query = "SELECT t FROM Tag t WHERE t.id IS NOT NULL"
+    override fun findAll(criteria: TagCriteria, userId: Int): Set<Tag> {
+        var query = "SELECT t FROM Tag t WHERE t.user.id = :userId"
         if (criteria.name != null) {
             query += " AND LOWER(t.name) LIKE (:name)"
         }
-        if (criteria.userId != null) {
-            query += " AND t.user.id = :userId"
-        }
-
-        var typedQuery = entityManager.createQuery(query, Tag::class.java)
+        var typedQuery = entityManager.createQuery(query, Tag::class.java).setParameter("userId", userId)
         if (criteria.name != null) {
             typedQuery = typedQuery.setParameter("name", "%" + criteria.name + "%")
         }
-        if (criteria.userId != null) {
-            typedQuery = typedQuery.setParameter("userId", criteria.userId)
-        }
-
         return typedQuery.resultList.toMutableSet()
     }
 

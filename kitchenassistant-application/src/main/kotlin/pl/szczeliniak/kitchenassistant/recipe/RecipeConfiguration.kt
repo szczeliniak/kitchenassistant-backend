@@ -11,7 +11,6 @@ import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.db.StepDao
 import pl.szczeliniak.kitchenassistant.recipe.db.TagDao
 import pl.szczeliniak.kitchenassistant.recipe.mapper.CategoryMapperImpl
-import pl.szczeliniak.kitchenassistant.recipe.mapper.IngredientGroupMapperImpl
 import pl.szczeliniak.kitchenassistant.recipe.mapper.RecipeMapperImpl
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
@@ -45,21 +44,22 @@ class RecipeConfiguration {
     }
 
     @Bean
-    fun tagService(tagDao: TagDao) = TagService(tagDao)
+    fun tagService(tagDao: TagDao, requestContext: RequestContext) = TagService(tagDao, requestContext)
 
     @Bean
-    fun authorService(authorDao: AuthorDao) = AuthorService(authorDao)
+    fun authorService(authorDao: AuthorDao, requestContext: RequestContext) = AuthorService(authorDao, requestContext)
 
     @Bean
-    fun stepService(recipeDao: RecipeDao, stepDao: StepDao) =
-        StepService(recipeDao, stepDao)
+    fun stepService(recipeDao: RecipeDao, stepDao: StepDao, requestContext: RequestContext) =
+        StepService(recipeDao, stepDao, requestContext)
 
     @Bean
     fun ingredientGroupService(
         recipeDao: RecipeDao,
         ingredientGroupDao: IngredientGroupDao,
         ingredientDao: IngredientDao,
-    ) = IngredientGroupService(recipeDao, ingredientGroupDao, ingredientDao, IngredientGroupMapperImpl())
+        requestContext: RequestContext
+    ) = IngredientGroupService(recipeDao, ingredientGroupDao, ingredientDao, requestContext)
 
     @Bean
     fun categoryService(
@@ -68,5 +68,8 @@ class RecipeConfiguration {
         userDao: UserDao,
         requestContext: RequestContext
     ) = CategoryService(recipeDao, categoryDao, userDao, CategoryMapperImpl(), requestContext)
+
+    @Bean
+    fun ingredientService(recipeDao: RecipeDao, ingredientDao: IngredientDao, requestContext: RequestContext) = IngredientService(recipeDao, ingredientDao, requestContext)
 
 }

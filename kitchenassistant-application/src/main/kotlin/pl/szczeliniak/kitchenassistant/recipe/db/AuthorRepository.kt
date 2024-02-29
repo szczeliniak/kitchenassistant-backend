@@ -22,48 +22,43 @@ class AuthorRepository(@PersistenceContext private val entityManager: EntityMana
         authors.forEach { save(it) }
     }
 
-    override fun findById(id: Int): Author? {
+    override fun findById(id: Int, userId: Int): Author? {
         return entityManager
-                .createQuery(
-                        "SELECT r FROM Author r WHERE r.id = :id",
-                        Author::class.java
-                )
-                .setParameter("id", id)
-                .resultList
-                .stream()
-                .findFirst()
-                .orElse(null)
+            .createQuery(
+                "SELECT r FROM Author r WHERE r.id = :id AND r.user.id = :userId",
+                Author::class.java
+            )
+            .setParameter("id", id)
+            .setParameter("userId", userId)
+            .resultList
+            .stream()
+            .findFirst()
+            .orElse(null)
     }
 
     override fun findByName(name: String, userId: Int): Author? {
         return entityManager
-                .createQuery(
-                        "SELECT r FROM Author r WHERE r.name = :name AND r.user.id = :userId",
-                        Author::class.java
-                )
-                .setParameter("name", name)
-                .setParameter("userId", userId)
-                .resultList
-                .stream()
-                .findFirst()
-                .orElse(null)
+            .createQuery(
+                "SELECT r FROM Author r WHERE r.name = :name AND r.user.id = :userId",
+                Author::class.java
+            )
+            .setParameter("name", name)
+            .setParameter("userId", userId)
+            .resultList
+            .stream()
+            .findFirst()
+            .orElse(null)
     }
 
-    override fun findAll(criteria: AuthorCriteria): Set<Author> {
-        var query = "SELECT r FROM Author r WHERE r.id IS NOT NULL"
+    override fun findAll(criteria: AuthorCriteria, userId: Int): Set<Author> {
+        var query = "SELECT r FROM Author r WHERE r.user.id = :userId"
         if (criteria.name != null) {
             query += " AND LOWER(r.name) LIKE (:name)"
         }
-        if (criteria.userId != null) {
-            query += " AND r.user.id = :userId"
-        }
-
         var typedQuery = entityManager.createQuery(query, Author::class.java)
+        typedQuery = typedQuery.setParameter("userId", userId)
         if (criteria.name != null) {
             typedQuery = typedQuery.setParameter("name", "%" + criteria.name + "%")
-        }
-        if (criteria.userId != null) {
-            typedQuery = typedQuery.setParameter("userId", criteria.userId)
         }
 
         return typedQuery.resultList.toMutableSet()

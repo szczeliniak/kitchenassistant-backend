@@ -1,7 +1,7 @@
 package pl.szczeliniak.kitchenassistant.user.dto.request
 
-import org.hibernate.validator.constraints.Length
+import javax.validation.constraints.Size
 
 data class LoginWithFacebookRequest(
-    @field:Length(min = 1, max = 500) var token: String = ""
+    @field:Size(min = 1, max = 500) var token: String = ""
 )

@@ -9,12 +9,12 @@ import javax.transaction.Transactional
 @Repository
 class RecipeRepository(@PersistenceContext private val entityManager: EntityManager) : RecipeDao {
 
-    override fun findAll(criteria: RecipeCriteria, offset: Int?, limit: Int?): Set<Recipe> {
+    override fun findAll(criteria: RecipeCriteria, userId: Int, offset: Int?, limit: Int?): Set<Recipe> {
         val query =
             "SELECT DISTINCT r FROM Recipe r " + prepareJoin(criteria) + "WHERE r.id IS NOT NULL" + prepareCriteria(
                 criteria
             ) + " ORDER BY r.id ASC"
-        val typedQuery = applyParameters(criteria, entityManager.createQuery(query, Recipe::class.java))
+        val typedQuery = applyParameters(criteria, userId, entityManager.createQuery(query, Recipe::class.java))
         offset?.let { typedQuery.firstResult = it }
         limit?.let { typedQuery.maxResults = it }
         return typedQuery.resultList.toMutableSet()
@@ -31,12 +31,12 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         return builder.toString()
     }
 
-    override fun count(criteria: RecipeCriteria): Long {
+    override fun count(criteria: RecipeCriteria, userId: Int): Long {
         val query =
             "SELECT DISTINCT COUNT(r) FROM Recipe r " + prepareJoin(criteria) + "WHERE r.id IS NOT NULL" + prepareCriteria(
                 criteria
             )
-        return applyParameters(criteria, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
+        return applyParameters(criteria, userId, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
     }
 
     @Transactional
@@ -44,13 +44,14 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         entityManager.remove(recipe)
     }
 
-    override fun findById(id: Int): Recipe? {
+    override fun findById(id: Int, userId: Int): Recipe? {
         return entityManager
             .createQuery(
-                "SELECT r FROM Recipe r WHERE r.id = :id",
+                "SELECT r FROM Recipe r WHERE r.id = :id AND r.user.id = :userId",
                 Recipe::class.java
             )
             .setParameter("id", id)
+            .setParameter("userId", userId)
             .resultList
             .stream()
             .findFirst()
@@ -72,10 +73,7 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
     }
 
     private fun prepareCriteria(criteria: RecipeCriteria): String {
-        val builder = StringBuilder().append("")
-        if (criteria.userId != null) {
-            builder.append(" AND r.user.id = :userId")
-        }
+        val builder = StringBuilder().append(" AND r.user.id = :userId")
         if (criteria.categoryId != null) {
             builder.append(" AND r.category.id = :categoryId")
         }
@@ -85,7 +83,7 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         if (criteria.tag != null) {
             builder.append(" AND LOWER(t.name) LIKE LOWER(:tag)")
         }
-        if (criteria.onlyFavorites != null && criteria.onlyFavorites!!) {
+        if (criteria.favorite != null) {
             builder.append(" AND r.favorite = :favorite")
         }
         return builder.toString()
@@ -93,12 +91,10 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
 
     private fun <T> applyParameters(
         criteria: RecipeCriteria,
+        userId: Int,
         typedQuery: TypedQuery<T>
     ): TypedQuery<T> {
-        var query = typedQuery
-        if (criteria.userId != null) {
-            query = typedQuery.setParameter("userId", criteria.userId)
-        }
+        var query = typedQuery.setParameter("userId", userId)
         if (criteria.categoryId != null) {
             query = typedQuery.setParameter("categoryId", criteria.categoryId)
         }
@@ -108,8 +104,8 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         if (criteria.tag != null) {
             query = typedQuery.setParameter("tag", "%" + criteria.tag + "%")
         }
-        if (criteria.onlyFavorites != null && criteria.onlyFavorites!!) {
-            query = typedQuery.setParameter("favorite", true)
+        if (criteria.favorite != null) {
+            query = typedQuery.setParameter("favorite", criteria.favorite)
         }
         return query
     }

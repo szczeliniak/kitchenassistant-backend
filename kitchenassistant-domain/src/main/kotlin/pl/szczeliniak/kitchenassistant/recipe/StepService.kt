@@ -3,49 +3,41 @@ package pl.szczeliniak.kitchenassistant.recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Step
 import pl.szczeliniak.kitchenassistant.recipe.db.StepDao
-import pl.szczeliniak.kitchenassistant.recipe.dto.request.NewStepRequest
-import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateStepRequest
+import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateStepsRequest
+import pl.szczeliniak.kitchenassistant.shared.BaseService
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
+import pl.szczeliniak.kitchenassistant.shared.RequestContext
+import pl.szczeliniak.kitchenassistant.shared.TokenType
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 
 open class StepService(
     private val recipeDao: RecipeDao,
-    private val stepDao: StepDao
-) {
+    private val stepDao: StepDao,
+    requestContext: RequestContext
+) : BaseService(requestContext) {
 
-    fun add(recipeId: Int, request: NewStepRequest): SuccessResponse {
-        val recipe = recipeDao.findById(recipeId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
-        val step = stepDao.save(createStep(request))
-        recipe.steps.add(step)
+    fun updateSteps(recipeId: Int, request: UpdateStepsRequest): SuccessResponse {
+        requireTokenType(TokenType.ACCESS)
+        val recipe = recipeDao.findById(recipeId, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
+        recipe.steps.forEach { stepDao.delete(it) }
+        recipe.steps.clear()
+        request.steps.forEach {
+            recipe.steps.add(createStep(it))
+        }
         recipeDao.save(recipe)
-        return SuccessResponse(step.id)
+        return SuccessResponse(recipe.id)
     }
 
-    private fun createStep(request: NewStepRequest): Step {
-        return Step(0, request.description, request.sequence)
-    }
-
-    fun update(recipeId: Int, stepId: Int, request: UpdateStepRequest): SuccessResponse {
-        val recipe = recipeDao.findById(recipeId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
-
-        val step =
-            recipe.steps.firstOrNull { it.id == stepId } ?: throw KitchenAssistantException(ErrorCode.STEP_NOT_FOUND)
-
-        step.description = request.description
-        step.sequence = request.sequence
-
-        recipeDao.save(recipe)
-
-        return SuccessResponse(step.id)
+    private fun createStep(step: UpdateStepsRequest.Step): Step {
+        return Step(0, step.description, step.sequence)
     }
 
     fun delete(recipeId: Int, stepId: Int): SuccessResponse {
-        recipeDao.findById(recipeId)?.let { recipe ->
-            recipe.steps.firstOrNull { it.id == stepId }?.let {
-                stepDao.delete(it)
-            } ?: throw KitchenAssistantException(ErrorCode.STEP_NOT_FOUND)
-        }
+        requireTokenType(TokenType.ACCESS)
+        val recipe = recipeDao.findById(recipeId, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
+        val step = recipe.steps.firstOrNull { it.id == stepId } ?: throw KitchenAssistantException(ErrorCode.STEP_NOT_FOUND)
+        stepDao.delete(step)
         return SuccessResponse(stepId)
     }
 

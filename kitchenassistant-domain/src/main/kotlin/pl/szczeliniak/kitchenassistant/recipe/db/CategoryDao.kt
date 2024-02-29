@@ -2,9 +2,9 @@ package pl.szczeliniak.kitchenassistant.recipe.db
 
 interface CategoryDao {
 
-    fun findAll(criteria: CategoryCriteria): Set<Category>
+    fun findAll(userId: Int): Set<Category>
 
-    fun findById(id: Int): Category?
+    fun findById(id: Int, userId: Int): Category?
 
     fun save(category: Category): Category
     fun delete(category: Category)

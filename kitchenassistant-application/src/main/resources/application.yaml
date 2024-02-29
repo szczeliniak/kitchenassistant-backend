@@ -17,10 +17,6 @@ spring:
   flyway:
     enabled: true
     locations: classpath:flyway
-  servlet:
-    multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
 application:
   name: Kitchen Assistant
   description: Recipes and shopping list management API

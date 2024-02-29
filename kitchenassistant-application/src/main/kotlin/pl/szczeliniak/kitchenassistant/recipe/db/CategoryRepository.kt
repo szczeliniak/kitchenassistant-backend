@@ -23,29 +23,19 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
         entityManager.remove(category)
     }
 
-    override fun findAll(criteria: CategoryCriteria): MutableSet<Category> {
-        var query = "SELECT c FROM Category c WHERE c.id IS NOT NULL"
-        if (criteria.userId != null) {
-            query += " AND c.user.id = :userId"
-        }
-
-        query += " ORDER BY c.sequence ASC NULLS LAST, c.id ASC"
-
-        var typedQuery = entityManager.createQuery(query, Category::class.java)
-        if (criteria.userId != null) {
-            typedQuery = typedQuery.setParameter("userId", criteria.userId)
-        }
-
-        return typedQuery.resultList.toMutableSet()
+    override fun findAll(userId: Int): MutableSet<Category> {
+        val query = "SELECT c FROM Category c WHERE c.user.id = :userId ORDER BY c.sequence ASC NULLS LAST, c.id ASC"
+        return entityManager.createQuery(query, Category::class.java).setParameter("userId", userId).resultList.toMutableSet()
     }
 
-    override fun findById(id: Int): Category? {
+    override fun findById(id: Int, userId: Int): Category? {
         return entityManager
             .createQuery(
-                "SELECT r FROM Category r WHERE r.id = :id",
+                "SELECT c FROM Category c WHERE c.id = :id AND c.user.id = :userId",
                 Category::class.java
             )
             .setParameter("id", id)
+            .setParameter("userId", userId)
             .resultList
             .stream()
             .findFirst()

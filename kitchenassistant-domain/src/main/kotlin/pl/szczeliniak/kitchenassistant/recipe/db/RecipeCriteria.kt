@@ -1,10 +1,8 @@
 package pl.szczeliniak.kitchenassistant.recipe.db
 
 data class RecipeCriteria(
-        val onlyFavorites: Boolean? = null,
-        val userId: Int? = null,
+        val favorite: Boolean? = null,
         val categoryId: Int? = null,
         val search: String? = null,
-        val tag: String? = null,
-        val fileName: String? = null
+        val tag: String? = null
 )

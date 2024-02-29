@@ -1,6 +1,10 @@
 package pl.szczeliniak.kitchenassistant.user
 
-import pl.szczeliniak.kitchenassistant.shared.*
+import pl.szczeliniak.kitchenassistant.shared.BaseService
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
+import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
+import pl.szczeliniak.kitchenassistant.shared.RequestContext
+import pl.szczeliniak.kitchenassistant.shared.TokenType
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
@@ -18,7 +22,14 @@ open class UserService(
     private val passwordEncoder: PasswordEncoder
 ) : BaseService(requestContext) {
 
+    companion object {
+        private val EMAIL_PATTERN = Regex("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}\$")
+    }
+
     open fun login(request: LoginRequest): LoginResponse {
+        if (!request.email.matches(EMAIL_PATTERN)) {
+            throw KitchenAssistantException(ErrorCode.INVALID_EMAIL)
+        }
         val user = userDao.findAll(UserCriteria(request.email), 0, 1).firstOrNull() ?: throw KitchenAssistantException(
             ErrorCode.USER_NOT_FOUND
         )
@@ -46,6 +57,9 @@ open class UserService(
     }
 
     open fun register(request: RegisterRequest): LoginResponse {
+        if (!request.email.matches(EMAIL_PATTERN)) {
+            throw KitchenAssistantException(ErrorCode.INVALID_EMAIL)
+        }
         if (userDao.findAll(UserCriteria(request.email), 0, 1).firstOrNull() != null) {
             throw KitchenAssistantException(ErrorCode.USER_ALREADY_EXISTS)
         }
@@ -59,7 +73,6 @@ open class UserService(
 
     open fun refresh(): LoginResponse {
         requireTokenType(TokenType.REFRESH)
-
         val user = userDao.findById(requestContext.userId())
             ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
         return LoginResponse(

@@ -1,18 +1,30 @@
 package pl.szczeliniak.kitchenassistant.recipe
 
-import org.hibernate.validator.constraints.Length
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
-import pl.szczeliniak.kitchenassistant.recipe.db.AuthorCriteria
-import pl.szczeliniak.kitchenassistant.recipe.db.CategoryCriteria
-import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria
-import pl.szczeliniak.kitchenassistant.recipe.db.TagCriteria
-import pl.szczeliniak.kitchenassistant.recipe.dto.request.*
-import pl.szczeliniak.kitchenassistant.recipe.dto.response.*
-import pl.szczeliniak.kitchenassistant.shared.RequestContext
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
+import pl.szczeliniak.kitchenassistant.recipe.dto.request.NewCategoryRequest
+import pl.szczeliniak.kitchenassistant.recipe.dto.request.NewRecipeRequest
+import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateCategoryRequest
+import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateIngredientGroupsRequest
+import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateRecipeRequest
+import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateStepsRequest
+import pl.szczeliniak.kitchenassistant.recipe.dto.response.AuthorsResponse
+import pl.szczeliniak.kitchenassistant.recipe.dto.response.CategoriesResponse
+import pl.szczeliniak.kitchenassistant.recipe.dto.response.RecipeResponse
+import pl.szczeliniak.kitchenassistant.recipe.dto.response.RecipesResponse
+import pl.szczeliniak.kitchenassistant.recipe.dto.response.TagsResponse
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import javax.transaction.Transactional
 import javax.validation.Valid
+import javax.validation.constraints.Size
 
 @RestController
 @RequestMapping("/recipes")
@@ -24,7 +36,7 @@ class RecipeController(
     private val ingredientGroupService: IngredientGroupService,
     private val tagService: TagService,
     private val stepService: StepService,
-    private val requestContext: RequestContext
+    private val ingredientService: IngredientService
 ) {
 
     @GetMapping("/{recipeId}")
@@ -35,17 +47,13 @@ class RecipeController(
     @GetMapping
     fun findAll(
         @RequestParam(required = false) categoryId: Int?,
-        @RequestParam(required = false) @Length(max = 50) search: String?,
-        @RequestParam(required = false) @Length(max = 50) tag: String?,
+        @RequestParam(required = false) @Size(max = 50) search: String?,
+        @RequestParam(required = false) @Size(max = 50) tag: String?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) limit: Int?,
-        @RequestParam(required = true, defaultValue = "false") onlyFavorites: Boolean?
+        @RequestParam(required = false) favourite: Boolean?
     ): RecipesResponse {
-        return recipeService.findAll(
-            page,
-            limit,
-            RecipeCriteria(onlyFavorites, requestContext.userId(), categoryId, search, tag)
-        )
+        return recipeService.findAll(page, limit, favourite, categoryId, search, tag)
     }
 
     @Transactional
@@ -67,19 +75,9 @@ class RecipeController(
     }
 
     @Transactional
-    @PostMapping("{recipeId}/steps")
-    fun addStep(@PathVariable recipeId: Int, @Valid @RequestBody request: NewStepRequest): SuccessResponse {
-        return stepService.add(recipeId, request)
-    }
-
-    @Transactional
-    @PutMapping("/{recipeId}/steps/{stepId}")
-    fun updateStep(
-        @PathVariable recipeId: Int,
-        @PathVariable stepId: Int,
-        @Valid @RequestBody request: UpdateStepRequest
-    ): SuccessResponse {
-        return stepService.update(recipeId, stepId, request)
+    @PutMapping("{recipeId}/steps")
+    fun updateSteps(@PathVariable recipeId: Int, @Valid @RequestBody request: UpdateStepsRequest): SuccessResponse {
+        return stepService.updateSteps(recipeId, request)
     }
 
     @Transactional
@@ -89,12 +87,12 @@ class RecipeController(
     }
 
     @Transactional
-    @PostMapping("/{recipeId}/ingredientGroups")
-    fun addIngredientGroup(
+    @PutMapping("/{recipeId}/ingredientGroups")
+    fun updateIngredientGroups(
         @PathVariable recipeId: Int,
-        @Valid @RequestBody request: NewIngredientGroupRequest
+        @Valid @RequestBody request: UpdateIngredientGroupsRequest
     ): SuccessResponse {
-        return ingredientGroupService.add(recipeId, request)
+        return ingredientGroupService.updateGroups(recipeId, request)
     }
 
     @Transactional
@@ -107,31 +105,13 @@ class RecipeController(
     }
 
     @Transactional
-    @PutMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}")
-    fun updateIngredientGroup(
-        @PathVariable recipeId: Int,
-        @PathVariable ingredientGroupId: Int,
-        @Valid @RequestBody request: UpdateIngredientGroupRequest
-    ): SuccessResponse {
-        return ingredientGroupService.update(recipeId, ingredientGroupId, request)
-    }
-
-    @GetMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}")
-    fun getIngredientGroup(
-        @PathVariable recipeId: Int,
-        @PathVariable ingredientGroupId: Int
-    ): IngredientGroupResponse {
-        return ingredientGroupService.find(recipeId, ingredientGroupId)
-    }
-
-    @Transactional
     @DeleteMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}")
     fun deleteIngredient(
         @PathVariable recipeId: Int,
         @PathVariable ingredientGroupId: Int,
         @PathVariable ingredientId: Int
     ): SuccessResponse {
-        return ingredientGroupService.deleteIngredient(recipeId, ingredientGroupId, ingredientId)
+        return ingredientService.delete(recipeId, ingredientGroupId, ingredientId)
     }
 
     @Transactional
@@ -142,17 +122,17 @@ class RecipeController(
 
     @GetMapping("/categories")
     fun getCategories(): CategoriesResponse {
-        return categoryService.getAll(CategoryCriteria(requestContext.userId()))
+        return categoryService.getAll()
     }
 
     @GetMapping("/tags")
     fun getTags(): TagsResponse {
-        return tagService.getAll(TagCriteria(userId = requestContext.userId()))
+        return tagService.getAll()
     }
 
     @GetMapping("/authors")
     fun getAuthors(): AuthorsResponse {
-        return authorService.getAll(AuthorCriteria(userId = requestContext.userId()))
+        return authorService.getAll()
     }
 
     @Transactional
@@ -172,7 +152,7 @@ class RecipeController(
 
     @Transactional
     @PutMapping("/{recipeId}/favorite/{isFavorite}")
-    fun markAsFavorite(@PathVariable recipeId: Int, @PathVariable isFavorite: Boolean): SuccessResponse {
+    fun markRecipeAsFavorite(@PathVariable recipeId: Int, @PathVariable isFavorite: Boolean): SuccessResponse {
         return recipeService.markAsFavorite(recipeId, isFavorite)
     }
 

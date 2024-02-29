@@ -1,8 +1,8 @@
 package pl.szczeliniak.kitchenassistant.recipe.dto.request
 
-import org.hibernate.validator.constraints.Length
+import javax.validation.constraints.Size
 
 data class UpdateCategoryRequest(
-    @field:Length(min = 1, max = 100) var name: String = "",
+    @field:Size(min = 1, max = 50) var name: String = "",
     var sequence: Int? = null
 )

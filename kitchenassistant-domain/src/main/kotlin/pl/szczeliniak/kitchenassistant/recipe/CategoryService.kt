@@ -1,13 +1,17 @@
 package pl.szczeliniak.kitchenassistant.recipe
 
-import pl.szczeliniak.kitchenassistant.recipe.db.*
+import pl.szczeliniak.kitchenassistant.recipe.db.Category
+import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
+import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria
+import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.NewCategoryRequest
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateCategoryRequest
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.CategoriesResponse
-import pl.szczeliniak.kitchenassistant.recipe.mapper.CategoryMapper
+import pl.szczeliniak.kitchenassistant.shared.BaseService
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
+import pl.szczeliniak.kitchenassistant.shared.TokenType
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 
@@ -16,10 +20,11 @@ open class CategoryService(
     private val categoryDao: CategoryDao,
     private val userDao: UserDao,
     private val categoryMapper: CategoryMapper,
-    private val requestContext: RequestContext
-) {
+    requestContext: RequestContext
+) : BaseService(requestContext) {
 
     fun add(request: NewCategoryRequest): SuccessResponse {
+        requireTokenType(TokenType.ACCESS)
         return SuccessResponse(categoryDao.save(createCategory(request)).id)
     }
 
@@ -33,22 +38,26 @@ open class CategoryService(
         )
     }
 
-    fun getAll(criteria: CategoryCriteria): CategoriesResponse {
-        return CategoriesResponse(categoryDao.findAll(criteria).map { categoryMapper.map(it) }.toSet())
+    fun getAll(): CategoriesResponse {
+        requireTokenType(TokenType.ACCESS)
+        return CategoriesResponse(categoryDao.findAll(requestContext.userId()).map { categoryMapper.map(it) }.toSet())
     }
 
     fun delete(categoryId: Int): SuccessResponse {
-        categoryDao.findById(categoryId)?.let {
-            val recipes = recipeDao.findAll(RecipeCriteria(categoryId = categoryId))
-            recipes.forEach { recipe -> recipe.category = null }
-            recipeDao.save(recipes)
-            categoryDao.delete(it)
-        }
+        requireTokenType(TokenType.ACCESS)
+        val userId = requestContext.userId()
+        val category = categoryDao.findById(categoryId, userId) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
+
+        val recipes = recipeDao.findAll(RecipeCriteria(categoryId = categoryId), userId)
+        recipes.forEach { recipe -> recipe.category = null }
+        recipeDao.save(recipes)
+        categoryDao.delete(category)
         return SuccessResponse(categoryId)
     }
 
     fun update(categoryId: Int, request: UpdateCategoryRequest): SuccessResponse {
-        val category = categoryDao.findById(categoryId) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
+        requireTokenType(TokenType.ACCESS)
+        val category = categoryDao.findById(categoryId, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
         category.name = request.name
         category.sequence = request.sequence
         return SuccessResponse(categoryDao.save(category).id)

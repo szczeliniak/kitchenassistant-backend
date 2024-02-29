@@ -18,7 +18,9 @@ enum class ErrorCode(val message: String, val code: Int) {
     JWT_MISSING_TOKEN("Token is missing", 400),
     JWT_EXPIRED_TOKEN("Token is expired", 400),
     JWT_MALFORMED_TOKEN("Token is malformed", 400),
+    INVALID_EMAIL("Invalid email", 400),
     JWT_GENERIC_ERROR("Unknown token error", 400),
     INGREDIENT_GROUP_NOT_FOUND("Ingredient group not found", 404),
+    INGREDIENT_NOT_FOUND("Ingredient not found", 404),
     RECIPE_ALREADY_ADDED_TO_DAY_PLAN("Recipe already added to day plan", 400),
 }

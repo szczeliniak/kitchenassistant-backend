@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.dayplan.mapper
+package pl.szczeliniak.kitchenassistant.dayplan
 
 import org.mapstruct.Mapper
 import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlan

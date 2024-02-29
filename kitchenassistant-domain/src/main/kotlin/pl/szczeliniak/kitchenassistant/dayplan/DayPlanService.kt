@@ -1,13 +1,17 @@
 package pl.szczeliniak.kitchenassistant.dayplan
 
-import pl.szczeliniak.kitchenassistant.dayplan.db.*
+import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlan
+import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
+import pl.szczeliniak.kitchenassistant.dayplan.db.IngredientGroupSnapshotDao
+import pl.szczeliniak.kitchenassistant.dayplan.db.IngredientSnapshotDao
+import pl.szczeliniak.kitchenassistant.dayplan.db.RecipeSnapshotDao
+import pl.szczeliniak.kitchenassistant.dayplan.db.Sort
+import pl.szczeliniak.kitchenassistant.dayplan.db.StepSnapshotDao
 import pl.szczeliniak.kitchenassistant.dayplan.dto.DayPlanCriteria
 import pl.szczeliniak.kitchenassistant.dayplan.dto.request.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.dto.request.UpdateDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlansResponse
-import pl.szczeliniak.kitchenassistant.dayplan.mapper.DayPlanMapper
-import pl.szczeliniak.kitchenassistant.dayplan.mapper.RecipeSnapshotMapper
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
@@ -94,7 +98,7 @@ open class DayPlanService(
         }
 
         val snapshot = recipeSnapshotMapper.map(
-            recipeDao.findById(request.recipeId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
+            recipeDao.findById(request.recipeId, userId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
         )
 
         snapshot.ingredientGroups.forEach { group ->
