@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 
 @RestControllerAdvice
@@ -15,12 +16,12 @@ class ExceptionAdvice : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(KitchenAssistantException::class)
     fun exception(kitchenAssistantException: KitchenAssistantException): ResponseEntity<Any> {
-        return error(HttpStatus.valueOf(kitchenAssistantException.error.code), kitchenAssistantException)
+        return error(kitchenAssistantException.error, kitchenAssistantException)
     }
 
     @ExceptionHandler(Exception::class)
     fun exception(exception: Exception): ResponseEntity<Any> {
-        return error(HttpStatus.BAD_REQUEST, exception)
+        return error(ErrorCode.GENERIC_INTERNAL_ERROR, exception)
     }
 
     override fun handleMethodArgumentNotValid(
@@ -29,15 +30,15 @@ class ExceptionAdvice : ResponseEntityExceptionHandler() {
         status: HttpStatus,
         request: WebRequest
     ): ResponseEntity<Any> {
-        return error(HttpStatus.BAD_REQUEST, ex)
+        return error(ErrorCode.GENERIC_INTERNAL_ERROR, ex)
     }
 
     private fun error(
-        httpStatus: HttpStatus,
+        errorCode: ErrorCode,
         exception: Exception
     ): ResponseEntity<Any> {
         logger.error(exception.message, exception)
-        return ResponseEntity<Any>(ExceptionResponse(exception.message), httpStatus)
+        return ResponseEntity<Any>(ExceptionResponse(errorCode, errorCode.message), HttpStatus.valueOf(errorCode.code))
     }
 
 }

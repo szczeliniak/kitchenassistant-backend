@@ -23,4 +23,6 @@ enum class ErrorCode(val message: String, val code: Int) {
     INGREDIENT_GROUP_NOT_FOUND("Ingredient group not found", 404),
     INGREDIENT_NOT_FOUND("Ingredient not found", 404),
     RECIPE_ALREADY_ADDED_TO_DAY_PLAN("Recipe already added to day plan", 400),
+    GENERIC_INTERNAL_ERROR("Generic internal error", 400),
+    FORBIDDEN("Forbidden", 403)
 }

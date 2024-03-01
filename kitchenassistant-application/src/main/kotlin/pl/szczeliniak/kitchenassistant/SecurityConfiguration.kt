@@ -1,10 +1,13 @@
 package pl.szczeliniak.kitchenassistant
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.jsonwebtoken.*
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.JwtParser
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.MalformedJwtException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -80,9 +83,10 @@ class SecurityConfiguration(
     }
 
     protected fun writeException(response: HttpServletResponse, message: String?) {
-        response.status = HttpStatus.FORBIDDEN.value()
+        val errorCode = ErrorCode.FORBIDDEN
+        response.status = errorCode.code
         response.contentType = MediaType.APPLICATION_JSON_VALUE
-        response.outputStream.write(objectMapper.writeValueAsBytes(ExceptionResponse(message)))
+        response.outputStream.write(objectMapper.writeValueAsBytes(ExceptionResponse(errorCode, message)))
     }
 
     inner class JwtAuthorizationFilter : OncePerRequestFilter() {
