@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.util.AntPathMatcher
+import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.filter.OncePerRequestFilter
 import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
@@ -52,7 +53,13 @@ class SecurityConfiguration(
     override fun configure(http: HttpSecurity?) {
         http?.let {
             http.csrf().disable()
-            http.cors()
+            http.cors().configurationSource {
+                val cors = CorsConfiguration()
+                cors.allowedHeaders = listOf("*")
+                cors.allowedMethods = listOf("*")
+                cors.allowedOrigins = listOf("*")
+                return@configurationSource cors
+            }
             http.authorizeRequests().antMatchers(*PATHS_WITHOUT_AUTHORIZATION.toTypedArray())
                 .permitAll()
                 .anyRequest()
