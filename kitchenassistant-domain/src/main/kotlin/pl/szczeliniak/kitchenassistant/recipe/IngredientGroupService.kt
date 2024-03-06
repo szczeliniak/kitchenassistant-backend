@@ -37,7 +37,7 @@ open class IngredientGroupService(
         return IngredientGroup(
             0,
             ingredientGroup.name,
-            ingredientGroup.ingredients.map { createIngredient(it) }.toMutableSet()
+            ingredientGroup.ingredients.map { createIngredient(it) }.toMutableList()
         )
     }
 

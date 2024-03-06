@@ -28,7 +28,7 @@ data class StepGroup(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "step_group_id", nullable = false)
     @OrderBy("sequence ASC, id ASC")
-    var steps: MutableSet<Step> = mutableSetOf(),
+    var steps: MutableList<Step> = mutableListOf(),
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 )

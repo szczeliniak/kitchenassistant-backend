@@ -11,7 +11,7 @@ data class RecipesResponse(
         val author: String?,
         val favorite: Boolean,
         val category: Category?,
-        val tags: Set<String>
+        val tags: List<String>
     ) {
         data class Category(
             val id: Int,

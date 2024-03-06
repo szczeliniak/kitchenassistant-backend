@@ -18,7 +18,7 @@ class AuthorRepository(@PersistenceContext private val entityManager: EntityMana
         return author
     }
 
-    override fun saveAll(authors: Set<Author>) {
+    override fun saveAll(authors: List<Author>) {
         authors.forEach { save(it) }
     }
 
@@ -50,7 +50,7 @@ class AuthorRepository(@PersistenceContext private val entityManager: EntityMana
             .orElse(null)
     }
 
-    override fun findAll(criteria: AuthorCriteria, userId: Int): Set<Author> {
+    override fun findAll(criteria: AuthorCriteria, userId: Int): List<Author> {
         var query = "SELECT r FROM Author r WHERE r.user.id = :userId"
         if (criteria.name != null) {
             query += " AND LOWER(r.name) LIKE (:name)"
@@ -61,7 +61,7 @@ class AuthorRepository(@PersistenceContext private val entityManager: EntityMana
             typedQuery = typedQuery.setParameter("name", "%" + criteria.name + "%")
         }
 
-        return typedQuery.resultList.toMutableSet()
+        return typedQuery.resultList.toMutableList()
     }
 
 }

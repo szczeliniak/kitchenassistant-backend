@@ -1,7 +1,17 @@
 package pl.szczeliniak.kitchenassistant.recipe.db
 
 import java.time.ZonedDateTime
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.OneToMany
+import javax.persistence.OrderBy
+import javax.persistence.SequenceGenerator
+import javax.persistence.Table
 
 @Entity
 @Table(name = "ingredient_groups")
@@ -18,7 +28,7 @@ data class IngredientGroup(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "ingredient_group_id", nullable = false)
     @OrderBy("id ASC")
-    var ingredients: MutableSet<Ingredient> = mutableSetOf(),
+    var ingredients: List<Ingredient> = mutableListOf(),
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 )

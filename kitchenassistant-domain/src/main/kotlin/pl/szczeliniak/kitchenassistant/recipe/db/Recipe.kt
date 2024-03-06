@@ -2,7 +2,20 @@ package pl.szczeliniak.kitchenassistant.recipe.db
 
 import pl.szczeliniak.kitchenassistant.user.db.User
 import java.time.ZonedDateTime
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.JoinTable
+import javax.persistence.ManyToMany
+import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
+import javax.persistence.OrderBy
+import javax.persistence.SequenceGenerator
+import javax.persistence.Table
 
 @Entity
 @Table(name = "recipes")
@@ -27,18 +40,18 @@ class Recipe(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", nullable = false)
     @OrderBy("id ASC")
-    var ingredientGroups: MutableSet<IngredientGroup> = mutableSetOf(),
+    var ingredientGroups: MutableList<IngredientGroup> = mutableListOf(),
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", nullable = false)
     @OrderBy("id ASC")
-    var stepGroups: MutableSet<StepGroup> = mutableSetOf(),
+    var stepGroups: MutableList<StepGroup> = mutableListOf(),
     @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinTable(
         name = "recipe_tags",
         joinColumns = [JoinColumn(name = "recipe_id", nullable = false)],
         inverseJoinColumns = [JoinColumn(name = "tag_id", nullable = false)]
     )
-    var tags: MutableSet<Tag> = mutableSetOf(),
+    var tags: MutableList<Tag> = mutableListOf(),
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 ) {

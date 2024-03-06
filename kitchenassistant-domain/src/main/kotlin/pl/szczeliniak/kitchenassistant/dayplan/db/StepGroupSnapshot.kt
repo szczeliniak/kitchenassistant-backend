@@ -29,7 +29,7 @@ data class StepGroupSnapshot(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "step_group_snapshot_id", nullable = false)
     @OrderBy("id ASC")
-    var steps: MutableSet<StepSnapshot> = mutableSetOf(),
+    var steps: MutableList<StepSnapshot> = mutableListOf(),
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 )

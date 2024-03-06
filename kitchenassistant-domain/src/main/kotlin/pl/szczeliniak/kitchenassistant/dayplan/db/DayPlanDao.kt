@@ -6,7 +6,7 @@ interface DayPlanDao {
 
     fun save(dayPlan: DayPlan): DayPlan
 
-    fun save(dayPlans: Set<DayPlan>)
+    fun save(dayPlans: List<DayPlan>)
 
     fun findAll(
         criteria: DayPlanCriteria,
@@ -14,7 +14,7 @@ interface DayPlanDao {
         sort: Sort = Sort.ASC,
         offset: Int? = null,
         limit: Int? = null,
-    ): Set<DayPlan>
+    ): List<DayPlan>
 
     fun count(criteria: DayPlanCriteria, userId: Int): Long
 

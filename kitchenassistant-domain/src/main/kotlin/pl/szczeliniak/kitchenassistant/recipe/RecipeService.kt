@@ -79,11 +79,11 @@ open class RecipeService(
                 categoryDao.findById(it, userId) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
             },
             description = request.description,
-            ingredientGroups = request.ingredientGroups.map { createIngredientGroup(it) }.toMutableSet(),
-            stepGroups = request.stepGroups.map { createStepGroup(it) }.toMutableSet(),
+            ingredientGroups = request.ingredientGroups.map { createIngredientGroup(it) }.toMutableList(),
+            stepGroups = request.stepGroups.map { createStepGroup(it) }.toMutableList(),
             tags = request.tags.map { it.trim() }
                 .map { tagDao.findByName(it, userId) ?: createTag(it, userId) }
-                .toMutableSet()
+                .toMutableList()
         )
     }
 
@@ -99,7 +99,7 @@ open class RecipeService(
         return StepGroup(
             0,
             request.name,
-            request.steps.map { createStep(it) }.toMutableSet()
+            request.steps.map { createStep(it) }.toMutableList()
         )
     }
 
@@ -111,7 +111,7 @@ open class RecipeService(
         return IngredientGroup(
             0,
             request.name,
-            request.ingredients.map { createIngredient(it) }.toMutableSet()
+            request.ingredients.map { createIngredient(it) }.toMutableList()
         )
     }
 
@@ -140,7 +140,7 @@ open class RecipeService(
             recipe.tags.firstOrNull { tag -> it == tag.name } ?: tagDao.findByName(it, recipe.user.id) ?: tagDao.save(
                 createTag(it, recipe.user)
             )
-        }.toMutableSet()
+        }.toMutableList()
         recipe.modifiedAt = ZonedDateTime.now()
         return SuccessResponse(recipeDao.save(recipe).id)
     }

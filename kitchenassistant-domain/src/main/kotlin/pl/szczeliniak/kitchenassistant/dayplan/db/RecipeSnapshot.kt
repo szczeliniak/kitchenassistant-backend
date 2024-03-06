@@ -31,11 +31,11 @@ class RecipeSnapshot(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_snapshot_id", nullable = false)
     @OrderBy("id ASC")
-    var ingredientGroups: MutableSet<IngredientGroupSnapshot> = mutableSetOf(),
+    var ingredientGroups: MutableList<IngredientGroupSnapshot> = mutableListOf(),
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_snapshot_id", nullable = false)
     @OrderBy("sequence ASC, id ASC")
-    var stepGroups: MutableSet<StepGroupSnapshot> = mutableSetOf(),
+    var stepGroups: MutableList<StepGroupSnapshot> = mutableListOf(),
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 )

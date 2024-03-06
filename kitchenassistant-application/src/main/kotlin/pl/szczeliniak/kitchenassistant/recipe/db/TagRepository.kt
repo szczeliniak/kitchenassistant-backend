@@ -18,10 +18,6 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
         return tag
     }
 
-    override fun saveAll(tags: Set<Tag>) {
-        TODO("Not yet implemented")
-    }
-
     override fun findById(id: Int, userId: Int): Tag? {
         return entityManager
             .createQuery(
@@ -50,7 +46,7 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
             .orElse(null)
     }
 
-    override fun findAll(criteria: TagCriteria, userId: Int): Set<Tag> {
+    override fun findAll(criteria: TagCriteria, userId: Int): List<Tag> {
         var query = "SELECT t FROM Tag t WHERE t.user.id = :userId"
         if (criteria.name != null) {
             query += " AND LOWER(t.name) LIKE (:name)"
@@ -59,7 +55,7 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
         if (criteria.name != null) {
             typedQuery = typedQuery.setParameter("name", "%" + criteria.name + "%")
         }
-        return typedQuery.resultList.toMutableSet()
+        return typedQuery.resultList.toMutableList()
     }
 
 }

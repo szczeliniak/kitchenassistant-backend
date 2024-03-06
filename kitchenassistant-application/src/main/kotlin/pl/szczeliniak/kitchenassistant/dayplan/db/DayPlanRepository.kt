@@ -17,11 +17,11 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
     }
 
     @Transactional
-    override fun save(dayPlans: Set<DayPlan>) {
+    override fun save(dayPlans: List<DayPlan>) {
         dayPlans.forEach { save(it) }
     }
 
-    override fun findAll(criteria: DayPlanCriteria, userId: Int, sort: Sort, offset: Int?, limit: Int?): Set<DayPlan> {
+    override fun findAll(criteria: DayPlanCriteria, userId: Int, sort: Sort, offset: Int?, limit: Int?): List<DayPlan> {
         val typedQuery = applyParameters(
             criteria,
             entityManager.createQuery(
@@ -32,7 +32,7 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
         offset?.let { typedQuery.firstResult = it }
         limit?.let { typedQuery.maxResults = it }
 
-        return typedQuery.resultList.toMutableSet()
+        return typedQuery.resultList.toMutableList()
     }
 
     @Transactional

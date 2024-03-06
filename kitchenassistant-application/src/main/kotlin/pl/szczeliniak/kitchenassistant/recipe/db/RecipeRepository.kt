@@ -9,7 +9,7 @@ import javax.transaction.Transactional
 @Repository
 class RecipeRepository(@PersistenceContext private val entityManager: EntityManager) : RecipeDao {
 
-    override fun findAll(criteria: RecipeCriteria, userId: Int, offset: Int?, limit: Int?): Set<Recipe> {
+    override fun findAll(criteria: RecipeCriteria, userId: Int, offset: Int?, limit: Int?): List<Recipe> {
         val query =
             "SELECT DISTINCT r FROM Recipe r " + prepareJoin(criteria) + "WHERE r.id IS NOT NULL" + prepareCriteria(
                 criteria
@@ -17,7 +17,7 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         val typedQuery = applyParameters(criteria, userId, entityManager.createQuery(query, Recipe::class.java))
         offset?.let { typedQuery.firstResult = it }
         limit?.let { typedQuery.maxResults = it }
-        return typedQuery.resultList.toMutableSet()
+        return typedQuery.resultList.toMutableList()
     }
 
     private fun prepareJoin(criteria: RecipeCriteria): String {
@@ -68,7 +68,7 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         return recipe
     }
 
-    override fun save(recipes: Set<Recipe>) {
+    override fun save(recipes: List<Recipe>) {
         recipes.forEach { save(it) }
     }
 

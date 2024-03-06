@@ -41,7 +41,7 @@ open class CategoryService(
 
     fun getAll(): CategoriesResponse {
         requireTokenType(TokenType.ACCESS)
-        return CategoriesResponse(categoryDao.findAll(requestContext.userId()).map { categoryMapper.map(it) }.toSet())
+        return CategoriesResponse(categoryDao.findAll(requestContext.userId()).map { categoryMapper.map(it) }.toList())
     }
 
     fun delete(categoryId: Int): SuccessResponse {

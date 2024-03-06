@@ -29,7 +29,7 @@ data class IngredientGroupSnapshot(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "ingredient_group_snapshot_id", nullable = false)
     @OrderBy("id ASC")
-    var ingredients: MutableSet<IngredientSnapshot> = mutableSetOf(),
+    var ingredients: MutableList<IngredientSnapshot> = mutableListOf(),
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 )

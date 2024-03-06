@@ -10,7 +10,7 @@ data class UpdateIngredientGroupsRequest(var ingredientGroups: List<IngredientGr
 
     data class IngredientGroup(
         @field:Size(min = 1, max = 100) var name: String? = null,
-        @Min(0) @Max(30) val ingredients: Set<@Valid Ingredient> = setOf()
+        @Min(0) @Max(30) val ingredients: List<@Valid Ingredient> = listOf()
     ) {
         data class Ingredient(
             @field:Size(min = 1, max = 50) var name: String = "",

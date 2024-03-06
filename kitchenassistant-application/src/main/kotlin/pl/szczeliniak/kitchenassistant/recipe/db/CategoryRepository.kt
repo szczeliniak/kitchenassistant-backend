@@ -23,9 +23,9 @@ class CategoryRepository(@PersistenceContext private val entityManager: EntityMa
         entityManager.remove(category)
     }
 
-    override fun findAll(userId: Int): MutableSet<Category> {
+    override fun findAll(userId: Int): List<Category> {
         val query = "SELECT c FROM Category c WHERE c.user.id = :userId ORDER BY c.sequence ASC NULLS LAST, c.id ASC"
-        return entityManager.createQuery(query, Category::class.java).setParameter("userId", userId).resultList.toMutableSet()
+        return entityManager.createQuery(query, Category::class.java).setParameter("userId", userId).resultList.toMutableList()
     }
 
     override fun findById(id: Int, userId: Int): Category? {

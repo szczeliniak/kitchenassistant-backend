@@ -37,7 +37,7 @@ open class StepGroupService(
         return StepGroup(
             0,
             stepGroup.name,
-            stepGroup.steps.map { createStep(it) }.toMutableSet()
+            stepGroup.steps.map { createStep(it) }.toMutableList()
         )
     }
 
