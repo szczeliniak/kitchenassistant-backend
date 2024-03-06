@@ -34,8 +34,7 @@ data class RecipeResponse(
 
         data class Step(
             val id: Int,
-            val description: String,
-            val sequence: Int?
+            val description: String
         )
     }
 }

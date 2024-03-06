@@ -29,8 +29,7 @@ data class DayPlanResponse(
             }
 
             data class Step(
-                val description: String,
-                val sequence: Int?
+                val description: String
             )
         }
     }

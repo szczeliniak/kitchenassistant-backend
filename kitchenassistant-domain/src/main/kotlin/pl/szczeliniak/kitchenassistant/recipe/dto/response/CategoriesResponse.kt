@@ -5,7 +5,6 @@ data class CategoriesResponse(
 ) {
     data class Category(
         val id: Int,
-        val name: String,
-        var sequence: Int?
+        val name: String
     )
 }
