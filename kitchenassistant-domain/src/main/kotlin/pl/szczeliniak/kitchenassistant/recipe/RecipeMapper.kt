@@ -7,6 +7,7 @@ import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient
 import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroup
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.Step
+import pl.szczeliniak.kitchenassistant.recipe.db.StepGroup
 import pl.szczeliniak.kitchenassistant.recipe.db.Tag
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.RecipeResponse
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.RecipesResponse
@@ -30,7 +31,9 @@ abstract class RecipeMapper {
 
     abstract fun mapDetails(category: Category?): RecipeResponse.Recipe.Category?
 
-    abstract fun mapDetails(step: Step?): RecipeResponse.Recipe.Step?
+    abstract fun mapDetails(stepGroup: StepGroup): RecipeResponse.Recipe.StepGroup
+
+    abstract fun mapDetails(step: Step): RecipeResponse.Recipe.StepGroup.Step
 
     abstract fun mapDetails(ingredientGroup: IngredientGroup): RecipeResponse.Recipe.IngredientGroup
 

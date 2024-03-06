@@ -24,9 +24,9 @@ class RecipeSnapshot(
         allocationSize = 1
     )
     var id: Int = 0,
-    var name: String,
+    var name: String = "",
     var description: String? = null,
-    var originalRecipeId: Int,
+    var originalRecipeId: Int? = null,
     var source: String? = null,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_snapshot_id", nullable = false)
@@ -35,9 +35,7 @@ class RecipeSnapshot(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_snapshot_id", nullable = false)
     @OrderBy("sequence ASC, id ASC")
-    var steps: MutableSet<StepSnapshot> = mutableSetOf(),
+    var stepGroups: MutableSet<StepGroupSnapshot> = mutableSetOf(),
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
-) {
-    constructor() : this(name = "", originalRecipeId = 0)
-}
+)

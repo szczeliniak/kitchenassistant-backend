@@ -1,7 +1,12 @@
 package pl.szczeliniak.kitchenassistant.dayplan.db
 
 import java.time.ZonedDateTime
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.SequenceGenerator
+import javax.persistence.Table
 
 @Entity
 @Table(name = "ingredient_snapshots")
@@ -14,12 +19,10 @@ data class IngredientSnapshot(
         allocationSize = 1
     )
     var id: Int = 0,
-    var name: String,
+    var name: String = "",
     var quantity: String? = null,
     var originalIngredientId: Int? = null,
     var checked: Boolean = false,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
-) {
-    constructor() : this(name = "")
-}
+)

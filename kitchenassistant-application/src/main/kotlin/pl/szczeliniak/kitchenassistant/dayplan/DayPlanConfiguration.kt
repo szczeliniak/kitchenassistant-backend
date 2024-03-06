@@ -6,6 +6,7 @@ import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
 import pl.szczeliniak.kitchenassistant.dayplan.db.IngredientGroupSnapshotDao
 import pl.szczeliniak.kitchenassistant.dayplan.db.IngredientSnapshotDao
 import pl.szczeliniak.kitchenassistant.dayplan.db.RecipeSnapshotDao
+import pl.szczeliniak.kitchenassistant.dayplan.db.StepGroupSnapshotDao
 import pl.szczeliniak.kitchenassistant.dayplan.db.StepSnapshotDao
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
@@ -21,7 +22,8 @@ class DayPlanConfiguration {
         recipeSnapshotDao: RecipeSnapshotDao,
         ingredientGroupSnapshotDao: IngredientGroupSnapshotDao,
         stepSnapshotDao: StepSnapshotDao,
-        ingredientSnapshotDao: IngredientSnapshotDao
+        ingredientSnapshotDao: IngredientSnapshotDao,
+        stepGroupSnapshotDao: StepGroupSnapshotDao
     ) = DayPlanService(
         DayPlanMapperImpl(),
         RecipeSnapshotMapperImpl(),
@@ -31,7 +33,8 @@ class DayPlanConfiguration {
         recipeSnapshotDao,
         ingredientGroupSnapshotDao,
         stepSnapshotDao,
-        ingredientSnapshotDao
+        ingredientSnapshotDao,
+        stepGroupSnapshotDao
     )
 
 }

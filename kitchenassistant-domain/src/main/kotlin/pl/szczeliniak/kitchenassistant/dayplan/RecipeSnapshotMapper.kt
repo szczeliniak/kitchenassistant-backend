@@ -5,11 +5,13 @@ import org.mapstruct.Mapping
 import pl.szczeliniak.kitchenassistant.dayplan.db.IngredientGroupSnapshot
 import pl.szczeliniak.kitchenassistant.dayplan.db.IngredientSnapshot
 import pl.szczeliniak.kitchenassistant.dayplan.db.RecipeSnapshot
+import pl.szczeliniak.kitchenassistant.dayplan.db.StepGroupSnapshot
 import pl.szczeliniak.kitchenassistant.dayplan.db.StepSnapshot
 import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient
 import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroup
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.Step
+import pl.szczeliniak.kitchenassistant.recipe.db.StepGroup
 
 @Mapper
 abstract class RecipeSnapshotMapper {
@@ -25,6 +27,12 @@ abstract class RecipeSnapshotMapper {
     @Mapping(target = "modifiedAt", ignore = true)
     @Mapping(source = "ingredientGroup.id", target = "originalIngredientGroupId")
     abstract fun map(ingredientGroup: IngredientGroup): IngredientGroupSnapshot
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "modifiedAt", ignore = true)
+    @Mapping(source = "stepGroup.id", target = "originalStepGroupId")
+    abstract fun map(stepGroup: StepGroup): StepGroupSnapshot
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)

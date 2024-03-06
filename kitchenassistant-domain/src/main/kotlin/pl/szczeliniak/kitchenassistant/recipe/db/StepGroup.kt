@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.dayplan.db
+package pl.szczeliniak.kitchenassistant.recipe.db
 
 import java.time.ZonedDateTime
 import javax.persistence.CascadeType
@@ -14,22 +14,21 @@ import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 
 @Entity
-@Table(name = "ingredient_group_snapshots")
-data class IngredientGroupSnapshot(
+@Table(name = "step_groups")
+data class StepGroup(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingredient_group_snapshot_id_generator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "step_group_id_generator")
     @SequenceGenerator(
-        name = "ingredient_group_snapshot_id_generator",
-        sequenceName = "seq_ingredient_group_snapshot_id",
+        name = "step_group_id_generator",
+        sequenceName = "seq_step_group_id",
         allocationSize = 1
     )
     var id: Int = 0,
-    var originalIngredientGroupId: Int? = null,
     var name: String? = null,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    @JoinColumn(name = "ingredient_group_snapshot_id", nullable = false)
-    @OrderBy("id ASC")
-    var ingredients: MutableSet<IngredientSnapshot> = mutableSetOf(),
+    @JoinColumn(name = "step_group_id", nullable = false)
+    @OrderBy("sequence ASC, id ASC")
+    var steps: MutableSet<Step> = mutableSetOf(),
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 )

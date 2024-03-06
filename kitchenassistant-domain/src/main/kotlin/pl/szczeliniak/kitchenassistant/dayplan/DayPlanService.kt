@@ -7,6 +7,7 @@ import pl.szczeliniak.kitchenassistant.dayplan.db.IngredientGroupSnapshotDao
 import pl.szczeliniak.kitchenassistant.dayplan.db.IngredientSnapshotDao
 import pl.szczeliniak.kitchenassistant.dayplan.db.RecipeSnapshotDao
 import pl.szczeliniak.kitchenassistant.dayplan.db.Sort
+import pl.szczeliniak.kitchenassistant.dayplan.db.StepGroupSnapshotDao
 import pl.szczeliniak.kitchenassistant.dayplan.db.StepSnapshotDao
 import pl.szczeliniak.kitchenassistant.dayplan.dto.request.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.dayplan.dto.request.UpdateDayPlanRequest
@@ -33,17 +34,17 @@ open class DayPlanService(
     private val recipeSnapshotDao: RecipeSnapshotDao,
     private val ingredientGroupSnapshotDao: IngredientGroupSnapshotDao,
     private val stepSnapshotDao: StepSnapshotDao,
-    private val ingredientSnapshotDao: IngredientSnapshotDao
+    private val ingredientSnapshotDao: IngredientSnapshotDao,
+    private val stepGroupSnapshotDao: StepGroupSnapshotDao
 ) : BaseService(requestContext) {
 
     fun findByDate(date: LocalDate): DayPlanResponse {
         requireTokenType(TokenType.ACCESS)
         val userId = requestContext.userId()
         val dayPlan = dayPlanDao.findByDate(date, userId) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
-        val recipes = dayPlan.recipes.mapNotNull { recipe ->
-            recipeDao.findById(recipe.originalRecipeId, userId)?.let { originalRecipe ->
-                return@mapNotNull dayPlanMapper.map(recipe, originalRecipe.author?.name, originalRecipe.category?.name)
-            }
+        val recipes = dayPlan.recipes.map { recipe ->
+            val originalRecipe = recipe.originalRecipeId?.let { recipeDao.findById(it, userId) }
+            return@map dayPlanMapper.map(recipe, originalRecipe?.author?.name, originalRecipe?.category?.name)
         }
         return DayPlanResponse(
             dayPlanMapper.mapDetails(dayPlan, recipes)
@@ -116,8 +117,11 @@ open class DayPlanService(
             ingredientGroupSnapshotDao.save(ingredientGroup)
         }
 
-        recipeSnapshot.steps.forEach {
-            stepSnapshotDao.save(it)
+        recipeSnapshot.stepGroups.forEach { stepGroup ->
+            stepGroup.steps.forEach { step ->
+                stepSnapshotDao.save(step)
+            }
+            stepGroupSnapshotDao.save(stepGroup)
         }
 
         dayPlan.recipes.add(recipeSnapshotDao.save(recipeSnapshot))

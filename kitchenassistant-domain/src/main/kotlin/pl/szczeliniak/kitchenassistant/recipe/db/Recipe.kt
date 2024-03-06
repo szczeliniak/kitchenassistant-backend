@@ -30,8 +30,8 @@ class Recipe(
     var ingredientGroups: MutableSet<IngredientGroup> = mutableSetOf(),
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", nullable = false)
-    @OrderBy("sequence ASC, id ASC")
-    var steps: MutableSet<Step> = mutableSetOf(),
+    @OrderBy("id ASC")
+    var stepGroups: MutableSet<StepGroup> = mutableSetOf(),
     @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinTable(
         name = "recipe_tags",

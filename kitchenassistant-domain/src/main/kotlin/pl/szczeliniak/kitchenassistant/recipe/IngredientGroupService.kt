@@ -20,7 +20,7 @@ open class IngredientGroupService(
     requestContext: RequestContext
 ) : BaseService(requestContext) {
 
-    fun updateGroups(recipeId: Int, request: UpdateIngredientGroupsRequest): SuccessResponse {
+    fun update(recipeId: Int, request: UpdateIngredientGroupsRequest): SuccessResponse {
         requireTokenType(TokenType.ACCESS)
         val recipe = recipeDao.findById(recipeId, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
         recipe.ingredientGroups.forEach { ingredientGroup ->

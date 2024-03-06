@@ -35,8 +35,9 @@ class RecipeController(
     private val categoryService: CategoryService,
     private val ingredientGroupService: IngredientGroupService,
     private val tagService: TagService,
-    private val stepService: StepService,
-    private val ingredientService: IngredientService
+    private val stepGroupService: StepGroupService,
+    private val ingredientService: IngredientService,
+    private val stepService: StepService
 ) {
 
     @GetMapping("/{recipeId}")
@@ -75,15 +76,25 @@ class RecipeController(
     }
 
     @Transactional
-    @PutMapping("{recipeId}/steps")
-    fun updateSteps(@PathVariable recipeId: Int, @Valid @RequestBody request: UpdateStepsRequest): SuccessResponse {
-        return stepService.updateSteps(recipeId, request)
+    @PutMapping("{recipeId}/stepsGroups")
+    fun updateStepsGroups(@PathVariable recipeId: Int, @Valid @RequestBody request: UpdateStepsRequest): SuccessResponse {
+        return stepGroupService.update(recipeId, request)
     }
 
     @Transactional
-    @DeleteMapping("/{recipeId}/steps/{stepId}")
-    fun deleteStep(@PathVariable recipeId: Int, @PathVariable stepId: Int): SuccessResponse {
-        return stepService.delete(recipeId, stepId)
+    @DeleteMapping("/{recipeId}/stepsGroups/{stepGroupId}")
+    fun deleteStepGroup(@PathVariable recipeId: Int, @PathVariable stepGroupId: Int): SuccessResponse {
+        return stepGroupService.delete(recipeId, stepGroupId)
+    }
+
+    @Transactional
+    @DeleteMapping("/{recipeId}/stepGroups/{stepGroupId}/steps/{stepId}")
+    fun deleteStep(
+        @PathVariable recipeId: Int,
+        @PathVariable stepGroupId: Int,
+        @PathVariable stepId: Int
+    ): SuccessResponse {
+        return stepService.delete(recipeId, stepGroupId, stepId)
     }
 
     @Transactional
@@ -92,7 +103,7 @@ class RecipeController(
         @PathVariable recipeId: Int,
         @Valid @RequestBody request: UpdateIngredientGroupsRequest
     ): SuccessResponse {
-        return ingredientGroupService.updateGroups(recipeId, request)
+        return ingredientGroupService.update(recipeId, request)
     }
 
     @Transactional

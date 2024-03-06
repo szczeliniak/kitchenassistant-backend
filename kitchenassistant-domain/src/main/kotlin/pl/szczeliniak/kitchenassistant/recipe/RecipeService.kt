@@ -1,6 +1,5 @@
 package pl.szczeliniak.kitchenassistant.recipe
 
-import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlanDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.AuthorDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Category
@@ -11,6 +10,7 @@ import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Step
+import pl.szczeliniak.kitchenassistant.recipe.db.StepGroup
 import pl.szczeliniak.kitchenassistant.recipe.db.Tag
 import pl.szczeliniak.kitchenassistant.recipe.db.TagDao
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.NewRecipeRequest
@@ -32,7 +32,6 @@ import java.time.ZonedDateTime
 open class RecipeService(
     private val recipeDao: RecipeDao,
     private val authorDao: AuthorDao,
-    private val dayPlanDao: DayPlanDao,
     private val tagDao: TagDao,
     private val categoryDao: CategoryDao,
     private val userDao: UserDao,
@@ -81,7 +80,7 @@ open class RecipeService(
             },
             description = request.description,
             ingredientGroups = request.ingredientGroups.map { createIngredientGroup(it) }.toMutableSet(),
-            steps = request.steps.map { createStep(it) }.toMutableSet(),
+            stepGroups = request.stepGroups.map { createStepGroup(it) }.toMutableSet(),
             tags = request.tags.map { it.trim() }
                 .map { tagDao.findByName(it, userId) ?: createTag(it, userId) }
                 .toMutableSet()
@@ -96,7 +95,15 @@ open class RecipeService(
         return Author(0, name, userDao.findById(userId) ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND))
     }
 
-    private fun createStep(request: NewRecipeRequest.Step): Step {
+    private fun createStepGroup(request: NewRecipeRequest.StepGroup): StepGroup {
+        return StepGroup(
+            0,
+            request.name,
+            request.steps.map { createStep(it) }.toMutableSet()
+        )
+    }
+
+    private fun createStep(request: NewRecipeRequest.StepGroup.Step): Step {
         return Step(0, request.description, request.sequence)
     }
 

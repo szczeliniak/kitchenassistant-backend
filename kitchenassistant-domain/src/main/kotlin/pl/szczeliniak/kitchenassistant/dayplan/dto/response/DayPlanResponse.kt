@@ -15,10 +15,10 @@ data class DayPlanResponse(
             val category: String?,
             val originalRecipeId: Int?,
             val ingredientGroups: List<IngredientGroup>,
-            val steps: List<Step>
+            val stepGroups: List<StepGroup>
         ) {
             data class IngredientGroup(
-                val name: String,
+                val name: String?,
                 val ingredients: List<Ingredient>
             ) {
                 data class Ingredient(
@@ -28,9 +28,14 @@ data class DayPlanResponse(
                 )
             }
 
-            data class Step(
-                val description: String
-            )
+            data class StepGroup(
+                val name: String?,
+                val steps: List<Step>
+            ) {
+                data class Step(
+                    val description: String
+                )
+            }
         }
     }
 }

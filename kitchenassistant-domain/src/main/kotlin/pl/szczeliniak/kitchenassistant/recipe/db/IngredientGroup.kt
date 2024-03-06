@@ -14,13 +14,11 @@ data class IngredientGroup(
         allocationSize = 1
     )
     var id: Int = 0,
-    var name: String,
+    var name: String? = null,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "ingredient_group_id", nullable = false)
     @OrderBy("id ASC")
     var ingredients: MutableSet<Ingredient> = mutableSetOf(),
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
-) {
-    constructor() : this(name = "")
-}
+)

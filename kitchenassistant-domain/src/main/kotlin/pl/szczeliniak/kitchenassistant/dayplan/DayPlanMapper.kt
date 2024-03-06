@@ -6,6 +6,7 @@ import pl.szczeliniak.kitchenassistant.dayplan.db.DayPlan
 import pl.szczeliniak.kitchenassistant.dayplan.db.IngredientGroupSnapshot
 import pl.szczeliniak.kitchenassistant.dayplan.db.IngredientSnapshot
 import pl.szczeliniak.kitchenassistant.dayplan.db.RecipeSnapshot
+import pl.szczeliniak.kitchenassistant.dayplan.db.StepGroupSnapshot
 import pl.szczeliniak.kitchenassistant.dayplan.db.StepSnapshot
 import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlansResponse
@@ -13,6 +14,7 @@ import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlansResponse
 @Mapper
 abstract class DayPlanMapper {
 
+    @Mapping(target = "copy", ignore = true)
     abstract fun map(dayPlan: DayPlan): DayPlansResponse.DayPlan
 
     @Mapping(source = "recipes", target = "recipes")
@@ -24,5 +26,8 @@ abstract class DayPlanMapper {
 
     abstract fun map(ingredient: IngredientSnapshot): DayPlanResponse.DayPlan.Recipe.IngredientGroup.Ingredient
 
-    abstract fun map(step: StepSnapshot): DayPlanResponse.DayPlan.Recipe.Step
+    abstract fun map(stepGroup: StepGroupSnapshot): DayPlanResponse.DayPlan.Recipe.StepGroup
+
+    @Mapping(target = "copy", ignore = true)
+    abstract fun map(step: StepSnapshot): DayPlanResponse.DayPlan.Recipe.StepGroup.Step
 }

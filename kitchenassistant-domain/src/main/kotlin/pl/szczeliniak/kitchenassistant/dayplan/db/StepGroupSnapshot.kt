@@ -14,22 +14,22 @@ import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 
 @Entity
-@Table(name = "ingredient_group_snapshots")
-data class IngredientGroupSnapshot(
+@Table(name = "step_group_snapshots")
+data class StepGroupSnapshot(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingredient_group_snapshot_id_generator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "step_group_snapshot_id_generator")
     @SequenceGenerator(
-        name = "ingredient_group_snapshot_id_generator",
-        sequenceName = "seq_ingredient_group_snapshot_id",
+        name = "step_group_snapshot_id_generator",
+        sequenceName = "seq_step_group_snapshot_id",
         allocationSize = 1
     )
     var id: Int = 0,
-    var originalIngredientGroupId: Int? = null,
+    var originalStepGroupId: Int? = null,
     var name: String? = null,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    @JoinColumn(name = "ingredient_group_snapshot_id", nullable = false)
+    @JoinColumn(name = "step_group_snapshot_id", nullable = false)
     @OrderBy("id ASC")
-    var ingredients: MutableSet<IngredientSnapshot> = mutableSetOf(),
+    var steps: MutableSet<StepSnapshot> = mutableSetOf(),
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 )

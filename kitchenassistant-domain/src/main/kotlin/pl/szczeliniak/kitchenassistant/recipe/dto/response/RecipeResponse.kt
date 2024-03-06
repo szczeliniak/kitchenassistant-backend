@@ -12,12 +12,12 @@ data class RecipeResponse(
         val favorite: Boolean,
         val category: Category?,
         val ingredientGroups: Set<IngredientGroup>,
-        val steps: Set<Step>,
+        val stepGroups: Set<StepGroup>,
         val tags: Set<String>
     ) {
         data class IngredientGroup(
             val id: Int,
-            val name: String,
+            val name: String?,
             val ingredients: Set<Ingredient>
         ) {
             data class Ingredient(
@@ -27,14 +27,20 @@ data class RecipeResponse(
             )
         }
 
+        data class StepGroup(
+            val id: Int,
+            val name: String?,
+            val steps: Set<Step>
+        ) {
+            data class Step(
+                val id: Int,
+                val description: String
+            )
+        }
+
         data class Category(
             val id: Int,
             val name: String
-        )
-
-        data class Step(
-            val id: Int,
-            val description: String
         )
     }
 }
