@@ -9,16 +9,6 @@ import javax.transaction.Transactional
 class StepGroupRepository(@PersistenceContext private val entityManager: EntityManager) : StepGroupDao {
 
     @Transactional
-    override fun save(stepGroup: StepGroup): StepGroup {
-        if (stepGroup.id == 0) {
-            entityManager.persist(stepGroup)
-        } else {
-            entityManager.merge(stepGroup)
-        }
-        return stepGroup
-    }
-
-    @Transactional
     override fun delete(stepGroup: StepGroup) {
         entityManager
             .createQuery("DELETE FROM StepGroup ig WHERE ig.id = :id")

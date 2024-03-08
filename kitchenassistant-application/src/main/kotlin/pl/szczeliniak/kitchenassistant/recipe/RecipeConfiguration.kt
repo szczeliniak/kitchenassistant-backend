@@ -53,29 +53,11 @@ class RecipeConfiguration {
     fun authorService(authorDao: AuthorDao, requestContext: RequestContext) = AuthorService(authorDao, requestContext)
 
     @Bean
-    fun stepGroupService(recipeDao: RecipeDao, stepDao: StepDao, requestContext: RequestContext, stepGroupDao: StepGroupDao) =
-        StepGroupService(recipeDao, stepDao, stepGroupDao, requestContext)
-
-    @Bean
-    fun ingredientGroupService(
-        recipeDao: RecipeDao,
-        ingredientGroupDao: IngredientGroupDao,
-        ingredientDao: IngredientDao,
-        requestContext: RequestContext
-    ) = IngredientGroupService(recipeDao, ingredientGroupDao, ingredientDao, requestContext)
-
-    @Bean
     fun categoryService(
         recipeDao: RecipeDao,
         categoryDao: CategoryDao,
         userDao: UserDao,
         requestContext: RequestContext
     ) = CategoryService(recipeDao, categoryDao, userDao, CategoryMapperImpl(), requestContext)
-
-    @Bean
-    fun ingredientService(recipeDao: RecipeDao, ingredientDao: IngredientDao, requestContext: RequestContext) = IngredientService(recipeDao, ingredientDao, requestContext)
-
-    @Bean
-    fun stepService(recipeDao: RecipeDao, stepDao: StepDao, requestContext: RequestContext) = StepService(recipeDao, stepDao, requestContext)
 
 }

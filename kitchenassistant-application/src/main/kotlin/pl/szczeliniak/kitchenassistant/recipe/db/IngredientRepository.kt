@@ -9,16 +9,6 @@ import javax.transaction.Transactional
 class IngredientRepository(@PersistenceContext private val entityManager: EntityManager) : IngredientDao {
 
     @Transactional
-    override fun save(ingredient: Ingredient): Ingredient {
-        if (ingredient.id == 0) {
-            entityManager.persist(ingredient)
-        } else {
-            entityManager.merge(ingredient)
-        }
-        return ingredient
-    }
-
-    @Transactional
     override fun delete(ingredient: Ingredient) {
         entityManager
             .createQuery("DELETE FROM Ingredient i WHERE i.id = :id")

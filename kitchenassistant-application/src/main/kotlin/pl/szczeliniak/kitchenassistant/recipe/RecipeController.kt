@@ -31,11 +31,7 @@ class RecipeController(
     private val recipeService: RecipeService,
     private val authorService: AuthorService,
     private val categoryService: CategoryService,
-    private val ingredientGroupService: IngredientGroupService,
     private val tagService: TagService,
-    private val stepGroupService: StepGroupService,
-    private val ingredientService: IngredientService,
-    private val stepService: StepService
 ) {
 
     @GetMapping("/{recipeId}")
@@ -71,41 +67,6 @@ class RecipeController(
     @DeleteMapping("/{recipeId}")
     fun delete(@PathVariable recipeId: Int): SuccessResponse {
         return recipeService.delete(recipeId)
-    }
-
-    @Transactional
-    @DeleteMapping("/{recipeId}/stepsGroups/{stepGroupId}")
-    fun deleteStepGroup(@PathVariable recipeId: Int, @PathVariable stepGroupId: Int): SuccessResponse {
-        return stepGroupService.delete(recipeId, stepGroupId)
-    }
-
-    @Transactional
-    @DeleteMapping("/{recipeId}/stepGroups/{stepGroupId}/steps/{stepId}")
-    fun deleteStep(
-        @PathVariable recipeId: Int,
-        @PathVariable stepGroupId: Int,
-        @PathVariable stepId: Int
-    ): SuccessResponse {
-        return stepService.delete(recipeId, stepGroupId, stepId)
-    }
-
-    @Transactional
-    @DeleteMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}")
-    fun deleteIngredientGroup(
-        @PathVariable recipeId: Int,
-        @PathVariable ingredientGroupId: Int
-    ): SuccessResponse {
-        return ingredientGroupService.delete(recipeId, ingredientGroupId)
-    }
-
-    @Transactional
-    @DeleteMapping("/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}")
-    fun deleteIngredient(
-        @PathVariable recipeId: Int,
-        @PathVariable ingredientGroupId: Int,
-        @PathVariable ingredientId: Int
-    ): SuccessResponse {
-        return ingredientService.delete(recipeId, ingredientGroupId, ingredientId)
     }
 
     @Transactional
