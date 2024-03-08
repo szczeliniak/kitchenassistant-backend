@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.NewCategoryRequest
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.NewRecipeRequest
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateCategoryRequest
-import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateIngredientGroupsRequest
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateRecipeRequest
-import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateStepsRequest
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.AuthorsResponse
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.CategoriesResponse
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.RecipeResponse
@@ -76,12 +74,6 @@ class RecipeController(
     }
 
     @Transactional
-    @PutMapping("{recipeId}/stepsGroups")
-    fun updateStepsGroups(@PathVariable recipeId: Int, @Valid @RequestBody request: UpdateStepsRequest): SuccessResponse {
-        return stepGroupService.update(recipeId, request)
-    }
-
-    @Transactional
     @DeleteMapping("/{recipeId}/stepsGroups/{stepGroupId}")
     fun deleteStepGroup(@PathVariable recipeId: Int, @PathVariable stepGroupId: Int): SuccessResponse {
         return stepGroupService.delete(recipeId, stepGroupId)
@@ -95,15 +87,6 @@ class RecipeController(
         @PathVariable stepId: Int
     ): SuccessResponse {
         return stepService.delete(recipeId, stepGroupId, stepId)
-    }
-
-    @Transactional
-    @PutMapping("/{recipeId}/ingredientGroups")
-    fun updateIngredientGroups(
-        @PathVariable recipeId: Int,
-        @Valid @RequestBody request: UpdateIngredientGroupsRequest
-    ): SuccessResponse {
-        return ingredientGroupService.update(recipeId, request)
     }
 
     @Transactional

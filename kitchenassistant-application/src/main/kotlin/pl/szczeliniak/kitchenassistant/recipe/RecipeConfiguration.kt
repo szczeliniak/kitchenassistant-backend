@@ -28,6 +28,7 @@ class RecipeConfiguration {
         userDao: UserDao,
         dayPlanDao: DayPlanDao,
         ingredientGroupDao: IngredientGroupDao,
+        stepGroupDao: StepGroupDao,
         requestContext: RequestContext
     ): RecipeService {
         return RecipeService(
@@ -37,6 +38,10 @@ class RecipeConfiguration {
             categoryDao,
             userDao,
             RecipeMapperImpl(),
+            ingredientGroupDao,
+            ingredientDao,
+            stepGroupDao,
+            stepDao,
             requestContext
         )
     }

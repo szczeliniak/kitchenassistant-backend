@@ -5,12 +5,16 @@ import pl.szczeliniak.kitchenassistant.recipe.db.AuthorDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Category
 import pl.szczeliniak.kitchenassistant.recipe.db.CategoryDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient
+import pl.szczeliniak.kitchenassistant.recipe.db.IngredientDao
 import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroup
+import pl.szczeliniak.kitchenassistant.recipe.db.IngredientGroupDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeCriteria
 import pl.szczeliniak.kitchenassistant.recipe.db.RecipeDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Step
+import pl.szczeliniak.kitchenassistant.recipe.db.StepDao
 import pl.szczeliniak.kitchenassistant.recipe.db.StepGroup
+import pl.szczeliniak.kitchenassistant.recipe.db.StepGroupDao
 import pl.szczeliniak.kitchenassistant.recipe.db.Tag
 import pl.szczeliniak.kitchenassistant.recipe.db.TagDao
 import pl.szczeliniak.kitchenassistant.recipe.dto.request.NewRecipeRequest
@@ -36,6 +40,10 @@ open class RecipeService(
     private val categoryDao: CategoryDao,
     private val userDao: UserDao,
     private val recipeMapper: RecipeMapper,
+    private val ingredientGroupDao: IngredientGroupDao,
+    private val ingredientDao: IngredientDao,
+    private val stepGroupDao: StepGroupDao,
+    private val stepDao: StepDao,
     requestContext: RequestContext
 ) : BaseService(requestContext) {
 
@@ -141,8 +149,47 @@ open class RecipeService(
                 createTag(it, recipe.user)
             )
         }.toMutableList()
+
+        recipe.ingredientGroups.forEach { ingredientGroup ->
+            ingredientGroup.ingredients.forEach { ingredient -> ingredientDao.delete(ingredient) }
+            ingredientGroupDao.delete(ingredientGroup)
+        }
+        recipe.ingredientGroups.clear()
+        request.ingredientGroups.forEach { recipe.ingredientGroups.add(createIngredientGroup(it)) }
+
+        recipe.stepGroups.forEach { stepGroup ->
+            stepGroup.steps.forEach { ingredient -> stepDao.delete(ingredient) }
+            stepGroupDao.delete(stepGroup)
+        }
+        recipe.stepGroups.clear()
+        request.stepGroups.forEach { recipe.stepGroups.add(createStepGroup(it)) }
+
         recipe.modifiedAt = ZonedDateTime.now()
         return SuccessResponse(recipeDao.save(recipe).id)
+    }
+
+    private fun createIngredientGroup(request: UpdateRecipeRequest.IngredientGroup): IngredientGroup {
+        return IngredientGroup(
+            0,
+            request.name,
+            request.ingredients.map { createIngredient(it) }.toMutableList()
+        )
+    }
+
+    private fun createIngredient(request: UpdateRecipeRequest.IngredientGroup.Ingredient): Ingredient {
+        return Ingredient(0, request.name, request.quantity)
+    }
+
+    private fun createStepGroup(request: UpdateRecipeRequest.StepGroup): StepGroup {
+        return StepGroup(
+            0,
+            request.name,
+            request.steps.map { createStep(it) }.toMutableList()
+        )
+    }
+
+    private fun createStep(request: UpdateRecipeRequest.StepGroup.Step): Step {
+        return Step(0, request.description, request.sequence)
     }
 
     private fun createTag(name: String, user: User): Tag {
