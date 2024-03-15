@@ -9,13 +9,20 @@ import pl.szczeliniak.kitchenassistant.user.db.UserDao
 @Configuration
 class UserConfiguration {
 
+    companion object {
+        private const val CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxyz0123456789"
+        private const val PASSWORD_LENGTH = 20
+    }
+
     @Bean
     fun userFacade(
         userDao: UserDao,
         requestContext: RequestContext,
         passwordEncoder: org.springframework.security.crypto.password.PasswordEncoder,
         tokenFactory: TokenFactory,
-        facebookConnector: FacebookConnector
+        facebookConnector: FacebookConnector,
+        mailService: MailService,
+        passwordGenerator: PasswordGenerator
     ): UserService {
         return UserService(
             userDao,
@@ -23,7 +30,9 @@ class UserConfiguration {
             tokenFactory,
             facebookConnector,
             requestContext,
-            encoder(passwordEncoder)
+            encoder(passwordEncoder),
+            passwordGenerator,
+            mailService
         )
     }
 
@@ -45,5 +54,17 @@ class UserConfiguration {
                 return passwordEncoder.matches(rawPassword, encryptedPassword)
             }
         }
+
+    @Bean
+    fun passwordGenerator(): PasswordGenerator = object : PasswordGenerator {
+        override fun generate(): String {
+            val builder = StringBuilder()
+            for (i in 0 until PASSWORD_LENGTH) {
+                val charIndex: Int = (CHARACTERS.length * Math.random()).toInt()
+                builder.append(CHARACTERS[charIndex])
+            }
+            return builder.toString()
+        }
+    }
 
 }

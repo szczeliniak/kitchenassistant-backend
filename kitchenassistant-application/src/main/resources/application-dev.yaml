@@ -6,6 +6,19 @@ spring:
     password: localdb
   jpa:
     show-sql: true
+  mail:
+    enable: false
+    host:
+    port:
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 security:
   jwt:
     secret: dupa

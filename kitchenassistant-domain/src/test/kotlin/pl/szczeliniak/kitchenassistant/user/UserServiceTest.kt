@@ -2,31 +2,37 @@ package pl.szczeliniak.kitchenassistant.user
 
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.shared.TokenType
+import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 import pl.szczeliniak.kitchenassistant.user.dto.request.LoginRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.LoginWithFacebookRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
+import pl.szczeliniak.kitchenassistant.user.dto.request.ResetPasswordRequest
 import pl.szczeliniak.kitchenassistant.user.dto.response.FacebookLoginResponse
 import pl.szczeliniak.kitchenassistant.user.dto.response.LoginResponse
+import java.util.*
 
 class UserServiceTest {
 
-    private val requestContext: RequestContext = mockk();
-    private val userDao: UserDao = mockk();
-    private val passwordEncoder: PasswordEncoder = mockk();
-    private val tokenFactory: TokenFactory = mockk();
-    private val passwordMatcher: PasswordMatcher = mockk();
-    private val facebookConnector: FacebookConnector = mockk();
+    private val requestContext: RequestContext = mockk()
+    private val userDao: UserDao = mockk()
+    private val passwordEncoder: PasswordEncoder = mockk()
+    private val tokenFactory: TokenFactory = mockk()
+    private val passwordMatcher: PasswordMatcher = mockk()
+    private val facebookConnector: FacebookConnector = mockk()
+    private val passwordGenerator: PasswordGenerator = mockk()
+    private val mailService: MailService = mockk()
 
-    private var userService: UserService = UserService(userDao, passwordMatcher, tokenFactory, facebookConnector, requestContext, passwordEncoder)
+    private var userService: UserService = UserService(userDao, passwordMatcher, tokenFactory, facebookConnector, requestContext, passwordEncoder, passwordGenerator, mailService)
 
     @Test
     fun shouldRegister() {
@@ -148,6 +154,43 @@ class UserServiceTest {
         assertThatThrownBy { userService.login(LoginWithFacebookRequest("token")) }
             .isInstanceOf(KitchenAssistantException::class.java)
             .hasMessage("Cannot login with Facebook")
+    }
+
+    @Test
+    fun shouldResetPassword() {
+        val user = user(1)
+        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns Collections.singletonList(user)
+        every { passwordGenerator.generate() } returns "newPassword"
+        every { passwordEncoder.encode("newPassword") } returns "encodedPassword"
+        every { userDao.save(user) } returns user
+        every {
+            mailService.send(
+                "test@test.pl",
+                "Your password has been reset!",
+                "Hi!<br/>Your password has been reset, so your current credentials for logging are:<br/>email: <b>test@test.pl</b>,<br/>password: <b>newPassword</b>.<br/><br/>You can change the password right after you log in."
+            )
+        } returns Unit
+
+        val response = userService.resetPassword(ResetPasswordRequest("email"))
+
+        assertThat(response).isEqualTo(SuccessResponse(1))
+        verify { userDao.save(user) }
+        verify {
+            mailService.send(
+                "test@test.pl",
+                "Your password has been reset!",
+                "Hi!<br/>Your password has been reset, so your current credentials for logging are:<br/>email: <b>test@test.pl</b>,<br/>password: <b>newPassword</b>.<br/><br/>You can change the password right after you log in."
+            )
+        }
+    }
+
+    @Test
+    fun shouldThrowExceptionWhenResetPasswordAndUserNotFound() {
+        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns Collections.emptyList()
+
+        assertThatThrownBy { userService.resetPassword(ResetPasswordRequest("email")) }
+            .isInstanceOf(KitchenAssistantException::class.java)
+            .hasMessage("User not found")
     }
 
     private fun facebookLoginResponse(): FacebookLoginResponse {

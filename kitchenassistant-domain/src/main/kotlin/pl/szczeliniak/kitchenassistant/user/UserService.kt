@@ -5,12 +5,14 @@ import pl.szczeliniak.kitchenassistant.shared.ErrorCode
 import pl.szczeliniak.kitchenassistant.shared.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.shared.RequestContext
 import pl.szczeliniak.kitchenassistant.shared.TokenType
+import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserCriteria
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
 import pl.szczeliniak.kitchenassistant.user.dto.request.LoginRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.LoginWithFacebookRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
+import pl.szczeliniak.kitchenassistant.user.dto.request.ResetPasswordRequest
 import pl.szczeliniak.kitchenassistant.user.dto.response.LoginResponse
 
 open class UserService(
@@ -19,11 +21,16 @@ open class UserService(
     private val tokenFactory: TokenFactory,
     private val facebookConnector: FacebookConnector,
     requestContext: RequestContext,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val passwordGenerator: PasswordGenerator,
+    private val mailService: MailService
 ) : BaseService(requestContext) {
 
     companion object {
         private val EMAIL_PATTERN = Regex("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}\$")
+        private const val EMAIL_TITLE_RESET_PASSWORD = "Your password has been reset!"
+        private const val EMAIL_CONTENT_RESET_PASSWORD =
+            "Hi!<br/>Your password has been reset, so your current credentials for logging are:<br/>email: <b>%s</b>,<br/>password: <b>%s</b>.<br/><br/>You can change the password right after you log in."
     }
 
     open fun login(request: LoginRequest): LoginResponse {
@@ -83,6 +90,18 @@ open class UserService(
 
     private fun createUser(email: String, password: String): User {
         return User(0, email, password.let { passwordEncoder.encode(it) })
+    }
+
+    fun resetPassword(request: ResetPasswordRequest): SuccessResponse {
+        val user = userDao.findAll(UserCriteria(request.email), 0, 1).firstOrNull()
+            ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
+
+        val rawPassword = passwordGenerator.generate();
+        user.password = passwordEncoder.encode(rawPassword);
+        userDao.save(user)
+
+        mailService.send(user.email, EMAIL_TITLE_RESET_PASSWORD, EMAIL_CONTENT_RESET_PASSWORD.format(user.email, rawPassword));
+        return SuccessResponse(user.id)
     }
 
 }

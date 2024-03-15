@@ -9,7 +9,6 @@ enum class ErrorCode(val message: String, val code: Int) {
     USER_NOT_FOUND("User not found", 404),
     WRONG_TOKEN_TYPE("Wrong token type", 404),
     DAY_PLAN_NOT_FOUND("Day plan not found", 404),
-    STEP_NOT_FOUND("Step not found", 404),
     CATEGORY_NOT_FOUND("Category not found", 404),
     CANNOT_LOGIN_WITH_FACEBOOK("Cannot login with Facebook", 400),
     MISSING_USER_ID("Missing user id", 400),
@@ -20,9 +19,6 @@ enum class ErrorCode(val message: String, val code: Int) {
     JWT_MALFORMED_TOKEN("Token is malformed", 400),
     INVALID_EMAIL("Invalid email", 400),
     JWT_GENERIC_ERROR("Unknown token error", 400),
-    INGREDIENT_GROUP_NOT_FOUND("Ingredient group not found", 404),
-    STEP_GROUP_NOT_FOUND("Step group not found", 404),
-    INGREDIENT_NOT_FOUND("Ingredient not found", 404),
     RECIPE_ALREADY_ADDED_TO_DAY_PLAN("Recipe already added to day plan", 400),
     GENERIC_INTERNAL_ERROR("Generic internal error", 400),
     FORBIDDEN("Forbidden", 403)
