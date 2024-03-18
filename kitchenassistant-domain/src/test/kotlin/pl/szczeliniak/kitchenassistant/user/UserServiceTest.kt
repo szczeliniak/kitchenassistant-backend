@@ -17,6 +17,7 @@ import pl.szczeliniak.kitchenassistant.user.dto.request.LoginRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.LoginWithFacebookRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.ResetPasswordRequest
+import pl.szczeliniak.kitchenassistant.user.dto.request.UpdatePasswordRequest
 import pl.szczeliniak.kitchenassistant.user.dto.response.FacebookLoginResponse
 import pl.szczeliniak.kitchenassistant.user.dto.response.LoginResponse
 import java.util.*
@@ -186,6 +187,30 @@ class UserServiceTest {
 
     @Test
     fun shouldThrowExceptionWhenResetPasswordAndUserNotFound() {
+        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns Collections.emptyList()
+
+        assertThatThrownBy { userService.resetPassword(ResetPasswordRequest("email")) }
+            .isInstanceOf(KitchenAssistantException::class.java)
+            .hasMessage("User not found")
+    }
+
+    @Test
+    fun shouldUpdatePassword() {
+        val user = user(1)
+        every { requestContext.tokenType() } returns TokenType.ACCESS
+        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns Collections.singletonList(user)
+        every { passwordEncoder.encode("newPassword") } returns "encodedPassword"
+        every { userDao.save(user) } returns user
+
+        val response = userService.updatePassword(UpdatePasswordRequest("email", "newPassword"))
+
+        assertThat(response).isEqualTo(SuccessResponse(1))
+        verify { userDao.save(user) }
+    }
+
+    @Test
+    fun shouldThrowExceptionWhenUpdatePasswordAndUserNotFound() {
+        every { requestContext.tokenType() } returns TokenType.ACCESS
         every { userDao.findAll(UserCriteria("email"), 0, 1) } returns Collections.emptyList()
 
         assertThatThrownBy { userService.resetPassword(ResetPasswordRequest("email")) }

@@ -43,7 +43,7 @@ class SecurityConfiguration(
         val PATHS_WITHOUT_AUTHORIZATION = listOf(
             "/users/login/**",
             "/users/register/**",
-            "/users/password/**",
+            "/users/password/reset",
             "/v2/api-docs",
             "/configuration/ui",
             "/swagger-resources/**",

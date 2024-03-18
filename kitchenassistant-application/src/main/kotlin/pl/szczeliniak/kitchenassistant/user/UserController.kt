@@ -11,6 +11,7 @@ import pl.szczeliniak.kitchenassistant.user.dto.request.LoginRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.LoginWithFacebookRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.ResetPasswordRequest
+import pl.szczeliniak.kitchenassistant.user.dto.request.UpdatePasswordRequest
 import pl.szczeliniak.kitchenassistant.user.dto.response.LoginResponse
 import javax.transaction.Transactional
 import javax.validation.Valid
@@ -47,9 +48,15 @@ class UserController(
     }
 
     @Transactional
-    @PutMapping("/password")
+    @PutMapping("/password/reset")
     fun resetPassword(@Valid @RequestBody request: ResetPasswordRequest): SuccessResponse {
         return userService.resetPassword(request)
+    }
+
+    @Transactional
+    @PutMapping("/password/update")
+    fun updatePassword(@Valid @RequestBody request: UpdatePasswordRequest): SuccessResponse {
+        return userService.updatePassword(request)
     }
 
 }

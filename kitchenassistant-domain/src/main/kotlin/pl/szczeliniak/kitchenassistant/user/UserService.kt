@@ -13,6 +13,7 @@ import pl.szczeliniak.kitchenassistant.user.dto.request.LoginRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.LoginWithFacebookRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.RegisterRequest
 import pl.szczeliniak.kitchenassistant.user.dto.request.ResetPasswordRequest
+import pl.szczeliniak.kitchenassistant.user.dto.request.UpdatePasswordRequest
 import pl.szczeliniak.kitchenassistant.user.dto.response.LoginResponse
 
 open class UserService(
@@ -101,6 +102,17 @@ open class UserService(
         userDao.save(user)
 
         mailService.send(user.email, EMAIL_TITLE_RESET_PASSWORD, EMAIL_CONTENT_RESET_PASSWORD.format(user.email, rawPassword));
+        return SuccessResponse(user.id)
+    }
+
+    fun updatePassword(request: UpdatePasswordRequest): SuccessResponse {
+        requireTokenType(TokenType.ACCESS)
+        val user = userDao.findAll(UserCriteria(request.email), 0, 1).firstOrNull()
+            ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
+
+        user.password = passwordEncoder.encode(request.newPassword)
+        userDao.save(user)
+
         return SuccessResponse(user.id)
     }
 
