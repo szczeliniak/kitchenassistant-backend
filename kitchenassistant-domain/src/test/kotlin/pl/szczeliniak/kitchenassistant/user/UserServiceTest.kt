@@ -198,22 +198,38 @@ class UserServiceTest {
     fun shouldUpdatePassword() {
         val user = user(1)
         every { requestContext.tokenType() } returns TokenType.ACCESS
-        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns Collections.singletonList(user)
+        every { requestContext.userId() } returns 1
+        every { userDao.findById(1) } returns user
+        every { passwordMatcher.matches("pass", "oldPassword") } returns true
         every { passwordEncoder.encode("newPassword") } returns "encodedPassword"
         every { userDao.save(user) } returns user
 
-        val response = userService.updatePassword(UpdatePasswordRequest("email", "newPassword"))
+        val response = userService.updatePassword(UpdatePasswordRequest("oldPassword", "newPassword"))
 
         assertThat(response).isEqualTo(SuccessResponse(1))
         verify { userDao.save(user) }
     }
 
     @Test
+    fun shouldThrowExceptionWhenUpdatePasswordAndPasswordDoesNotMatch() {
+        val user = user(1)
+        every { requestContext.tokenType() } returns TokenType.ACCESS
+        every { requestContext.userId() } returns 1
+        every { userDao.findById(1) } returns user
+        every { passwordMatcher.matches("pass", "oldPassword") } returns false
+
+        assertThatThrownBy { userService.updatePassword(UpdatePasswordRequest("oldPassword", "newPassword")) }
+            .isInstanceOf(KitchenAssistantException::class.java)
+            .hasMessage("Passwords do not match")
+    }
+
+    @Test
     fun shouldThrowExceptionWhenUpdatePasswordAndUserNotFound() {
         every { requestContext.tokenType() } returns TokenType.ACCESS
-        every { userDao.findAll(UserCriteria("email"), 0, 1) } returns Collections.emptyList()
+        every { requestContext.userId() } returns 1
+        every { userDao.findById(1) } returns null
 
-        assertThatThrownBy { userService.resetPassword(ResetPasswordRequest("email")) }
+        assertThatThrownBy { userService.updatePassword(UpdatePasswordRequest("oldPassword", "newPassword")) }
             .isInstanceOf(KitchenAssistantException::class.java)
             .hasMessage("User not found")
     }

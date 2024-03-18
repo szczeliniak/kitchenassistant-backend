@@ -107,8 +107,12 @@ open class UserService(
 
     fun updatePassword(request: UpdatePasswordRequest): SuccessResponse {
         requireTokenType(TokenType.ACCESS)
-        val user = userDao.findAll(UserCriteria(request.email), 0, 1).firstOrNull()
+        val user = userDao.findById(requestContext.userId())
             ?: throw KitchenAssistantException(ErrorCode.USER_NOT_FOUND)
+
+        if (!passwordMatcher.matches(user.password, request.oldPassword)) {
+            throw KitchenAssistantException(ErrorCode.PASSWORDS_DO_NOT_MATCH)
+        }
 
         user.password = passwordEncoder.encode(request.newPassword)
         userDao.save(user)
