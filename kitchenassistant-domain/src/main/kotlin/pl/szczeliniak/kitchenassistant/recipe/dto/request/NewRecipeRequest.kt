@@ -7,9 +7,9 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 data class NewRecipeRequest(
-    @field:Size(min = 1, max = 100) var name: String = "",
+    @field:Size(min = 1, max = 255) var name: String = "",
     var categoryId: Int? = null,
-    @field:Size(max = 1000) var description: String? = null,
+    @field:Size(max = 255) var description: String? = null,
     @field:Size(max = 50) var author: String? = null,
     @field:Size(max = 150) var source: String? = null,
     @field:Size(min = 0, max = 10) var ingredientGroups: List<@Valid IngredientGroup> = listOf(),
@@ -17,12 +17,12 @@ data class NewRecipeRequest(
     @field:Size(min = 0, max = 10) var tags: List<@NotNull String> = listOf()
 ) {
     data class IngredientGroup(
-        @field:Size(min = 1, max = 100) var name: String? = null,
+        @field:Size(min = 1, max = 255) var name: String? = null,
         @Min(0) @Max(30) var ingredients: List<@Valid Ingredient> = listOf()
     ) {
         data class Ingredient(
-            @field:Size(min = 1, max = 50) var name: String = "",
-            @field:Size(min = 1, max = 50) var quantity: String? = null
+            @field:Size(min = 1, max = 255) var name: String = "",
+            @field:Size(min = 1, max = 255) var quantity: String? = null
         )
     }
 
