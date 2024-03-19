@@ -14,8 +14,10 @@ import pl.szczeliniak.kitchenassistant.dayplan.dto.response.DayPlansResponse
 @Mapper
 abstract class DayPlanMapper {
 
-    @Mapping(target = "copy", ignore = true)
     abstract fun map(dayPlan: DayPlan): DayPlansResponse.DayPlan
+
+    @Mapping(target = "copy", ignore = true)
+    abstract fun map(recipe: RecipeSnapshot): DayPlansResponse.DayPlan.Recipe
 
     @Mapping(source = "recipes", target = "recipes")
     abstract fun mapDetails(dayPlan: DayPlan, recipes: List<DayPlanResponse.DayPlan.Recipe>): DayPlanResponse.DayPlan

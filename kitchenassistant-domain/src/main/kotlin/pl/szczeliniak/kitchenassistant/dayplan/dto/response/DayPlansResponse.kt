@@ -7,6 +7,9 @@ data class DayPlansResponse(
     val dayPlans: Page<DayPlan>
 ) {
     data class DayPlan(
-        val date: LocalDate
-    )
+        val date: LocalDate,
+        val recipes: List<Recipe>
+    ) {
+        data class Recipe(val name: String)
+    }
 }
