@@ -16,7 +16,6 @@ abstract class DayPlanMapper {
 
     abstract fun map(dayPlan: DayPlan): DayPlansResponse.DayPlan
 
-    @Mapping(target = "copy", ignore = true)
     abstract fun map(recipe: RecipeSnapshot): DayPlansResponse.DayPlan.Recipe
 
     @Mapping(source = "recipes", target = "recipes")

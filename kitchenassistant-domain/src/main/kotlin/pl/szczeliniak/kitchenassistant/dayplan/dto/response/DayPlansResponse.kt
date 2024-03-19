@@ -10,6 +10,6 @@ data class DayPlansResponse(
         val date: LocalDate,
         val recipes: List<Recipe>
     ) {
-        data class Recipe(val name: String)
+        data class Recipe(val id: Int, val name: String)
     }
 }
