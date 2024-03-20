@@ -70,13 +70,6 @@ open class DayPlanService(
         )
     }
 
-    fun delete(date: LocalDate): SuccessResponse {
-        requireTokenType(TokenType.ACCESS)
-        val dayPlan = dayPlanDao.findByDate(date, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
-        dayPlanDao.delete(dayPlan)
-        return SuccessResponse(dayPlan.id)
-    }
-
     fun update(date: LocalDate, request: UpdateDayPlanRequest): SuccessResponse {
         requireTokenType(TokenType.ACCESS)
         val dayPlan = dayPlanDao.findByDate(date, requestContext.userId()) ?: throw KitchenAssistantException(

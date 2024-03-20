@@ -45,12 +45,6 @@ class DayPlanController(
     }
 
     @Transactional
-    @DeleteMapping("/{date}")
-    fun delete(@PathVariable date: LocalDate): SuccessResponse {
-        return dayPlanService.delete(date)
-    }
-
-    @Transactional
     @PutMapping("/{date}")
     fun update(@PathVariable date: LocalDate, @Valid @RequestBody request: UpdateDayPlanRequest): SuccessResponse {
         return dayPlanService.update(date, request)
