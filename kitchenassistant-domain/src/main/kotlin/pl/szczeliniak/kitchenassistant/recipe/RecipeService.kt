@@ -112,7 +112,7 @@ open class RecipeService(
     }
 
     private fun createStep(request: NewRecipeRequest.StepGroup.Step): Step {
-        return Step(0, request.description, request.sequence)
+        return Step(0, request.description)
     }
 
     private fun createIngredientGroup(request: NewRecipeRequest.IngredientGroup): IngredientGroup {
@@ -189,7 +189,7 @@ open class RecipeService(
     }
 
     private fun createStep(request: UpdateRecipeRequest.StepGroup.Step): Step {
-        return Step(0, request.description, request.sequence)
+        return Step(0, request.description)
     }
 
     private fun createTag(name: String, user: User): Tag {

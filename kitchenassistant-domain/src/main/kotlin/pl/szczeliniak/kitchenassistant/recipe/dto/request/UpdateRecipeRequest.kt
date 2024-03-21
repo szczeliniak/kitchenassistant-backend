@@ -32,8 +32,7 @@ data class UpdateRecipeRequest(
         @Min(0) @Max(30) val steps: List<@Valid Step> = listOf()
     ) {
         data class Step(
-            @field:Size(max = 255) var description: String,
-            var sequence: Int? = null
+            @field:Size(max = 255) var description: String
         )
     }
 

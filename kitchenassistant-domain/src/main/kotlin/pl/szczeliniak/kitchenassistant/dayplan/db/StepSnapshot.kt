@@ -17,7 +17,6 @@ data class StepSnapshot(
     var id: Int = 0,
     var description: String = "",
     var originalStepId: Int? = null,
-    var sequence: Int? = null,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 )

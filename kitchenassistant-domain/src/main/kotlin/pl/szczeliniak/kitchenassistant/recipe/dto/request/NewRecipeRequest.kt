@@ -31,8 +31,7 @@ data class NewRecipeRequest(
         @Min(0) @Max(30) var steps: List<@Valid Step> = listOf()
     ) {
         data class Step(
-            @field:Size(max = 1000) var description: String,
-            var sequence: Int? = null
+            @field:Size(max = 1000) var description: String
         )
     }
 

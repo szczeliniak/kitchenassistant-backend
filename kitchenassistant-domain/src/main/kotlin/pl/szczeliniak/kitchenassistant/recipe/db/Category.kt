@@ -23,7 +23,6 @@ data class Category(
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     var user: User = User(),
-    var sequence: Int? = null,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 )
