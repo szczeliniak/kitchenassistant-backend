@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.recipe.db
 
 import org.springframework.stereotype.Repository
+import java.time.ZonedDateTime
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.persistence.TypedQuery
@@ -39,20 +40,20 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         return applyParameters(criteria, userId, entityManager.createQuery(query, Long::class.javaObjectType)).singleResult
     }
 
-    @Transactional
-    override fun delete(recipe: Recipe) {
-        entityManager.remove(recipe)
-    }
-
-    override fun findById(id: Int, userId: Int): Recipe? {
-        return entityManager
-            .createQuery(
-                "SELECT r FROM Recipe r WHERE r.id = :id AND r.user.id = :userId",
-                Recipe::class.java
-            )
+    override fun findById(id: Int, archived: Boolean?, userId: Int): Recipe? {
+        var query = "SELECT r FROM Recipe r WHERE r.id = :id AND r.user.id = :userId"
+        archived?.let {
+            query = "$query AND r.archived = :archived"
+        }
+        var typedQuery = entityManager.createQuery(query, Recipe::class.java)
             .setParameter("id", id)
             .setParameter("userId", userId)
-            .resultList
+
+        archived?.let {
+            typedQuery = typedQuery.setParameter("archived", archived)
+        }
+
+        return typedQuery.resultList
             .stream()
             .findFirst()
             .orElse(null)
@@ -63,6 +64,7 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         if (recipe.id == 0) {
             entityManager.persist(recipe)
         } else {
+            recipe.modifiedAt = ZonedDateTime.now()
             entityManager.merge(recipe)
         }
         return recipe
@@ -86,6 +88,9 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         if (criteria.favorite != null) {
             builder.append(" AND r.favorite = :favorite")
         }
+        if (criteria.archived != null) {
+            builder.append(" AND r.archived = :archived")
+        }
         return builder.toString()
     }
 
@@ -106,6 +111,9 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
         }
         if (criteria.favorite != null) {
             query = typedQuery.setParameter("favorite", criteria.favorite)
+        }
+        if (criteria.archived != null) {
+            query = typedQuery.setParameter("archived", criteria.archived)
         }
         return query
     }

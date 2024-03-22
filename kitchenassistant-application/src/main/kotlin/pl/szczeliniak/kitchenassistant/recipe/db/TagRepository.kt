@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.recipe.db
 
 import org.springframework.stereotype.Repository
+import java.time.ZonedDateTime
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
@@ -13,6 +14,7 @@ class TagRepository(@PersistenceContext private val entityManager: EntityManager
         if (tag.id == 0) {
             entityManager.persist(tag)
         } else {
+            tag.modifiedAt = ZonedDateTime.now()
             entityManager.merge(tag)
         }
         return tag

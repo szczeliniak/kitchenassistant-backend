@@ -65,8 +65,8 @@ class RecipeController(
 
     @Transactional
     @DeleteMapping("/{recipeId}")
-    fun delete(@PathVariable recipeId: Int): SuccessResponse {
-        return recipeService.delete(recipeId)
+    fun archive(@PathVariable recipeId: Int): SuccessResponse {
+        return recipeService.archive(recipeId)
     }
 
     @Transactional

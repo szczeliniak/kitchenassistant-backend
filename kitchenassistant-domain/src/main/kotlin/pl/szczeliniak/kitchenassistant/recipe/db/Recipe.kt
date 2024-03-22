@@ -52,6 +52,7 @@ class Recipe(
         inverseJoinColumns = [JoinColumn(name = "tag_id", nullable = false)]
     )
     var tags: MutableList<Tag> = mutableListOf(),
+    var archived: Boolean = false,
     var createdAt: ZonedDateTime = ZonedDateTime.now(),
     var modifiedAt: ZonedDateTime = ZonedDateTime.now()
 ) {

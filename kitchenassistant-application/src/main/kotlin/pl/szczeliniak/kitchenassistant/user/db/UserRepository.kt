@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.user.db
 
 import org.springframework.stereotype.Repository
+import java.time.ZonedDateTime
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.persistence.TypedQuery
@@ -45,6 +46,7 @@ class UserRepository(@PersistenceContext private val entityManager: EntityManage
         if (user.id == 0) {
             entityManager.persist(user)
         } else {
+            user.modifiedAt = ZonedDateTime.now()
             entityManager.merge(user)
         }
         return user

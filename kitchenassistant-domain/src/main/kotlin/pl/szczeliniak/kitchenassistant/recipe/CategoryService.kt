@@ -59,7 +59,6 @@ open class CategoryService(
         requireTokenType(TokenType.ACCESS)
         val category = categoryDao.findById(categoryId, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.CATEGORY_NOT_FOUND)
         category.name = request.name
-        category.modifiedAt = ZonedDateTime.now()
         return SuccessResponse(categoryDao.save(category).id)
     }
 

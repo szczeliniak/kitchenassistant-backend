@@ -31,7 +31,6 @@ import pl.szczeliniak.kitchenassistant.shared.dtos.Page
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import pl.szczeliniak.kitchenassistant.user.db.User
 import pl.szczeliniak.kitchenassistant.user.db.UserDao
-import java.time.ZonedDateTime
 
 open class RecipeService(
     private val recipeDao: RecipeDao,
@@ -49,7 +48,7 @@ open class RecipeService(
 
     open fun findById(recipeId: Int): RecipeResponse {
         requireTokenType(TokenType.ACCESS)
-        return RecipeResponse(recipeMapper.mapDetails(recipeDao.findById(recipeId, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)))
+        return RecipeResponse(recipeMapper.mapDetails(recipeDao.findById(recipeId, null, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)))
     }
 
     fun findAll(page: Long?, limit: Int?, favorite: Boolean? = null, categoryId: Int? = null, search: String? = null, tag: String? = null): RecipesResponse {
@@ -58,7 +57,7 @@ open class RecipeService(
         val currentPage = PaginationUtils.calculatePageNumber(page)
         val currentLimit = PaginationUtils.calculateLimit(limit)
         val offset = PaginationUtils.calculateOffset(currentPage, currentLimit)
-        val criteria = RecipeCriteria(favorite, categoryId, search, tag)
+        val criteria = RecipeCriteria(favorite, categoryId, search, tag, false)
         val totalNumberOfPages = PaginationUtils.calculateNumberOfPages(currentLimit, recipeDao.count(criteria, userId))
         return RecipesResponse(
             Page(
@@ -134,7 +133,7 @@ open class RecipeService(
     fun update(recipeId: Int, request: UpdateRecipeRequest): SuccessResponse {
         requireTokenType(TokenType.ACCESS)
         val userId = requestContext.userId()
-        val recipe = recipeDao.findById(recipeId, userId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
+        val recipe = recipeDao.findById(recipeId, false, userId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
         recipe.name = request.name
         recipe.description = request.description
         recipe.category = getCategory(recipe.category, request.categoryId, recipe.user.id)
@@ -164,7 +163,6 @@ open class RecipeService(
         recipe.stepGroups.clear()
         request.stepGroups.forEach { recipe.stepGroups.add(createStepGroup(it)) }
 
-        recipe.modifiedAt = ZonedDateTime.now()
         return SuccessResponse(recipeDao.save(recipe).id)
     }
 
@@ -196,18 +194,18 @@ open class RecipeService(
         return Tag(0, name, user)
     }
 
-    fun delete(recipeId: Int): SuccessResponse {
+    fun archive(recipeId: Int): SuccessResponse {
         requireTokenType(TokenType.ACCESS)
-        val recipe = recipeDao.findById(recipeId, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
-        recipeDao.delete(recipe)
+        val recipe = recipeDao.findById(recipeId, false, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
+        recipe.archived = true
+        recipeDao.save(recipe)
         return SuccessResponse(recipeId)
     }
 
     fun markAsFavorite(recipeId: Int, isFavorite: Boolean): SuccessResponse {
         requireTokenType(TokenType.ACCESS)
-        val recipe = recipeDao.findById(recipeId, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
+        val recipe = recipeDao.findById(recipeId, false, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
         recipe.favorite = isFavorite
-        recipe.modifiedAt = ZonedDateTime.now()
         return SuccessResponse(recipeDao.save(recipe).id)
     }
 

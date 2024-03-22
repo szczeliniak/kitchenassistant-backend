@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.dayplan.db
 
 import org.springframework.stereotype.Repository
+import java.time.ZonedDateTime
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
@@ -10,6 +11,9 @@ class StepGroupSnapshotRepository(@PersistenceContext private val entityManager:
 
     @Transactional
     override fun save(stepGroupSnapshot: StepGroupSnapshot): StepGroupSnapshot {
+        if(stepGroupSnapshot.id > 0) {
+            stepGroupSnapshot.modifiedAt = ZonedDateTime.now()
+        }
         entityManager.persist(stepGroupSnapshot)
         return stepGroupSnapshot
     }

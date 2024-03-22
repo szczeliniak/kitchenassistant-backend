@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.recipe.db
 
 import org.springframework.stereotype.Repository
+import java.time.ZonedDateTime
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
@@ -13,6 +14,7 @@ class AuthorRepository(@PersistenceContext private val entityManager: EntityMana
         if (author.id == 0) {
             entityManager.persist(author)
         } else {
+            author.modifiedAt = ZonedDateTime.now()
             entityManager.merge(author)
         }
         return author

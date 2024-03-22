@@ -23,7 +23,6 @@ import pl.szczeliniak.kitchenassistant.shared.TokenType
 import pl.szczeliniak.kitchenassistant.shared.dtos.Page
 import pl.szczeliniak.kitchenassistant.shared.dtos.SuccessResponse
 import java.time.LocalDate
-import java.time.ZonedDateTime
 
 open class DayPlanService(
     private val dayPlanMapper: DayPlanMapper,
@@ -43,7 +42,7 @@ open class DayPlanService(
         val userId = requestContext.userId()
         val dayPlan = dayPlanDao.findByDate(date, userId) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
         val recipes = dayPlan.recipes.map { recipe ->
-            val originalRecipe = recipe.originalRecipeId?.let { recipeDao.findById(it, userId) }
+            val originalRecipe = recipe.originalRecipeId?.let { recipeDao.findById(it, null, userId) }
             return@map dayPlanMapper.map(recipe, originalRecipe?.author?.name, originalRecipe?.category?.name)
         }
         return DayPlanResponse(
@@ -80,7 +79,6 @@ open class DayPlanService(
             throw KitchenAssistantException(ErrorCode.DAY_PLAN_ALREADY_EXISTS)
         }
         dayPlan.date = request.date
-        dayPlan.modifiedAt = ZonedDateTime.now()
         return SuccessResponse(dayPlanDao.save(dayPlan).id)
     }
 
@@ -100,7 +98,7 @@ open class DayPlanService(
         }
 
         val recipeSnapshot = recipeSnapshotMapper.map(
-            recipeDao.findById(request.recipeId, userId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
+            recipeDao.findById(request.recipeId, false, userId) ?: throw KitchenAssistantException(ErrorCode.RECIPE_NOT_FOUND)
         )
 
         recipeSnapshot.ingredientGroups.forEach { ingredientGroup ->
@@ -147,7 +145,6 @@ open class DayPlanService(
             .ingredientGroups.first { it.id == ingredientGroupId }
             .ingredients.first { it.id == ingredientId }
         ingredient.checked = checked
-        ingredient.modifiedAt = ZonedDateTime.now()
         ingredientSnapshotDao.save(ingredient)
         return SuccessResponse(dayPlan.id)
     }

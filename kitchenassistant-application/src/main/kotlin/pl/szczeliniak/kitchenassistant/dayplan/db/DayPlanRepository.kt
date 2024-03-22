@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.dayplan.db
 
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
+import java.time.ZonedDateTime
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.persistence.TypedQuery
@@ -12,6 +13,9 @@ class DayPlanRepository(@PersistenceContext private val entityManager: EntityMan
 
     @Transactional
     override fun save(dayPlan: DayPlan): DayPlan {
+        if(dayPlan.id > 0) {
+            dayPlan.modifiedAt = ZonedDateTime.now()
+        }
         entityManager.persist(dayPlan)
         return dayPlan
     }
