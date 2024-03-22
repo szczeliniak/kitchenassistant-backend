@@ -80,7 +80,7 @@ class RecipeRepository(@PersistenceContext private val entityManager: EntityMana
             builder.append(" AND r.category.id = :categoryId")
         }
         if (criteria.search != null) {
-            builder.append(" AND (LOWER(r.name) LIKE LOWER(:search) OR LOWER(a.name) LIKE LOWER(:search))")
+            builder.append(" AND (LOWER(r.name) LIKE LOWER(:search) OR LOWER(a.name) LIKE LOWER(:search) OR LOWER(r.category.name) LIKE LOWER(:search))")
         }
         if (criteria.tag != null) {
             builder.append(" AND LOWER(t.name) LIKE LOWER(:tag)")
