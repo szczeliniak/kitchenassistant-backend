@@ -10,30 +10,22 @@ data class DayPlanResponse(
         val recipes: List<Recipe>
     ) {
         data class Recipe(
+            val id: Int,
             val name: String,
-            val author: String?,
-            val category: String?,
-            val originalRecipeId: Int?,
-            val ingredientGroups: List<IngredientGroup>,
-            val stepGroups: List<StepGroup>
+            val source: String?,
+            val originalRecipeId: Int,
+            val ingredientGroups: List<IngredientGroup>
         ) {
             data class IngredientGroup(
+                val id: Int,
                 val name: String?,
                 val ingredients: List<Ingredient>
             ) {
                 data class Ingredient(
+                    val id: Int,
                     val name: String,
                     val quantity: String?,
                     val checked: Boolean
-                )
-            }
-
-            data class StepGroup(
-                val name: String?,
-                val steps: List<Step>
-            ) {
-                data class Step(
-                    val description: String
                 )
             }
         }

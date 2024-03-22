@@ -27,8 +27,4 @@ abstract class DayPlanMapper {
 
     abstract fun map(ingredient: IngredientSnapshot): DayPlanResponse.DayPlan.Recipe.IngredientGroup.Ingredient
 
-    abstract fun map(stepGroup: StepGroupSnapshot): DayPlanResponse.DayPlan.Recipe.StepGroup
-
-    @Mapping(target = "copy", ignore = true)
-    abstract fun map(step: StepSnapshot): DayPlanResponse.DayPlan.Recipe.StepGroup.Step
 }
