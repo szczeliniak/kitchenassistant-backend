@@ -1,6 +1,8 @@
 package pl.szczeliniak.kitchenassistant.recipe
 
 import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.MappingTarget
 import pl.szczeliniak.kitchenassistant.recipe.db.Author
 import pl.szczeliniak.kitchenassistant.recipe.db.Category
 import pl.szczeliniak.kitchenassistant.recipe.db.Ingredient
@@ -9,8 +11,12 @@ import pl.szczeliniak.kitchenassistant.recipe.db.Recipe
 import pl.szczeliniak.kitchenassistant.recipe.db.Step
 import pl.szczeliniak.kitchenassistant.recipe.db.StepGroup
 import pl.szczeliniak.kitchenassistant.recipe.db.Tag
+import pl.szczeliniak.kitchenassistant.recipe.dto.request.NewCategoryRequest
+import pl.szczeliniak.kitchenassistant.recipe.dto.request.UpdateCategoryRequest
+import pl.szczeliniak.kitchenassistant.recipe.dto.response.CategoriesResponse
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.RecipeResponse
 import pl.szczeliniak.kitchenassistant.recipe.dto.response.RecipesResponse
+import pl.szczeliniak.kitchenassistant.user.db.User
 
 @Mapper
 abstract class RecipeMapper {
@@ -38,5 +44,12 @@ abstract class RecipeMapper {
     abstract fun mapDetails(ingredientGroup: IngredientGroup): RecipeResponse.Recipe.IngredientGroup
 
     abstract fun mapDetails(ingredient: Ingredient): RecipeResponse.Recipe.IngredientGroup.Ingredient
+
+    abstract fun mapCategory(category: Category): CategoriesResponse.Category
+
+    @Mapping(target = "name", source = "request.name")
+    abstract fun category(id: Int, request: NewCategoryRequest, user: User): Category
+
+    abstract fun category(@MappingTarget category: Category, updateCategoryRequest: UpdateCategoryRequest)
 
 }

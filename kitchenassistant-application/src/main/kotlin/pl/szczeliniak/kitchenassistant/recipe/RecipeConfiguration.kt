@@ -29,7 +29,8 @@ class RecipeConfiguration {
         dayPlanDao: DayPlanDao,
         ingredientGroupDao: IngredientGroupDao,
         stepGroupDao: StepGroupDao,
-        requestContext: RequestContext
+        requestContext: RequestContext,
+        recipeMapper: RecipeMapper
     ): RecipeService {
         return RecipeService(
             recipeDao,
@@ -37,7 +38,7 @@ class RecipeConfiguration {
             tagDao,
             categoryDao,
             userDao,
-            RecipeMapperImpl(),
+            recipeMapper,
             ingredientGroupDao,
             ingredientDao,
             stepGroupDao,
@@ -57,7 +58,11 @@ class RecipeConfiguration {
         recipeDao: RecipeDao,
         categoryDao: CategoryDao,
         userDao: UserDao,
-        requestContext: RequestContext
-    ) = CategoryService(recipeDao, categoryDao, userDao, CategoryMapperImpl(), requestContext)
+        requestContext: RequestContext,
+        recipeMapper: RecipeMapper
+    ) = CategoryService(recipeDao, categoryDao, userDao, recipeMapper, requestContext)
+
+    @Bean
+    fun recipeMapper() = RecipeMapperImpl()
 
 }
