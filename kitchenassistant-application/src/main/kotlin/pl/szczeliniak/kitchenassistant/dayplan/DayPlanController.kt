@@ -52,14 +52,14 @@ class DayPlanController(
 
     @Transactional
     @PutMapping("/{date}/recipes/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}/{isChecked}")
-    fun checkIngredient(
+    fun changeIngredientState(
         @PathVariable date: LocalDate,
         @PathVariable recipeId: Int,
         @PathVariable ingredientGroupId: Int,
         @PathVariable ingredientId: Int,
         @PathVariable isChecked: Boolean
     ): SuccessResponse {
-        return dayPlanService.checkIngredient(date, recipeId, ingredientGroupId, ingredientId, isChecked)
+        return dayPlanService.changeIngredientState(date, recipeId, ingredientGroupId, ingredientId, isChecked)
     }
 
     @Transactional

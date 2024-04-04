@@ -26,7 +26,7 @@ class RecipeSnapshot(
     var id: Int = 0,
     var name: String = "",
     var description: String? = null,
-    var originalRecipeId: Int? = null,
+    var originalRecipeId: Int = 0,
     var source: String? = null,
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_snapshot_id", nullable = false)

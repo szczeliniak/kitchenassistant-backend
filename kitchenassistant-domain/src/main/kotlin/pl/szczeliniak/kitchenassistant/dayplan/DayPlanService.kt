@@ -42,7 +42,7 @@ open class DayPlanService(
         val userId = requestContext.userId()
         val dayPlan = dayPlanDao.findByDate(date, userId) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
         val recipes = dayPlan.recipes.map { recipe ->
-            val originalRecipe = recipe.originalRecipeId?.let { recipeDao.findById(it, null, userId) }
+            val originalRecipe = recipe.originalRecipeId.let { recipeDao.findById(it, null, userId) }
             return@map dayPlanMapper.map(recipe, originalRecipe?.author?.name, originalRecipe?.category?.name)
         }
         return DayPlanResponse(
@@ -138,7 +138,7 @@ open class DayPlanService(
         return SuccessResponse(dayPlan.id)
     }
 
-    fun checkIngredient(date: LocalDate, recipeId: Int, ingredientGroupId: Int, ingredientId: Int, checked: Boolean): SuccessResponse {
+    fun changeIngredientState(date: LocalDate, recipeId: Int, ingredientGroupId: Int, ingredientId: Int, checked: Boolean): SuccessResponse {
         requireTokenType(TokenType.ACCESS)
         val dayPlan = dayPlanDao.findByDate(date, requestContext.userId()) ?: throw KitchenAssistantException(ErrorCode.DAY_PLAN_NOT_FOUND)
         val ingredient = dayPlan.recipes.first { it.id == recipeId }
