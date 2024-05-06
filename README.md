@@ -1,4 +1,4 @@
-# KitchenAssistant
+# Cookbook
 
 ## Recipes storage and shopping list management API
 
@@ -9,12 +9,12 @@ All endpoints and available at `/swagger-ui.html`
 ## Run dev application
 
 1. Run `docker-compose -f docker-compose-infra.yaml up -d` to start DB, FTP and Adminer containers.
-2. Run application context in Intellij `KitchenAssistantApplication.kt` with profile `dev` (VM options: `-Dspring.profiles.active=dev`).
+2. Run application context in Intellij `CookBookApplication.kt` with profile `dev` (VM options: `-Dspring.profiles.active=dev`).
 
 ### Run prod application
 
 1. Run `docker-compose -f docker-compose-infra.yaml up -d` to start DB, FTP and Adminer containers.
-2. Build docker image with command `docker build -t kitchenassistant-app .`
+2. Build docker image with command `docker build -t cookbook-app .`
 3. Run docker image and provide environment variables:
     * `DB_HOST` - database host
     * `DB_PORT` - database port

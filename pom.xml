@@ -5,12 +5,12 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>kitchenassistant-domain</module>
-		<module>kitchenassistant-application</module>
+		<module>cookbook-domain</module>
+		<module>cookbook-application</module>
 	</modules>
 
 	<groupId>pl.szczeliniak</groupId>
-	<artifactId>kitchenassistant</artifactId>
+	<artifactId>cookbook</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
@@ -66,7 +66,7 @@
 			</dependency>
 			<dependency>
 				<groupId>pl.szczeliniak</groupId>
-				<artifactId>kitchenassistant-domain</artifactId>
+				<artifactId>cookbook-domain</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
